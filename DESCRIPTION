@@ -1,0 +1,30 @@
+Package: LakeTrophicModelling
+Title: Package to reproduce Hollister et al. (2014) Modeling Lake Trophic State: A Data Mining Approach.
+Version: 0.1
+Authors@R: c(person("Jeff","Hollister",role=c("aut","cre"),email="hollister.jeff@epa.gov"),
+             person("Bryan","Milstead",role=c("aut"),email="milstead.bryan@epa.gov"),
+             person("Betty","Kreakie",role=c("aut"),email="kreakie.betty@epa.gov")
+Description: This package contains all the materials needed to reproduce 
+    Hollister *et al.* (2014) Modeling Lake Trophic State: A Data Mining Approach.  
+    These materials are presented as an R Package which contains code used for analyses, 
+    code used to develop figures, raw data used for all analysese, and a package 
+    vignette that contains the accepted, unformatted version of the manuscript.
+Depends: R (>= 3.1.1)
+Imports: 
+    randomForest,
+    varSelRF,
+    snowfall,
+    parallel,
+    knitr,
+    xtable,
+    jpeg,
+    ggplot2,
+    grid,
+    e1071,
+    maps,
+    rgdal,
+    mapproj
+License:  CC0
+LazyData: true
+VigenetteBuilder: knitr
+
