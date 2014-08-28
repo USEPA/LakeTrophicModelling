@@ -1,0 +1,198 @@
+PackratFormat: 1.4
+PackratVersion: 0.4.0.12
+RVersion: 3.1.1
+Repos: CRAN=http://cran.rstudio.com,
+    CRANextra=http://www.stats.ox.ac.uk/pub/RWin
+
+Package: class
+Source: CRAN
+Version: 7.3-10
+Hash: 26904386db0a2940b3ea7d0322f01d7b
+Requires: MASS
+
+Package: colorspace
+Source: CRAN
+Version: 1.2-4
+Hash: b775bd08a10f968fef582304b7c3ab9c
+
+Package: dichromat
+Source: CRAN
+Version: 2.0-0
+Hash: 42be2136555fa4b6167605df56d8cd7c
+
+Package: digest
+Source: CRAN
+Version: 0.6.4
+Hash: e4bf0e79b15a352510aff0de905d31e2
+
+Package: e1071
+Source: CRAN
+Version: 1.6-3
+Hash: f7ca3e50d459691e85eff43956c8ed9e
+Requires: class
+
+Package: evaluate
+Source: CRAN
+Version: 0.5.5
+Hash: 20881970e590ee68de97a468694db7b0
+Requires: stringr
+
+Package: formatR
+Source: CRAN
+Version: 1.0
+Hash: a90c211d7df7e61a72b8ab6c99c2e848
+
+Package: ggplot2
+Source: CRAN
+Version: 1.0.0
+Hash: c8bff66238347472f08b6a35608539ff
+Requires: digest, gtable, MASS, plyr, proto, reshape2, scales
+
+Package: gtable
+Source: CRAN
+Version: 0.1.2
+Hash: 0cf4a2b54c02b35dec7e74a8ebed12a0
+
+Package: highr
+Source: CRAN
+Version: 0.3
+Hash: 7c85a9b7d07a75e2d8ca74f9467fee21
+
+Package: jpeg
+Source: CRAN
+Version: 0.1-8
+Hash: 2a96df07e30724f8bb773e4f78c634c6
+
+Package: knitr
+Source: CRAN
+Version: 1.6
+Hash: 0f6457facba94bccad17a7c67c2f4168
+Requires: digest, evaluate, formatR, highr, markdown, stringr
+
+Package: labeling
+Source: CRAN
+Version: 0.3
+Hash: 568a992912caf7eeddfb121924154047
+
+Package: lattice
+Source: CRAN
+Version: 0.20-29
+Hash: 17e9fe582d11197544a5ec817a80b21e
+
+Package: mapproj
+Source: CRAN
+Version: 1.2-2
+Requires: maps
+
+Package: maps
+Source: CRAN
+Version: 2.3-7
+Hash: 4c87e5e328a6125cbe661dff2189c864
+
+Package: markdown
+Source: CRAN
+Version: 0.7.4
+Hash: 01d7f71ed6e3d9b1c17ba51cff91be72
+Requires: mime
+
+Package: MASS
+Source: CRAN
+Version: 7.3-33
+Hash: a39763fb1980843f13616be87e879ac9
+
+Package: mime
+Source: CRAN
+Version: 0.1.2
+Hash: 08ae994b18677717b786ade9c113b6ea
+
+Package: munsell
+Source: CRAN
+Version: 0.4.2
+Hash: fa8af6d040041439b249351e9d16ae9a
+Requires: colorspace
+
+Package: packrat
+Source: github
+Version: 0.4.0.12
+Hash: e738f79a22521c57fad67a1679302385973cd958
+GithubRepo: packrat
+GithubUsername: rstudio
+GithubRef: master
+GithubSha1: e738f79a22521c57fad67a1679302385973cd958
+
+Package: plyr
+Source: CRAN
+Version: 1.8.1
+Hash: be21bad411e628f810a92212e17b5be7
+Requires: Rcpp
+
+Package: proto
+Source: CRAN
+Version: 0.3-10
+Hash: 668a9e87cedbdc5f56c396edf1bd2648
+
+Package: randomForest
+Source: CRAN
+Version: 4.6-10
+Hash: 6cfc4af49262a122c8ff130048e60375
+
+Package: RColorBrewer
+Source: CRAN
+Version: 1.0-5
+Hash: 6a849b729bec970204ca88b96906adbc
+
+Package: Rcpp
+Source: CRAN
+Version: 0.11.2
+Hash: ef2b1a5e45d1461bd720e4ebbe48e601
+
+Package: reshape2
+Source: CRAN
+Version: 1.4
+Hash: b210925e978fd52ad5eb0822a353e7ce
+Requires: plyr, Rcpp, stringr
+
+Package: rgdal
+Source: CRAN
+Version: 0.8-16
+Hash: 4e3d03fb47a1f57c7344928cbc8769d9
+Requires: sp
+
+Package: scales
+Source: CRAN
+Version: 0.2.4
+Hash: b8b1af97bd07818605223060386b00dd
+Requires: dichromat, labeling, munsell, plyr, RColorBrewer
+
+Package: snow
+Source: CRAN
+Version: 0.3-13
+Hash: 16dca684ceb4baa0f96c1ca1b3314497
+
+Package: snowfall
+Source: CRAN
+Version: 1.84-6
+Hash: 0af464c3f656c307938e01793caff847
+Requires: snow
+
+Package: sp
+Source: CRAN
+Version: 1.0-15
+Hash: ccab055c2835c81a8add23517d8b6219
+Requires: lattice
+
+Package: stringr
+Source: CRAN
+Version: 0.6.2
+Hash: cdde0cfa0f52cffeaca23a11a3899779
+
+Package: varSelRF
+Source: CRAN
+Version: 0.7-3
+Hash: 0a82fc18a219e38d782409d1d0844002
+Requires: randomForest
+
+Package: xtable
+Source: CRAN
+Version: 1.7-3
+Hash: af110253b140f3f7199c0cac37536a2f
