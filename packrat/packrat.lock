@@ -4,6 +4,22 @@ RVersion: 3.1.1
 Repos: CRAN=http://cran.rstudio.com,
     CRANextra=http://www.stats.ox.ac.uk/pub/RWin
 
+Package: bitops
+Source: CRAN
+Version: 1.0-6
+Hash: cb26464a8321628636b547518994c931
+
+Package: brew
+Source: CRAN
+Version: 1.0-6
+Hash: 9d92cc5ac60123fdb7b0daa3ae83bf99
+
+Package: caTools
+Source: CRAN
+Version: 1.17
+Hash: e350bf43b27772012b530ccdf2e34f4d
+Requires: bitops
+
 Package: class
 Source: CRAN
 Version: 7.3-10
@@ -14,6 +30,12 @@ Package: colorspace
 Source: CRAN
 Version: 1.2-4
 Hash: b775bd08a10f968fef582304b7c3ab9c
+
+Package: devtools
+Source: CRAN
+Version: 1.5
+Hash: d8c2ffc3d991d1b1a8625919b8be3f4c
+Requires: digest, evaluate, httr, memoise, RCurl, whisker
 
 Package: dichromat
 Source: CRAN
@@ -58,10 +80,33 @@ Source: CRAN
 Version: 0.3
 Hash: 7c85a9b7d07a75e2d8ca74f9467fee21
 
+Package: htmltools
+Source: CRAN
+Version: 0.2.4
+Hash: 88df1d8bc3728256408aab4d416959d1
+Requires: digest
+
+Package: httpuv
+Source: CRAN
+Version: 1.3.0
+Hash: 7244bf7093e9c6c1ab23ddab020f197f
+Requires: Rcpp
+
+Package: httr
+Source: CRAN
+Version: 0.4
+Hash: 0fe56eff828423386ce2f71e055572a3
+Requires: digest, jsonlite, RCurl, stringr
+
 Package: jpeg
 Source: CRAN
 Version: 0.1-8
 Hash: 2a96df07e30724f8bb773e4f78c634c6
+
+Package: jsonlite
+Source: CRAN
+Version: 0.9.10
+Hash: 6e69e79691b668042c7f022bb680bba5
 
 Package: knitr
 Source: CRAN
@@ -82,6 +127,7 @@ Hash: 17e9fe582d11197544a5ec817a80b21e
 Package: mapproj
 Source: CRAN
 Version: 1.2-2
+Hash: 26b74cac98f12af52703765791824ea2
 Requires: maps
 
 Package: maps
@@ -99,6 +145,12 @@ Package: MASS
 Source: CRAN
 Version: 7.3-33
 Hash: a39763fb1980843f13616be87e879ac9
+
+Package: memoise
+Source: CRAN
+Version: 0.2.1
+Hash: fc52fa39dfd216c44d64812ff31b1c67
+Requires: digest
 
 Package: mime
 Source: CRAN
@@ -146,6 +198,12 @@ Source: CRAN
 Version: 0.11.2
 Hash: ef2b1a5e45d1461bd720e4ebbe48e601
 
+Package: RCurl
+Source: CRAN
+Version: 1.95-4.3
+Hash: 158377109f939084a72f240125f821d3
+Requires: bitops
+
 Package: reshape2
 Source: CRAN
 Version: 1.4
@@ -158,11 +216,38 @@ Version: 0.8-16
 Hash: 4e3d03fb47a1f57c7344928cbc8769d9
 Requires: sp
 
+Package: RJSONIO
+Source: CRAN
+Version: 1.3-0
+Hash: 8b1341dfd547c90ed4b3365d5aa46a7b
+
+Package: rmarkdown
+Source: github
+Version: 0.2.67
+Hash: 2e62db72e5879b2515c3897be1ca6561d2b41d75
+Requires: caTools, htmltools, knitr, yaml
+GithubRepo: rmarkdown
+GithubUsername: rstudio
+GithubRef: master
+GithubSha1: 2e62db72e5879b2515c3897be1ca6561d2b41d75
+
+Package: roxygen2
+Source: CRAN
+Version: 4.0.1
+Hash: 90152a287fce464df1dd8e9d198e3a08
+Requires: brew, digest, Rcpp, stringr
+
 Package: scales
 Source: CRAN
 Version: 0.2.4
 Hash: b8b1af97bd07818605223060386b00dd
 Requires: dichromat, labeling, munsell, plyr, RColorBrewer
+
+Package: shiny
+Source: CRAN
+Version: 0.10.1
+Hash: abf0d95fb716352103ee6d35b51fffa4
+Requires: caTools, digest, htmltools, httpuv, RJSONIO, xtable
 
 Package: snow
 Source: CRAN
@@ -186,13 +271,29 @@ Source: CRAN
 Version: 0.6.2
 Hash: cdde0cfa0f52cffeaca23a11a3899779
 
+Package: testthat
+Source: CRAN
+Version: 0.8.1
+Hash: f296283e62e2ff299efa01e26cfc3eb1
+Requires: digest
+
 Package: varSelRF
 Source: CRAN
 Version: 0.7-3
 Hash: 0a82fc18a219e38d782409d1d0844002
 Requires: randomForest
 
+Package: whisker
+Source: CRAN
+Version: 0.3-2
+Hash: 186ab2937fec1694c8a63009a2389c4e
+
 Package: xtable
 Source: CRAN
 Version: 1.7-3
 Hash: af110253b140f3f7199c0cac37536a2f
+
+Package: yaml
+Source: CRAN
+Version: 2.1.13
+Hash: e5d041c001f6d641fd009c1f6ef7d831
