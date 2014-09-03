@@ -1,8 +1,9 @@
 ---
 title: "Modeling Lake Trophic State: A Data Mining Approach"
 bibliography: LakeTrophicModelling.bib
-layout: review
-csl: ecology.csl
+layout: preprint
+linenumbers: false
+csl: plos.csl
 documentclass: elsarticle
 output: 
   pdf_document:
@@ -16,10 +17,8 @@ author:
     footnote: Corresponding author
   - name: W. Bryan Milstead 
     affiliation: aed
-    email: milstead.bryan@epa.gov
   - name: Betty J. Kreakie
     affiliation: aed
-    email: kreakie.betty@epa.gov
 address: 
   - code: aed
     address: | 
@@ -62,8 +61,6 @@ abstract: |
 <!--
 %\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Lake Trophic Modelling}
-%\usepackage[vmargin=0.5in,hmargin=0.5in]{geometry}
-%\usepackage{times}
 -->
 
 
@@ -83,6 +80,7 @@ We have three goals for this preliminary research:
 ##Data and Modeling Methods
 
 **Data**
+
 We utilize four primary sources of data for this study. These are outlined below and in Table 1.
 
 1. National Lakes Assessment (NLA) 2007: The NLA data were collected during the summer of 2007 and the final data were released in 2009.  With consistent methods and metrics collected at 1056 location
@@ -92,7 +90,7 @@ er quality and habitat.  For this analysis we primarily examined the water quali
 meter buffer surrounding the lake to examine larger landscape-level effects [@homer2004development;@xian2009updating].
 3. Modeled lake morphometry: Various measures of lake morphometry (i.e. depth, volume, fetch, etc.) are important in understanding lake productivity, yet many of these data are difficult to obtain for
  large numbers of lakes over broad regions.  To add this information we modeled lake morphometry [@hollister2010volume;@hollister_predicting_2011;@Lakmorpho2014;@NLMDInPrep].
-4. Estimated Cyanobacteria Biovolumes: Cyanobacteria biovolumes is a truer measure of Cyanobacteria dominance than abundance as there is great variability in the size within and between species.  To a
+4. Estimated Cyanobacteria Biovolumes: Cyanobacteria biovolumes are a truer measure of Cyanobacteria dominance than abundance as there is great variability in the size within and between species.  To a
 ccount for this, Beaulieu *et al.* [-@beaulieu2013nutrients] used literature values to estimate biovolumes for the taxa in the NLA.  They shared this data and we have summed that information on a per-
 lake basis.
 
