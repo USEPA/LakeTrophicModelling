@@ -63,6 +63,21 @@ abstract:  Productivity of lentic ecosystems has been well studied and it is
 %\VignetteIndexEntry{Modeling Lake Trophic State: A Data Mining Approach}
 -->
 
+```{r setup, include=FALSE, echo=FALSE}
+#opts_chunk$set(dev = 'pdf', fig.width=6, fig.height=4.3)
+devtools::install_github("LakeTrophicModelling","USEPA",
+                         auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+devtools::install_github("wesanderson","jhollist")
+library("wesanderson")
+library("LakeTrophicModelling")
+data(hkm2014Data_nobiov)
+#Checks for existing cache (from another project)
+if(file.exists("cache")){
+  for(i in gsub(".rdb","",list.files("cache",".rdb",full.names=T))){
+    lazyLoad(i)
+  }
+}
+```
 
 #Introduction
 Cyanobacteria are an important taxonomic group associated with harmful algal blooms in lakes. Understanding the drivers of cyanobacteria presence has important implications for lake management and for
