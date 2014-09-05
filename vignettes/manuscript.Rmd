@@ -70,7 +70,7 @@ devtools::install_github("LakeTrophicModelling","USEPA",quick=TRUE,
 devtools::install_github("wesanderson","jhollist")
 library("wesanderson")
 library("LakeTrophicModelling")
-data(hkm2014Data_nobiov)
+data(hkm2014Data_all)
 #Checks for existing cache (from another project)
 if(file.exists("cache")){
   for(i in gsub(".rdb","",list.files("cache",".rdb",full.names=T))){
