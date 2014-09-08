@@ -7,7 +7,7 @@
 #'            and color of points.
 #' 
 #' @export
-#' 
+#' @import ggplot2
 #' @examples
 #' require(wesanderson)
 #' data(iris)

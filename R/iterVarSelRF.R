@@ -22,6 +22,7 @@
 #' x2<-iterVarSelRF(hkm2014Data[predictors_gis],TS_CHLA_4,10,4,ntree=10,ntreeIterat=5,
 #' vars.drop.frac=NULL,vars.drop.num=1,time=TRUE)
 #' @export
+#' @import varSelRF snowfall
 
 iterVarSelRF <- function(indVar, depVar, numRun = 10, 
     numCore = 1, outStr = tempfile(tmpdir = getwd()), 
@@ -43,7 +44,7 @@ iterVarSelRF <- function(indVar, depVar, numRun = 10,
     
     # validate number of cores
     if (numCore > parallel::detectCores()) {
-        return(stop(paste("Your system only has", detectCores(), 
+        return(stop(paste("Your system only has", parallel::detectCores(), 
             "cores available")))
     }
     

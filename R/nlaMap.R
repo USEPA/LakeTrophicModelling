@@ -17,6 +17,7 @@
 #' names(lakes_dd)<-c("long","lat")
 #' nlaMap(state,lakes_dd)
 #' @export
+#' @import ggplot2
 nlaMap<-function(states,lakes,myColor=1:3){
   #browser()
 

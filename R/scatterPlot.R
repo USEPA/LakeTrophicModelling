@@ -13,6 +13,7 @@
 #'             x=expression(paste('Log10(Chl ', italic("a"),')')),
 #'             y="Log10(Cyanobaterial Biovolumes + 1)")
 #' @export
+#' @import ggplot2
 
 scatterPlot<-function(df,xvar,yvar,pt_col,ln_col,cl_col,...){
   options(scipen=5)

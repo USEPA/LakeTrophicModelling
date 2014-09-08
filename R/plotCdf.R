@@ -24,6 +24,8 @@
 #'         color="Trophic State\nCategories")
 #' 
 #' @export
+#' @import ggplot2
+
 plotCdf <- function(catVar, contVar, cdf_colors = 1:length(catVar), ...) {
 
     options(scipen = 5)  #tell r not to use scientific notation on axis labels

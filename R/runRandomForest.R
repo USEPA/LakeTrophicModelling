@@ -18,6 +18,7 @@
 #' x2_vars<-unique(unlist(x2))
 #' gis_ts4_rf<-runRandomForest(hkm2014Data[x2_vars],TS_CHLA_4, ntree=10,importance=TRUE,proximity=TRUE)
 #' @export
+#' @import randomForest
 runRandomForest <- function(indVar, depVar, ntree = 100, 
     importance = TRUE, proximity = TRUE) {
     
