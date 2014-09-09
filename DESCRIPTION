@@ -13,10 +13,24 @@ Description: This package contains all the materials needed to reproduce
     analysese, and a package vignette that contains the accepted, unformatted
     version of the manuscript.
 Depends:
-    R (>= 3.1.1),
+    R (>= 3.1.1)
 Suggests:
     knitr,
     rmarkdown
+Imports:
+    randomForest,
+    varSelRF,
+    snowfall,
+    parallel,
+    knitr,
+    xtable,
+    jpeg,
+    ggplot2,
+    grid,
+    e1071,
+    maps,
+    rgdal,
+    mapproj
 License: CC0
 LazyData: true
 VignetteBuilder: knitr
