@@ -75,7 +75,7 @@ library("sp")
 library("rgdal")
 library("xtable")
 library("e1071")
-#opts_chunk$set(dev = 'pdf', fig.width=6, fig.height=4.3)
+opts_chunk$set(dev = 'pdf', fig.width=6, fig.height=4.3)
 data(hkm2014Data_all)
 #Checks for existing cache (from another project)
 if(file.exists("cache")){
@@ -96,7 +96,7 @@ We have three goals for this preliminary research:
 
 1. Build and assess models of lake trophic state
 2. Assess ability to predict trophic state in lakes without available *in situ* water quality data
-3. Explore association between cyanobacteria and trophic in order to expand models.
+3. Explore associations between cyanobacteria and trophic in order to expand models.
 
 #Data and Modeling Methods
 
