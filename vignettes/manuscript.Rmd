@@ -75,7 +75,7 @@ library("sp")
 library("rgdal")
 library("xtable")
 library("e1071")
-opts_chunk$set(dev = 'pdf', fig.width=6, fig.height=4.3)
+opts_chunk$set(dev = 'pdf')
 data(hkm2014Data_all)
 #Checks for existing cache (from another project)
 if(file.exists("cache")){
@@ -83,6 +83,23 @@ if(file.exists("cache")){
     lazyLoad(i)
   }
 }
+
+#figure and table numbering (modified from https://github.com/yihui/knitr-examples/blob/master/070-caption-num.Rmd)
+cap_num<-local({
+  i_f<-0
+  i_t<-0
+  function(caption,type){
+    if(type=="figure"){
+      i_f<-i_f+1
+      cap<-paste('Figure ', i_f,': ',caption, sep='')
+      } else{
+      i_t<-i_t+1
+      cap<-paste('Table ', i_t,': ',caption, sep='')
+      }
+    }
+  })
+
+
 ```
 
 #Introduction
@@ -101,7 +118,7 @@ We utilize four primary sources of data for this study,the National Lakes Assess
 The NLA data were collected during the summer of 2007 and the final data were released in 2009.  With consistent methods and metrics collected at 1056 locations across the conterminous United States (Map 1), the NLA provides a unique opportunity to examine broad scale patterns in lake productivity.  The NLA collected data on biophysical measures of lake water quality and habitat.  For this analysis we primarily examined the water quality measurements from the NLA [@usepa2009national].  Adding to the monitoring data collected via the NLA, we use the 2006 NLCD data to examine the possible landscape-level drivers of trophic status in lakes.  The NLCD is a nationally collected land use land cover dataset that also provides estimates of impervious surface.  We collected total land use land cover and total percent impervious surface within a 3 kilometer buffer surrounding the lake to examine larger landscape-level effect [@homer2004development;@xian2009updating]. We also used various measures of lake morphometry (i.e. depth, volume, fetch, etc.) as they are important in understanding lake productivity, yet many of these data are difficult to obtain for large numbers of lakes over broad regions.  To add this information we modeled lake morphometry [@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014;@NLMDInPrep]. Lastly, to explore associations between trophic state and cyanobacteria, we used estimates of cyanobacterial biovoulme caluclated by Beaulieu *et al.* [-@beaulieu2013nutrients].  Cyanobacteria biovolumes are a truer measure of cyanobacteria dominance than abundance as there is great variability in the size within and between species.  We have consolidated the taxa level estimates from Beaulieu *et al.* [-@beaulieu2013nutrients] and  summed that information on a per-lake basis.
 
 
-```{r Table1, results='asis', echo=FALSE}
+```{r Table1, results='asis', echo=FALSE,fig.cap=cap_num('Variable and variable definitions for all possible predcitors','table')}
 translation<-c("Percent Impervious","Percent Water","Percent Ice/Snow","Percent Developed Open Space",
                "Percent Low Intensity Development","Percent Medium Intensity Development",
                "Percent High Intensity Development","Percent Barren","Percent Decidous Forest",
@@ -130,7 +147,7 @@ kable(data_def)
 #dfToImage(data_def,style="css/texttable.css",file="figure/data_def_table.jpg")
 ```
 
-```{r results='asis', echo=FALSE}
+```{r nla_map,echo=FALSE,fig.cap=cap_num('Map of 2007 National Lake Assessment Sample Locations','figure')}
 state<-map_data('state')
 lakes_alb<-data.frame(hkm2014Data[["AlbersX"]],hkm2014Data[["AlbersY"]])
 p4s<-"+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
