@@ -1,4 +1,4 @@
-\documentclass[author-year, $layout$]{$documentclass$} %review=doublespace preprint=single 5p=2 column
+\documentclass[author-year, $layout$, $fontsize$]{$documentclass$} %review=doublespace preprint=single 5p=2 column
 %%% Begin My package additions %%%%%%%%%%%%%%%%%%%
 \usepackage[hyphens]{url}
 \usepackage{lineno} % add 
@@ -25,6 +25,9 @@ $endif$
 \textheight 9in
 \topmargin -0.5in
 %%%%%%%%%%%%%%%% end my additions to header
+
+\fontsize{15pt}{15.5pt}
+\selectfont
 
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
