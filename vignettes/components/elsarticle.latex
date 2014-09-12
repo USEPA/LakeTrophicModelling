@@ -133,6 +133,7 @@ $if(strikeout)$
 % avoid problems with \sout in headers with hyperref:
 \pdfstringdefDisableCommands{\renewcommand{\sout}{}}
 $endif$
+% @jhollist removed parskip and parindent infavor of parskip package
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 $if(numbersections)$
 \setcounter{secnumdepth}{5}
@@ -177,12 +178,13 @@ $endfor$
   $for(address)$
   \address[$address.code$]{$address.address$}    
   $endfor$
-
-  \begin{abstract}
+  
+  %@jhollist added singlespace
   \begin{singlespace}
+  \begin{abstract}
   $abstract$
-  \end{singlespace}
   \end{abstract}
+  \end{singlespace}
   $if(keywords)$ \begin{keyword} $for(keywords)$$keywords$ \sep $endfor$\end{keyword}$endif$
  \end{frontmatter}
 
