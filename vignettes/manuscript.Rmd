@@ -19,15 +19,15 @@ output:
     fig_caption: yes
     keep_tex: yes
     number_sections: yes
-    template: elsarticle.latex
+    template: components/elsarticle.latex
   html_document: null
   word_document: null
 fontsize: 11pt
-csl: plos.csl
+csl: components/ecology.csl
 documentclass: elsarticle
 layout: review
 linenumbers: no
-bibliography: LakeTrophicModelling.bib
+bibliography: components/LakeTrophicModelling.bib
 abstract:  Productivity of lentic ecosystems has been well studied and it is 
   widely accepted that as nutrient inputs increase,  productivity increases and
   lakes transition from low trophic state (e.g. oligotrophic) to higher trophic 
@@ -64,7 +64,7 @@ abstract:  Productivity of lentic ecosystems has been well studied and it is
 %\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Modeling Lake Trophic State: A Data Mining Approach}
 -->
-\usepackage[font={small,it}]{caption}
+
 
 ```{r setup, include=FALSE, echo=FALSE}
 #devtools::install_github("LakeTrophicModelling","USEPA",quick=TRUE,
@@ -91,16 +91,19 @@ if(file.exists("cache")){
 # Table Captions from @DeanK on http://stackoverflow.com/questions/15258233/using-table-caption-on-r-markdown-file-using-knitr-to-use-in-pandoc-to-convert-t
 
 knit_hooks$set(tab.cap = function(before, options, envir) {
-  if(!before)
-    paste('\n\n:', options$tab.cap, sep='') 
-})
+                  if(!before) { 
+                    paste('\n\n:', options$tab.cap, sep='') 
+                  }
+                })
 default_output_hook = knit_hooks$get("output")
 knit_hooks$set(output = function(x, options) {
-  if (is.null(options$tab.cap) == F)  
+  if (is.null(options$tab.cap) == FALSE) {
     x
-  else
+  } else
     default_output_hook(x,options)
 })
+
+
 ```
 
 #Introduction
@@ -117,7 +120,7 @@ We have three goals for this preliminary research.  First, we build and assess m
 
 We utilize four primary sources of data for this study,the National Lakes Assessment (NLA), the National Lake Cover Dataset (NLCD), modeled lake morphometery,  and estimated cyanobacteria biovolumes [@usepa2009national;@homer2004development;@xian2009updating;@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014;@beaulieu2013nutrients].  All datasets are national in scale and provide a unique snapshot view of the condition of lakes in the United States'.
 
-The NLA data were collected during the summer of 2007 and the final data were released in 2009.  With consistent methods and metrics collected at 1056 locations across the conterminous United States (Map 1), the NLA provides a unique opportunity to examine broad scale patterns in lake productivity.  The NLA collected data on biophysical measures of lake water quality and habitat.  For this analysis we primarily examined the water quality measurements from the NLA [@usepa2009national].  Adding to the monitoring data collected via the NLA, we use the 2006 NLCD data to examine the possible landscape-level drivers of trophic status in lakes.  The NLCD is a nationally collected land use land cover dataset that also provides estimates of impervious surface.  We collected total land use land cover and total percent impervious surface within a 3 kilometer buffer surrounding the lake to examine larger landscape-level effect [@homer2004development;@xian2009updating]. We also used various measures of lake morphometry (i.e. depth, volume, fetch, etc.) as they are important in understanding lake productivity, yet many of these data are difficult to obtain for large numbers of lakes over broad regions.  To add this information we modeled lake morphometry [@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014;@NLMDInPrep]. Lastly, to explore associations between trophic state and cyanobacteria, we used estimates of cyanobacterial biovoulme caluclated by Beaulieu *et al.* [-@beaulieu2013nutrients].  Cyanobacteria biovolumes are a truer measure of cyanobacteria dominance than abundance as there is great variability in the size within and between species.  We have consolidated the taxa level estimates from Beaulieu *et al.* [-@beaulieu2013nutrients] and  summed that information on a per-lake basis.
+The NLA data were collected during the summer of 2007 and the final data were released in 2009.  With consistent methods and metrics collected at 1056 locations across the conterminous United States (Figure \ref{fig:nlaMap}), the NLA provides a unique opportunity to examine broad scale patterns in lake productivity.  The NLA collected data on biophysical measures of lake water quality and habitat.  For this analysis we primarily examined the water quality measurements from the NLA [@usepa2009national].  Adding to the monitoring data collected via the NLA, we use the 2006 NLCD data to examine the possible landscape-level drivers of trophic status in lakes.  The NLCD is a nationally collected land use land cover dataset that also provides estimates of impervious surface.  We collected total land use land cover and total percent impervious surface within a 3 kilometer buffer surrounding the lake to examine larger landscape-level effect [@homer2004development;@xian2009updating]. We also used various measures of lake morphometry (i.e. depth, volume, fetch, etc.) as they are important in understanding lake productivity, yet many of these data are difficult to obtain for large numbers of lakes over broad regions.  To add this information we modeled lake morphometry [@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014;@NLMDInPrep]. Lastly, to explore associations between trophic state and cyanobacteria, we used estimates of cyanobacterial biovoulme caluclated by Beaulieu *et al.* [-@beaulieu2013nutrients].  Cyanobacteria biovolumes are a truer measure of cyanobacteria dominance than abundance as there is great variability in the size within and between species.  We have consolidated the taxa level estimates from Beaulieu *et al.* [-@beaulieu2013nutrients] and  summed that information on a per-lake basis.
 
 
 ```{r Variables, results='asis', eval=FALSE, echo=FALSE}
@@ -134,7 +137,7 @@ kable(data_def)
 ```
 
 
-```{r results='asis', echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations"}
+```{r nlaMap, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations\\label{fig:nlaMap}"}
 state<-map_data('state')
 lakes_alb<-data.frame(hkm2014Data[["AlbersX"]],hkm2014Data[["AlbersY"]])
 p4s<-"+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
@@ -156,9 +159,9 @@ While random forests are able to handle numerous correlated variables without a 
 
 Using R’s randomForest package, we pass the reduced models selected with varSelRF and calculate confusion matrices, overall accuracy and kappa coeffecient [@liaw2002randomForest]. From the reduced model random forests we collect a consensus prediction and calculate a confusion matrix and summary stats.
 
-###Model Details
+##Model Details
 
-Using a combination of the `varSelRF` and `randomForest` we ran models for six combinations of variables and trophic state classifications.  These combinations included different combinations of the Chlorphyll *a* trophic states (Table 2) along with all variables and the GIS only variables (i.e. no *in situ* infromation).  The six model combinations were:
+Using a combination of the `varSelRF` and `randomForest` we ran models for six combinations of variables and trophic state classifications.  These combinations included different combinations of the Chlorphyll *a* trophic states (Table \ref{tab:trophicStateTable}) along with all variables and the GIS only variables (i.e. no *in situ* infromation).  The six model combinations were:
 
 1. Chlorophyll *a* trophic state - 4 class = All variables (*in situ* water quality, lake morphometry, and landscape)
 2. Chlorophyll *a* trophic state - 3 class = All variables (*in situ* water quality, lake morphometry, and landscape)
@@ -167,7 +170,7 @@ Using a combination of the `varSelRF` and `randomForest` we ran models for six c
 5. Chlorophyll *a* trophic state - 3 class = All variables (lake morphometry, and landscape)
 6. Chlorophyll *a* trophic state - 2 class = All variables (lake morphometry, and landscape)
 
-```{r trophicStateTable, results='asis', echo=FALSE, tab.cap="Chlorphyll a based trophic state cut-offs"}
+```{r trophicStateTable, results='asis', echo=FALSE, tab.cap="Chlorophyll a based trophic state cut-offs\\label{tab:trophicStateTable}"}
 ts_4<-c("oligo","meso","eu","hyper")
 ts_3<-c("oligo","meso/eu","meso/eu","hyper")
 ts_2<-c("oligo/meso","oligo/meso","eu/hyper","eu/hyper")
@@ -179,7 +182,7 @@ kable(xdf)
 
 #Results
 
-```{r figSetup,echo=FALSE,eval=T,cache=TRUE}
+```{r figSetup,echo=FALSE,eval=TRUE,cache=TRUE}
 #create list of all selected variables and assign a color
 vars<-ls(pattern="_vars")
 all_vars<-vector()
@@ -215,18 +218,20 @@ all_ts4_vars<-unique(unlist(all_ts4[1:100]))
 all_ts4_rf<-runRandomForest(hkm2014Data[all_ts4_vars],hkm2014Data$TS_CHLA_4, ntree=10000,importance=TRUE,proximity=TRUE)
 ```
 
-Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)`.
+The selected variables that made up Model 1 were Potassium, Nitrogen:Phosphorus, Total Nitrogen, Total Phosphorus, Total Organic Carbon, Turbidity, Ecoregion, Organic Ions, Dissolved Organic Carbon, and Maximum Lake Depth (Table \ref{tab:VarSel_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
 
 
-```{r VarSel_Model1,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 1"}
+```{r VarSel_Model1,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 1\\label{tab:VarSel_Model1}"}
 kable(sumTable(all_ts4[1:100]),row.names=F)
 ```
 
-```{r Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1"}
+```{r Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1\\label{tab:Confusion_Model1}"}
 kable(formatC(round(all_ts4_rf$confusion,2)),row.names=F)
 ```
 
-```{r Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1"}
+Lastly, tubidity, total phosphorus, total nitrogen, and total organic carbon were the most important predictors of the 4 classes of trophic state (Figure \ref{fig:Importance_Model1}).
+
+```{r Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1\\label{fig:Importance_Model1}"}
 all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
 importancePlot(all_ts4_rf,'gini',size=10,aes(colour=all_ts4_color))
 ```

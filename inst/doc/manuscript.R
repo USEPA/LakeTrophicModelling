@@ -23,16 +23,19 @@ if(file.exists("cache")){
 # Table Captions from @DeanK on http://stackoverflow.com/questions/15258233/using-table-caption-on-r-markdown-file-using-knitr-to-use-in-pandoc-to-convert-t
 
 knit_hooks$set(tab.cap = function(before, options, envir) {
-  if(!before)
-    paste('\n\n:', options$tab.cap, sep='') 
-})
+                  if(!before) { 
+                    paste('\n\n:', options$tab.cap, sep='') 
+                  }
+                })
 default_output_hook = knit_hooks$get("output")
 knit_hooks$set(output = function(x, options) {
-  if (is.null(options$tab.cap) == F)  
+  if (is.null(options$tab.cap) == FALSE) {
     x
-  else
+  } else
     default_output_hook(x,options)
 })
+
+
 
 ## ----Variables, results='asis', eval=FALSE, echo=FALSE-------------------
 #  #tab.cap="Definition of all variables considered"
@@ -46,7 +49,7 @@ knit_hooks$set(output = function(x, options) {
 #  kable(data_def)
 #  #dfToImage(data_def,style="css/texttable.css",file="figure/data_def_table.jpg")
 
-## ----results='asis', echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations"----
+## ----nlaMap, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations\\label{fig:nlaMap}"----
 state<-map_data('state')
 lakes_alb<-data.frame(hkm2014Data[["AlbersX"]],hkm2014Data[["AlbersY"]])
 p4s<-"+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
@@ -59,7 +62,7 @@ mycolor<-c(mycolor[1],mycolor[2],mycolor[4])
 names(lakes_dd)<-c("long","lat",c())
 nlaMap(state,lakes_dd,mycolor)
 
-## ----trophicStateTable, results='asis', echo=FALSE, tab.cap="Chlorphyll a based trophic state cut-offs"----
+## ----trophicStateTable, results='asis', echo=FALSE, tab.cap="Chlorophyll a based trophic state cut-offs\\label{tab:trophicStateTable}"----
 ts_4<-c("oligo","meso","eu","hyper")
 ts_3<-c("oligo","meso/eu","meso/eu","hyper")
 ts_2<-c("oligo/meso","oligo/meso","eu/hyper","eu/hyper")
@@ -68,13 +71,13 @@ xdf<-data.frame(ts_4,ts_3,ts_2,co)
 names(xdf)<-c("Trophic State (4)","Trophic State (3)","Trophic State (2)","Cut-off")
 kable(xdf)
 
-## ----VarSel_Model1,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 1"----
+## ----VarSel_Model1,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 1\\label{tab:VarSel_Model1}"----
 kable(sumTable(all_ts4[1:100]),row.names=F)
 
-## ----Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1"----
+## ----Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1\\label{tab:Confusion_Model1}"----
 kable(formatC(round(all_ts4_rf$confusion,2)),row.names=F)
 
-## ----Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1"----
+## ----Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1\\label{fig:Importance_Model1}"----
 all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
 importancePlot(all_ts4_rf,'gini',size=10,aes(colour=all_ts4_color))
 
@@ -104,7 +107,7 @@ kable(sumTable(gis_ts4[1:100]),row.names=F)
 ## ----Confusion_Model4,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 4"----
 kable(formatC(round(gis_ts4_rf$confusion,2)),row.names=F)
 
-## ----Importance_Model4,results="asis",echo=FALSE, tab.cap="Importance plot for Model 3"----
+## ----Importance_Model4,results="asis",echo=FALSE, tab.cap="Importance plot for Model 4"----
 gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
 importancePlot(gis_ts4_rf,'gini',size=10,aes(colour=gis_ts4_color))
 
