@@ -54,7 +54,7 @@
   \gdef\@blstr{1}\xdef\jtype{0}%
    \AtBeginDocument{\@twosidefalse\@mparswitchfalse}}
 \DeclareOption{final}{\gdef\@blstr{1}\global\preprintfalse}
-\DeclareOption{review}{\global\preprinttrue\gdef\@blstr{1.75}} %%jwh changed spacing
+\DeclareOption{review}{\global\preprinttrue\gdef\@blstr{1.5}}
 \DeclareOption{authoryear}{\xdef\@biboptions{authoryear}}
 \DeclareOption{number}{\xdef\@biboptions{square,numbers}}
 \DeclareOption{numbers}{\xdef\@biboptions{square,numbers}}

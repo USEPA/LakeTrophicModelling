@@ -27,7 +27,11 @@ $endif$
 %%%%%%%%%%%%%%%% end my additions to header
 
 %%% @jhollist Additions%%%
-\usepackage[font=normalsize]{caption}
+\usepackage[font=$capsize$]{caption}
+$if(spacing)$
+  \usepackage[$spacing$]{setspace}
+$endif$
+\usepackage{parskip}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage[T1]{fontenc}
@@ -129,8 +133,6 @@ $if(strikeout)$
 % avoid problems with \sout in headers with hyperref:
 \pdfstringdefDisableCommands{\renewcommand{\sout}{}}
 $endif$
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 $if(numbersections)$
 \setcounter{secnumdepth}{5}
@@ -177,7 +179,9 @@ $endfor$
   $endfor$
 
   \begin{abstract}
+  \begin{singlespace}
   $abstract$
+  \end{singlespace}
   \end{abstract}
   $if(keywords)$ \begin{keyword} $for(keywords)$$keywords$ \sep $endfor$\end{keyword}$endif$
  \end{frontmatter}
