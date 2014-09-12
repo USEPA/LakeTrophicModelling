@@ -150,11 +150,3 @@ plotCdf(hkm2014Data$TS_CHLA_2,hkm2014Data$sumBioV+1,cdf_colors=zissou[6:7],
                               italic("a"),' Trophic States (2 Categories)')),
        color="Trophic State\nCategories")
 
-## ----scatterplot,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria biovolume scatterplot"----
-scp_df<-data.frame(chla=hkm2014Data[["CHLA"]],biovp1=hkm2014Data[["sumBioV"]]+1)
-scatterPlot(scp_df,xvar="chla",yvar="biovp1",zissou[8],zissou[7],zissou[6],
-             title=expression(paste("Chlorophyll ", 
-                                    italic("a")," and Cyanobacteria Relationship")),
-             x=expression(paste('Log10(Chl ', italic("a"),')')),
-             y="Log10(Cyanobaterial Biovolumes + 1)")
-

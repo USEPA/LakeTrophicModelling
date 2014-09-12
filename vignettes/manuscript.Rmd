@@ -1,72 +1,25 @@
 ---
 title: 'Modeling Lake Trophic State: A Data Mining Approach'
-author:
-- affiliation: aed
-  email: hollister.jeff(at)epa.gov
-  footnote: Corresponding author
-  name: Jeffrey W. Hollister
-- affiliation: aed
-  name: W. Bryan Milstead
-- affiliation: aed
-  name: Betty J. Kreakie
-address:
-- address: "US Environmental Protection Agency Office of Research and Development National
-    Health and Environmental Effects Research Laboratory Atlantic Ecology Division 27
-    Tarzwell Drive  Narragansett, RI, 02879, USA  "
-  code: aed
+authors: Jeffrey W. Hollister, W. Bryan Milstead, Betty J. Kreakie
 output:
   pdf_document:
     fig_caption: yes
     keep_tex: yes
     number_sections: yes
-    template: components/elsarticle.latex
   html_document: null
   word_document: null
 fontsize: 11pt
 capsize: normalsize
 csl: components/ecology.csl
-documentclass: elsarticle
+documentclass: article
 spacing: doublespacing
 linenumbers: no
 bibliography: components/LakeTrophicModelling.bib
-abstract:  Productivity of lentic ecosystems has been well studied and it is 
-  widely accepted that as nutrient inputs increase,  productivity increases and
-  lakes transition from low trophic state (e.g. oligotrophic) to higher trophic 
-  states  (e.g. eutrophic). These broad trophic state classifications are good 
-  predictors of ecosystem health and ecosystem services/disservices (e.g. recreation,
-  aesthetics, fisheries, and harmful algal blooms). While the relationship between 
-  nutrients and trophic state provides reliable predictions, it requires *in situ* 
-  water quality data in order to paramterize the model.  This limits the application 
-  of these models to lakes with existing and, more importanly, available water quality
-  data.  To expand our ability to predict in lakes without water quality data, we take
-  advantage of the availability of a large national lakes water quality database, 
-  land use/land cover data, lake morphometry data, other universally available data, 
-  and modern data mining approaches to build and assess models of lake tropic state 
-  that may be more universally applied.  We use random forests and random forest 
-  variable selection to identify variables to be used for predicting trophic state and 
-  we compare the performance of two models of trophic state (as determined by 
-  chlorophyll *a* concentration).   The first model estimates trophic state with *in situ* 
-  as well as universally available data and the second model uses universally available 
-  data only. For each of these models we used three separate trophic state categories, 
-  for a total of six models. Overall accuracy for the *in situ* and universal data 
-  models ranged from xx% to xx% and xx, xx, and xx described the most variation in 
-  trophic state.  For the universal data only models, Overall accuraccy ranged from xx% 
-  to xx% and xx, xx, and xx described the most variation in trophic state. Lastly, it 
-  is believed that the presence and abundance of cyanobacteria is strongly associated 
-  with trophic state.  To test this we examine the association between estimates of 
-  cyanobacteria biovolume and the measured and predicted trophic state.  Expanding 
-  these preliminary results to include cyanobacteria taxa indicates that cyanobacteria 
-  are significantly more likely to be found in highly eutrophic lakes. These results 
-  suggest that predictive models of lake trophic state may be improved with additional 
-  information on the landscape surrounding lakes and that those models provide 
-  additional information on the presence of potentially harmful cyanobacteria taxa.
-   
 ---
 <!--
 %\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Modeling Lake Trophic State: A Data Mining Approach}
 -->
-
 
 ```{r setup, include=FALSE, echo=FALSE}
 #devtools::install_github("LakeTrophicModelling","USEPA",quick=TRUE,
@@ -104,9 +57,17 @@ knit_hooks$set(output = function(x, options) {
   } else
     default_output_hook(x,options)
 })
-
-
 ```
+
+*US Environmental Protection Agency, Office of Research and Development, National Health and Environmental Effects Research Laboratory, Atlantic Ecology Division, 27 Tarzwell Drive  Narragansett, RI, 02879, USA*
+
+*corresponding author:hollister.jeff@epa.gov*
+
+\begin{singlespace}
+\begin{abstract}
+Productivity of lentic ecosystems has been well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from low trophic state (e.g. oligotrophic) to higher trophic states  (e.g. eutrophic). These broad trophic state classifications are good predictors of ecosystem health and ecosystem services/disservices (e.g. recreation, aesthetics, fisheries, and harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to paramterize the model.  This limits the application of these models to lakes with existing and, more importanly, available water quality data.  To expand our ability to predict in lakes without water quality data, we take advantage of the availability of a large national lakes water quality database, land use/land cover data, lake morphometry data, other universally available data, and modern data mining approaches to build and assess models of lake tropic state that may be more universally applied.  We use random forests and random forest variable selection to identify variables to be used for predicting trophic state and we compare the performance of two models of trophic state (as determined by chlorophyll *a* concentration).   The first model estimates trophic state with *in situ* as well as universally available data and the second model uses universally available data only. For each of these models we used three separate trophic state categories, for a total of six models. Overall accuracy for the *in situ* and universal data models ranged from xx% to xx% and xx, xx, and xx described the most variation in trophic state.  For the universal data only models, Overall accuraccy ranged from xx% to xx% and xx, xx, and xx described the most variation in trophic state. Lastly, it is believed that the presence and abundance of cyanobacteria is strongly associated with trophic state.  To test this we examine the association between estimates of cyanobacteria biovolume and the measured and predicted trophic state.  Expanding these preliminary results to include cyanobacteria taxa indicates that cyanobacteria are significantly more likely to be found in highly eutrophic lakes. These results suggest that predictive models of lake trophic state may be improved with additional information on the landscape surrounding lakes and that those models provide additional information on the presence of potentially harmful cyanobacteria taxa. 
+\end{abstract}
+\end{singlespace}
 
 #Introduction
 Productivity in lentic systems is often categorized across a range of tropic states (e.g. the tropic continuum) from early succesional (i.e. oligotrophic)to late successional lakes (i.e. hypereutrophic) [@carlson1977trophic].  Lakes naturally occur across the range of trophic state and higher primary productivity is not necessarily a predictor of poor ecological condition.  Lakes that are naturally oligotrophic occur in nutrient poor areas or have a more recent geologic history.  These lakes are often found in higher elevations, have clear water, and are often favored for drinking water or direct contact recreation (e.g. swimming).   Lakes with higher productivity (e.g. eutrophic lakes) have greater nutrient loads, tend to be less clear, have greater density of aquatic plants, and often support more diverse and abundant fish communities.  Lakes will naturally shift to higher trophic states but this is a slow process.  Given this fact, monitoring trophic state allows the identification of rapid shifts in trophic state or locating lakes with unusually high productivity (e.g. hypereutrophic).  These cases are indicative of lakes under greater anthropogenic nutrient loads, also known as cultural eutrophication, and are more likely to be at risk of fish kills, fouling, and harmful algal blooms[@smith1998cultural;@smith1999eutrophication;@smith2006eutrophication].  Given the association between trophic state and many ecosystem services and disservices, being able to model trophic state could allow for estimating trophic state in unmonitored lakes and provide a first cut at identifying lakes with the potential for harmful algal blooms and other problems associated with cultural eutrophication.  
