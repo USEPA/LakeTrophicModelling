@@ -1,6 +1,6 @@
 ## ----setup, include=FALSE, echo=FALSE------------------------------------
 #devtools::install_github("LakeTrophicModelling","USEPA",quick=TRUE,
-#                         auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+ #                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
 #devtools::install_github("wesanderson","jhollist")
 library("wesanderson")
 library("LakeTrophicModelling")

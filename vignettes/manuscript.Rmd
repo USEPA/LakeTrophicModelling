@@ -1,6 +1,6 @@
 ---
 title: 'Modeling Lake Trophic State: A Data Mining Approach'
-authors: Jeffrey W. Hollister; W. Bryan Milstead; Betty J. Kreakie
+author: Jeffrey W. Hollister; W. Bryan Milstead; Betty J. Kreakie
 output:
   pdf_document:
     fig_caption: yes
@@ -23,7 +23,7 @@ bibliography: components/LakeTrophicModelling.bib
 
 ```{r setup, include=FALSE, echo=FALSE}
 #devtools::install_github("LakeTrophicModelling","USEPA",quick=TRUE,
-#                         auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+ #                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
 #devtools::install_github("wesanderson","jhollist")
 library("wesanderson")
 library("LakeTrophicModelling")
@@ -395,6 +395,9 @@ scatterPlot(scp_df,xvar="chla",yvar="biovp1",zissou[8],zissou[7],zissou[6],
              y="Log10(Cyanobaterial Biovolumes + 1)")
 ```
 
+
 \newpage
+
+
 
 #References
