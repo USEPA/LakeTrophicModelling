@@ -59,6 +59,10 @@ knit_hooks$set(output = function(x, options) {
 })
 ```
 
+```{r analysis , include=FALSE, echo=FALSE}
+#All analysis in here, that way all bits of the paper have access to the final objects
+#Place tables and figures where they need to go.
+```
 *US Environmental Protection Agency, Office of Research and Development, National Health and Environmental Effects Research Laboratory, Atlantic Ecology Division, 27 Tarzwell Drive  Narragansett, RI, 02879, USA*
 
 *corresponding author:hollister.jeff@epa.gov*
