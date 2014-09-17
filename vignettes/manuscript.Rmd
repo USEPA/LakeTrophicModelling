@@ -24,7 +24,7 @@ capsize: normalsize
 csl: components/ecology.csl
 documentclass: article
 spacing: doublespacing
-linenumbers: no
+linenumbers: yes
 bibliography: components/LakeTrophicModelling.bib
 
 ---
