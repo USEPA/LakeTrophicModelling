@@ -75,6 +75,27 @@ knit_hooks$set(output = function(x, options) {
 ```{r analysis , include=FALSE, echo=FALSE}
 #All analysis in here, that way all bits of the paper have access to the final objects
 #Place tables and figures and numerical results where they need to go.
+#Included for completeness.  Results already run in another project
+#Those results loaded via lazyLoad in setup chunk
+all_ts4<-iterVarSelRF(hkm2014Data[predictors_all],hkm2014Data$TS_CHLA_4,numCore=4,100,
+      								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+											vars.drop.num=1,outStr="all_ts4",time=TRUE)
+#Included for completeness.  Results already run in another project
+#Those results loaded via lazyLoad in setup chunk
+all_ts4_vars<-unique(unlist(all_ts4[1:100]))
+all_ts4_rf<-runRandomForest(hkm2014Data[all_ts4_vars],hkm2014Data$TS_CHLA_4, ntree=10000,importance=TRUE,proximity=TRUE)
+#Included for completeness.  Results already run in another project
+#Those results loaded via lazyLoad in setup chunk
+all_ts3<-iterVarSelRF(hkm2014Data[predictors_all],hkm2014Data$TS_CHLA_3,numCore=4,100,
+    									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+											vars.drop.num=1,outStr="all_ts3",time=TRUE)
+#Included for completeness.  Results already run in another project
+#Those results loaded via lazyLoad in setup chunk
+all_ts3_vars<-unique(unlist(all_ts3[1:100]))
+all_ts3_rf<-runRandomForest(hkm2014Data[all_ts3_vars],hkm2014Data$TS_CHLA_3, ntree=10000,importance=TRUE,proximity=TRUE)
+
+
+
 ```
 
 
@@ -182,18 +203,11 @@ col_lu<-data.frame(variables=all_vars,hexcode=sample(all_movies_palette,length(a
 
 ##Model 1: 4 Trophic States ~ All Variables
 ```{r ALL_TS4, echo=FALSE, eval=FALSE, cache=TRUE}
-#Included for completeness.  Results already run in another project
-#Those results loaded via lazyLoad in setup chunk
-all_ts4<-iterVarSelRF(hkm2014Data[predictors_all],hkm2014Data$TS_CHLA_4,numCore=4,100,
-    									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-											vars.drop.num=1,outStr="all_ts4",time=TRUE)
+
 ```
 
 ```{r ALL_TS4_rf,echo=FALSE,eval=FALSE,cache=T}
-#Included for completeness.  Results already run in another project
-#Those results loaded via lazyLoad in setup chunk
-all_ts4_vars<-unique(unlist(all_ts4[1:100]))
-all_ts4_rf<-runRandomForest(hkm2014Data[all_ts4_vars],hkm2014Data$TS_CHLA_4, ntree=10000,importance=TRUE,proximity=TRUE)
+
 ```
 
 The selected variables that made up Model 1 were Potassium, Nitrogen:Phosphorus, Total Nitrogen, Total Phosphorus, Total Organic Carbon, Turbidity, Ecoregion, Organic Ions, Dissolved Organic Carbon, and Maximum Lake Depth (Table \ref{tab:VarSel_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
@@ -216,21 +230,6 @@ importancePlot(all_ts4_rf,'gini',size=10,aes(colour=all_ts4_color))
 
 ##Model 2: 3 Trophic States ~ All Variables
 
-```{r ALL_TS3, echo=FALSE, eval=FALSE, cache=TRUE}
-#Included for completeness.  Results already run in another project
-#Those results loaded via lazyLoad in setup chunk
-all_ts3<-iterVarSelRF(hkm2014Data[predictors_all],hkm2014Data$TS_CHLA_3,numCore=4,100,
-  										ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-											vars.drop.num=1,outStr="all_ts3",time=TRUE)
-```
-
-
-```{r all_TS3_rf,echo=FALSE,eval=FALSE,cache=T}
-#Included for completeness.  Results already run in another project
-#Those results loaded via lazyLoad in setup chunk
-all_ts3_vars<-unique(unlist(all_ts3[1:100]))
-all_ts3_rf<-runRandomForest(hkm2014Data[all_ts3_vars],hkm2014Data$TS_CHLA_3, ntree=10000,importance=TRUE,proximity=TRUE)
-```
 
 Total accuracy for Model 2 is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$kappa,3)`.
 
