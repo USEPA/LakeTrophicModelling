@@ -72,7 +72,7 @@ knit_hooks$set(output = function(x, options) {
 })
 ```
 
-```{r analysis , include=FALSE, echo=FALSE}
+```{r analysis, include=FALSE, echo=FALSE,eval=FALSE}
 #All analysis in here, that way all bits of the paper have access to the final objects
 #Place tables and figures and numerical results where they need to go.
 #Included for completeness.  Results already run in another project
@@ -93,9 +93,6 @@ all_ts3<-iterVarSelRF(hkm2014Data[predictors_all],hkm2014Data$TS_CHLA_3,numCore=
 #Those results loaded via lazyLoad in setup chunk
 all_ts3_vars<-unique(unlist(all_ts3[1:100]))
 all_ts3_rf<-runRandomForest(hkm2014Data[all_ts3_vars],hkm2014Data$TS_CHLA_3, ntree=10000,importance=TRUE,proximity=TRUE)
-
-
-
 ```
 
 
