@@ -72,7 +72,7 @@ knit_hooks$set(output = function(x, options) {
 })
 ```
 
-```{r analysis , eval=TRUE, include=FALSE, echo=FALSE, cache=TRUE}
+```{r analysis , eval=FALSE, include=FALSE, echo=FALSE, cache=TRUE}
 ##########################################################################################
 #All analysis in here, that way all bits of the paper have access to the final objects
 #Tables, figures, and numerical results placed at end of paper.
@@ -82,65 +82,65 @@ knit_hooks$set(output = function(x, options) {
 ##########################################################################################
 #Model 1: All Variables, 4 Trophic State Classes
   #Variable Selction
-  all_ts4<-iterVarSelRF(hkm2014Data[predictors_all],hkm2014Data$TS_CHLA_4,numCore=4,100,
+  all_ts4<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_4,numCore=4,100,
         								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="all_ts4",time=TRUE)
   #Random Forest
   all_ts4_vars<-unique(unlist(all_ts4[1:100]))
-  all_ts4_rf<-runRandomForest(hkm2014Data[all_ts4_vars],hkm2014Data$TS_CHLA_4, 
+  all_ts4_rf<-runRandomForest(ltmData[all_ts4_vars],ltmData$TS_CHLA_4, 
                               ntree=10000,importance=TRUE,proximity=TRUE)
 ##########################################################################################
 #Model 2: All Variables, 3 Trophic State Classes
   #Variable Selction
-  all_ts3<-iterVarSelRF(hkm2014Data[predictors_all],hkm2014Data$TS_CHLA_3,numCore=4,100,
+  all_ts3<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_3,numCore=4,100,
       									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="all_ts3",time=TRUE)
   #Random Forest
   all_ts3_vars<-unique(unlist(all_ts3[1:100]))
-  all_ts3_rf<-runRandomForest(hkm2014Data[all_ts3_vars],hkm2014Data$TS_CHLA_3, 
+  all_ts3_rf<-runRandomForest(ltmData[all_ts3_vars],ltmData$TS_CHLA_3, 
                               ntree=10000,importance=TRUE,proximity=TRUE)
 ##########################################################################################
 #Model 3: All Variables, 2 Trophic State Classes
   #Variable Selction
-  all_ts2<-iterVarSelRF(hkm2014Data[predictors_all],hkm2014Data$TS_CHLA_2,numCore=4,100,
+  all_ts2<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_2,numCore=4,100,
       									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="all_ts2",time=TRUE)
   
   #Random Forest
   all_ts2_vars<-unique(unlist(all_ts2[1:100]))
-  all_ts2_rf<-runRandomForest(hkm2014Data[all_ts2_vars],hkm2014Data$TS_CHLA_2, 
+  all_ts2_rf<-runRandomForest(ltmData[all_ts2_vars],ltmData$TS_CHLA_2, 
                               ntree=10000,importance=TRUE,proximity=TRUE)
 ##########################################################################################
 #Model 4: GIS Only Variables, 4 Trophic State Classes
   #Variable Selction
-  gis_ts4<-iterVarSelRF(hkm2014Data[predictors_gis],hkm2014Data$TS_CHLA_4,numCore=4,100,
+  gis_ts4<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,numCore=4,100,
           							ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="gis_ts4",time=TRUE)
   
   #Random Forest
   gis_ts4_vars<-unique(unlist(gis_ts4[1:100]))
-  gis_ts4_rf<-runRandomForest(hkm2014Data[gis_ts4_vars],hkm2014Data$TS_CHLA_4, 
+  gis_ts4_rf<-runRandomForest(ltmData[gis_ts4_vars],ltmData$TS_CHLA_4, 
                               ntree=10000,importance=TRUE,proximity=TRUE)
 ##########################################################################################
 #Model 5: GIS Only Variables, 3 Trophic State Classes
   #Variable Selction
-  gis_ts3<-iterVarSelRF(hkm2014Data[predictors_gis],hkm2014Data$TS_CHLA_3,numCore=4,100,
+  gis_ts3<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_3,numCore=4,100,
         								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="gis_ts3",time=TRUE)
   
   #Random Forest
   gis_ts3_vars<-unique(unlist(gis_ts3[1:100]))
-  gis_ts3_rf<-runRandomForest(hkm2014Data[gis_ts3_vars],hkm2014Data$TS_CHLA_3, 
+  gis_ts3_rf<-runRandomForest(ltmData[gis_ts3_vars],ltmData$TS_CHLA_3, 
                               ntree=10000,importance=TRUE,proximity=TRUE)
 ##########################################################################################
 #Model 6: GIS Only Variables, 2 Trophic State Classes
   #Variable Selction
-  gis_ts2<-iterVarSelRF(hkm2014Data[predictors_gis],hkm2014Data$TS_CHLA_2,numCore=4,100,
+  gis_ts2<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_2,numCore=4,100,
       									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="gis_ts2",time=TRUE)
   #Random Forest
   gis_ts2_vars<-unique(unlist(gis_ts2[1:100]))
-  gis_ts2_rf<-runRandomForest(hkm2014Data[gis_ts2_vars],hkm2014Data$TS_CHLA_2, 
+  gis_ts2_rf<-runRandomForest(ltmData[gis_ts2_vars],ltmData$TS_CHLA_2, 
                               ntree=10000,importance=TRUE,proximity=TRUE)
 
 ```
@@ -211,7 +211,7 @@ kable(data_def)
 
 ```{r nlaMap, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations\\label{fig:nlaMap}",cache=TRUE}
 state<-map_data('state')
-lakes_alb<-data.frame(hkm2014Data[["AlbersX"]],hkm2014Data[["AlbersY"]])
+lakes_alb<-data.frame(ltmData[["AlbersX"]],ltmData[["AlbersY"]])
 p4s<-"+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
 ll<-"+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 lakes_alb_sp<-SpatialPoints(coordinates(lakes_alb),proj4string=CRS(p4s))
@@ -380,7 +380,7 @@ importancePlot(gis_ts2_rf,'gini',size=10,aes(colour=gis_ts2_color))
 ##Associating Trophic State and Cyanobacteria
 
 ```{r ts_4_biov, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 4 trophic state classes",cache=TRUE}
-plotCdf(hkm2014Data$TS_CHLA_4,hkm2014Data$sumBioV+1,cdf_colors=zissou[6:9],
+plotCdf(ltmData$TS_CHLA_4,ltmData$sumBioV+1,cdf_colors=zissou[6:9],
         y='Percent',x='Log10(Cyanobacteria Biovolume)',
         title=expression(paste('CDF for Chlorophyll ', 
                                 italic("a"),' Trophic States (4 Categories)')),
@@ -388,7 +388,7 @@ plotCdf(hkm2014Data$TS_CHLA_4,hkm2014Data$sumBioV+1,cdf_colors=zissou[6:9],
 ```
 \newpage
 ```{r ts_3_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 3 trophic state classes",cache=TRUE }
-plotCdf(hkm2014Data$TS_CHLA_3,hkm2014Data$sumBioV+1,cdf_colors=zissou[6:8],
+plotCdf(ltmData$TS_CHLA_3,ltmData$sumBioV+1,cdf_colors=zissou[6:8],
        y='Percent',x='Log10(Cyanobacteria Biovolume)', 
        title=expression(paste('CDF for Chlorophyll ', 
                               italic("a"),' Trophic States (3 Categories)')),
@@ -396,7 +396,7 @@ plotCdf(hkm2014Data$TS_CHLA_3,hkm2014Data$sumBioV+1,cdf_colors=zissou[6:8],
 ```
 \newpage
 ```{r ts_2_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 2 trophic state classes",cache=TRUE}
-plotCdf(hkm2014Data$TS_CHLA_2,hkm2014Data$sumBioV+1,cdf_colors=zissou[6:7],
+plotCdf(ltmData$TS_CHLA_2,ltmData$sumBioV+1,cdf_colors=zissou[6:7],
        y='Percent',x='Log10(Cyanobacteria Biovolume)',
        title=expression(paste('CDF for Chlorophyll ', 
                               italic("a"),' Trophic States (2 Categories)')),
@@ -404,7 +404,7 @@ plotCdf(hkm2014Data$TS_CHLA_2,hkm2014Data$sumBioV+1,cdf_colors=zissou[6:7],
 ```
 \newpage
 ```{r scatterplot,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria biovolume scatterplot",cache=TRUE}
-scp_df<-data.frame(chla=hkm2014Data[["CHLA"]],biovp1=hkm2014Data[["sumBioV"]]+1)
+scp_df<-data.frame(chla=ltmData[["CHLA"]],biovp1=ltmData[["sumBioV"]]+1)
 scatterPlot(scp_df,xvar="chla",yvar="biovp1",zissou[8],zissou[7],zissou[6],
              title=expression(paste("Chlorophyll ", 
                                     italic("a")," and Cyanobacteria Relationship")),
