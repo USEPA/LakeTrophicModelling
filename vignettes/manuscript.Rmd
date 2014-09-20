@@ -33,9 +33,9 @@ bibliography: components/LakeTrophicModelling.bib
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-devtools::install_github("LakeTrophicModelling","USEPA",quick=TRUE,
+devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
                         auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
-devtools::install_github("wesanderson","jhollist")
+devtools::install_github("jhollist/wesanderson")
 library("wesanderson")
 library("LakeTrophicModelling")
 library("knitr")
@@ -168,8 +168,7 @@ var_importance<-rbind_list(varImportance(all_ts4_rf,"Model 1"),
 var_importance$variable_names<-factor(var_importance$variable_names)
 #var_importance$model_id<-factor(var_importance$model_id)
 var_importance<-inner_join(var_importance,data_def[c("variable_names","description")],"variable_names")
-group_by(var_importance,model_id) %>%
-  summarize(rank(mean_decrease_gini))
+
                   
   
                            
