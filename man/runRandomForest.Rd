@@ -24,7 +24,7 @@ function.  This was a quick hack.}
 This function takes the output of iterVarSelRF and runs a random forest.
 }
 \examples{
-data(ltmData)
+data(LakeTrophicModelling)
 x2<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,10,4,ntree=10,ntreeIterat=5,
 vars.drop.frac=NULL,vars.drop.num=1,time=FALSE)
 x2_vars<-unique(unlist(x2))
