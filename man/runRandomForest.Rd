@@ -24,10 +24,10 @@ function.  This was a quick hack.}
 This function takes the output of iterVarSelRF and runs a random forest.
 }
 \examples{
-data(hkm2014Data)
-x2<-iterVarSelRF(hkm2014Data[predictors_gis],TS_CHLA_4,10,4,ntree=10,ntreeIterat=5,
+data(ltmData)
+x2<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,10,4,ntree=10,ntreeIterat=5,
 vars.drop.frac=NULL,vars.drop.num=1,time=FALSE)
 x2_vars<-unique(unlist(x2))
-gis_ts4_rf<-runRandomForest(hkm2014Data[x2_vars],TS_CHLA_4, ntree=10,importance=TRUE,proximity=TRUE)
+gis_ts4_rf<-runRandomForest(ltmData[x2_vars],ltmData$TS_CHLA_4, ntree=10,importance=TRUE,proximity=TRUE)
 }
 

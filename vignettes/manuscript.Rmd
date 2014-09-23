@@ -35,16 +35,15 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-#devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
-#                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
-#devtools::install_github("jhollist/wesanderson")
+devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+devtools::install_github("jhollist/wesanderson")
 library("wesanderson")
 library("LakeTrophicModelling")
 library("knitr")
 library("ggplot2")
 library("sp")
 library("rgdal")
-library("xtable")
 library("e1071")
 library("dplyr")
 library("tidyr")

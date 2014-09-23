@@ -16,10 +16,10 @@
 #' @param time logical true will output overall time for the run.  
 #' 
 #' @examples
-#' data(hkm2014Data)
-#' x1<-iterVarSelRF(hkm2014Data[predictors_gis],TS_CHLA_4,10,ntree=10,ntreeIterat=5,
+#' data(LakeTrophicModelling)
+#' x1<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,10,ntree=10,ntreeIterat=5,
 #' vars.drop.frac=NULL,vars.drop.num=1,time=TRUE)
-#' x2<-iterVarSelRF(hkm2014Data[predictors_gis],TS_CHLA_4,10,4,ntree=10,ntreeIterat=5,
+#' x2<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,10,4,ntree=10,ntreeIterat=5,
 #' vars.drop.frac=NULL,vars.drop.num=1,time=TRUE)
 #' @export
 #' @import varSelRF snowfall
