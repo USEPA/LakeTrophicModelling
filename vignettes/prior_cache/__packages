@@ -1,8 +1,6 @@
 base
 e1071
 ggplot2
-hkm
-jpeg
 knitr
 mapproj
 maps
@@ -13,4 +11,4 @@ snowfall
 sp
 varSelRF
 wesanderson
-xtable
+

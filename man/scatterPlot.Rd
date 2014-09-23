@@ -11,8 +11,8 @@ Produces a scatterplot via ggplot
 \examples{
 devtools::install_github("wesanderson","jhollist")
 library('wesanderson')
-data(hkm2014Data)
-mydf<-data.frame(chla=hkm2014Data[["CHLA"]],biovp1=hkm2014Data[["sumBioV"]]+1)
+data(LakeTrophicModelling)
+mydf<-data.frame(chla=ltmData[["CHLA"]],biovp1=ltmData[["sumBioV"]]+1)
 zissou2<-wes.palette(5,"Zissou2")
 scatterPlot(mydf,xvar="chla",yvar="biovp1",zissou2[3],zissou[2],zissou[1],
             title="Chlorophyll and Cyanobacterai Relationship",

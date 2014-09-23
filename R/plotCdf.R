@@ -14,11 +14,11 @@
 #' @examples
 #' devtools::install_github('wesanderson','karthik')
 #' library(wesanderson)
-#' data(hkm2014Data)
-#' plotCdf(hkm2014Data$bvCat,hkm2014Data$CHLA,cdf_colors=wes.palette(3,'Royal1'),y='Percent',
+#' data(LakeTrophicModelling)
+#' plotCdf(ltmData$bvCat,ltmData$CHLA,cdf_colors=wes.palette(3,'Royal1'),y='Percent',
 #'         x=expression(paste('Log10(Chl ', italic("a"),')')),title='CDF for category bvCat',
 #'         color="Biovolume\nCategories")
-#' plotCdf(hkm2014Data$TS_CHLA_3,hkm2014Data$sumBioV+1,cdf_colors=wes.palette(3,'FantasticFox'),
+#' plotCdf(ltmData$TS_CHLA_3,ltmData$sumBioV+1,cdf_colors=wes.palette(3,'FantasticFox'),
 #'         y='Percent',x='Log10(Cyanobacterial Biovolume)',
 #'         title=expression(paste('CDF for Chlorophyll ', italic("a"),' Trophic States (3 Categories)')),
 #'         color="Trophic State\nCategories")

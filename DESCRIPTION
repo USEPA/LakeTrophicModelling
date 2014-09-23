@@ -15,7 +15,8 @@ Description: This package contains all the materials needed to reproduce
 Depends:
     R (>= 3.1.1)
 Suggests:
-    knitr
+    knitr,
+    rmarkdown
 Imports:
     randomForest,
     varSelRF,
