@@ -26,7 +26,9 @@ documentclass: article
 spacing: doublespacing
 linenumbers: yes
 bibliography: components/LakeTrophicModelling.bib
+abstract: no
 ---
+
 <!--
 %\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{Modeling Lake Trophic State: A Data Mining Approach}
@@ -172,17 +174,18 @@ var_importance<-inner_join(var_importance,data_def[c("variable_names","descripti
 var_importance<-var_importance[order(var_importance$model_id,-var_importance$mean_decrease_gini, decreasing=FALSE),]                     
                         
 ```
-   
-\hrule
+
 \singlespace
 
+\vspace{2mm}\hrule
 
-**Abstract**
+**Abstract**  
+Productivity of lentic ecosystems has been well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from low trophic state (e.g. oligotrophic) to higher trophic states  (e.g. eutrophic). These broad trophic state classifications are good predictors of ecosystem health and ecosystem services/disservices (e.g. recreation, aesthetics, fisheries, and harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to paramterize the model.  This limits the application of these models to lakes with existing and, more importanly, available water quality data.  To expand our ability to predict in lakes without water quality data, we take advantage of the availability of a large national lakes water quality database, land use/land cover data, lake morphometry data, other universally available data, and modern data mining approaches to build and assess models of lake tropic state that may be more universally applied.  We use random forests and random forest variable selection to identify variables to be used for predicting trophic state and we compare the performance of two models of trophic state (as determined by chlorophyll *a* concentration).   The first model estimates trophic state with *in situ* as well as universally available data and the second model uses universally available data only. For each of these models we used three separate trophic state categories, for a total of six models. Overall accuracy for models buils from *in situ* and universal data ranged from `r round(min(acc_results[1:3,2]),3)`% to `r round(max(acc_results[1:3,2]),3)`%.  For the universal data only models, Overall accuraccy ranged from `r round(min(acc_results[4:6,2]),3)`% to `r round(max(acc_results[4:6,2]),3)`%. Lastly, it is believed that the presence and abundance of cyanobacteria is strongly associated with trophic state.  To test this we examine the association between estimates of cyanobacteria biovolume and the measured and predicted trophic state and find a positive relationship.  Expanding these preliminary results to include cyanobacteria taxa indicates that cyanobacteria are significantly more likely to be found in highly eutrophic lakes. These results suggest that predictive models of lake trophic state may be improved with additional information on the landscape surrounding lakes and that those models provide additional information on the presence of potentially harmful cyanobacteria taxa. 
 
-Productivity of lentic ecosystems has been well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from low trophic state (e.g. oligotrophic) to higher trophic states  (e.g. eutrophic). These broad trophic state classifications are good predictors of ecosystem health and ecosystem services/disservices (e.g. recreation, aesthetics, fisheries, and harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to paramterize the model.  This limits the application of these models to lakes with existing and, more importanly, available water quality data.  To expand our ability to predict in lakes without water quality data, we take advantage of the availability of a large national lakes water quality database, land use/land cover data, lake morphometry data, other universally available data, and modern data mining approaches to build and assess models of lake tropic state that may be more universally applied.  We use random forests and random forest variable selection to identify variables to be used for predicting trophic state and we compare the performance of two models of trophic state (as determined by chlorophyll *a* concentration).   The first model estimates trophic state with *in situ* as well as universally available data and the second model uses universally available data only. For each of these models we used three separate trophic state categories, for a total of six models. Overall accuracy for models buils from *in situ* and universal data ranged from `r round(min(acc_results[1:3,2]),3)`% to `r round(max(acc_results[1:3,2]),3)`%.  For the universal data only models, Overall accuraccy ranged from `r round(min(acc_results[4:6,2]),3)`% to `r round(max(acc_results[4:6,2]),3)`%. Lastly, it is believed that the presence and abundance of cyanobacteria is strongly associated with trophic state.  To test this we examine the association between estimates of cyanobacteria biovolume and the measured and predicted trophic state and find a positive relationship.  Expanding these preliminary results to include cyanobacteria taxa indicates that cyanobacteria are significantly more likely to be found in highly eutrophic lakes. These results suggest that predictive models of lake trophic state may be improved with additional information on the landscape surrounding lakes and that those models provide additional information on the presence of potentially harmful cyanobacteria taxa.  
-
+\vspace{3mm}\hrule
 \doublespace
-\hrule
+
+
 
 #Introduction
 Productivity in lentic systems is often categorized across a range of tropic states (e.g. the tropic continuum) from early succesional (i.e. oligotrophic)to late successional lakes (i.e. hypereutrophic) [@carlson1977trophic] and lakes naturally occur across this range. Naturally oligotrophic lakes occur in nutrient poor areas or have a more recent geologic history.  These lakes are often found in higher elevations, have clear water, and are often favored for drinking water or direct contact recreation (e.g. swimming).   Lakes with higher productivity (e.g. eutrophic lakes) have greater nutrient loads, tend to be less clear, have greater density of aquatic plants, and often support more diverse and abundant fish communities. Higher primary productivity is not necessarily a predictor of poor ecological condition.   
@@ -206,7 +209,7 @@ Random forest is a machine learning algorithm that aggregates numerous decision 
 
 While random forests are able to handle numerous correlated variables without a decrease in prediction accuracy, unusually large numbers of related variables can reduce accuracy and increase the chances of over-fitting the model.  This is a problem often faced in gene selection and in that field, a variable selection method based on random forest has been succesfully applied [@diaz2006gene].  We use varselRF in R to initially examine the importance of the water quality and GIS derived variables and select a subset, the reduced model, to then pass to random forest[@diaz-uriarte2010varSelRF]. 
 
-Using R’s randomForest package, we pass the reduced models selected with varSelRF and calculate confusion matrices, overall accuracy and kappa coeffecient [@liaw2002randomForest]. From the reduced model random forests we collect a consensus prediction and calculate a confusion matrix and summary stats.
+Using R's randomForest package, we pass the reduced models selected with varSelRF and calculate confusion matrices, overall accuracy and kappa coeffecient [@liaw2002randomForest]. From the reduced model random forests we collect a consensus prediction and calculate a confusion matrix and summary stats.
 
 ##Model Details
 Using a combination of the `varSelRF` and `randomForest` we ran models for six combinations of variables and trophic state classifications.  These combinations included different combinations of the Chlorphyll *a* trophic states (Table \ref{tab:trophicStateTable}) along with all variables and the GIS only variables (i.e. no *in situ* infromation).  The six model combinations were:
@@ -251,7 +254,11 @@ Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$d
 ##Associating Trophic State and Cyanobacteria
 Arm waving goes here.
 
+
+\newpage
+
 #Figures
+
 ```{r figSetup,echo=FALSE,eval=TRUE,cache=TRUE}
 #create list of all selected variables and assign a color
 vars<-ls(pattern="_vars")
@@ -271,6 +278,7 @@ zissou<-c(wes.palette(5,"Zissou"),wes.palette(5,"Zissou2"))
 col_lu<-data.frame(variables=all_vars,hexcode=sample(all_movies_palette,length(all_vars)))
 ```
 
+
 ```{r nlaMap, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations\\label{fig:nlaMap}",cache=TRUE}
 state<-map_data('state')
 lakes_alb<-data.frame(ltmData[["AlbersX"]],ltmData[["AlbersY"]])
@@ -284,37 +292,51 @@ mycolor<-c(mycolor[1],mycolor[2],mycolor[4])
 names(lakes_dd)<-c("long","lat",c())
 nlaMap(state,lakes_dd,mycolor)
 ```
+
 \newpage
+
 ```{r Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1\\label{fig:Importance_Model1}",cache=TRUE}
 all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
 importancePlot(all_ts4_rf,'gini',size=10,aes(colour=all_ts4_color))
 ```
+
 \newpage
+
 ```{r Importance_Model2,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2",cache=TRUE}
 all_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts3_vars]
 importancePlot(all_ts3_rf,'gini',size=10,aes(colour=all_ts3_color))
 ```
+
 \newpage
+
 ```{r Importance_Model3,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3",cache=TRUE}
 all_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts2_vars]
 importancePlot(all_ts2_rf,'gini',size=10,aes(colour=all_ts2_color))
 ```
+
 \newpage
+
 ```{r Importance_Model4,results="asis",echo=FALSE, tab.cap="Importance plot for Model 4",cache=TRUE}
 gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
 importancePlot(gis_ts4_rf,'gini',size=10,aes(colour=gis_ts4_color))
 ```
+
 \newpage
+
 ```{r Importance_Model5,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5",cache=TRUE}
 gis_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts3_vars]
 importancePlot(gis_ts3_rf,'gini',size=10,aes(colour=gis_ts3_color))
 ```
+
 \newpage
+
 ```{r Importance_Model6,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6",cache=TRUE}
 gis_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts2_vars]
 importancePlot(gis_ts2_rf,'gini',size=10,aes(colour=gis_ts2_color))
 ```
+
 \newpage
+
 ```{r ts_4_biov, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 4 trophic state classes",cache=TRUE}
 plotCdf(ltmData$TS_CHLA_4,ltmData$sumBioV+1,cdf_colors=zissou[6:9],
         y='Percent',x='Log10(Cyanobacteria Biovolume)',
@@ -322,7 +344,9 @@ plotCdf(ltmData$TS_CHLA_4,ltmData$sumBioV+1,cdf_colors=zissou[6:9],
                                 italic("a"),' Trophic States (4 Categories)')),
         color="Trophic State\nCategories")
 ```
+
 \newpage
+
 ```{r ts_3_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 3 trophic state classes",cache=TRUE }
 plotCdf(ltmData$TS_CHLA_3,ltmData$sumBioV+1,cdf_colors=zissou[6:8],
        y='Percent',x='Log10(Cyanobacteria Biovolume)', 
@@ -330,7 +354,9 @@ plotCdf(ltmData$TS_CHLA_3,ltmData$sumBioV+1,cdf_colors=zissou[6:8],
                               italic("a"),' Trophic States (3 Categories)')),
        color="Trophic State\nCategories")
 ```
+
 \newpage
+
 ```{r ts_2_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 2 trophic state classes",cache=TRUE}
 plotCdf(ltmData$TS_CHLA_2,ltmData$sumBioV+1,cdf_colors=zissou[6:7],
        y='Percent',x='Log10(Cyanobacteria Biovolume)',
@@ -338,7 +364,9 @@ plotCdf(ltmData$TS_CHLA_2,ltmData$sumBioV+1,cdf_colors=zissou[6:7],
                               italic("a"),' Trophic States (2 Categories)')),
        color="Trophic State\nCategories")
 ```
+
 \newpage
+
 ```{r scatterplot,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria biovolume scatterplot",cache=TRUE}
 scp_df<-data.frame(chla=ltmData[["CHLA"]],biovp1=ltmData[["sumBioV"]]+1)
 scatterPlot(scp_df,xvar="chla",yvar="biovp1",zissou[8],zissou[7],zissou[6],
@@ -347,6 +375,7 @@ scatterPlot(scp_df,xvar="chla",yvar="biovp1",zissou[8],zissou[7],zissou[6],
              x=expression(paste('Log10(Chl ', italic("a"),')')),
              y="Log10(Cyanobaterial Biovolumes + 1)")
 ```
+
 \newpage
 
 #Tables
@@ -362,61 +391,73 @@ kable(xdf)
 ```
 
 \newpage
+
 ```{r VarSel_Model1,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 1\\label{tab:VarSel_Model1}",cache=TRUE}
 kable(sumTable(all_ts4[1:100]),row.names=F)
 ```
 
 \newpage
+
 ```{r Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1\\label{tab:Confusion_Model1}",cache=TRUE}
 kable(formatC(round(all_ts4_rf$confusion,2)),row.names=F)
 ```
 
 \newpage
+
 ```{r VarSel_Model2,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 2",cache=TRUE}
 kable(sumTable(all_ts3[1:100]),row.names=F)
 ```
 
 \newpage
+
 ```{r Confusion_Model2,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 2",cache=TRUE}
 kable(formatC(round(all_ts3_rf$confusion,2)),row.names=F)
 ```
 
 \newpage
+
 ```{r VarSel_Model3,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 3",cache=TRUE}
 kable(sumTable(all_ts2[1:100]),row.names=F)
 ```
 
 \newpage
+
 ```{r Confusion_Model3,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 3",cache=TRUE}
 kable(formatC(round(all_ts2_rf$confusion,2)),row.names=F)
 ```
 
 \newpage
+
 ```{r VarSel_Model4,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 4",cache=TRUE }
 kable(sumTable(gis_ts4[1:100]),row.names=F)
 ```
 
 \newpage
+
 ```{r Confusion_Model4,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 4",cache=TRUE }
 kable(formatC(round(gis_ts4_rf$confusion,2)),row.names=F)
 ```
 
 \newpage
+
 ```{r VarSel_Model5,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 5",cache=TRUE}
 kable(sumTable(gis_ts3[1:100]),row.names=F)
 ```
 
 \newpage
+
 ```{r Conufsion_Model5,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 5",cache=TRUE}
 kable(formatC(round(gis_ts3_rf$confusion,2)),row.names=F)
 ```
 
 \newpage
+
 ```{r VarSel_Model6,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 6",cache=TRUE}
 kable(sumTable(gis_ts2[1:100]),row.names=F)
 ```
 
 \newpage
+
 ```{r Confusion_Model6,results="asis",echo=FALSE, tab.cap="Random forest confusion matrix for Model 6",cache=TRUE}
 kable(formatC(round(gis_ts2_rf$confusion,2)),row.names=F)
 ```
