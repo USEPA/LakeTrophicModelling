@@ -33,9 +33,9 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
-                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
-devtools::install_github("jhollist/wesanderson")
+#devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+#                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+#devtools::install_github("jhollist/wesanderson")
 library("wesanderson")
 library("LakeTrophicModelling")
 library("knitr")
@@ -223,53 +223,76 @@ Using a combination of the `varSelRF` and `randomForest` we ran models for six c
 #Results and Discussion
 
 ##Model 1: 4 Trophic States ~ All Variables
-The selected variables that made up Model 1 were Potassium, Nitrogen:Phosphorus, Total Nitrogen, Total Phosphorus, Total Organic Carbon, Turbidity, Ecoregion, Organic Ions, Dissolved Organic Carbon, and Maximum Lake Depth (Table \ref{tab:VarSel_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
+The reduced model for Model 1 included Potassium, Nitrogen:Phosphorus, Total Nitrogen, Total Phosphorus, Total Organic Carbon, Turbidity, Ecoregion, Organic Ions, Dissolved Organic Carbon, and Maximum Lake Depth (Table \ref{tab:VarSel_Model1}).  Of these, tubidity, total phosphorus, total nitrogen, and total organic carbon were the most important predictors of the 4 classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
 
-The reduced model for Model 1 included NPratio, NTL, PTL, TOC, TURB, Ecoregions, K, ORGION, DOC, and DEPTHMAX (Table \ref{tab:VarSel_Model1})
-Lastly, tubidity, total phosphorus, total nitrogen, and total organic carbon were the most important predictors of the 4 classes of trophic state (Figure \ref{fig:Importance_Model1}).
-
+Some discussion here
 
 ##Model 2: 3 Trophic States ~ All Variables
 
 Total accuracy for Model 2 is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$kappa,3)` 
 
-(Table \ref{tab:Confusion_Model2})
 (Table \ref{tab:VarSel_Model2})
+
+(Table \ref{tab:Confusion_Model2})
+
 (Figure \ref{fig:Importance_Model2})
+
+Some discussion here
 
 ##Model 3: 2 Trophic States ~ All Variables
 Total accuracy for Model 3 is `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,3)`.
 
-(Table \ref{tab:Confusion_Model3})
 (Table \ref{tab:VarSel_Model3})
+
+(Table \ref{tab:Confusion_Model3})
+
 (Figure \ref{fig:Importance_Model3})
+
+Some discussion here
 
 ##Model 4: 4 Trophic States ~ GIS Only Variables
 Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,3)`.
 
-(Table \ref{tab:Confusion_Model4})
 (Table \ref{tab:VarSel_Model4})
+
+(Table \ref{tab:Confusion_Model4})
+
 (Figure \ref{fig:Importance_Model4})
+
+Some discussion here
 
 ##Model 5: 3 Trophic States ~ GIS Only Variables
 Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,3)`.
 
-(Table \ref{tab:Confusion_Model5})
 (Table \ref{tab:VarSel_Model5})
+
+(Table \ref{tab:Confusion_Model5})
+
 (Figure \ref{fig:Importance_Model5})
+
+Some discussion here
 
 ##Model 6: 2 Trophic States ~ GIS Only Variables
 Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)`.
 
-(Table \ref{tab:Confusion_Model6})
 (Table \ref{tab:VarSel_Model6})
+
+(Table \ref{tab:Confusion_Model6})
+
 (Figure \ref{fig:Importance_Model6})
 
+Some discussion here
+
 ##Associating Trophic State and Cyanobacteria
+
 Arm waving goes here.
+
 (Figure \ref{fig:ts_4_biov_cdf})
+
 (Figure \ref{fig:ts_3_biov_cdf})
+
 (Figure \ref{fig:ts_2_biov_cdf})
+
 (Figure \ref{fig:scatterplot})
 
 \newpage
@@ -314,42 +337,42 @@ nlaMap(state,lakes_dd,mycolor)
 
 ```{r Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1\\label{fig:Importance_Model1}",cache=FALSE}
 all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
-importancePlot(all_ts4_rf,'gini',size=10,aes(colour=all_ts4_color))
+importancePlot(all_ts4_rf,'gini',size=5,aes(colour=all_ts4_color))
 ```
 
 \newpage
 
 ```{r Importance_Model2,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2\\label{fig:Importance_Model2}",cache=FALSE}
 all_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts3_vars]
-importancePlot(all_ts3_rf,'gini',size=10,aes(colour=all_ts3_color))
+importancePlot(all_ts3_rf,'gini',size=5,aes(colour=all_ts3_color))
 ```
 
 \newpage
 
 ```{r Importance_Model3,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3\\label{fig:Importance_Model3}",cache=FALSE}
 all_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts2_vars]
-importancePlot(all_ts2_rf,'gini',size=10,aes(colour=all_ts2_color))
+importancePlot(all_ts2_rf,'gini',size=5,aes(colour=all_ts2_color))
 ```
 
 \newpage
 
 ```{r Importance_Model4,results="asis",echo=FALSE, tab.cap="Importance plot for Model 4\\label{fig:Importance_Model4}",cache=FALSE}
 gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
-importancePlot(gis_ts4_rf,'gini',size=10,aes(colour=gis_ts4_color))
+importancePlot(gis_ts4_rf,'gini',size=5,aes(colour=gis_ts4_color))
 ```
 
 \newpage
 
 ```{r Importance_Model5,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5\\label{fig:Importance_Model5}",cache=FALSE}
 gis_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts3_vars]
-importancePlot(gis_ts3_rf,'gini',size=10,aes(colour=gis_ts3_color))
+importancePlot(gis_ts3_rf,'gini',size=5,aes(colour=gis_ts3_color))
 ```
 
 \newpage
 
 ```{r Importance_Model6,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6\\label{fig:Importance_Model6}",cache=FALSE}
 gis_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts2_vars]
-importancePlot(gis_ts2_rf,'gini',size=10,aes(colour=gis_ts2_color))
+importancePlot(gis_ts2_rf,'gini',size=5,aes(colour=gis_ts2_color))
 ```
 
 \newpage
