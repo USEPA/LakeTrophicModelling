@@ -33,8 +33,8 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-#devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
-#                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
 #devtools::install_github("jhollist/wesanderson")
 library("wesanderson")
 library("LakeTrophicModelling")
@@ -45,7 +45,7 @@ library("rgdal")
 library("e1071")
 library("dplyr")
 library("tidyr")
-opts_chunk$set(dev = 'pdf', fig.width=6, fig.height=4.3)
+opts_chunk$set(dev = 'pdf', fig.width=7.5)
 data(LakeTrophicModelling)
 
 #Checks for existing cache (from another project)
@@ -187,19 +187,20 @@ Productivity of lentic ecosystems has been well studied and it is widely accepte
 #Introduction
 Productivity in lentic systems is often categorized across a range of tropic states (e.g. the tropic continuum) from early succesional (i.e. oligotrophic)to late successional lakes (i.e. hypereutrophic) [@carlson1977trophic] and lakes naturally occur across this range. Naturally oligotrophic lakes occur in nutrient poor areas or have a more recent geologic history.  These lakes are often found in higher elevations, have clear water, and are and are usually favored for drinking water or direct contact recreation (e.g. swimming).   Lakes with higher productivity (e.g. eutrophic lakes) have greater nutrient loads, tend to be less clear, have greater density of aquatic plants, and often support more diverse and abundant fish communities. Higher primary productivity is not necessarily a predictor of poor ecological condition as it is natural for lakes to shift from lower to higher trophic states but this is a slow process.  
 
-Monitoring trophic state allows the identification of rapid shifts in trophic state or locating lakes with unusually high productivity (e.g. hypereutrophic).  These cases are indicative of lakes under greater anthropogenic nutrient loads, also known as cultural eutrophication, and are more likely to be at risk of fish kills, fouling, and harmful algal blooms[@smith1998cultural;@smith1999eutrophication;@smith2006eutrophication].  Given the association between trophic state and many ecosystem services and disservices, being able to model trophic state could provide a first cut at identifying lakes with the potential for harmful algal blooms and other problems associated with cultural eutrophication. 
+Monitoring trophic state allows the identification of rapid shifts in trophic state or locating lakes with unusually high productivity (e.g. hypereutrophic).  These cases are indicative of lakes under greater anthropogenic nutrient loads, also known as cultural eutrophication, and are more likely to be at risk of fish kills, fouling, and harmful algal blooms [@smith1998cultural;@smith1999eutrophication;@smith2006eutrophication].  Given the association between trophic state and many ecosystem services and disservices, being able to accurately model trophic state could provide a first cut at identifying lakes with the potential for harmful algal blooms or other problems associated with cultural eutrophication. 
 
-As trophic state can be defined by a number of *in situ* water quality measurements, most models have used this information as predictors.  This leads to accurate models, but also requires data that is sparse and not always availble, limiting the population of lakes that can be modeled.  Landscape data is ubiqutious ... Thus, identifying predictors from ubiquitous data would allow for estimating trophic state in unmonitored lakes. 
+As trophic state and related indices can be best defined by a number of *in situ* parameters (modelled or meausred), most models have used this information as predictors [e.g., @carvalho_cyanobacterial_2011;@milstead2013estimating;@imboden1978dynamic;@salas1991simplified].  This leads to accurate models, but also requires data that is often sparse and not always available thus, limiting the population of lakes for which we can make predictions.  A possible solution for this is to build models that use widely available data that are correlated to many of the *in situ* variables. For instance, landscape metrics of forests, agriculture, wetlands, and urban land in contributing watersheds have all been shown to explain a significant proportion of the variation (ranging from 50-86%, depending on study) in nutrients in receiving waters [@jones2001predicting; @jones2004importance; @seilheimer2013landscape].  Building on these previously identified associations might allow us to use only landscape and other universally available data to build models.  Identifying predictors using this type of ubiquitous data would allow for estimating trophic state in both monitored and unmonitored lakes. 
 
+Most published efforts modeling freshwater nutrients and trophic state are based on ordinary least squares regression [].  While this has proven to be a reliable technique it is not without its limitations.  Using data mining approaches, such as random forests, avoids many of these.  For instance,  NEED MORE. 
 
-We have three goals for this preliminary research.  First, we build and assess multiple models of lake trophic state using a full suite of data including *in situ* water quality and universally available data (e.g. landscape data). Second, we assess the accuracy of predicted trophic state in lakes with only the universally available data.  Lastly, we explore associations between trophic state and cyanobacteria to explore.
+To build on past work we have identified three goals for this research.  First, we use random forests to build and assess multiple models of lake trophic state using a full suite of data including *in situ* water quality and universally available data (e.g. landscape data). Second, we assess the accuracy of predicted trophic state in lakes with the full suite of data and then with the universally avialable data only.  Lastly, we explore associations between trophic state and cyanobacteria to begin to understand how changes in trophic state may be linked to an important ecosystem disservice.
 
 #Methods
 
 ##Data and Study Area
 We utilize four primary sources of data for this study,the National Lakes Assessment (NLA), the National Lake Cover Dataset (NLCD), modeled lake morphometery,  and estimated cyanobacteria biovolumes [@usepa2009national;@homer2004development;@xian2009updating;@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014;@beaulieu2013nutrients].  All datasets are national in scale and provide a unique snapshot view of the condition of lakes in the United States'.
 
-The NLA data were collected during the summer of 2007 and the final data were released in 2009.  With consistent methods and metrics collected at 1056 locations across the conterminous United States (Figure \ref{fig:nlaMap}), the NLA provides a unique opportunity to examine broad scale patterns in lake productivity.  The NLA collected data on biophysical measures of lake water quality and habitat.  For this analysis we primarily examined the water quality measurements from the NLA [@usepa2009national].  Adding to the monitoring data collected via the NLA, we use the 2006 NLCD data to examine the possible landscape-level drivers of trophic status in lakes.  The NLCD is a nationally collected land use land cover dataset that also provides estimates of impervious surface.  We collected total land use land cover and total percent impervious surface within a 3 kilometer buffer surrounding the lake to examine larger landscape-level effect [@homer2004development;@xian2009updating]. We also used various measures of lake morphometry (i.e. depth, volume, fetch, etc.) as they are important in understanding lake productivity, yet many of these data are difficult to obtain for large numbers of lakes over broad regions.  To add this information we modeled lake morphometry [@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014;@NLMDInPrep]. Lastly, to explore associations between trophic state and cyanobacteria, we used estimates of cyanobacterial biovoulme caluclated by Beaulieu *et al.* [-@beaulieu2013nutrients].  Cyanobacteria biovolumes are a truer measure of cyanobacteria dominance than abundance as there is great variability in the size within and between species.  We have consolidated the taxa level estimates from Beaulieu *et al.* [-@beaulieu2013nutrients] and  summed that information on a per-lake basis.
+The NLA data were collected during the summer of 2007 and the final data were released in 2009.  With consistent methods and metrics collected at 1056 locations across the conterminous United States (Figure \ref{fig:nlaMap}), the NLA provides a unique opportunity to examine broad scale patterns in lake productivity.  The NLA collected data on biophysical measures of lake water quality and habitat.  For this analysis we primarily examined the water quality measurements from the NLA [@usepa2009national].  Adding to the monitoring data collected via the NLA, we use the 2006 NLCD data to examine the possible landscape-level drivers of trophic status in lakes.  The NLCD is a nationally collected land use land cover dataset that also provides estimates of impervious surface.  We collected total land use land cover and total percent impervious surface within a 3 kilometer buffer surrounding the lake to examine larger landscape-level effect [@homer2004development;@xian2009updating]. We also used various measures of lake morphometry (i.e. depth, volume, fetch, etc.) as they are important in understanding lake productivity, yet many of these data are difficult to obtain for large numbers of lakes over broad regions.  To add this information we modeled lake morphometry [@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014]. Lastly, to explore associations between trophic state and cyanobacteria, we used estimates of cyanobacterial biovoulme caluclated by Beaulieu *et al.* [-@beaulieu2013nutrients].  Cyanobacteria biovolumes are a truer measure of cyanobacteria dominance than abundance as there is great variability in the size within and between species.  We have consolidated the taxa level estimates from Beaulieu *et al.* [-@beaulieu2013nutrients] and  summed that information on a per-lake basis.
 
 ##Predicting Trophic State with Random Forests
 Random forest is a machine learning algorithm that aggregates numerous decision trees in order to obtain a consensus prediction of the response categories [@breiman2001random].  Bootstrapped sample data is recursively partitioned according to a given random subset of predictor variables and completely grown without pruning.   With each new tree, both the sample data and predictor variable subset is randomly selected.  
@@ -212,12 +213,12 @@ Using R's randomForest package, we pass the reduced models selected with varSelR
 Using a combination of the `varSelRF` and `randomForest` we ran models for six combinations of variables and trophic state classifications.  These combinations included different combinations of the Chlorphyll *a* trophic states (Table \ref{tab:trophicStateTable}) along with all variables and the GIS only variables (i.e. no *in situ* infromation).  The six model combinations were:
 
 
-1. Chlorophyll *a* trophic state - 4 class = All variables (*in situ* water quality, lake morphometry, and landscape)
-2. Chlorophyll *a* trophic state - 3 class = All variables (*in situ* water quality, lake morphometry, and landscape)
-3. Chlorophyll *a* trophic state - 2 class = All variables (*in situ* water quality, lake morphometry, and landscape)
-4. Chlorophyll *a* trophic state - 4 class = All variables (lake morphometry, and landscape)
-5. Chlorophyll *a* trophic state - 3 class = All variables (lake morphometry, and landscape)
-6. Chlorophyll *a* trophic state - 2 class = All variables (lake morphometry, and landscape)
+1. **Model 1:** Chlorophyll *a* trophic state - 4 class = All variables (*in situ* water quality, lake morphometry, and landscape)
+2. **Model 2:** Chlorophyll *a* trophic state - 3 class = All variables (*in situ* water quality, lake morphometry, and landscape)
+3. **Model 3:** Chlorophyll *a* trophic state - 2 class = All variables (*in situ* water quality, lake morphometry, and landscape)
+4. **Model 4:** Chlorophyll *a* trophic state - 4 class = All variables (lake morphometry, and landscape)
+5. **Model 5:** Chlorophyll *a* trophic state - 3 class = All variables (lake morphometry, and landscape)
+6. **Model 6:** Chlorophyll *a* trophic state - 2 class = All variables (lake morphometry, and landscape)
 
 
 #Results and Discussion
