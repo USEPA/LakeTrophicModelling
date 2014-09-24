@@ -72,7 +72,7 @@ knit_hooks$set(output = function(x, options) {
 })
 ```
 
-```{r analysis , eval=FALSE, include=FALSE, echo=FALSE, cache=TRUE}
+```{r analysis , eval=FALSE, include=FALSE, echo=FALSE, cache=FALSE}
 ################################################################################
 #All analysis in here, that way all bits of paper have access to final objects
 #Tables, figures, and numerical results placed at end of paper.
@@ -145,7 +145,7 @@ knit_hooks$set(output = function(x, options) {
 
 ```
 
-```{r summaryStats, echo=FALSE, cache=TRUE, warning=FALSE}
+```{r summaryStats, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
 acc_results<-data.frame(model_number=c("Model 1","Model 2","Model 3","Model 4","Model 5","Model 6"),
                         total_accuracy=c(classAgreement(all_ts4_rf$confusion[,1:4])$diag,
                                          classAgreement(all_ts3_rf$confusion[,1:3])$diag,
