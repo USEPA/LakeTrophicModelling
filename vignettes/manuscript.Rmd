@@ -145,7 +145,7 @@ knit_hooks$set(output = function(x, options) {
 
 ```
 
-```{r summaryStats, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
+```{r summaryStats, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
 acc_results<-data.frame(model_number=c("Model 1","Model 2","Model 3","Model 4","Model 5","Model 6"),
                         total_accuracy=c(classAgreement(all_ts4_rf$confusion[,1:4])$diag,
                                          classAgreement(all_ts3_rf$confusion[,1:3])$diag,
@@ -185,11 +185,11 @@ Productivity of lentic ecosystems has been well studied and it is widely accepte
 
 
 #Introduction
-Productivity in lentic systems is often categorized across a range of tropic states (e.g. the tropic continuum) from early succesional (i.e. oligotrophic)to late successional lakes (i.e. hypereutrophic) [@carlson1977trophic] and lakes naturally occur across this range. Naturally oligotrophic lakes occur in nutrient poor areas or have a more recent geologic history.  These lakes are often found in higher elevations, have clear water, and are often favored for drinking water or direct contact recreation (e.g. swimming).   Lakes with higher productivity (e.g. eutrophic lakes) have greater nutrient loads, tend to be less clear, have greater density of aquatic plants, and often support more diverse and abundant fish communities. Higher primary productivity is not necessarily a predictor of poor ecological condition.   
+Productivity in lentic systems is often categorized across a range of tropic states (e.g. the tropic continuum) from early succesional (i.e. oligotrophic)to late successional lakes (i.e. hypereutrophic) [@carlson1977trophic] and lakes naturally occur across this range. Naturally oligotrophic lakes occur in nutrient poor areas or have a more recent geologic history.  These lakes are often found in higher elevations, have clear water, and are and are usually favored for drinking water or direct contact recreation (e.g. swimming).   Lakes with higher productivity (e.g. eutrophic lakes) have greater nutrient loads, tend to be less clear, have greater density of aquatic plants, and often support more diverse and abundant fish communities. Higher primary productivity is not necessarily a predictor of poor ecological condition as it is natural for lakes to shift from lower to higher trophic states but this is a slow process.  
 
-It is natural for lakes to shift from lower to higher trophic states but this is a slow process.  Given this fact, monitoring trophic state allows the identification of rapid shifts in trophic state or locating lakes with unusually high productivity (e.g. hypereutrophic).  These cases are indicative of lakes under greater anthropogenic nutrient loads, also known as cultural eutrophication, and are more likely to be at risk of fish kills, fouling, and harmful algal blooms[@smith1998cultural;@smith1999eutrophication;@smith2006eutrophication].  Given the association between trophic state and many ecosystem services and disservices, being able to model trophic state could allow for estimating trophic state in unmonitored lakes and provide a first cut at identifying lakes with the potential for harmful algal blooms and other problems associated with cultural eutrophication.  
+Monitoring trophic state allows the identification of rapid shifts in trophic state or locating lakes with unusually high productivity (e.g. hypereutrophic).  These cases are indicative of lakes under greater anthropogenic nutrient loads, also known as cultural eutrophication, and are more likely to be at risk of fish kills, fouling, and harmful algal blooms[@smith1998cultural;@smith1999eutrophication;@smith2006eutrophication].  Given the association between trophic state and many ecosystem services and disservices, being able to model trophic state could provide a first cut at identifying lakes with the potential for harmful algal blooms and other problems associated with cultural eutrophication. 
 
-As trophic state can be defined by a number of *in situ* water quality measurements, most models have used this information as predictors.  This leads to accurate models, but also requires data that is sparse and not always availble, limiting the population of lakes that can be modeled.  Landscape data is ubiqutious ...
+As trophic state can be defined by a number of *in situ* water quality measurements, most models have used this information as predictors.  This leads to accurate models, but also requires data that is sparse and not always availble, limiting the population of lakes that can be modeled.  Landscape data is ubiqutious ... Thus, identifying predictors from ubiquitous data would allow for estimating trophic state in unmonitored lakes. 
 
 
 We have three goals for this preliminary research.  First, we build and assess multiple models of lake trophic state using a full suite of data including *in situ* water quality and universally available data (e.g. landscape data). Second, we assess the accuracy of predicted trophic state in lakes with only the universally available data.  Lastly, we explore associations between trophic state and cyanobacteria to explore.
@@ -225,38 +225,58 @@ Using a combination of the `varSelRF` and `randomForest` we ran models for six c
 ##Model 1: 4 Trophic States ~ All Variables
 The selected variables that made up Model 1 were Potassium, Nitrogen:Phosphorus, Total Nitrogen, Total Phosphorus, Total Organic Carbon, Turbidity, Ecoregion, Organic Ions, Dissolved Organic Carbon, and Maximum Lake Depth (Table \ref{tab:VarSel_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
 
+The reduced model for Model 1 included NPratio, NTL, PTL, TOC, TURB, Ecoregions, K, ORGION, DOC, and DEPTHMAX (Table \ref{tab:VarSel_Model1})
 Lastly, tubidity, total phosphorus, total nitrogen, and total organic carbon were the most important predictors of the 4 classes of trophic state (Figure \ref{fig:Importance_Model1}).
 
 
 ##Model 2: 3 Trophic States ~ All Variables
 
-Total accuracy for Model 2 is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$kappa,3)`.
+Total accuracy for Model 2 is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$kappa,3)` 
+
+(Table \ref{tab:Confusion_Model2})
+(Table \ref{tab:VarSel_Model2})
+(Figure \ref{fig:Importance_Model2})
 
 ##Model 3: 2 Trophic States ~ All Variables
 Total accuracy for Model 3 is `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,3)`.
 
-
+(Table \ref{tab:Confusion_Model3})
+(Table \ref{tab:VarSel_Model3})
+(Figure \ref{fig:Importance_Model3})
 
 ##Model 4: 4 Trophic States ~ GIS Only Variables
 Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,3)`.
 
+(Table \ref{tab:Confusion_Model4})
+(Table \ref{tab:VarSel_Model4})
+(Figure \ref{fig:Importance_Model4})
 
 ##Model 5: 3 Trophic States ~ GIS Only Variables
 Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,3)`.
 
+(Table \ref{tab:Confusion_Model5})
+(Table \ref{tab:VarSel_Model5})
+(Figure \ref{fig:Importance_Model5})
 
 ##Model 6: 2 Trophic States ~ GIS Only Variables
 Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)`.
 
+(Table \ref{tab:Confusion_Model6})
+(Table \ref{tab:VarSel_Model6})
+(Figure \ref{fig:Importance_Model6})
+
 ##Associating Trophic State and Cyanobacteria
 Arm waving goes here.
-
+(Figure \ref{fig:ts_4_biov_cdf})
+(Figure \ref{fig:ts_3_biov_cdf})
+(Figure \ref{fig:ts_2_biov_cdf})
+(Figure \ref{fig:scatterplot})
 
 \newpage
 
 #Figures
 
-```{r figSetup,echo=FALSE,eval=TRUE,cache=TRUE}
+```{r figSetup,echo=FALSE,eval=TRUE,cache=FALSE}
 #create list of all selected variables and assign a color
 vars<-ls(pattern="_vars")
 all_vars<-vector()
@@ -276,7 +296,7 @@ col_lu<-data.frame(variables=all_vars,hexcode=sample(all_movies_palette,length(a
 ```
 
 
-```{r nlaMap, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations\\label{fig:nlaMap}",cache=TRUE}
+```{r nlaMap, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations\\label{fig:nlaMap}",cache=FALSE}
 state<-map_data('state')
 lakes_alb<-data.frame(ltmData[["AlbersX"]],ltmData[["AlbersY"]])
 p4s<-"+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
@@ -292,49 +312,49 @@ nlaMap(state,lakes_dd,mycolor)
 
 \newpage
 
-```{r Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1\\label{fig:Importance_Model1}",cache=TRUE}
+```{r Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1\\label{fig:Importance_Model1}",cache=FALSE}
 all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
 importancePlot(all_ts4_rf,'gini',size=10,aes(colour=all_ts4_color))
 ```
 
 \newpage
 
-```{r Importance_Model2,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2",cache=TRUE}
+```{r Importance_Model2,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2\\label{fig:Importance_Model2}",cache=FALSE}
 all_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts3_vars]
 importancePlot(all_ts3_rf,'gini',size=10,aes(colour=all_ts3_color))
 ```
 
 \newpage
 
-```{r Importance_Model3,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3",cache=TRUE}
+```{r Importance_Model3,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3\\label{fig:Importance_Model3}",cache=FALSE}
 all_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts2_vars]
 importancePlot(all_ts2_rf,'gini',size=10,aes(colour=all_ts2_color))
 ```
 
 \newpage
 
-```{r Importance_Model4,results="asis",echo=FALSE, tab.cap="Importance plot for Model 4",cache=TRUE}
+```{r Importance_Model4,results="asis",echo=FALSE, tab.cap="Importance plot for Model 4\\label{fig:Importance_Model4}",cache=FALSE}
 gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
 importancePlot(gis_ts4_rf,'gini',size=10,aes(colour=gis_ts4_color))
 ```
 
 \newpage
 
-```{r Importance_Model5,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5",cache=TRUE}
+```{r Importance_Model5,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5\\label{fig:Importance_Model5}",cache=FALSE}
 gis_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts3_vars]
 importancePlot(gis_ts3_rf,'gini',size=10,aes(colour=gis_ts3_color))
 ```
 
 \newpage
 
-```{r Importance_Model6,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6",cache=TRUE}
+```{r Importance_Model6,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6\\label{fig:Importance_Model6}",cache=FALSE}
 gis_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts2_vars]
 importancePlot(gis_ts2_rf,'gini',size=10,aes(colour=gis_ts2_color))
 ```
 
 \newpage
 
-```{r ts_4_biov, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 4 trophic state classes",cache=TRUE}
+```{r ts_4_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 4 trophic state classes\\label{fig:ts_4_biov_cdf}",cache=FALSE}
 plotCdf(ltmData$TS_CHLA_4,ltmData$sumBioV+1,cdf_colors=zissou[6:9],
         y='Percent',x='Log10(Cyanobacteria Biovolume)',
         title=expression(paste('CDF for Chlorophyll ', 
@@ -344,7 +364,7 @@ plotCdf(ltmData$TS_CHLA_4,ltmData$sumBioV+1,cdf_colors=zissou[6:9],
 
 \newpage
 
-```{r ts_3_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 3 trophic state classes",cache=TRUE }
+```{r ts_3_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 3 trophic state classes\\label{fig:ts_3_biov_cdf}",cache=FALSE }
 plotCdf(ltmData$TS_CHLA_3,ltmData$sumBioV+1,cdf_colors=zissou[6:8],
        y='Percent',x='Log10(Cyanobacteria Biovolume)', 
        title=expression(paste('CDF for Chlorophyll ', 
@@ -354,7 +374,7 @@ plotCdf(ltmData$TS_CHLA_3,ltmData$sumBioV+1,cdf_colors=zissou[6:8],
 
 \newpage
 
-```{r ts_2_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 2 trophic state classes",cache=TRUE}
+```{r ts_2_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 2 trophic state classes\\label{fig:ts_2_biov_cdf}",cache=FALSE}
 plotCdf(ltmData$TS_CHLA_2,ltmData$sumBioV+1,cdf_colors=zissou[6:7],
        y='Percent',x='Log10(Cyanobacteria Biovolume)',
        title=expression(paste('CDF for Chlorophyll ', 
@@ -364,7 +384,7 @@ plotCdf(ltmData$TS_CHLA_2,ltmData$sumBioV+1,cdf_colors=zissou[6:7],
 
 \newpage
 
-```{r scatterplot,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria biovolume scatterplot",cache=TRUE}
+```{r scatterplot,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria biovolume scatterplot\\label{fig:scatterplot}",cache=FALSE}
 scp_df<-data.frame(chla=ltmData[["CHLA"]],biovp1=ltmData[["sumBioV"]]+1)
 scatterPlot(scp_df,xvar="chla",yvar="biovp1",zissou[8],zissou[7],zissou[6],
              title=expression(paste("Chlorophyll ", 
@@ -377,7 +397,7 @@ scatterPlot(scp_df,xvar="chla",yvar="biovp1",zissou[8],zissou[7],zissou[6],
 
 #Tables
 
-```{r trophicStateTable, results='asis', echo=FALSE, tab.cap="Chlorophyll a based trophic state cut-offs\\label{tab:trophicStateTable}",cache=TRUE}
+```{r trophicStateTable, results='asis', echo=FALSE, tab.cap="Chlorophyll a based trophic state cut-offs\\label{tab:trophicStateTable}",cache=FALSE}
 ts_4<-c("oligo","meso","eu","hyper")
 ts_3<-c("oligo","meso/eu","meso/eu","hyper")
 ts_2<-c("oligo/meso","oligo/meso","eu/hyper","eu/hyper")
@@ -389,73 +409,73 @@ kable(xdf)
 
 \newpage
 
-```{r VarSel_Model1,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 1\\label{tab:VarSel_Model1}",cache=TRUE}
+```{r VarSel_Model1,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 1\\label{tab:VarSel_Model1}",cache=FALSE}
 kable(sumTable(all_ts4[1:100]),row.names=F)
 ```
 
 \newpage
 
-```{r Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1\\label{tab:Confusion_Model1}",cache=TRUE}
+```{r Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1\\label{tab:Confusion_Model1}",cache=FALSE}
 kable(formatC(round(all_ts4_rf$confusion,2)),row.names=F)
 ```
 
 \newpage
 
-```{r VarSel_Model2,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 2",cache=TRUE}
+```{r VarSel_Model2,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 2\\label{tab:VarSel_Model2}",cache=FALSE}
 kable(sumTable(all_ts3[1:100]),row.names=F)
 ```
 
 \newpage
 
-```{r Confusion_Model2,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 2",cache=TRUE}
+```{r Confusion_Model2,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 2\\label{tab:Confusion_Model2}",cache=FALSE}
 kable(formatC(round(all_ts3_rf$confusion,2)),row.names=F)
 ```
 
 \newpage
 
-```{r VarSel_Model3,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 3",cache=TRUE}
+```{r VarSel_Model3,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 3\\label{tab:VarSel_Model3}",cache=FALSE}
 kable(sumTable(all_ts2[1:100]),row.names=F)
 ```
 
 \newpage
 
-```{r Confusion_Model3,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 3",cache=TRUE}
+```{r Confusion_Model3,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 3\\label{tab:Confusion_Model3}",cache=FALSE}
 kable(formatC(round(all_ts2_rf$confusion,2)),row.names=F)
 ```
 
 \newpage
 
-```{r VarSel_Model4,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 4",cache=TRUE }
+```{r VarSel_Model4,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 4\\label{tab:VarSel_Model4}",cache=FALSE }
 kable(sumTable(gis_ts4[1:100]),row.names=F)
 ```
 
 \newpage
 
-```{r Confusion_Model4,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 4",cache=TRUE }
+```{r Confusion_Model4,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 4\\label{tab:Confusion_Model4}",cache=FALSE }
 kable(formatC(round(gis_ts4_rf$confusion,2)),row.names=F)
 ```
 
 \newpage
 
-```{r VarSel_Model5,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 5",cache=TRUE}
+```{r VarSel_Model5,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 5\\label{tab:VarSel_Model5}",cache=FALSE}
 kable(sumTable(gis_ts3[1:100]),row.names=F)
 ```
 
 \newpage
 
-```{r Conufsion_Model5,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 5",cache=TRUE}
+```{r Conufsion_Model5,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 5\\label{tab:Confusion_Model5}",cache=FALSE}
 kable(formatC(round(gis_ts3_rf$confusion,2)),row.names=F)
 ```
 
 \newpage
 
-```{r VarSel_Model6,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 6",cache=TRUE}
+```{r VarSel_Model6,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 6\\label{tab:VarSel_Model6}",cache=FALSE}
 kable(sumTable(gis_ts2[1:100]),row.names=F)
 ```
 
 \newpage
 
-```{r Confusion_Model6,results="asis",echo=FALSE, tab.cap="Random forest confusion matrix for Model 6",cache=TRUE}
+```{r Confusion_Model6,results="asis",echo=FALSE, tab.cap="Random forest confusion matrix for Model 6\\label{tab:Confusion_Model6}",cache=FALSE}
 kable(formatC(round(gis_ts2_rf$confusion,2)),row.names=F)
 ```
 
