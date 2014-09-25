@@ -85,6 +85,8 @@ knit_hooks$set(output = function(x, options) {
   all_ts4<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_4,numCore=4,100,
         								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="all_ts4",time=TRUE)
+  all_ts4_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_4, 
+                              ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   all_ts4_vars<-unique(unlist(all_ts4[1:100]))
   all_ts4_rf<-runRandomForest(ltmData[all_ts4_vars],ltmData$TS_CHLA_4, 
@@ -95,6 +97,8 @@ knit_hooks$set(output = function(x, options) {
   all_ts3<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_3,numCore=4,100,
       									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="all_ts3",time=TRUE)
+  all_ts3_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_3, 
+                              ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   all_ts3_vars<-unique(unlist(all_ts3[1:100]))
   all_ts3_rf<-runRandomForest(ltmData[all_ts3_vars],ltmData$TS_CHLA_3, 
@@ -105,7 +109,8 @@ knit_hooks$set(output = function(x, options) {
   all_ts2<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_2,numCore=4,100,
       									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="all_ts2",time=TRUE)
-  
+  all_ts2_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_2, 
+                              ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   all_ts2_vars<-unique(unlist(all_ts2[1:100]))
   all_ts2_rf<-runRandomForest(ltmData[all_ts2_vars],ltmData$TS_CHLA_2, 
@@ -116,7 +121,8 @@ knit_hooks$set(output = function(x, options) {
   gis_ts4<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,numCore=4,100,
           							ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="gis_ts4",time=TRUE)
-  
+  gis_ts4_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_4, 
+                              ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   gis_ts4_vars<-unique(unlist(gis_ts4[1:100]))
   gis_ts4_rf<-runRandomForest(ltmData[gis_ts4_vars],ltmData$TS_CHLA_4, 
@@ -127,7 +133,8 @@ knit_hooks$set(output = function(x, options) {
   gis_ts3<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_3,numCore=4,100,
         								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="gis_ts3",time=TRUE)
-  
+  gis_ts3_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_3, 
+                              ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   gis_ts3_vars<-unique(unlist(gis_ts3[1:100]))
   gis_ts3_rf<-runRandomForest(ltmData[gis_ts3_vars],ltmData$TS_CHLA_3, 
@@ -138,6 +145,8 @@ knit_hooks$set(output = function(x, options) {
   gis_ts2<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_2,numCore=4,100,
       									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
   											vars.drop.num=1,outStr="gis_ts2",time=TRUE)
+  gis_ts2_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_2, 
+                              ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   gis_ts2_vars<-unique(unlist(gis_ts2[1:100]))
   gis_ts2_rf<-runRandomForest(ltmData[gis_ts2_vars],ltmData$TS_CHLA_2, 
@@ -183,13 +192,13 @@ Productivity of lentic ecosystems has been well studied and it is widely accepte
 \doublespace
 
 #Introduction
-Productivity in lentic systems is often categorized across a range of tropic states (e.g. the tropic continuum) from early succesional (i.e. oligotrophic)to late successional lakes (i.e. hypereutrophic) [@carlson1977trophic] and lakes naturally occur across this range. Naturally oligotrophic lakes occur in nutrient poor areas or have a more recent geologic history.  These lakes are often found in higher elevations, have clear water, and are and are usually favored for drinking water or direct contact recreation (e.g. swimming).   Lakes with higher productivity (e.g. eutrophic lakes) have greater nutrient loads, tend to be less clear, have greater density of aquatic plants, and often support more diverse and abundant fish communities. Higher primary productivity is not necessarily a predictor of poor ecological condition as it is natural for lakes to shift from lower to higher trophic states but this is a slow process.  
+Productivity in lentic systems is often categorized across a range of tropic states (e.g. the tropic continuum) from early succesional (i.e. oligotrophic)to late successional lakes (i.e. hypereutrophic) with lakes naturally occurring across this range [@carlson1977trophic]. Oligotrophic lakes occur in nutrient poor areas or have a more recent geologic history and are often found in higher elevations, have clear water, and are usually favored for drinking water or direct contact recreation (e.g. swimming).   Lakes with higher productivity (e.g. eutrophic lakes) have greater nutrient loads, tend to be less clear, have greater density of aquatic plants, and often support more diverse and abundant fish communities. Higher primary productivity is not necessarily a predictor of poor ecological condition as it is natural for lakes to shift from lower to higher trophic states but this is a slow process.  
 
 Monitoring trophic state allows the identification of rapid shifts in trophic state or locating lakes with unusually high productivity (e.g. hypereutrophic).  These cases are indicative of lakes under greater anthropogenic nutrient loads, also known as cultural eutrophication, and are more likely to be at risk of fish kills, fouling, and harmful algal blooms [@smith1998cultural;@smith1999eutrophication;@smith2006eutrophication].  Given the association between trophic state and many ecosystem services and disservices, being able to accurately model trophic state could provide a first cut at identifying lakes with the potential for harmful algal blooms or other problems associated with cultural eutrophication. 
 
 As trophic state and related indices can be best defined by a number of *in situ* water quality parameters (modelled or meausred), most models have used this information as predictors [e.g., @carvalho_cyanobacterial_2011;@milstead2013estimating;@imboden1978dynamic;@salas1991simplified].  This leads to accurate models, but also requires data that is often sparse and not always available, thus limiting the population of lakes for which we can make predictions.  A possible solution for this is to build models that use widely available data that are correlated to many of the *in situ* variables. For instance, landscape metrics of forests, agriculture, wetlands, and urban land in contributing watersheds have all been shown to explain a significant proportion of the variation (ranging from 50-86%, depending on study) in nutrients in receiving waters [@jones2001predicting; @jones2004importance; @seilheimer2013landscape].  Building on these previously identified associations might allow us to use only landscape and other universally available data to build models.  Identifying predictors using this type of ubiquitous data would allow for estimating trophic state in both monitored and unmonitored lakes. 
 
-Many published efforts modeling nutrients and trophic state in freshwater systems are based on linear modelling methods such as standard least squares methods or linear mixed models [e.g., @jones2004importance;@jones2001predicting;].  While these methods have proven to be reliable, they are not without their limitations.  Using data mining approaches, such as random forests, avoids many of these limitations, may reduce bias and often provides better predictions [@cutler2007random; @peters2007random; @breiman2001random].  For instance, random forests are non-parametric and thus the data do not need to come from a specific distribution (e.g. gaussian) and can contain collinear variables [@cutler2007random]. Second, works well very large number of predictors [@cutler2007random].  Lastly, can deal with model selection uncertainty as predictions are based upon a consensus of many models and not just a single model selected with some measure of goodness of fit. 
+Many published models of nutrients and trophic state in freshwater systems are based on linear modelling methods such as standard least squares methods or linear mixed models [e.g., @jones2004importance; @jones2001predicting].  While these methods have proven to be reliable, they are not without their limitations.  Using data mining approaches, such as random forests, avoids many of these limitations, may reduce bias and often provides better predictions [@cutler2007random; @peters2007random; @breiman2001random].  For instance, random forests are non-parametric and thus the data do not need to come from a specific distribution (e.g. gaussian) and can contain collinear variables [@cutler2007random]. Second, random forests work well with very large numbers of predictors [@cutler2007random].  Lastly, random forests can deal with model selection uncertainty as predictions are based upon a consensus of many models and not just a single model selected with some measure of goodness of fit. 
 
 To build on past work we have identified four goals for this research.  First, we update trophic state modelling efforts with the use of random forests.  Second, we assess the accuracy of predicted trophic state in lakes with the full suite of data and then with the universally avialable data only. Third, we identify important variables for describing lake trophic state and lastly, we explore associations between trophic state and cyanobacteria to begin to understand how changes in trophic state may be linked to an important ecosystem disservice.
 
