@@ -45,9 +45,9 @@ importancePlot <- function(rf, type = c("acc", "gini"), ...) {
          theme(text = element_text(family="Times"),
                panel.background = element_blank(), panel.grid = element_blank(), 
                panel.border = element_rect(fill = NA), legend.position = "none", 
-               axis.title.x = element_text(family="serif",face = "bold", vjust = -0.5, size = 12), 
-               axis.text.x = element_text(family="serif",size = 11),
-               axis.text.y = element_text(family="serif",size = 11)) + 
+               axis.title.x = element_text(family="serif",face = "bold", vjust = -0.5, size = 20), 
+               axis.text.x = element_text(family="serif",size = 15),
+               axis.text.y = element_text(family="serif",size = 15)) + 
          ylab("") + 
          xlab(label)
     

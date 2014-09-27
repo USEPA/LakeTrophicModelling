@@ -2,8 +2,6 @@
 .Rhistory
 .RData
 packrat/lib*/
-inst/doc
-vignettes/manuscript_files
-
+inst/doc/*
 
 

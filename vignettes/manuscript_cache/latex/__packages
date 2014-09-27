@@ -1,0 +1,17 @@
+base
+dplyr
+e1071
+ggplot2
+knitr
+LakeTrophicModelling
+mapproj
+maps
+randomForest
+rgdal
+snow
+snowfall
+sp
+tidyr
+varSelRF
+wesanderson
+xtable

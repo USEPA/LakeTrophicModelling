@@ -38,13 +38,13 @@ plotCdf <- function(catVar, contVar, cdf_colors = 1:length(catVar), ...) {
           theme(text = element_text(family="Times"),
                 panel.background = element_blank(), panel.grid = element_blank(), 
                 panel.border = element_rect(fill = NA), 
-                plot.title  = element_text(family="serif",size=12,face="bold",vjust=1.1),
+                plot.title  = element_text(family="serif",size=22,face="bold",vjust=1.1),
                 legend.position = c(0.11,0.8), legend.key = element_rect(fill = 'white'),
-                legend.text = element_text(family="serif",size=15), legend.title = element_text(family="serif",size=11),
-                axis.title.x = element_text(family="serif",vjust = -0.5, size = 12),
-                axis.title.y = element_text(family="serif",vjust = 1.5, size = 12),
-                axis.text.x = element_text(family="serif",size = 11),
-                axis.text.y = element_text(family="serif",size = 11)) + 
+                legend.text = element_text(family="serif",size=15), legend.title = element_text(family="serif",size=15),
+                axis.title.x = element_text(family="serif",vjust = -0.5, size = 20),
+                axis.title.y = element_text(family="serif",vjust = 1.5, size = 20),
+                axis.text.x = element_text(family="serif",size = 15),
+                axis.text.y = element_text(family="serif",size = 15)) + 
           geom_hline(linetype = 3, size = 1, colour = "gray", 
                      yintercept = c(0,0.5,1)) +
           labs(...)

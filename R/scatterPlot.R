@@ -21,7 +21,7 @@ scatterPlot<-function(df,xvar,yvar,pt_col,ln_col,cl_col,...){
   xdf<-xdf[complete.cases(xdf),]
 
   x <- ggplot(xdf,aes(xvar,yvar))+
-    geom_point(size=2,colour=pt_col) +
+    geom_point(size=4,colour=pt_col) +
     scale_x_log10() +
     scale_y_log10() +
     stat_smooth(method="lm",fill=cl_col,
@@ -29,13 +29,13 @@ scatterPlot<-function(df,xvar,yvar,pt_col,ln_col,cl_col,...){
     theme(text = element_text(family="serif"),
           panel.background = element_blank(), panel.grid = element_blank(), 
           panel.border = element_rect(fill = NA), 
-          plot.title  = element_text(family="serif",size=12,face="bold",vjust=1.1),
+          plot.title  = element_text(family="serif",size=22,face="bold",vjust=1.1),
           legend.position = "none", legend.key = element_rect(fill = 'white'),
-          legend.text = element_text(family="serif",size=15), legend.title = element_text(size=11),
-          axis.title.x = element_text(family="serif",vjust = -0.5, size = 12),
-          axis.title.y = element_text(family="serif",vjust = 1.5, size = 12),
-          axis.text.x = element_text(family="serif",size = 11),
-          axis.text.y = element_text(family="serif",size = 11)) + 
+          legend.text = element_text(family="serif",size=15), legend.title = element_text(size=15),
+          axis.title.x = element_text(family="serif",vjust = -0.5, size = 20),
+          axis.title.y = element_text(family="serif",vjust = 1.5, size = 20),
+          axis.text.x = element_text(family="serif",size = 15),
+          axis.text.y = element_text(family="serif",size = 15)) + 
     labs(y="log10(Cyanobacteria Biovolume + 1)",...)
   return(x)
 }
