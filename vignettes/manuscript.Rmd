@@ -223,7 +223,7 @@ While random forests are able to handle numerous correlated variables without a 
 START HERE JEFF
 
 ##Model Details
-Using a combination of the `varSelRF` and `randomForest` we ran models for six combinations of variables and trophic state classifications.  These combinations included different combinations of the Chlorphyll *a* trophic states (Table \ref{tab:trophicStateTable}) along with all variables and the GIS only variables (i.e. no *in situ* infromation).  The six model combinations were:
+Using a combination of `varSelRF` and `randomForest` we ran models for six combinations of variables and trophic state classifications.  These combinations included different combinations of the Chlorphyll *a* trophic states (Table \ref{tab:trophicStateTable}) along with all variables and the GIS only variables (i.e. no *in situ* infromation).  The six model combinations were:
 
 
 - **Model 1:** Chlorophyll *a* trophic state - 4 class = All variables (*in situ* water quality, lake morphometry, and landscape)
