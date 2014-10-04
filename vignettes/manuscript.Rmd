@@ -238,6 +238,8 @@ Our modelling work flow was as follows:
 
 ##Trophic State and Cyanobacteria Associations
 
+Cyanobacteria should be closely related to trophic state as they make a component of the cholorophyll concentration in a lake.  To test if trophic state may be used differntiate cyanobacterial biovolume we examine distributions and explore linear associations between Chlorohyll *a* and biovolume.
+
 JEFF START HERE
 
 #Results and Discussion
