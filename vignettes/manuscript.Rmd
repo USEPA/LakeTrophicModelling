@@ -211,19 +211,17 @@ The NLA data were collected during the summer of 2007 and the final data were re
 
 Adding to the monitoring data collected via the NLA, we use the 2006 NLCD data to examine landscape-level drivers of trophic status in lakes.  The NLCD is a nationally collected land use land cover dataset that also provides estimates of impervious surface.  We calculated total proportion of each NLCD land use land cover class and total percent impervious surface within a 3 kilometer buffer surrounding the lake [@homer2004development;@xian2009updating]. 
 
-To account for unique aspects of each lake and characterize lake productivity, we also used various measures of lake morphometry (i.e. depth, volume, fetch, etc.).  As these data are difficult to obtain for large numbers of lakes over broad regions, we used modeled lake morphometry [@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014]. From these prior efforts we inlcuded, Surface Area, Shoreline Length, Shoreline Development, Maximum Depth, Mean Depth, Lake Volume, Maximum Lake Length, Mean Lake Width, Maximum Lake Width, and Fetch. 
+To account for unique aspects of each lake and characterize lake productivity, we also used various measures of lake morphometry (i.e. depth, volume, fetch, etc.).  As these data are difficult to obtain for large numbers of lakes over broad regions, we used modeled estimates of lake morphometry [@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014]. From these prior efforts we inlcuded, Surface Area, Shoreline Length, Shoreline Development, Maximum Depth, Mean Depth, Lake Volume, Maximum Lake Length, Mean Lake Width, Maximum Lake Width, and Fetch. 
 
-Lastly, to explore associations between trophic state and cyanobacteria, we used estimates of cyanobacterial biovolume caluclated by Beaulieu *et al.* [-@beaulieu2013nutrients].  Cyanobacteria biovolumes are a truer measure of cyanobacteria dominance than abundance as there is great variability in cell size within and between species.  We have consolidated the taxa level estimates from Beaulieu *et al.* [-@beaulieu2013nutrients] and  summed that information on a per-lake basis.
+Lastly, to explore associations between trophic state and cyanobacteria, we used estimates of cyanobacterial biovolume caluclated by Beaulieu *et al.* [-@beaulieu2013nutrients].  Cyanobacteria biovolumes are a truer measure of cyanobacteria dominance than abundance as there is great variability in cell size within and between species.  We have consolidated the taxa level estimates from Beaulieu *et al.* [-@beaulieu2013nutrients] and summed that information on a per-lake basis.
 
 ##Predicting Trophic State with Random Forests
 Random forest is a machine learning algorithm that aggregates numerous decision trees in order to obtain a consensus prediction of the response categories [@breiman2001random].  Bootstrapped sample data is recursively partitioned according to a given random subset of predictor variables and completely grown without pruning.   With each new tree, both the sample data and predictor variable subset is randomly selected.  
 
 While random forests are able to handle numerous correlated variables without a decrease in prediction accuracy, one possible downfall to this approach is that the resulting model may be difficult to interpret.  This is a problem often faced in gene selection and in that field, a variable selection method based on random forest has been succesfully applied [@diaz2006gene].  With this method, a minimum set of variables that maximizes model accuracy is provided.  This allows us to start with a full suite of predictor variables from which to select a minimum, more interpretable set of variables.  One issue with the approach in `varSelRF` is that becuase of the randomization inherent in random forests it is possible to get variation in the minimum selected set of variables.  To account for this we repeated `varSelRF` 100 times.  In our case, repeating the procedure 100 times quickly converged on a set of all possible important variables.  
 
-START HERE JEFF
-
 ##Model Details
-Using a combination of `varSelRF` and `randomForest` we ran models for six combinations of variables and trophic state classifications.  These combinations included different combinations of the Chlorphyll *a* trophic states (Table \ref{tab:trophicStateTable}) along with all variables and the GIS only variables (i.e. no *in situ* infromation).  The six model combinations were:
+Using both `varSelRF` and `randomForest` we ran models for six sets of variables and trophic state classifications.  These included three different combinations of the Chlorphyll *a* trophic states (Table \ref{tab:trophicStateTable}) as the dependent variables and using all variables or the GIS only variables (i.e. no *in situ* infromation) as the independt variables in the random forest.  The six model combinations were:
 
 
 - **Model 1:** Chlorophyll *a* trophic state - 4 class = All variables (*in situ* water quality, lake morphometry, and landscape)
@@ -233,12 +231,14 @@ Using a combination of `varSelRF` and `randomForest` we ran models for six combi
 - **Model 5:** Chlorophyll *a* trophic state - 3 class = All variables (lake morphometry, and landscape)
 - **Model 6:** Chlorophyll *a* trophic state - 2 class = All variables (lake morphometry, and landscape)
 
-Thus, our modelling work flow is as follows:
+Our modelling work flow was as follows:
 
-1. We use `iterVarSelRF` in our `LakeTrophicModelling` R package identify a minimal set of variables that maximize accuracy the random forest algorithm [@diaz-uriarte2010varSelRF; NEED GITHUB REF]. This subset of variables, the reduced model, is calculated for each of our 6 models. 
-2. Using R's randomForest package, we pass the reduced models selected with varSelRF and calculate confusion matrices, overall accuracy and kappa coeffecient [@liaw2002randomForest]. From the reduced model random forests we collect a consensus prediction and calculate a confusion matrix and summary stats.
+1. Use `iterVarSelRF` in the `LakeTrophicModelling` R package to identify a minimal set of variables that maximize accuracy of the random forest algorithm [@diaz-uriarte2010varSelRF; @LakeTrophicModelling]. This subset of variables, the reduced model, is calculated for each of our 6 models. 
+2. Using R's `randomForest` package, we pass the reduced models selected with `iterVarSelRF` and calculate confusion matrices, overall accuracy and kappa coeffecients for all 6 models [@liaw2002randomForest]. 
 
+##Trophic State and Cyanobacteria Associations
 
+JEFF START HERE
 
 #Results and Discussion
 
