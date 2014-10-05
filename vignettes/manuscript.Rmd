@@ -236,13 +236,9 @@ Our modelling work flow was as follows:
 1. Use `iterVarSelRF` in the `LakeTrophicModelling` R package to identify a minimal set of variables that maximize accuracy of the random forest algorithm [@diaz-uriarte2010varSelRF; @LakeTrophicModelling]. This subset of variables, the reduced model, is calculated for each of our 6 models. 
 2. Using R's `randomForest` package, we pass the reduced models selected with `iterVarSelRF` and calculate confusion matrices, overall accuracy and kappa coeffecients for all 6 models [@liaw2002randomForest]. 
 
-##Trophic State and Cyanobacteria Associations
-
-Cyanobacteria should be closely related to trophic state as they make a component of the cholorophyll concentration in a lake.  To test if trophic state may be used differntiate cyanobacterial biovolume we examine distributions and explore linear associations between Chlorohyll *a* and biovolume.
+#Results and Discussion
 
 JEFF START HERE
-
-#Results and Discussion
 
 ##Model 1: 4 Trophic States ~ All Variables
 The reduced model for Model 1 included Potassium, Nitrogen:Phosphorus, Total Nitrogen, Total Phosphorus, Total Organic Carbon, Turbidity, Ecoregion, Organic Ions, Dissolved Organic Carbon, and Maximum Lake Depth (Table \ref{tab:VarSel_Model1}).  Of these, tubidity, total phosphorus, total nitrogen, and total organic carbon were the most important predictors of the 4 classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
@@ -307,7 +303,8 @@ Some discussion here
 
 ##Associating Trophic State and Cyanobacteria
 
-Arm waving goes here.
+Cyanobacteria should be closely related to trophic state as they make up a component of the cholorophyll concentration in a lake.  If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used differntiate cyanobacterial biovolume we examine distribution of cyanobacteria biovolume for eash trophic state and we also explore linear associations between Chlorohyll *a* and biovolume.
+
 
 (Figure \ref{fig:ts_4_biov_cdf})
 
