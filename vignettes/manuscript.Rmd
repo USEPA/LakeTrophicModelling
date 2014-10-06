@@ -239,10 +239,13 @@ Our modelling work flow was as follows:
 
 #Results and Discussion
 
-Our complete dataset includes data on `r dim(ltmData)[1]` lakes; however `r sum(is.na(ltmData$TS_CHLA_4))` lakes did not have chlorophyll *a* data. Thus, the base dataset for our modelling was on `r dim(ltmData[!is.na(ltmData$TS_CHLA_4),])[1]` lakes.  
+Our complete dataset includes data on `r dim(ltmData)[1]` lakes; however `r sum(is.na(ltmData$TS_CHLA_4))` lakes did not have chlorophyll *a* data. Thus, the base dataset for our modelling was conducted on data for `r dim(ltmData[!is.na(ltmData$TS_CHLA_4),])[1]` lakes.  The lakes were well distributed both across the four trophic state categories (Table \ref{tab:trophicStateTable}) and spatially throughought the United States (Figure \ref{fig:nlaMap}).  
 
 ##Model 1: 4 Trophic States ~ All Variables
 The reduced model for Model 1 included Potassium, Nitrogen:Phosphorus, Total Nitrogen, Total Phosphorus, Total Organic Carbon, Turbidity, Ecoregion, Organic Ions, Dissolved Organic Carbon, and Maximum Lake Depth (Table \ref{tab:VarSel_Model1}).  Of these, turbidity, total phosphorus, total nitrogen, and total organic carbon were the most important predictors of the 4 classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
+
+
+JEFF START HERE
 
 Some discussion here
 
@@ -445,8 +448,8 @@ ts_4<-c("oligo","meso","eu","hyper")
 ts_3<-c("oligo","meso/eu","meso/eu","hyper")
 ts_2<-c("oligo/meso","oligo/meso","eu/hyper","eu/hyper")
 co<-c("<= 0.2",">2-7",">7-30",">30")
-xdf<-data.frame(ts_4,ts_3,ts_2,co)
-names(xdf)<-c("Trophic State (4)","Trophic State (3)","Trophic State (2)","Cut-off")
+xdf<-data.frame(ts_4,ts_3,ts_2,co,as.vector(table(ltmData$TS_CHLA_4)))
+names(xdf)<-c("Trophic State (4)","Trophic State (3)","Trophic State (2)","Cut-off","n")
 kable(xdf)
 ```
 
