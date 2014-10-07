@@ -249,7 +249,7 @@ The reduced model for Model 1 included Potassium, Nitrogen:Phosphorus, Total Nit
 
 ###Model 2: 3 Trophic States ~ All Variables
 
-JEFF START HERE
+For Model 2, the reduced model included JEFF START HERE
 
 Total accuracy for Model 2 is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$kappa,3)` 
 
