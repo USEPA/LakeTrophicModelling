@@ -187,7 +187,7 @@ var_importance<-var_importance[order(var_importance$model_id,-var_importance$mea
 \vspace{2mm}\hrule
 
 **Abstract**  
-Productivity of lentic ecosystems has been well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from low trophic state (e.g. oligotrophic) to higher trophic states  (e.g. eutrophic). These broad trophic state classifications are good predictors of ecosystem health and ecosystem services/disservices (e.g. recreation, aesthetics, fisheries, and harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to parameterize the model.  This limits the application of these models to lakes with existing and, more importantly, available water quality data.  To expand our ability to predict in lakes without water quality data, we take advantage of the availability of a large national lakes water quality database, land use/land cover data, lake morphometry data, other universally available data, and modern data mining approaches to build and assess models of lake tropic state that may be more universally applied.  We use random forests and random forest variable selection to identify variables to be used for predicting trophic state and we compare the performance of two models of trophic state (as determined by chlorophyll *a* concentration).   The first model estimates trophic state with *in situ* as well as universally available data and the second model uses universally available data only. For each of these models we used three separate trophic state categories, for a total of six models. Overall accuracy for models built from *in situ* and universal data ranged from `r round(min(acc_results[1:3,2]),3)`% to `r round(max(acc_results[1:3,2]),3)`%.  For the universal data only models, Overall accuracy ranged from `r round(min(acc_results[4:6,2]),3)`% to `r round(max(acc_results[4:6,2]),3)`%. Lastly, it is believed that the presence and abundance of cyanobacteria is strongly associated with trophic state.  To test this we examine the association between estimates of cyanobacteria biovolume and the measured and predicted trophic state and find a positive relationship.  Expanding these preliminary results to include cyanobacteria taxa indicates that cyanobacteria are significantly more likely to be found in highly eutrophic lakes. These results suggest that predictive models of lake trophic state may be improved with additional information on the landscape surrounding lakes and that those models provide additional information on the presence of potentially harmful cyanobacteria taxa. 
+Productivity of lentic ecosystems has been well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from low trophic state (e.g. oligotrophic) to higher trophic states  (e.g. eutrophic). These broad trophic state classifications are good predictors of ecosystem health and ecosystem services/disservices (e.g. recreation, aesthetics, fisheries, and harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to parameterize the model.  This limits the application of these models to lakes with existing and, more importantly, available water quality data.  To expand our ability to predict in lakes without water quality data, we take advantage of the availability of a large national lakes water quality database, land use/land cover data, lake morphometry data, other universally available data, and modern data mining approaches to build and assess models of lake tropic state that may be more universally applied.  We use random forests and random forest variable selection to identify variables to be used for predicting trophic state and we compare the performance of two models of trophic state (as determined by chlorophyll *a* concentration).   The first model estimates trophic state with *in situ* as well as universally available data and the second model uses universally available data only. For each of these models we used three separate trophic state categories, for a total of six models. Overall accuracy for models built from *in situ* and universal data ranged from `r round(min(acc_results[1:3,2]),3)`% to `r round(max(acc_results[1:3,2]),3)`%.  For the universal data only models, overall accuracy ranged from `r round(min(acc_results[4:6,2]),3)`% to `r round(max(acc_results[4:6,2]),3)`%. Lastly, it is believed that the presence and abundance of cyanobacteria is strongly associated with trophic state.  To test this we examine the association between estimates of cyanobacteria biovolume and the measured and predicted trophic state and find a positive relationship.  Expanding these preliminary results to include cyanobacteria taxa indicates that cyanobacteria are significantly more likely to be found in highly eutrophic lakes. These results suggest that predictive models of lake trophic state may be improved with additional information on the landscape surrounding lakes and that those models provide additional information on the presence of potentially harmful cyanobacteria taxa. 
 
 \vspace{3mm}\hrule
 \doublespace
@@ -241,15 +241,15 @@ Our modelling work flow was as follows:
 
 Our complete dataset includes data on `r dim(ltmData)[1]` lakes; however `r sum(is.na(ltmData$TS_CHLA_4))` lakes did not have chlorophyll *a* data. Thus, the base dataset for our modelling was conducted on data for `r dim(ltmData[!is.na(ltmData$TS_CHLA_4),])[1]` lakes.  The lakes were well distributed both across the four trophic state categories (Table \ref{tab:trophicStateTable}) and spatially throughought the United States (Figure \ref{fig:nlaMap}).  
 
-##Model 1: 4 Trophic States ~ All Variables
+##Models
+Accuracy for the models built with all predictors ranged from `r round(min(acc_results[1:3,2]),3)` to `r round(max(acc_results[1:3,2]),3)` and the kappa coeffecient had a minimum value of `r round(min(acc_results[1:3,3]),3)` and maximum of `r round(max(acc_results[1:3,3]),3)`.  The GIS only models had a total accuracy between `r round(min(acc_results[4:6,2]),3)` and `r round(min(acc_results[4:6,2]),3)` and kappa coeffecient between `r round(min(acc_results[4:6,3]),3)` and `r round(min(acc_results[4:6,3]),3)`.  The importance of variables for the models including the *in situ* data was fairly stable while There was considerably more variation in variable importance for the three different GIS only models.  Details for each model are discussed below.
+
+###Model 1: 4 Trophic States ~ All Variables
 The reduced model for Model 1 included Potassium, Nitrogen:Phosphorus, Total Nitrogen, Total Phosphorus, Total Organic Carbon, Turbidity, Ecoregion, Organic Ions, Dissolved Organic Carbon, and Maximum Lake Depth (Table \ref{tab:VarSel_Model1}).  Of these, turbidity, total phosphorus, total nitrogen, and total organic carbon were the most important predictors of the 4 classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
 
+###Model 2: 3 Trophic States ~ All Variables
 
 JEFF START HERE
-
-Some discussion here
-
-##Model 2: 3 Trophic States ~ All Variables
 
 Total accuracy for Model 2 is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$kappa,3)` 
 
@@ -259,9 +259,7 @@ Total accuracy for Model 2 is `r round(classAgreement(all_ts3_rf$confusion[,1:3]
 
 (Figure \ref{fig:Importance_Model2})
 
-Some discussion here
-
-##Model 3: 2 Trophic States ~ All Variables
+###Model 3: 2 Trophic States ~ All Variables
 Total accuracy for Model 3 is `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,3)`.
 
 (Table \ref{tab:VarSel_Model3})
@@ -270,9 +268,7 @@ Total accuracy for Model 3 is `r round(classAgreement(all_ts2_rf$confusion[,1:2]
 
 (Figure \ref{fig:Importance_Model3})
 
-Some discussion here
-
-##Model 4: 4 Trophic States ~ GIS Only Variables
+###Model 4: 4 Trophic States ~ GIS Only Variables
 Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,3)`.
 
 (Table \ref{tab:VarSel_Model4})
@@ -281,9 +277,7 @@ Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4]
 
 (Figure \ref{fig:Importance_Model4})
 
-Some discussion here
-
-##Model 5: 3 Trophic States ~ GIS Only Variables
+###Model 5: 3 Trophic States ~ GIS Only Variables
 Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,3)`.
 
 (Table \ref{tab:VarSel_Model5})
@@ -292,9 +286,7 @@ Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3]
 
 (Figure \ref{fig:Importance_Model5})
 
-Some discussion here
-
-##Model 6: 2 Trophic States ~ GIS Only Variables
+###Model 6: 2 Trophic States ~ GIS Only Variables
 Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)`.
 
 (Table \ref{tab:VarSel_Model6})
@@ -303,7 +295,7 @@ Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$d
 
 (Figure \ref{fig:Importance_Model6})
 
-Some discussion here
+
 
 ##Associating Trophic State and Cyanobacteria
 
