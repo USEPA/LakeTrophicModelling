@@ -250,7 +250,7 @@ The reduced model for Model 1 included Potassium, Nitrogen:Phosphorus, Total Nit
 ###Model 2: 3 Trophic States ~ All Variables
 
 For Model 2, the reduced model included Turbidity, Total Phosphorus, Total Nitrogen, Total Organic Carbon, Nitrogen:Phophorus Ratio, Longitude, pH
-Estimated Organic Anions, Elevation, Maximum Depth, Dissolved Organic Carbon, Potassium, Latitude, Ecoregion, Chloride, Ammonium and Percent Cropland (Table \ref{tab:VarSel_Model2}).. 
+Estimated Organic Anions, Elevation, Maximum Depth, Dissolved Organic Carbon, Potassium, Latitude, Ecoregion, Chloride, Ammonium and Percent Cropland (Table \ref{tab:VarSel_Model2}). 
 
 JEFF START HERE
 
