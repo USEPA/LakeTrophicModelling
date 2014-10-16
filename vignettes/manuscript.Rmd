@@ -33,7 +33,7 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+#devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
                         auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
 #devtools::install_github("jhollist/wesanderson")
 library("wesanderson")
@@ -245,24 +245,15 @@ Our complete dataset includes data on `r dim(ltmData)[1]` lakes; however `r sum(
 Accuracy for the models built with all predictors ranged from `r round(min(acc_results[1:3,2]),3)` to `r round(max(acc_results[1:3,2]),3)` and the kappa coeffecient had a minimum value of `r round(min(acc_results[1:3,3]),3)` and maximum of `r round(max(acc_results[1:3,3]),3)`.  The GIS only models had a total accuracy between `r round(min(acc_results[4:6,2]),3)` and `r round(min(acc_results[4:6,2]),3)` and kappa coeffecient between `r round(min(acc_results[4:6,3]),3)` and `r round(min(acc_results[4:6,3]),3)`.  The importance of variables for the models including the *in situ* data was fairly stable while There was considerably more variation in variable importance for the three different GIS only models.  Details for each model are discussed below.
 
 ###Model 1: 4 Trophic States ~ All Variables
-The reduced model for Model 1 included Potassium, Nitrogen:Phosphorus, Total Nitrogen, Total Phosphorus, Total Organic Carbon, Turbidity, Ecoregion, Organic Ions, Dissolved Organic Carbon, and Maximum Lake Depth (Table \ref{tab:VarSel_Model1}).  Of these, turbidity, total phosphorus, total nitrogen, and total organic carbon were the most important predictors of the 4 classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
+The reduced model for Model 1 included Potassium, Nitrogen:Phosphorus, Total Nitrogen, Total Phosphorus, Total Organic Carbon, Turbidity, Ecoregion, Organic Ions, Dissolved Organic Carbon, and Maximum Lake Depth (Table \ref{tab:VarSel_Model1}).  Of these, turbidity, total phosphorus, total nitrogen, and total organic carbon were the most four most important predictors of the 4 classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
 
 ###Model 2: 3 Trophic States ~ All Variables
 
-For Model 2, the reduced model included Turbidity, Total Phosphorus, Total Nitrogen, Total Organic Carbon, Nitrogen:Phophorus Ratio, Longitude, pH
-Estimated Organic Anions, Elevation, Maximum Depth, Dissolved Organic Carbon, Potassium, Latitude, Ecoregion, Chloride, Ammonium and Percent Cropland (Table \ref{tab:VarSel_Model2}). 
-
-JEFF START HERE
-
-Total accuracy for Model 2 is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts3_rf$confusion[,1:3])$kappa,3)` 
-
-(Table \ref{tab:VarSel_Model2})
-
-(Table \ref{tab:Confusion_Model2})
-
-(Figure \ref{fig:Importance_Model2})
+For Model 2, the reduced model included Turbidity, Total Phosphorus, Total Nitrogen, Total Organic Carbon, Nitrogen:Phophorus Ratio, Longitude, pH, Estimated Organic Anions, Elevation, Maximum Depth, Dissolved Organic Carbon, Potassium, Latitude, Ecoregion, Chloride, Ammonium and Percent Cropland (Table \ref{tab:VarSel_Model2}). The top predictors for 3 classes of trophic state were turbidity, total phosphorus, total nitrogen, and total organic carbon.  Model 2 accuracy is trophic state (Figure \ref{fig:Importance_Model2}). Total accuracy for Model 1 is `r round(classAgreement(all_ts3_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts3_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model2}).   
 
 ###Model 3: 2 Trophic States ~ All Variables
+Turbidity, Total Phosphorus, Total Nitrogen, Nitrogen:Phophorus Ratio, Potassium                Ecoregion, Elevation, Total Organic Carbon, Growing Degree Days, Longitude                Sodium, Maximum Depth, Estimate Organic Anions, Latitude, Dissolved Organic, Carbon
+
 Total accuracy for Model 3 is `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,3)`.
 
 (Table \ref{tab:VarSel_Model3})
@@ -272,6 +263,8 @@ Total accuracy for Model 3 is `r round(classAgreement(all_ts2_rf$confusion[,1:2]
 (Figure \ref{fig:Importance_Model3})
 
 ###Model 4: 4 Trophic States ~ GIS Only Variables
+Longitude, Latitude, Elevation, Estimated Mean Lake Depth, Percent Evergreen Forest, Estimated Maximum Lake Depth, Percent Cropland, Ecoregion 
+
 Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,3)`.
 
 (Table \ref{tab:VarSel_Model4})
@@ -281,6 +274,8 @@ Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4]
 (Figure \ref{fig:Importance_Model4})
 
 ###Model 5: 3 Trophic States ~ GIS Only Variables
+Estimated Mean Lake Depth, Percent Cropland, Longitude, Latitude, Percent Evergreen Forest, Elevation, Estimated Maximum Lake Depth, Estimated Lake Volume, Percent Decidous Forest, Percent Developed Open Space, Ecoregion, Percent Woody Wetland, Percent Shrub/Scrub         
+
 Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,3)`.
 
 (Table \ref{tab:VarSel_Model5})
@@ -290,6 +285,8 @@ Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3]
 (Figure \ref{fig:Importance_Model5})
 
 ###Model 6: 2 Trophic States ~ GIS Only Variables
+Ecoregion, Growing Degree Days, Percent Evergreen Forest, Percent Cropland, Elevation, Estimated Mean Lake Depth, Longitude, Latitude, Watershed Area, Estimated Maximum Lake Depth, Percent Developed Open Space, Percent Decidous Forest, Estimated Lake Volume       
+
 Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)`.
 
 (Table \ref{tab:VarSel_Model6})
