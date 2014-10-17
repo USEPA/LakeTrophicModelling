@@ -33,9 +33,9 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-#devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
                         auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
-#devtools::install_github("jhollist/wesanderson")
+devtools::install_github("jhollist/wesanderson")
 library("wesanderson")
 library("LakeTrophicModelling")
 library("knitr")
@@ -245,51 +245,25 @@ Our complete dataset includes data on `r dim(ltmData)[1]` lakes; however `r sum(
 Accuracy for the models built with all predictors ranged from `r round(min(acc_results[1:3,2]),3)` to `r round(max(acc_results[1:3,2]),3)` and the kappa coeffecient had a minimum value of `r round(min(acc_results[1:3,3]),3)` and maximum of `r round(max(acc_results[1:3,3]),3)`.  The GIS only models had a total accuracy between `r round(min(acc_results[4:6,2]),3)` and `r round(min(acc_results[4:6,2]),3)` and kappa coeffecient between `r round(min(acc_results[4:6,3]),3)` and `r round(min(acc_results[4:6,3]),3)`.  The importance of variables for the models including the *in situ* data was fairly stable while There was considerably more variation in variable importance for the three different GIS only models.  Details for each model are discussed below.
 
 ###Model 1: 4 Trophic States ~ All Variables
-The reduced model for Model 1 included potassium, nitrogen:phosphorus, total nitrogen, total phosphorus, total organic carbon, turbidity, ecoregion, organic ions, dissolved organic carbon, and maximum depth (Table \ref{tab:VarSel_Model1}) and of these, turbidity, total phosphorus, total nitrogen, and total organic carbon were the most four most important predictors of the four classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
+The reduced model for Model 1 included potassium, nitrogen:phosphorus, total nitrogen, total phosphorus, total organic carbon, turbidity, ecoregion, organic ions, dissolved organic carbon, and maximum depth (Table \ref{tab:VarSel_Model1}) and of these, turbidity, total phosphorus, total nitrogen, and total organic carbon were the most four most important predictors of the four classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
 
 ###Model 2: 3 Trophic States ~ All Variables
-
-For Model 2, the reduced model included turbidity, total phosphorus, total nitrogen, total organic carbon, nitrogen:phophorus, longitude, pH, estimated organic anions, elevation, maximum depth, dissolved organic carbon, potassium, latitude, ecoregion, chloride, ammonium and percent cropland (Table \ref{tab:VarSel_Model2}). The top predictors for 3 trophic state classes were turbidity, total phosphorus, total nitrogen, and total organic carbon (Figure \ref{fig:Importance_Model2}).  Model 2 accuracy is `r round(classAgreement(all_ts3_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts3_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model2}).   
+For Model 2, the reduced model included turbidity, total phosphorus, total nitrogen, total organic carbon, nitrogen:phophorus, longitude, pH, estimated organic anions, elevation, maximum depth, dissolved organic carbon, potassium, latitude, ecoregion, chloride, ammonium and percent cropland (Table \ref{tab:VarSel_Model2}). The top predictors for 3 trophic state classes were turbidity, total phosphorus, total nitrogen, and total organic carbon (Figure \ref{fig:Importance_Model2}).  Model 2 accuracy was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model2}).   
 
 ###Model 3: 2 Trophic States ~ All Variables
-The reduced model for Model 3 was similar to Model 1 and Model 2 and included turbidity, total phosphorus, total nitrogen, nitrogen:phophorus, potassium, ecoregion, elevation, total organic carbon, growing degree days, longitude, sodium, maximum depth, estimated organic anions, latitude, and dissolved organic carbon (Table \ref{tab:VarSel_Model3}). The top three predcitors were the same for Model 3; however, elevation and growing degree days had a higher importance than total organic carbon. (Figure \ref{fig:Importance_Model3}).  Total accuracy for Model 3 is `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model3}).
-
-
+The reduced model for Model 3 was similar to Model 1 and Model 2 and included turbidity, total phosphorus, total nitrogen, nitrogen:phophorus, potassium, ecoregion, elevation, total organic carbon, growing degree days, longitude, sodium, maximum depth, estimated organic anions, latitude, and dissolved organic carbon (Table \ref{tab:VarSel_Model3}). The top three predcitors were the same for Model 3; however, elevation and growing degree days had a higher importance than total organic carbon. (Figure \ref{fig:Importance_Model3}).  Total accuracy for Model 3 was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model3}).
 
 ###Model 4: 4 Trophic States ~ GIS Only Variables
-Longitude, Latitude, Elevation, Estimated Mean Lake Depth, Percent Evergreen Forest, Estimated Maximum Lake Depth, Percent Cropland, Ecoregion 
-
-Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,3)`.
-
-(Table \ref{tab:VarSel_Model4})
-
-(Table \ref{tab:Confusion_Model4})
-
-(Figure \ref{fig:Importance_Model4})
+The selected variables for the Model 4 were longitude, latitude, elevation, estimated mean lake depth, percent evergreen forest, estimated maximum lake depth, percent cropland, and ecoregion (Table \ref{tab:VarSel_Model4}).  The most important variables were percent evergreen forest, ecoregion, percent cropland, and longitude (Figure \ref{fig:Importance_Model4}). Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model4}).
 
 ###Model 5: 3 Trophic States ~ GIS Only Variables
-Estimated Mean Lake Depth, Percent Cropland, Longitude, Latitude, Percent Evergreen Forest, Elevation, Estimated Maximum Lake Depth, Estimated Lake Volume, Percent Decidous Forest, Percent Developed Open Space, Ecoregion, Percent Woody Wetland, Percent Shrub/Scrub         
-
-Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,3)`.
-
-(Table \ref{tab:VarSel_Model5})
-
-(Table \ref{tab:Confusion_Model5})
-
-(Figure \ref{fig:Importance_Model5})
+The reduced model for Model 5 included estimated mean lake depth, percent cropland, longitude, latitude, percent evergreen forest, elevation, estimated maximum lake depth, estimated lake volume, percent decidous forest, percent developed open space, ecoregion, percent woody wetland, and percent shrub/scrub (Table \ref{tab:VarSel_Model5}). The most important variables for model 5 were ecoregion, perent evergreen forest, percent cropland, and estimated mean depth. (Figure \ref{fig:Importance_Model5}). Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,3)` (Table \ref{tab:Confusion_Model5}).
 
 ###Model 6: 2 Trophic States ~ GIS Only Variables
-Ecoregion, Growing Degree Days, Percent Evergreen Forest, Percent Cropland, Elevation, Estimated Mean Lake Depth, Longitude, Latitude, Watershed Area, Estimated Maximum Lake Depth, Percent Developed Open Space, Percent Decidous Forest, Estimated Lake Volume       
+The variable selection process for Model 6 produced a reduced model with ecoregion, growing degree days, percent evergreen forest, percent cropland, elevation, estimated mean lake depth, longitude, latitude, watershed area, estimated maximum lake depth, percent developed open space, percent decidous forest, and estimated lake volume (Table \ref{tab:VarSel_Model6}). Similar to models 4 and 5, the four most important variables were ecoregion, percent evergreen forest, percent cropland, and elevation (Figure \ref{fig:Importance_Model6}).  Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model6}).
 
-Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)`.
-
-(Table \ref{tab:VarSel_Model6})
-
-(Table \ref{tab:Confusion_Model6})
-
-(Figure \ref{fig:Importance_Model6})
-
-
+##Trophic State Probabilities
+One of the powerful features of random forests is that you utilize a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of modelling trophic state  
 
 ##Associating Trophic State and Cyanobacteria
 
@@ -365,7 +339,7 @@ importancePlot(all_ts2_rf,'gini',size=5,aes(colour=all_ts2_color))
 
 \newpage
 
-```{r Importance_Model4,results="asis",echo=FALSE, tab.cap="Importance plot for Model 4\\label{fig:Importance_Model4}",cache=FALSE}
+```{r Importance_Model4,results="asis",echo=FALSE, fig.cap="Importance plot for Model 4\\label{fig:Importance_Model4}",cache=FALSE}
 gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
 importancePlot(gis_ts4_rf,'gini',size=5,aes(colour=gis_ts4_color))
 ```
