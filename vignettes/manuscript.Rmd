@@ -179,7 +179,10 @@ var_importance$variable_names<-factor(var_importance$variable_names)
 var_importance<-inner_join(var_importance,data_def[c("variable_names","description")],"variable_names")
 var_importance<-var_importance[order(var_importance$model_id,-var_importance$mean_decrease_gini, decreasing=FALSE),]                     
 
+```
 
+```{r getIDs}
+getLakeIDs(ltmData[all_ts4_vars],ltmData$TS_CHLA_4,ltmData$Comid)
 ```
 
 \singlespace
@@ -263,13 +266,15 @@ The reduced model for Model 5 included estimated mean lake depth, percent cropla
 The variable selection process for Model 6 produced a reduced model with ecoregion, growing degree days, percent evergreen forest, percent cropland, elevation, estimated mean lake depth, longitude, latitude, watershed area, estimated maximum lake depth, percent developed open space, percent decidous forest, and estimated lake volume (Table \ref{tab:VarSel_Model6}). Similar to models 4 and 5, the four most important variables were ecoregion, percent evergreen forest, percent cropland, and elevation (Figure \ref{fig:Importance_Model6}).  Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model6}).
 
 ##Trophic State Probabilities
-One of the powerful features of random forests is that you utilize a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake and each trophic state.  These values may be interepreted as the probability that a lake is in a given trophic state.  
+One of the powerful features of random forests is that you utilize a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake.  These values may be interepreted as the probability that a lake is in a given trophic state. For instance, for the Scituate Reservoir, a major drinking water supply in the state of Rhode Island, the model predicts  
 
-JEFF START HERE
+BRYAN START HERE
 
 ##Associating Trophic State and Cyanobacteria
 
 Cyanobacteria should be closely related to trophic state as they make up a component of the chlorophyll concentration in a lake.  If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used differentiate cyanobacteria biovolume we examine distribution of cyanobacteria biovolume for each trophic state and we also explore linear associations between Chlorohyll *a* and biovolume.
+
+JEFF START HERE
 
 NEED TO SWITCH THIS TO TOTAL CYANO ABUNDANCE
 
