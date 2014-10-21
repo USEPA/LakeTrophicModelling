@@ -179,11 +179,15 @@ var_importance$variable_names<-factor(var_importance$variable_names)
 var_importance<-inner_join(var_importance,data_def[c("variable_names","description")],"variable_names")
 var_importance<-var_importance[order(var_importance$model_id,-var_importance$mean_decrease_gini, decreasing=FALSE),]                     
 
+#Example Votes
+lakeVotes<-data.frame(all_ts4_rf$y,all_ts4_rf$predicted,all_ts4_rf$votes)
+lakeVotes<-data.frame(lakeVotes,max_prob=apply(lakeVotes[,3:6],1,max))
+lakeVotes$all_ts4_rf.predicted<-factor(lakeVotes$all_ts4_rf.predicted,ordered=T)
+lakeVotes<-data.frame(lakeVotes,correct_binary=lakeVotes$all_ts4_rf.y==lakeVotes$all_ts4_rf.predicted)
+lakeVotes<-data.frame(COMID=getLakeIDs(ltmData[all_ts4_vars],ltmData$TS_CHLA_4,ltmData$Comid),lakeVotes)
+lakeVotes<-na.omit(lakeVotes)
 ```
 
-```{r getIDs}
-getLakeIDs(ltmData[all_ts4_vars],ltmData$TS_CHLA_4,ltmData$Comid)
-```
 
 \singlespace
 
@@ -266,19 +270,15 @@ The reduced model for Model 5 included estimated mean lake depth, percent cropla
 The variable selection process for Model 6 produced a reduced model with ecoregion, growing degree days, percent evergreen forest, percent cropland, elevation, estimated mean lake depth, longitude, latitude, watershed area, estimated maximum lake depth, percent developed open space, percent decidous forest, and estimated lake volume (Table \ref{tab:VarSel_Model6}). Similar to models 4 and 5, the four most important variables were ecoregion, percent evergreen forest, percent cropland, and elevation (Figure \ref{fig:Importance_Model6}).  Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model6}).
 
 ##Trophic State Probabilities
-One of the powerful features of random forests is that you utilize a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake.  These values may be interepreted as the probability that a lake is in a given trophic state. For instance, for a single lake (COMID = 23491387), the vote results for Model 1 were JEFF START HERE
+One of the powerful features of random forests is that you utilize a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake.  These values may be interepreted as the probability that a lake is in a given trophic state. For instance, for a single lake (COMID = 23491387), the vote results for Model 1 ranged from round(min(lakeVotes[,4:7][lakeVotes$COMID==23491387,]),2) to round(max(lakeVotes[,4:7][lakeVotes$COMID==23491387,]),2) (Table \ref{tab:voteTable}).  
 
-```{r voteTable}
-xdf<-data.frame(all_ts4_rf$y,all_ts4_rf$predicted,all_ts4_rf$votes)
-xdf<-data.frame(xdf,max_prob=apply(xdf[,3:6],1,max))
-xdf$all_ts4_rf.predicted<-factor(xdf$all_ts4_rf.predicted,ordered=T)
-xdf<-data.frame(xdf,correct_binary=xdf$all_ts4_rf.y==xdf$all_ts4_rf.predicted)
-xdf<-data.frame(COMID=getLakeIDs(ltmData[all_ts4_vars],ltmData$TS_CHLA_4,ltmData$Comid),xdf)
-xdf<-na.omit(xdf)
-kable(xdf[,4:7][xdf$COMID==23491387,])
-```
+###Model Accuracy and Uncertainity
+Further, the maximum probability for each lake can be used as a measure of how certain the random forest model was of the prediction.  We would expect higher total accuracy for lakes that had more certain predictions.  
 
-BRYAN START HERE
+To test this we can examine the accuracy of trophic state predictions across the full range of trophic state probabilities, similar to an approach outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister *et al.* [-@hollister2008cprob].  As expected, lakes with higher maximum vote probabilites are more accurately predicted (Figure \ref{fig:condProbFig}).  This suggest that even for models with low overall accuracy there will also be a large number of cases that are predicted with high accuarcy.
+
+###Mapping Trophic State Probabilities 
+In addition to exploring how model accuracy changes with the uncertainty of trophic state predicitions, the model votes may also be used to map the probability of lakes falling in a certain trophic state category.  In Figure \ref{fig:tsProbMap} we map the probability that lakes are classified as eutrophic or hypereutrophic with Model 3 and Model 6.   
 
 ##Associating Trophic State and Cyanobacteria
 
@@ -419,6 +419,18 @@ scatterPlot(scp_df,xvar="chla",yvar="biovp1",zissou[8],zissou[7],zissou[6],
 
 \newpage
 
+```{r condProbFig,echo=FALSE, fig.width=7, fig.cap="Comparison of certainity of trophic state prediction and total accuracy\\label{fig:condProbFig}",cache=FALSE}
+
+```
+
+\newpage
+
+```{r tsProbMap,echo=FALSE, fig.width=7, fig.cap="Map of the probability of lakes being eutrophic or hypereutrophic\\label{fig:tsProbMap}",cache=FALSE}
+
+```
+
+\newpage
+
 #Tables
 
 ```{r trophicStateTable, results='asis', echo=FALSE, tab.cap="Chlorophyll a based trophic state cut-offs\\label{tab:trophicStateTable}",cache=FALSE}
@@ -505,4 +517,7 @@ kable(formatC(round(gis_ts2_rf$confusion,2)),row.names=F)
 
 \newpage
 
+```{r voteTable, results="asis",echo=FALSE, tab.cap="Example Lake Random Forest Vote Results\\label{tab:voteTable}",cache=FALSE}}
+kable(lakeVotes[,4:7][lakeVotes$COMID==23491387,],row.names=F)
+```
 #References
