@@ -279,13 +279,11 @@ Further, the maximum probability for each lake can be used as a measure of how c
 To test this we can examine the accuracy of trophic state predictions across the full range of trophic state probabilities, similar to an approach outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister *et al.* [-@hollister2008cprob].  As expected, lakes with higher maximum vote probabilites are more accurately predicted (Figure \ref{fig:condProbFig}).  This suggest that even for models with low overall accuracy there will also be a large number of cases that are predicted with high accuarcy.
 
 ###Mapping Trophic State Probabilities 
-In addition to exploring how model accuracy changes with the uncertainty of trophic state predicitions, the model votes may also be used to map the probability of lakes falling in a certain trophic state category.  In Figure \ref{fig:tsProbMap} we map the probability that lakes are classified as eutrophic or hypereutrophic with Model 3 and Model 6.   
+In addition to exploring how model accuracy changes with the uncertainty of trophic state predicitions, the model votes may also be used to map the probability of lakes falling in a certain trophic state category.  In Figure \ref{fig:tsProbMap} we map the probability that lakes are classified as eutrophic/hypereutrophic with Model 3 and Model 6.   
 
 ##Associating Trophic State and Cyanobacteria
 
 Cyanobacteria should be closely related to trophic state as they make up a component of the chlorophyll concentration in a lake.  If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used differentiate cyanobacteria biovolume we examine distribution of cyanobacteria biovolume for each trophic state and we also explore linear associations between Chlorohyll *a* and biovolume.
-
-
 
 NEED TO SWITCH THIS TO TOTAL CYANO ABUNDANCE
 
@@ -296,6 +294,13 @@ NEED TO SWITCH THIS TO TOTAL CYANO ABUNDANCE
 (Figure \ref{fig:ts_2_biov_cdf})
 
 (Figure \ref{fig:scatterplot})
+
+##Conclusions
+- restate goals
+- were able to accurately predict TS classes
+- more importantly have probabilities of TS
+- RF will be useful for cyano probability plus many otehr enviro applications
+- Also has utility for informing other approaches, i.e. Bayesian Network Models, can serve as priors.
 
 \newpage
 
