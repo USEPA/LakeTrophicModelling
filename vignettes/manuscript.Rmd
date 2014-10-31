@@ -428,7 +428,7 @@ scatterPlot(scp_df,xvar="chla",yvar="biovp1",zissou[8],zissou[7],zissou[6],
 \newpage
 
 ```{r condProbFig,echo=FALSE, fig.width=7, fig.cap="Comparison of certainity of trophic state prediction and total accuracy\\label{fig:condProbFig}",cache=FALSE}
-
+condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
 ```
 
 \newpage
