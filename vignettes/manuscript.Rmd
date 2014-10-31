@@ -36,6 +36,7 @@ abstract: no
 devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
                         auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
 devtools::install_github("jhollist/wesanderson")
+devtools::install_github("jhollist/condprob2")
 library("wesanderson")
 library("LakeTrophicModelling")
 library("knitr")
@@ -45,6 +46,7 @@ library("rgdal")
 library("e1071")
 library("dplyr")
 library("tidyr")
+library("condprob2")
 opts_chunk$set(dev = 'pdf', fig.width=7.5)
 data(LakeTrophicModelling)
 
@@ -276,7 +278,7 @@ One of the powerful features of random forests is that you utilize a very large 
 ###Model Accuracy and Uncertainity
 Further, the maximum probability for each lake can be used as a measure of how certain the random forest model was of the prediction.  We would expect higher total accuracy for lakes that had more certain predictions.  
 
-To test this we can examine the accuracy of trophic state predictions across the full range of trophic state probabilities, similar to an approach outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister *et al.* [-@hollister2008cprob].  As expected, lakes with higher maximum vote probabilites are more accurately predicted (Figure \ref{fig:condProbFig}).  This suggest that even for models with low overall accuracy there will also be a large number of cases that are predicted with high accuarcy.
+To test this we can examine the accuracy of trophic state predictions across the full range of trophic state probabilities, similar to an approach outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister *et al.* [-@hollister2008cprob].  We utilize this approach and examine the change in total accuracy as a function of the maximum probability for each lake.  As expected, lakes with higher maximum vote probabilites are more accurately predicted (Figure \ref{fig:condProbFig}).  This suggest that even for models with low overall accuracy there will also be a large number of cases that are predicted with high accuarcy.
 
 ###Mapping Trophic State Probabilities 
 In addition to exploring how model accuracy changes with the uncertainty of trophic state predicitions, the model votes may also be used to map the probability of lakes falling in a certain trophic state category.  In Figure \ref{fig:tsProbMap} we map the probability that lakes are classified as eutrophic/hypereutrophic with Model 3 and Model 6.   
