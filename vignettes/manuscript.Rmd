@@ -285,7 +285,9 @@ In addition to exploring how model accuracy changes with the uncertainty of trop
 
 ##Associating Trophic State and Cyanobacteria
 
-Cyanobacteria should be closely related to trophic state as they make up a component of the chlorophyll concentration in a lake.  If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used differentiate cyanobacteria biovolume we examine distribution of cyanobacteria biovolume for each trophic state and we also explore linear associations between Chlorohyll *a* and biovolume.
+Cyanobacteria should be closely related to trophic state as they make up a component of the chlorophyll concentration in a lake. These associations have been seen by others ADD ALAN'S WORK and LESTERs Stuff
+
+If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used to differentiate cyanobacteria biovolume we examine distribution of cyanobacteria biovolume for each trophic state and we also explore linear associations between Chlorohyll *a* and biovolume.
 
 NEED TO SWITCH THIS TO TOTAL CYANO ABUNDANCE
 
