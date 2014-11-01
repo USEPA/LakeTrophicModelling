@@ -1,0 +1,188 @@
+---
+title: "Compare full and reduced"
+author: "Jeff W. Hollister, W. Bryan Milstead, Betty J. Kreakie"
+date: "9/25/2014"
+output: pdf_document
+---
+```{r setup, include=FALSE, echo=FALSE}
+#devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+#                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+#devtools::install_github("jhollist/wesanderson")
+library("wesanderson")
+library("LakeTrophicModelling")
+library("knitr")
+library("ggplot2")
+library("sp")
+library("rgdal")
+library("e1071")
+library("dplyr")
+library("tidyr")
+opts_chunk$set(dev = 'pdf', fig.height=9)
+data(LakeTrophicModelling)
+
+#Checks for existing cache (from another project)
+if(file.exists("prior_cache")){
+  for(i in gsub(".rdb","",list.files("prior_cache",".rdb",full.names=T))){
+    lazyLoad(i)
+  }
+}
+
+# Table Captions from @DeanK on 
+#http://stackoverflow.com/questions/15258233/using-table-caption-on-r-markdown-file-using-knitr-to-use-in-pandoc-to-convert-t
+
+knit_hooks$set(tab.cap = function(before, options, envir) {
+                  if(!before) { 
+                    paste('\n\n:', options$tab.cap, sep='') 
+                  }
+                })
+default_output_hook = knit_hooks$get("output")
+knit_hooks$set(output = function(x, options) {
+  if (is.null(options$tab.cap) == FALSE) {
+    x
+  } else
+    default_output_hook(x,options)
+})
+load("rf.rda")
+```
+
+#All variables - 4 Classes
+
+```{r echo=FALSE}
+all_ts4_rf
+```
+
+```{r echo=FALSE}
+all_ts4_rf_full
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(all_ts4_rf,'gini',size=5)
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(all_ts4_rf_full,'gini',size=5)
+```
+
+\newpage
+
+#All variables - 3 Classes
+
+```{r echo=FALSE}
+all_ts3_rf
+```
+
+```{r echo=FALSE}
+all_ts3_rf_full
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(all_ts3_rf,'gini',size=5)
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(all_ts3_rf_full,'gini',size=5)
+```
+
+\newpage
+
+#All variables - 2 Classes
+
+```{r echo=FALSE}
+all_ts2_rf
+```
+
+```{r echo=FALSE}
+all_ts2_rf_full
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(all_ts2_rf,'gini',size=5)
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(all_ts2_rf_full,'gini',size=5)
+```
+
+\newpage
+
+#GIS variables - 4 Classes
+
+```{r echo=FALSE}
+gis_ts4_rf
+```
+
+```{r echo=FALSE}
+gis_ts4_rf_full
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(gis_ts4_rf,'gini',size=5)
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(gis_ts4_rf_full,'gini',size=5)
+```
+
+\newpage
+
+#GIS variables - 3 Classes
+
+```{r echo=FALSE}
+gis_ts3_rf
+```
+
+```{r echo=FALSE}
+gis_ts3_rf_full
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(gis_ts3_rf,'gini',size=5)
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(gis_ts3_rf_full,'gini',size=5)
+```
+
+\newpage
+
+#GIS variables - 2 Classes
+
+```{r echo=FALSE}
+gis_ts2_rf
+```
+
+```{r echo=FALSE}
+gis_ts2_rf_full
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(gis_ts2_rf,'gini',size=5)
+```
+
+\newpage
+
+```{r echo=FALSE}
+importancePlot(gis_ts2_rf_full,'gini',size=5)
+```

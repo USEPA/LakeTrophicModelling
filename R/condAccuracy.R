@@ -7,15 +7,16 @@
 #' @param rf A random forest object
 #' @param ... parameters to be passed to condprob
 #' @export
-#' @import condprob2 ggplot2
+#' @import ggplot2
 #' @examples
 #' condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
 condAccuracy<-function(rf,xlab="x",...){
+  devtools::install_github("jhollist/condprob2")
   max_vote<-apply(rf$votes,1,max)
   obs<-rf$y
   pred<-factor(rf$predicted,levels=unique(obs),ordered=is.ordered(obs))
   correct<-pred==obs
-  cp<-condprob(max_vote,correct,ProbComp="gt",Exceed="gte",...)
+  cp<-condprob2::condprob(max_vote,correct,ProbComp="gt",Exceed="gte",...)
   #plot(cp$max_vote,cp$Raw.Data.Probability)
   cp<-data.frame(cp$max_vote,cp$Raw.Data.Probability)
   
