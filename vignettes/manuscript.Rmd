@@ -302,7 +302,7 @@ NEED TO SWITCH THIS TO TOTAL CYANO ABUNDANCE
 ##Conclusions
 
 The goals of this research were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of lake trophic state. Further, we hoped to examine the utility of these random forest models when predicting trophic state with only ubiquitous GIS data.  This would allow for makeing trophic state estimates for all lakes in the United States.  
-- restate goals
+
 - were able to accurately predict TS classes
 - more importantly have probabilities of TS
 - RF will be useful for cyano probability plus many otehr enviro applications
