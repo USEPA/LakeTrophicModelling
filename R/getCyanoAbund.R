@@ -4,6 +4,8 @@
 #returns a data.frame with two fields
   # SITE_ID=the NLA site id for the lake
   # cyanoCellsPerML=for each SITE_ID the sum of abundance (cells/ml) of all phytoplankton for Division='Cyanophyta'
+  # cyanoCat: cyano abundance category based on quartile distribution of cyanoCellsPerML
+              #'LOW'<= Q1; 'MED' >Q1 and <Q4; 'HIGH' >=Q4
   getCyanoAbund<-function(){
     #read the raw data from the EPA website
       Raw<-read.csv('http://water.epa.gov/type/lakes/assessmonitor/lakessurvey/upload/NLA2007_Phytoplankton_SoftAlgaeCount_20091023.csv')
@@ -14,9 +16,16 @@
     #rename fields and round to 1 decimal place
       names(cyanoAbund)<-c('SITE_ID','cyanoCellsPerML')
       cyanoAbund$cyanoCellsPerML<-round(cyanoAbund$cyanoCellsPerML,1)
+    #add field for cyanoCat: 'LOW'<= Q1; 'MED' >Q1 and <Q4; 'HIGH' >=Q4
+      cyanoAbund$cyanoCat<-'MED'
+      cyanoAbund$cyanoCat[cyanoAbund$cyanoCellsPerML<=quantile(cyanoAbund$cyanoCellsPerML,.25,na.rm=T)]<-'LOW'
+      cyanoAbund$cyanoCat[cyanoAbund$cyanoCellsPerML>=quantile(cyanoAbund$cyanoCellsPerML,.75,na.rm=T)]<-'HIGH'
+      cyanoAbund$cyanoCat[is.na(cyanoAbund$cyanoCellsPerML)]<-NA
+      cyanoAbund$cyanoCat<-factor(cyanoAbund$cyanoCat,levels=c('LOW','MED','HIGH'),ordered=TRUE)
     #output data
       return(cyanoAbund)
   }
   
   
   cyanoAbund<-getCyanoAbund()
+  
