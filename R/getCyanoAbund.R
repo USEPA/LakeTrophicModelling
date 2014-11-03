@@ -1,9 +1,11 @@
-
-
-#function to download the NLA2007 phytoplankton data and calculate the abundance (cells/ml) of cyanobacteria by lake
-#returns a data.frame with two fields
-  # SITE_ID=the NLA site id for the lake
-  # cyanoCellsPerML=for each SITE_ID the sum of abundance (cells/ml) of all phytoplankton for Division='Cyanophyta'
+#' Pulls down cyano abundance from NLA website
+#' 
+#' This function downloads the NLA2007 phytoplankton data and calculates the 
+#' abundance (cells/ml) of cyanobacteria by lake
+#' @returns a data.frame with two fields: SITE_ID=the NLA site id for the lake
+#'          and cyanoCellsPerML=for each SITE_ID the sum of abundance (cells/ml)
+#'          of all phytoplankton for Division='Cyanophyta'
+#' @export          
   getCyanoAbund<-function(){
     #read the raw data from the EPA website
       Raw<-read.csv('http://water.epa.gov/type/lakes/assessmonitor/lakessurvey/upload/NLA2007_Phytoplankton_SoftAlgaeCount_20091023.csv')
@@ -18,5 +20,3 @@
       return(cyanoAbund)
   }
   
-  
-  cyanoAbund<-getCyanoAbund()
