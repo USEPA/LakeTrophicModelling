@@ -76,7 +76,7 @@ knit_hooks$set(output = function(x, options) {
 })
 ```
 
-```{r analysis , eval=TRUE, include=FALSE, echo=FALSE, cache=FALSE}
+```{r analysis , eval=TRUE, include=FALSE, echo=FALSE, cache=TRUE}
 ################################################################################
 #All analysis in here, that way all bits of paper have access to final objects
 #Tables, figures, and numerical results placed at end of paper.
