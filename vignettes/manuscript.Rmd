@@ -217,15 +217,13 @@ To build on past work we have identified four goals for this research.  First, w
 #Methods
 
 ##Data and Study Area
-We utilize four primary sources of data for this study,the National Lakes Assessment (NLA), the National Lake Cover Dataset (NLCD), modeled lake morphometery,  and estimated cyanobacteria biovolumes [@usepa2009national;@homer2004development;@xian2009updating;@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014;@beaulieu2013nutrients].  All datasets are national in scale and provide a unique snapshot view of the condition of lakes in the United States' during the summer of 2007.
+We utilize four primary sources of data for this study,the National Lakes Assessment (NLA), the National Lake Cover Dataset (NLCD), modeled lake morphometery,  and cyanobacteria abundance [@usepa2009national;@homer2004development;@xian2009updating;@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014].  All datasets are national in scale and provide a unique snapshot view of the condition of lakes in the United States' during the summer of 2007.
 
 The NLA data were collected during the summer of 2007 and the final data were released in 2009.  With consistent methods and metrics collected at 1056 locations across the conterminous United States (Figure \ref{fig:nlaMap}), the NLA provides a unique opportunity to examine broad scale patterns in lake productivity.  The NLA collected data on biophysical measures of lake water quality and habitat.  For this analysis we primarily examined the water quality measurements from the NLA [@usepa2009national].  
 
 Adding to the monitoring data collected via the NLA, we use the 2006 NLCD data to examine landscape-level drivers of trophic status in lakes.  The NLCD is a nationally collected land use land cover dataset that also provides estimates of impervious surface.  We calculated total proportion of each NLCD land use land cover class and total percent impervious surface within a 3 kilometer buffer surrounding the lake [@homer2004development;@xian2009updating]. 
 
-To account for unique aspects of each lake and characterize lake productivity, we also used various measures of lake morphometry (i.e. depth, volume, fetch, etc.).  As these data are difficult to obtain for large numbers of lakes over broad regions, we used modeled estimates of lake morphometry [@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014]. From these prior efforts we inlcuded, Surface Area, Shoreline Length, Shoreline Development, Maximum Depth, Mean Depth, Lake Volume, Maximum Lake Length, Mean Lake Width, Maximum Lake Width, and Fetch. 
-
-Lastly, to explore associations between trophic state and cyanobacteria, we used estimates of cyanobacterial biovolume caluclated by Beaulieu *et al.* [-@beaulieu2013nutrients].  Cyanobacteria biovolumes are a truer measure of cyanobacteria dominance than abundance as there is great variability in cell size within and between species.  We have consolidated the taxa level estimates from Beaulieu *et al.* [-@beaulieu2013nutrients] and summed that information on a per-lake basis.
+To account for unique aspects of each lake and characterize lake productivity, we also used various measures of lake morphometry (i.e. depth, volume, fetch, etc.).  As these data are difficult to obtain for large numbers of lakes over broad regions, we used modeled estimates of lake morphometry [@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014]. From these prior efforts we inlcuded, Surface Area, Shoreline Length, Shoreline Development, Maximum Depth, Mean Depth, Lake Volume, Maximum Lake Length, Mean Lake Width, Maximum Lake Width, and Fetch. Lastly, to explore associations between trophic state and cyanobacteria, we used total cyanobacteria abundance from the National Lakes Assessment [@usepa2009national].  
 
 ##Predicting Trophic State with Random Forests
 Random forest is a machine learning algorithm that aggregates numerous decision trees in order to obtain a consensus prediction of the response categories [@breiman2001random].  Bootstrapped sample data is recursively partitioned according to a given random subset of predictor variables and completely grown without pruning.   With each new tree, both the sample data and predictor variable subset is randomly selected.  
@@ -282,22 +280,16 @@ Further, the maximum probability for each lake can be used as a measure of how c
 
 To test this we can examine the accuracy of trophic state predictions across the full range of trophic state probabilities, similar to an approach outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister *et al.* [-@hollister2008cprob].  We utilize this approach and examine the change in total accuracy as a function of the maximum probability for each lake.  As expected, lakes with higher maximum vote probabilites are more accurately predicted (Figure \ref{fig:condProbFig}).  This suggest that even for models with low overall accuracy there will also be a large number of cases that are predicted with high accuarcy.
 
+<!-- Not including this for now
 ###Mapping Trophic State Probabilities 
 In addition to exploring how model accuracy changes with the uncertainty of trophic state predicitions, the model votes may also be used to map the probability of lakes falling in a certain trophic state category.  In Figure \ref{fig:tsProbMap} we map the probability that lakes are classified as eutrophic/hypereutrophic with Model 3 and Model 6.   
+-->
 
 ##Associating Trophic State and Cyanobacteria
 
-Cyanobacteria should be closely related to trophic state as they make up a component of the chlorophyll concentration in a lake. These associations have been seen by others ADD ALAN'S WORK and LESTERs Stuff
+Cyanobacteria biomass should be closely related to trophic state as they make up a component of the chlorophyll concentration in a lake. These associations have been seen by others.  If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used to differentiate cyanobacteria abundance we examine distribution of cyanobacteria abundance for each trophic state and we also explore linear associations between Chlorohyll *a* and cyanobacteria abundance.
 
-If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used to differentiate cyanobacteria biovolume we examine distribution of cyanobacteria biovolume for each trophic state and we also explore linear associations between Chlorohyll *a* and cyanobacteria abundance.
-
-(Figure \ref{fig:ts_4_cyano_cdf})
-
-(Figure \ref{fig:ts_3_cyano_cdf})
-
-(Figure \ref{fig:ts_2_cyano_cdf})
-
-(Figure \ref{fig:scatterplot})
+The distribution of cyanobacteria abundance shows separation between all of the trophic state classificaitons (Figures \ref{fig:ts_4_cyano_cdf}, \ref{fig:ts_3_cyano_cdf}, and \ref{fig:ts_2_cyano_cdf}).  Furthermore, there is a linear relationship (r^2^=`r summary(lm(log10(ltmData$CHLA)~log10(ltmData$cyanoCellsPerML)))$r.squared` and p-value = `r `) between Chl *a* and cyanobacteria abundance (Figure \ref{fig:scatterplot}).  These results suggest that trophic state is indeed an acceptable proxy for cyanobacteria anundance and that in lakes with higher trophic state, it is reasonable to also expect higher cyanobacteria.  
 
 ##Conclusions
 
@@ -435,11 +427,12 @@ scatterPlot(scp_df,xvar="chla",yvar="abundp1",zissou[8],zissou[7],zissou[6],
 condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
 ```
 
+<!--
 \newpage
-
 ```{r tsProbMap,echo=FALSE, fig.width=7, fig.cap="Map of the probability of lakes being eutrophic or hypereutrophic\\label{fig:tsProbMap}",cache=FALSE}
-
 ```
+-->
+
 
 \newpage
 
