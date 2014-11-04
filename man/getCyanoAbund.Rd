@@ -6,9 +6,12 @@
 getCyanoAbund()
 }
 \value{
-a data.frame with two fields: SITE_ID=the NLA site id for the lake
-         and cyanoCellsPerML=for each SITE_ID the sum of abundance (cells/ml)
-         of all phytoplankton for Division='Cyanophyta'
+a data.frame with four fields: SITE_ID=the NLA site id for the lake,
+         cyanoCellsPerML=for each SITE_ID the sum of abundance (cells/ml)
+         of all phytoplankton for Division='Cyanophyta',
+         cyanoCat=cyano abundance category based on quartile distribution of cyanoCellsPerML
+         ('LOW'<= Q1; 'MED' >Q1 and <Q4; 'HIGH' >=Q4), and
+         mcyst_conc in ug/l
 }
 \description{
 This function downloads the NLA2007 phytoplankton data and calculates the

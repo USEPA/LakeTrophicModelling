@@ -2,11 +2,12 @@
 #' 
 #' This function downloads the NLA2007 phytoplankton data and calculates the 
 #' abundance (cells/ml) of cyanobacteria by lake
-#' @return a data.frame with three fields: SITE_ID=the NLA site id for the lake,
+#' @return a data.frame with four fields: SITE_ID=the NLA site id for the lake,
 #'          cyanoCellsPerML=for each SITE_ID the sum of abundance (cells/ml)
 #'          of all phytoplankton for Division='Cyanophyta', 
-#'          and cyanoCat=cyano abundance category based on quartile distribution of cyanoCellsPerML 
-#'          ('LOW'<= Q1; 'MED' >Q1 and <Q4; 'HIGH' >=Q4) 
+#'          cyanoCat=cyano abundance category based on quartile distribution of cyanoCellsPerML 
+#'          ('LOW'<= Q1; 'MED' >Q1 and <Q4; 'HIGH' >=Q4), and
+#'          mcyst_conc in ug/l 
 #'          
 #'          
 #' @export          
@@ -27,6 +28,9 @@
       cyanoAbund$cyanoCat[cyanoAbund$cyanoCellsPerML>=quantile(cyanoAbund$cyanoCellsPerML,.75,na.rm=T)]<-'HIGH'
       cyanoAbund$cyanoCat[is.na(cyanoAbund$cyanoCellsPerML)]<-NA
       cyanoAbund$cyanoCat<-factor(cyanoAbund$cyanoCat,levels=c('LOW','MED','HIGH'),ordered=TRUE)
+    #get microsystin data
+      nla_rec<-read.csv("http://water.epa.gov/type/lakes/assessmonitor/lakessurvey/upload/NLA2007_Recreational_ConditionEstimates_20091123.csv")
+      cyanoAbund<-merge(cyanoAbund,nla_rec[,c("SITE_ID","MCYST_TL_UGL")],by="SITE_ID",all.x=T)
     #output data
       return(cyanoAbund)
   }
