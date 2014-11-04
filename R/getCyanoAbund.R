@@ -1,10 +1,3 @@
-#function to download the NLA2007 phytoplankton data and calculate the abundance (cells/ml) of cyanobacteria by lake
-#returns a data.frame with two fields
-  # SITE_ID=the NLA site id for the lake
-  # cyanoCellsPerML=for each SITE_ID the sum of abundance (cells/ml) of all phytoplankton for Division='Cyanophyta'
-  # cyanoCat=cyano abundance category based on quartile distribution of cyanoCellsPerML
-              #'LOW'<= Q1; 'MED' >Q1 and <Q4; 'HIGH' >=Q4
-=======
 #' Pulls down cyano abundance from NLA website
 #' 
 #' This function downloads the NLA2007 phytoplankton data and calculates the 
