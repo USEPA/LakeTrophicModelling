@@ -33,8 +33,8 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
-                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+#devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+#                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
 devtools::install_github("jhollist/wesanderson")
 devtools::install_github("jhollist/condprob2")
 library("wesanderson")
@@ -50,12 +50,14 @@ library("condprob2")
 opts_chunk$set(dev = 'pdf', fig.width=7.5)
 data(LakeTrophicModelling)
 
+
 #Checks for existing cache (from another project)
-if(file.exists("vignettes/prior_cache")){
-  for(i in gsub(".rdb","",list.files("vignettes/prior_cache",".rdb",full.names=T))){
+if(file.exists("prior_cache")){
+  for(i in gsub(".rdb","",list.files("prior_cache",".rdb",full.names=T))){
     lazyLoad(i)
   }
 }
+
 
 # Table Captions from @DeanK on 
 #http://stackoverflow.com/questions/15258233/using-table-caption-on-r-markdown-file-using-knitr-to-use-in-pandoc-to-convert-t
@@ -74,7 +76,7 @@ knit_hooks$set(output = function(x, options) {
 })
 ```
 
-```{r analysis , eval=FALSE, include=FALSE, echo=FALSE, cache=FALSE}
+```{r analysis , eval=TRUE, include=FALSE, echo=FALSE, cache=FALSE}
 ################################################################################
 #All analysis in here, that way all bits of paper have access to final objects
 #Tables, figures, and numerical results placed at end of paper.
@@ -84,11 +86,11 @@ knit_hooks$set(output = function(x, options) {
 ################################################################################
 #Model 1: All Variables, 4 Trophic State Classes
   #Variable Selction
-  all_ts4<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_4,numCore=4,100,
-        								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  											vars.drop.num=1,outStr="all_ts4",time=TRUE)
-  all_ts4_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_4, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
+  #all_ts4<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_4,numCore=4,100,
+  #      								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+  #  											vars.drop.num=1,outStr="all_ts4",time=TRUE)
+  #all_ts4_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_4, 
+  #                          ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   all_ts4_vars<-unique(unlist(all_ts4[1:100]))
   all_ts4_rf<-runRandomForest(ltmData[all_ts4_vars],ltmData$TS_CHLA_4, 
@@ -96,11 +98,11 @@ knit_hooks$set(output = function(x, options) {
 ################################################################################
 #Model 2: All Variables, 3 Trophic State Classes
   #Variable Selction
-  all_ts3<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_3,numCore=4,100,
-      									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  											vars.drop.num=1,outStr="all_ts3",time=TRUE)
-  all_ts3_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_3, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
+  #all_ts3<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_3,numCore=4,100,
+  #    									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+  #  											vars.drop.num=1,outStr="all_ts3",time=TRUE)
+  # all_ts3_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_3, 
+  #                            ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   all_ts3_vars<-unique(unlist(all_ts3[1:100]))
   all_ts3_rf<-runRandomForest(ltmData[all_ts3_vars],ltmData$TS_CHLA_3, 
@@ -108,11 +110,11 @@ knit_hooks$set(output = function(x, options) {
 ################################################################################
 #Model 3: All Variables, 2 Trophic State Classes
   #Variable Selction
-  all_ts2<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_2,numCore=4,100,
-      									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  											vars.drop.num=1,outStr="all_ts2",time=TRUE)
-  all_ts2_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_2, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
+  #all_ts2<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_2,numCore=4,100,
+  #    									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+  #											vars.drop.num=1,outStr="all_ts2",time=TRUE)
+  #all_ts2_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_2, 
+  #                           ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   all_ts2_vars<-unique(unlist(all_ts2[1:100]))
   all_ts2_rf<-runRandomForest(ltmData[all_ts2_vars],ltmData$TS_CHLA_2, 
@@ -120,11 +122,11 @@ knit_hooks$set(output = function(x, options) {
 ################################################################################
 #Model 4: GIS Only Variables, 4 Trophic State Classes
   #Variable Selction
-  gis_ts4<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,numCore=4,100,
-          							ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  											vars.drop.num=1,outStr="gis_ts4",time=TRUE)
-  gis_ts4_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_4, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
+  #gis_ts4<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,numCore=4,100,
+  #        							ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+  #											vars.drop.num=1,outStr="gis_ts4",time=TRUE)
+  #gis_ts4_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_4, 
+  #                            ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   gis_ts4_vars<-unique(unlist(gis_ts4[1:100]))
   gis_ts4_rf<-runRandomForest(ltmData[gis_ts4_vars],ltmData$TS_CHLA_4, 
@@ -132,11 +134,11 @@ knit_hooks$set(output = function(x, options) {
 ################################################################################
 #Model 5: GIS Only Variables, 3 Trophic State Classes
   #Variable Selction
-  gis_ts3<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_3,numCore=4,100,
-        								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  											vars.drop.num=1,outStr="gis_ts3",time=TRUE)
-  gis_ts3_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_3, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
+  #gis_ts3<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_3,numCore=4,100,
+  #      								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+  #											vars.drop.num=1,outStr="gis_ts3",time=TRUE)
+  #gis_ts3_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_3, 
+  #                            ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   gis_ts3_vars<-unique(unlist(gis_ts3[1:100]))
   gis_ts3_rf<-runRandomForest(ltmData[gis_ts3_vars],ltmData$TS_CHLA_3, 
@@ -144,11 +146,11 @@ knit_hooks$set(output = function(x, options) {
 ################################################################################
 #Model 6: GIS Only Variables, 2 Trophic State Classes
   #Variable Selction
-  gis_ts2<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_2,numCore=4,100,
-      									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  											vars.drop.num=1,outStr="gis_ts2",time=TRUE)
-  gis_ts2_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_2, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
+  #gis_ts2<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_2,numCore=4,100,
+  #    									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+  #											vars.drop.num=1,outStr="gis_ts2",time=TRUE)
+  #gis_ts2_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_2, 
+  #                            ntree=10000,importance=TRUE,proximity=TRUE)
   #Random Forest
   gis_ts2_vars<-unique(unlist(gis_ts2[1:100]))
   gis_ts2_rf<-runRandomForest(ltmData[gis_ts2_vars],ltmData$TS_CHLA_2, 
@@ -287,15 +289,13 @@ In addition to exploring how model accuracy changes with the uncertainty of trop
 
 Cyanobacteria should be closely related to trophic state as they make up a component of the chlorophyll concentration in a lake. These associations have been seen by others ADD ALAN'S WORK and LESTERs Stuff
 
-If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used to differentiate cyanobacteria biovolume we examine distribution of cyanobacteria biovolume for each trophic state and we also explore linear associations between Chlorohyll *a* and biovolume.
+If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used to differentiate cyanobacteria biovolume we examine distribution of cyanobacteria biovolume for each trophic state and we also explore linear associations between Chlorohyll *a* and cyanobacteria abundance.
 
-NEED TO SWITCH THIS TO TOTAL CYANO ABUNDANCE
+(Figure \ref{fig:ts_4_cyano_cdf})
 
-(Figure \ref{fig:ts_4_biov_cdf})
+(Figure \ref{fig:ts_3_cyano_cdf})
 
-(Figure \ref{fig:ts_3_biov_cdf})
-
-(Figure \ref{fig:ts_2_biov_cdf})
+(Figure \ref{fig:ts_2_cyano_cdf})
 
 (Figure \ref{fig:scatterplot})
 
@@ -390,9 +390,9 @@ importancePlot(gis_ts2_rf,'gini',size=5,aes(colour=gis_ts2_color))
 
 \newpage
 
-```{r ts_4_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 4 trophic state classes\\label{fig:ts_4_biov_cdf}",cache=FALSE}
-plotCdf(ltmData$TS_CHLA_4,ltmData$sumBioV+1,cdf_colors=zissou[6:9],
-        y='Percent',x='Log10(Cyanobacteria Biovolume)',
+```{r ts_4_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}
+plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:9],
+        y='Percent',x='Log10(Cyanobacteria Abundance)',
         title=expression(paste('CDF for Chlorophyll ', 
                                 italic("a"),' Trophic States (4 Categories)')),
         color="Trophic State\nCategories")
@@ -400,9 +400,9 @@ plotCdf(ltmData$TS_CHLA_4,ltmData$sumBioV+1,cdf_colors=zissou[6:9],
 
 \newpage
 
-```{r ts_3_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 3 trophic state classes\\label{fig:ts_3_biov_cdf}",cache=FALSE }
-plotCdf(ltmData$TS_CHLA_3,ltmData$sumBioV+1,cdf_colors=zissou[6:8],
-       y='Percent',x='Log10(Cyanobacteria Biovolume)', 
+```{r ts_3_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 3 trophic state classes\\label{fig:ts_3_cyano_cdf}",cache=FALSE }
+plotCdf(ltmData$TS_CHLA_3,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:8],
+       y='Percent',x='Log10(Cyanobacteria Abundance)', 
        title=expression(paste('CDF for Chlorophyll ', 
                               italic("a"),' Trophic States (3 Categories)')),
        color="Trophic State\nCategories")
@@ -410,9 +410,9 @@ plotCdf(ltmData$TS_CHLA_3,ltmData$sumBioV+1,cdf_colors=zissou[6:8],
 
 \newpage
 
-```{r ts_2_biov_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria biovolume for 2 trophic state classes\\label{fig:ts_2_biov_cdf}",cache=FALSE}
-plotCdf(ltmData$TS_CHLA_2,ltmData$sumBioV+1,cdf_colors=zissou[6:7],
-       y='Percent',x='Log10(Cyanobacteria Biovolume)',
+```{r ts_2_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 2 trophic state classes\\label{fig:ts_2_cyano_cdf}",cache=FALSE}
+plotCdf(ltmData$TS_CHLA_2,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:7],
+       y='Percent',x='Log10(Cyanobacteria Abundance)',
        title=expression(paste('CDF for Chlorophyll ', 
                               italic("a"),' Trophic States (2 Categories)')),
        color="Trophic State\nCategories")
@@ -420,13 +420,13 @@ plotCdf(ltmData$TS_CHLA_2,ltmData$sumBioV+1,cdf_colors=zissou[6:7],
 
 \newpage
 
-```{r scatterplot,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria biovolume scatterplot\\label{fig:scatterplot}",cache=FALSE}
-scp_df<-data.frame(chla=ltmData[["CHLA"]],biovp1=ltmData[["sumBioV"]]+1)
-scatterPlot(scp_df,xvar="chla",yvar="biovp1",zissou[8],zissou[7],zissou[6],
+```{r scatterplot,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria abundance scatterplot\\label{fig:scatterplot}",cache=FALSE}
+scp_df<-data.frame(chla=ltmData[["CHLA"]],abundp1=ltmData[["cyanoCellsPerML"]]+1)
+scatterPlot(scp_df,xvar="chla",yvar="abundp1",zissou[8],zissou[7],zissou[6],
              title=expression(paste("Chlorophyll ", 
                                     italic("a")," and Cyanobacteria Relationship")),
              x=expression(paste('Log10(Chl ', italic("a"),')')),
-             y="Log10(Cyanobaterial Biovolumes + 1)")
+             y="Log10(Cyanobaterial Abundance + 1)")
 ```
 
 \newpage
@@ -529,7 +529,7 @@ kable(formatC(round(gis_ts2_rf$confusion,2)),row.names=F)
 
 \newpage
 
-```{r voteTable, results="asis",echo=FALSE, tab.cap="Example Lake Random Forest Vote Results\\label{tab:voteTable}",cache=FALSE}}
+```{r voteTable, results="asis",echo=FALSE, tab.cap="Example Lake Random Forest Vote Results\\label{tab:voteTable}",cache=FALSE}
 kable(lakeVotes[,4:7][lakeVotes$COMID==23491387,],row.names=F)
 ```
 #References

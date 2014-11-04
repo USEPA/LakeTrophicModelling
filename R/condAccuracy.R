@@ -11,7 +11,7 @@
 #' @examples
 #' condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
 condAccuracy<-function(rf,xlab="x",...){
-  devtools::install_github("jhollist/condprob2")
+  #devtools::install_github("jhollist/condprob2")
   max_vote<-apply(rf$votes,1,max)
   obs<-rf$y
   pred<-factor(rf$predicted,levels=unique(obs),ordered=is.ordered(obs))
