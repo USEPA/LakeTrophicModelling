@@ -33,8 +33,8 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-#devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
-#                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
 devtools::install_github("jhollist/wesanderson")
 devtools::install_github("jhollist/condprob2")
 library("wesanderson")
@@ -293,10 +293,12 @@ The distribution of cyanobacteria abundance shows separation between all of the 
 
 ##Conclusions
 
-Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which would allow for making trophic state estimates for all lakes in the United States. We were able to succesfully predict a variety of trophic state classes.  With the GIS only data models our total accuracy ranged from `r acc_results$total  
+Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which would allow for making trophic state estimates for all lakes in the United States. We were able to succesfully predict a variety of trophic state classes.  With the GIS only data models our total accuracy ranged from `r min(acc_results$total_accuracy[4:6])` to `r max(acc_results$total_accuracy[4:6])` and with the full suite of data our model accuracy had a minimum accuracy of `r min(acc_results$total_accuracy[1:3])` and maximum accuraccy of `r max(acc_results$total_accuracy[1:3])`.  
 
-- were able to accurately predict TS classes
-- more importantly have probabilities of TS
+While some of the models (i.e. Model 4) show relatively low prediction accuracies, another feature of the random forest, votes, can provide additional information.  In addition to providing a single estimate of trophic state for each lake, our models also indicate the probability that a lake was classified in any of the categories.  These probabilities may be mapped directly to show the uncertainty of a given predicted class.  Furthermore as the certainity of prediction increases so to does the overall trophic state classification accuracy (Figure \ref{fig:condProbFig}). These results suggest that our models will provide reasonable estimates of trophic state across the United States.
+
+
+
 - RF will be useful for cyano probability plus many otehr enviro applications
 - Also has utility for informing other approaches, i.e. Bayesian Network Models, can serve as priors.
 
