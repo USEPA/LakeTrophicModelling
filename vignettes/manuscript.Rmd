@@ -52,8 +52,8 @@ data(LakeTrophicModelling)
 
 
 #Checks for existing cache (from another project)
-if(file.exists("prior_cache")){
-  for(i in gsub(".rdb","",list.files("prior_cache",".rdb",full.names=T))){
+if(file.exists("vignettes/prior_cache")){
+  for(i in gsub(".rdb","",list.files("vignettes/prior_cache",".rdb",full.names=T))){
     lazyLoad(i)
   }
 }
@@ -293,7 +293,7 @@ The distribution of cyanobacteria abundance shows separation between all of the 
 
 ##Conclusions
 
-The goals of this research were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of lake trophic state. Further, we hoped to examine the utility of these random forest models when predicting trophic state with only ubiquitous GIS data which would allow for making trophic state estimates for all lakes in the United States.  
+Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which would allow for making trophic state estimates for all lakes in the United States. We were able to succesfully predict a variety of trophic state classes.  With the GIS only data models our total accuracy ranged from `r acc_results$total  
 
 - were able to accurately predict TS classes
 - more importantly have probabilities of TS
