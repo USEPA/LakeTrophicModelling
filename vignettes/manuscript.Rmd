@@ -24,9 +24,9 @@ capsize: normalsize
 csl: components/ecology.csl
 documentclass: article
 fontsize: 11pt
-linenumbers: yes
+linenumbers: no
 bibliography: components/LakeTrophicModelling.bib
-spacing: doublespacing
+spacing: onehalfspacing
 abstract: no
 ---
 
@@ -36,10 +36,10 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
-                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
-devtools::install_github("jhollist/wesanderson")
-devtools::install_github("jhollist/condprob2")
+#devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+#                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+#devtools::install_github("jhollist/wesanderson")
+#devtools::install_github("jhollist/condprob2")
 library("wesanderson")
 library("LakeTrophicModelling")
 library("knitr")
@@ -50,7 +50,7 @@ library("e1071")
 library("dplyr")
 library("tidyr")
 library("condprob2")
-opts_chunk$set(dev = 'pdf', fig.width=7.5)
+opts_chunk$set(dev = 'png', fig.width=7.5)
 data(LakeTrophicModelling)
 
 
@@ -195,16 +195,19 @@ lakeVotes<-data.frame(COMID=getLakeIDs(ltmData[all_ts4_vars],ltmData$TS_CHLA_4,l
 lakeVotes<-na.omit(lakeVotes)
 ```
 
-
+<!-- turn off for word
 \singlespace
 
 \vspace{2mm}\hrule
+-->
 
 **Abstract**  
 Productivity of lentic ecosystems has been well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from low trophic state (e.g. oligotrophic) to higher trophic states  (e.g. eutrophic). These broad trophic state classifications are good predictors of ecosystem health and ecosystem services/disservices (e.g. recreation, aesthetics, fisheries, and harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to parameterize the model.  This limits the application of these models to lakes with existing and, more importantly, available water quality data.  To expand our ability to predict in lakes without water quality data, we take advantage of the availability of a large national lakes water quality database, land use/land cover data, lake morphometry data, other universally available data, and modern data mining approaches to build and assess models of lake tropic state that may be more universally applied.  We use random forests and random forest variable selection to identify variables to be used for predicting trophic state and we compare the performance of two models of trophic state (as determined by chlorophyll *a* concentration).   The first model estimates trophic state with *in situ* as well as universally available data and the second model uses universally available data only. For each of these models we used three separate trophic state categories, for a total of six models. Overall accuracy for models built from *in situ* and universal data ranged from `r round(min(acc_results[1:3,2]),3)`% to `r round(max(acc_results[1:3,2]),3)`%.  For the universal data only models, overall accuracy ranged from `r round(min(acc_results[4:6,2]),3)`% to `r round(max(acc_results[4:6,2]),3)`%. Lastly, it is believed that the presence and abundance of cyanobacteria is strongly associated with trophic state.  To test this we examine the association between estimates of cyanobacteria abundance and the measured and predicted trophic state and find a positive relationship.  Expanding these preliminary results to include cyanobacteria taxa indicates that cyanobacteria are significantly more likely to be found in highly eutrophic lakes. These results suggest that predictive models of lake trophic state may be improved with additional information on the landscape surrounding lakes and that those models provide additional information on the presence of potentially harmful cyanobacteria taxa. 
 
+<!-- Turn off for word
 \vspace{3mm}\hrule
 \doublespace
+-->
 
 #Introduction
 Productivity in lentic systems is often categorized across a range of tropic states (e.g. the tropic continuum) from early successional (i.e. oligotrophic)to late successional lakes (i.e. hypereutrophic) with lakes naturally occurring across this range [@carlson1977trophic]. Oligotrophic lakes occur in nutrient poor areas or have a more recent geologic history and are often found in higher elevations, have clear water, and are usually favored for drinking water or direct contact recreation (e.g. swimming).   Lakes with higher productivity (e.g. eutrophic lakes) have greater nutrient loads, tend to be less clear, have greater density of aquatic plants, and often support more diverse and abundant fish communities. Higher primary productivity is not necessarily a predictor of poor ecological condition as it is natural for lakes to shift from lower to higher trophic states but this is a slow process.  
@@ -276,7 +279,7 @@ The variable selection process for Model 6 produced a reduced model with ecoregi
 
 ##Trophic State Probabilities
 <!--BRYAN EDIT/ADD IN THIS SECTION-->
-One of the powerful features of random forests is that you utilize a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake.  These values may be interepreted as the probability that a lake is in a given trophic state. For instance, for a single lake (COMID = 23491387), the vote results for Model 1 ranged from round(min(lakeVotes[,4:7][lakeVotes$COMID==23491387,]),2) to round(max(lakeVotes[,4:7][lakeVotes$COMID==23491387,]),2) (Table \ref{tab:voteTable}).  
+One of the powerful features of random forests is that you utilize a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake.  These values may be interepreted as the probability that a lake is in a given trophic state. For instance, for a single lake (COMID = 23491387), the vote probabilities for Model 1 ranged from `r round(min(lakeVotes[,4:7][lakeVotes$COMID==23491387,]),2)` to `r round(max(lakeVotes[,4:7][lakeVotes$COMID==23491387,]),2)` suggesting little uncertainity in the predicted class (Table \ref{tab:voteTable}).  
 
 ###Model Accuracy and Uncertainity
 Further, the maximum probability for each lake can be used as a measure of how certain the random forest model was of the prediction.  We would expect higher total accuracy for lakes that had more certain predictions.  
@@ -289,13 +292,13 @@ In addition to exploring how model accuracy changes with the uncertainty of trop
 -->
 
 ##Variable Importance
-NEED STUFF HERE
+NEED STUFF HERE - Betty you want to take stab?
 
 ##Associating Trophic State and Cyanobacteria
 
 Cyanobacteria biomass should be closely related to trophic state as they make up a component of the chlorophyll concentration in a lake. These associations have been seen by others.  If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used to differentiate cyanobacteria abundance we examine distribution of cyanobacteria abundance for each trophic state and we also explore linear associations between Chlorohyll *a* and cyanobacteria abundance.
 
-The distribution of cyanobacteria abundance shows separation between all of the trophic state classificaitons (Figures \ref{fig:ts_4_cyano_cdf}, \ref{fig:ts_3_cyano_cdf}, and \ref{fig:ts_2_cyano_cdf}).  Furthermore, there is a linear relationship (r^2^=`r summary(lm(log10(ltmData$CHLA)~log10(ltmData$cyanoCellsPerML)))$r.squared` and p-value = `r `) between Chl *a* and cyanobacteria abundance (Figure \ref{fig:scatterplot}).  These results suggest that trophic state is indeed an acceptable proxy for cyanobacteria anundance and that in lakes with higher trophic state it is also reasonable to expect higher cyanobacteria.  
+The distribution of cyanobacteria abundance shows separation between all of the trophic state classificaitons (Figures \ref{fig:ts_4_cyano_cdf}, \ref{fig:ts_3_cyano_cdf}, and \ref{fig:ts_2_cyano_cdf}).  Furthermore, there is a significant linear relationship (r^2^=`r round(summary(lm(log10(ltmData$CHLA)~log10(ltmData$cyanoCellsPerML)))$r.squared,2)`) between Chl *a* and cyanobacteria abundance (Figure \ref{fig:scatterplot}).  These results suggest that trophic state is indeed an acceptable proxy for cyanobacteria anundance and that in lakes with higher trophic state it is also reasonable to expect higher cyanobacteria.  
 
 ##Conclusions
 
@@ -303,9 +306,9 @@ Our research goals were to explore the utility of a widely used data mining algo
 
 While some of the models (i.e. Model 4) show relatively low prediction accuracies, another feature of the random forest, votes, can provide additional information.  In addition to providing a single estimate of trophic state for each lake, our models also indicate the probability that a lake was classified in any of the categories.  These probabilities may be mapped directly to show the uncertainty of a given predicted class.  Furthermore as the certainity of prediction increases so to does the overall trophic state classification accuracy (Figure \ref{fig:condProbFig}). These results suggest that our models will provide reasonable estimates of trophic state across the United States.
 
-There was great deal of agreement on the important variables for each set of models.  For the *in situ* and GIS Models NEED MORE HERE For the GIS only models  NEED MORE HERE
+There was great deal of agreement on the important variables for each set of models.  For the *in situ* and GIS Models NEED MORE HERE For the GIS only models  NEED MORE HERE - summarize from above on varibale importance
 
-Associations between trophic state and cynobacteria show that NEED MORE HERE
+Associations between trophic state and cynobacteria show that NEED MORE HERE - need to summarize
 
 \newpage
 
