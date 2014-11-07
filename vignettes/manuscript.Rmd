@@ -79,7 +79,7 @@ knit_hooks$set(output = function(x, options) {
 })
 ```
 
-```{r analysis , eval=TRUE, include=FALSE, echo=FALSE, cache=TRUE}
+```{r analysis , eval=FALSE, include=FALSE, echo=FALSE, cache=FALSE}
 ################################################################################
 #All analysis in here, that way all bits of paper have access to final objects
 #Tables, figures, and numerical results placed at end of paper.
@@ -175,7 +175,7 @@ acc_results<-data.frame(model_number=c("Model 1","Model 2","Model 3","Model 4","
                                          classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,
                                          classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,
                                          classAgreement(gis_ts2_rf$confusion[,1:2])$kappa))
-var_importance<-rbind_list(varImportance(all_ts4_rf,"Model 1"),
+var_importance<-rbind(varImportance(all_ts4_rf,"Model 1"),
                            varImportance(all_ts3_rf,"Model 2"),
                            varImportance(all_ts2_rf,"Model 3"),
                            varImportance(gis_ts4_rf,"Model 4"),
