@@ -30,6 +30,7 @@
       cyanoAbund$cyanoCat<-factor(cyanoAbund$cyanoCat,levels=c('LOW','MED','HIGH'),ordered=TRUE)
     #get microsystin data
       nla_rec<-read.csv("http://water.epa.gov/type/lakes/assessmonitor/lakessurvey/upload/NLA2007_Recreational_ConditionEstimates_20091123.csv")
+      nla_rec<-subset(nla_rec,nla_rec$VISIT_NO==1)
       cyanoAbund<-merge(cyanoAbund,nla_rec[,c("SITE_ID","MCYST_TL_UGL")],by="SITE_ID",all.x=T)
     #output data
       return(cyanoAbund)
