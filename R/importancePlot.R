@@ -19,14 +19,14 @@ importancePlot <- function(rf, type = c("acc", "gini"), ...) {
     
     idf<-importance(rf)
     # set up data.frame for ggplot
-    if (type == "acc") {
+    if (type == "gini") {
         imp_df <- data.frame(variables = names(idf[,dim(idf)[2]]), 
                              Mean_Decrease = idf[,dim(idf)[2]])
         o <- order(imp_df$Mean_Decrease, decreasing = FALSE)
         imp_df$variables <- factor(imp_df$variables, 
             levels = imp_df$variables[o], ordered = T)
         label <- "Mean Decrease Accuracy"
-    } else if (type == "gini") {
+    } else if (type == "acc") {
         imp_df <- data.frame(variables = names(idf[,dim(idf)[2]-1]), 
                              Mean_Decrease = idf[,dim(idf)[2]-1])
       o <- order(imp_df$Mean_Decrease, decreasing = FALSE)
