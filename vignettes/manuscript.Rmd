@@ -267,6 +267,8 @@ Our complete dataset includes data on `r dim(ltmData)[1]` lakes; however `r sum(
 ##Models
 Accuracy for the models built with all predictors ranged from `r round(min(acc_results[1:3,2]),3)` to `r round(max(acc_results[1:3,2]),3)` and the kappa coeffecient had a minimum value of `r round(min(acc_results[1:3,3]),3)` and maximum of `r round(max(acc_results[1:3,3]),3)`.  The GIS only models had a total accuracy between `r round(min(acc_results[4:6,2]),3)` and `r round(min(acc_results[4:6,2]),3)` and kappa coeffecient between `r round(min(acc_results[4:6,3]),3)` and `r round(min(acc_results[4:6,3]),3)`.  The importance of variables for the models including the *in situ* data were fairly stable while There was considerably more variation in variable importance for the three different GIS only models.  Details for each model are discussed below.
 
+<!-- JEFF NEED TO FIGURE OUT HOW TO INCLUDE VARSEL PROB in the write up (perhaps "reduced model in order"), yank out varsel table, include varsel probs in figure -->
+
 ###Model 1: 4 Trophic States ~ All Variables
 The reduced model for Model 1 included potassium, nitrogen:phosphorus, total nitrogen, total phosphorus, total organic carbon, turbidity, ecoregion, organic ions, dissolved organic carbon, and maximum depth (Table \ref{tab:VarSel_Model1}) and of these, turbidity, total phosphorus, total nitrogen, and total organic carbon were the most four most important predictors of the four classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
 
@@ -293,14 +295,6 @@ One of the powerful features of random forests is the ability to aggregate a ver
 Further, the maximum probability for each lake can be used as a measure of how certain the random forest model was of the prediction.  We would expect higher total accuracy for lakes that had more certain predictions.  
 
 To test this we can examine the accuracy of trophic state predictions across the full range of trophic state probabilities, similar to an approach outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister *et al.* [-@hollister2008cprob].  We utilize this approach and examine the change in total accuracy as a function of the maximum probability for each lake.  As expected, lakes with higher maximum vote probabilites are more accurately predicted (Figure \ref{fig:condProbFig}).  This suggest that even for models with low overall accuracy there will also be a large number of cases that are predicted with high accuarcy.
-
-<!-- Not including this for now
-###Mapping Trophic State Probabilities 
-In addition to exploring how model accuracy changes with the uncertainty of trophic state predicitions, the model votes may also be used to map the probability of lakes falling in a certain trophic state category.  In Figure \ref{fig:tsProbMap} we map the probability that lakes are classified as eutrophic/hypereutrophic with Model 3 and Model 6.   
--->
-
-##Variable Importance
-NEED STUFF HERE - Betty you want to take stab?
 
 ##Associating Trophic State and Cyanobacteria
 
