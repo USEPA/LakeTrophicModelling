@@ -15,7 +15,7 @@
 #' importancePlot(iris_rf,'acc',size=10,aes(colour=wes.palette(4, 'GrandBudapest')))
 #' importancePlot(iris_rf,'gini',size=10,aes(colour=wes.palette(4, 'GrandBudapest')))
 
-importancePlot <- function(rf, type = c("acc", "gini"), ...) {
+importancePlot <- function(rf, sumtbl, type = c("acc", "gini"), ...) {
     
     idf<-importance(rf)
     # set up data.frame for ggplot
@@ -25,17 +25,18 @@ importancePlot <- function(rf, type = c("acc", "gini"), ...) {
         o <- order(imp_df$Mean_Decrease, decreasing = FALSE)
         imp_df$variables <- factor(imp_df$variables, 
             levels = imp_df$variables[o], ordered = T)
-        label <- "Mean Decrease Accuracy"
+        label <- "Mean Decrease Gini"
     } else if (type == "acc") {
         imp_df <- data.frame(variables = names(idf[,dim(idf)[2]-1]), 
                              Mean_Decrease = idf[,dim(idf)[2]-1])
       o <- order(imp_df$Mean_Decrease, decreasing = FALSE)
       imp_df$variables <- factor(imp_df$variables, 
                                  levels = imp_df$variables[o], ordered = T)
-        label <- "Mean Decrease Gini"
+        label <- "Mean Decrease Accuracy"
     } else {
         stop("Type not specificed correctly")
     }
+    imp_df<-merge(imp_df,sumtbl,by.x="variables",by.y="Variable")
     
     x <- ggplot(imp_df, aes(Mean_Decrease, variables)) + 
          geom_point(...) +   
@@ -47,9 +48,25 @@ importancePlot <- function(rf, type = c("acc", "gini"), ...) {
                panel.border = element_rect(fill = NA), legend.position = "none", 
                axis.title.x = element_text(family="serif",face = "bold", vjust = -0.5, size = 12), 
                axis.text.x = element_text(family="serif",size = 11),
-               axis.text.y = element_text(family="serif",size = 11)) + 
+               axis.text.y = element_text(family="serif",size = 11),
+               plot.margin = unit(c(0.25,0,0.1,0),"inches")) + 
          ylab("") + 
          xlab(label)
+    y <- ggplot(imp_df, aes(Percent, variables)) + 
+      geom_point(...) +   
+      geom_hline(linetype = 3, size = 1, colour = "gray", 
+                 yintercept = 1:nlevels(imp_df$variables)) + 
+      geom_point(...) +
+      theme(text = element_text(family="Times"),
+            panel.background = element_blank(), panel.grid = element_blank(), 
+            panel.border = element_rect(fill = NA), legend.position = "none", 
+            axis.title.x = element_text(family="serif",face = "bold", vjust = -0.5, size = 12), 
+            axis.text.x = element_text(family="serif",size = 11),
+            axis.text.y = element_blank(),
+            axis.ticks = element_blank(),
+            plot.margin = unit(c(0.25,0.875,0.1,0),"inches")) + 
+      ylab("") + 
+      xlab("Proportion of varSelRF runs selected")
     
-    return(x)
+    return(multiplot(x,y,cols=2))
 } 

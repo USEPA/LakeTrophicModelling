@@ -252,13 +252,11 @@ Our modelling work flow was as follows:
 1. Use `iterVarSelRF` in the `LakeTrophicModelling` R package to identify a minimal set of variables that maximize accuracy of the random forest algorithm [@diaz-uriarte2010varSelRF; @LakeTrophicModelling]. This subset of variables, the reduced model, is calculated for each of our 6 models. 
 2. Using R's `randomForest` package, we pass the reduced models selected with `iterVarSelRF` and assess model performance [@liaw2002randomForest]. 
 
-##Measures of Model Performance
+##Measures of Model Performance and Variable Importance
 
-JEFF WORDSMITH
+We assess the performance of the random forest models by comparing the total prediction accuraccy and the kappa coefficient of the final confustion matrix. As random forest build each tree on bootstrapped, random subsets of the original data, a separate independent validation dataset is not required and random forest error estimates expected to be unbiased [breiman2001random].  For each of the models, the final predictions were compared to the original data via a confusion matrix.  The total accuracy (i.e. percent correctly predicted) was calculated.  Since some agreement can be expected by chance alone, it is also useful to take this type of error into account.  For this we calculateed the kappa coefficient for each model as well [@cohen1960coefficient; @hubert1985comparing]. 
 
-confusion matrix, total accruacy, and kappa
-
-The random forest algorithm explicitly measures variable importance: mean decrease Gini.  The Gini Index is a measure of how well the data are classified into homogenous groups.  For every node, the splitting variable are permuted and the change in actual Gini and permuted Gini is recorded.  The mean decrease Gini is a summed and standardized value for each variable.
+Lastly, the random forest algorithm explicitly measures variable importance: mean decrease Gini.  The Gini Index is a measure of how well the data are classified into homogenous groups.  For every node, the splitting variable are permuted and the change in actual Gini and permuted Gini is recorded.  The mean decrease Gini is a summed and standardized value for each variable [@breiman2001random].  Higher values of mean decrease Gini suggest a higher importance for that variable.
 
 #Results and Discussion
 
@@ -267,29 +265,26 @@ Our complete dataset includes data on `r dim(ltmData)[1]` lakes; however `r sum(
 ##Models
 Accuracy for the models built with all predictors ranged from `r round(min(acc_results[1:3,2]),3)` to `r round(max(acc_results[1:3,2]),3)` and the kappa coeffecient had a minimum value of `r round(min(acc_results[1:3,3]),3)` and maximum of `r round(max(acc_results[1:3,3]),3)`.  The GIS only models had a total accuracy between `r round(min(acc_results[4:6,2]),3)` and `r round(min(acc_results[4:6,2]),3)` and kappa coeffecient between `r round(min(acc_results[4:6,3]),3)` and `r round(min(acc_results[4:6,3]),3)`.  The importance of variables for the models including the *in situ* data were fairly stable while There was considerably more variation in variable importance for the three different GIS only models.  Details for each model are discussed below.
 
-<!-- JEFF NEED TO FIGURE OUT HOW TO INCLUDE VARSEL PROB in the write up (perhaps "reduced model in order"), yank out varsel table, include varsel probs in figure -->
-
 ###Model 1: 4 Trophic States ~ All Variables
-The reduced model for Model 1 included potassium, nitrogen:phosphorus, total nitrogen, total phosphorus, total organic carbon, turbidity, ecoregion, organic ions, dissolved organic carbon, and maximum depth (Table \ref{tab:VarSel_Model1}) and of these, turbidity, total phosphorus, total nitrogen, and total organic carbon were the most four most important predictors of the four classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
+The reduced model for Model 1 included potassium, nitrogen:phosphorus, total nitrogen, total phosphorus, total organic carbon, turbidity, ecoregion, organic ions, dissolved organic carbon, and maximum depth and of these, turbidity, total phosphorus, total nitrogen, and total organic carbon were the most four most important predictors of the four classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
 
 ###Model 2: 3 Trophic States ~ All Variables
-For Model 2, the reduced model included turbidity, total phosphorus, total nitrogen, total organic carbon, nitrogen:phophorus, longitude, pH, estimated organic anions, elevation, maximum depth, dissolved organic carbon, potassium, latitude, ecoregion, chloride, ammonium and percent cropland (Table \ref{tab:VarSel_Model2}). The top predictors for 3 trophic state classes were turbidity, total phosphorus, total nitrogen, and total organic carbon (Figure \ref{fig:Importance_Model2}).  Model 2 accuracy was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model2}).   
+For Model 2, the reduced model included turbidity, total phosphorus, total nitrogen, total organic carbon, nitrogen:phophorus, longitude, pH, estimated organic anions, elevation, maximum depth, dissolved organic carbon, potassium, latitude, ecoregion, chloride, ammonium and percent cropland (Figure \ref{fig:Importance_Model2}). The top predictors for 3 trophic state classes were turbidity, total phosphorus, total nitrogen, and total organic carbon (Figure \ref{fig:Importance_Model2}).  Model 2 accuracy was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model2}).   
 
 ###Model 3: 2 Trophic States ~ All Variables
-The reduced model for Model 3 was similar to Model 1 and Model 2 and included turbidity, total phosphorus, total nitrogen, nitrogen:phophorus, potassium, ecoregion, elevation, total organic carbon, growing degree days, longitude, sodium, maximum depth, estimated organic anions, latitude, and dissolved organic carbon (Table \ref{tab:VarSel_Model3}). The top three predcitors were the same for Model 3; however, elevation and growing degree days had a higher importance than total organic carbon. (Figure \ref{fig:Importance_Model3}).  Total accuracy for Model 3 was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model3}).
+The reduced model for Model 3 was similar to Model 1 and Model 2 and included turbidity, total phosphorus, total nitrogen, nitrogen:phophorus, potassium, ecoregion, elevation, total organic carbon, growing degree days, longitude, sodium, maximum depth, estimated organic anions, latitude, and dissolved organic carbon (Figure \ref{fig:Importance_Model3}). The top three predcitors were the same for Model 3; however, elevation and growing degree days had a higher importance than total organic carbon. (Figure \ref{fig:Importance_Model3}).  Total accuracy for Model 3 was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model3}).
 
 ###Model 4: 4 Trophic States ~ GIS Only Variables
-The selected variables for the Model 4 were longitude, latitude, elevation, estimated mean lake depth, percent evergreen forest, estimated maximum lake depth, percent cropland, and ecoregion (Table \ref{tab:VarSel_Model4}).  The most important variables were percent evergreen forest, ecoregion, percent cropland, and longitude (Figure \ref{fig:Importance_Model4}). Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model4}).
+The selected variables for the Model 4 were longitude, latitude, elevation, estimated mean lake depth, percent evergreen forest, estimated maximum lake depth, percent cropland, and ecoregion (Figure \ref{fig:Importance_Model4}).  The most important variables were percent evergreen forest, ecoregion, percent cropland, and longitude (Figure \ref{fig:Importance_Model4}). Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model4}).
 
 ###Model 5: 3 Trophic States ~ GIS Only Variables
-The reduced model for Model 5 included estimated mean lake depth, percent cropland, longitude, latitude, percent evergreen forest, elevation, estimated maximum lake depth, estimated lake volume, percent decidous forest, percent developed open space, ecoregion, percent woody wetland, and percent shrub/scrub (Table \ref{tab:VarSel_Model5}). The most important variables for model 5 were ecoregion, perent evergreen forest, percent cropland, and estimated mean depth. (Figure \ref{fig:Importance_Model5}). Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,3)` (Table \ref{tab:Confusion_Model5}).
+The reduced model for Model 5 included estimated mean lake depth, percent cropland, longitude, latitude, percent evergreen forest, elevation, estimated maximum lake depth, estimated lake volume, percent decidous forest, percent developed open space, ecoregion, percent woody wetland, and percent shrub/scrub (Figure \ref{fig:Importance_Model5}). The most important variables for model 5 were ecoregion, perent evergreen forest, percent cropland, and estimated mean depth. (Figure \ref{fig:Importance_Model5}). Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,3)` (Table \ref{tab:Confusion_Model5}).
 
 ###Model 6: 2 Trophic States ~ GIS Only Variables
-The variable selection process for Model 6 produced a reduced model with ecoregion, growing degree days, percent evergreen forest, percent cropland, elevation, estimated mean lake depth, longitude, latitude, watershed area, estimated maximum lake depth, percent developed open space, percent decidous forest, and estimated lake volume (Table \ref{tab:VarSel_Model6}). Similar to models 4 and 5, the four most important variables were ecoregion, percent evergreen forest, percent cropland, and elevation (Figure \ref{fig:Importance_Model6}).  Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model6}).
+The variable selection process for Model 6 produced a reduced model with ecoregion, growing degree days, percent evergreen forest, percent cropland, elevation, estimated mean lake depth, longitude, latitude, watershed area, estimated maximum lake depth, percent developed open space, percent decidous forest, and estimated lake volume (Figure \ref{fig:Importance_Model6}). Similar to models 4 and 5, the four most important variables were ecoregion, percent evergreen forest, percent cropland, and elevation (Figure \ref{fig:Importance_Model6}).  Total accuracy for Model 6 `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model6}).
 
 ##Trophic State Probabilities
-<!--BRYAN EDIT/ADD IN THIS SECTION-->
-One of the powerful features of random forests is the ability to aggregate a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake.  These values may be interepreted as the probability that a lake is in a given trophic state. For instance, for a single lake JEFF REPLACE WITH NLA ID (COMID = 23491387), the vote probabilities for Model 1 ranged from `r round(min(lakeVotes[,4:7][lakeVotes$COMID==23491387,]),2)` to `r round(max(lakeVotes[,4:7][lakeVotes$COMID==23491387,]),2)` suggesting little uncertainity in the predicted oligotrophic state (Table \ref{tab:voteTable}).  
+One of the powerful features of random forests is the ability to aggregate a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake.  These values may be interepreted as the probability that a lake is in a given trophic state. For instance, for a single lake (National Lake Assessment ID = NLA06608-0005), the vote probabilities for Model 1 ranged from `r round(min(lakeVotes[,4:7][lakeVotes$COMID==23491387,]),2)` to `r round(max(lakeVotes[,4:7][lakeVotes$COMID==23491387,]),2)` suggesting little uncertainity in the predicted oligotrophic state (Table \ref{tab:voteTable}).  
 
 ###Model Accuracy and Uncertainty
 Further, the maximum probability for each lake can be used as a measure of how certain the random forest model was of the prediction.  We would expect higher total accuracy for lakes that had more certain predictions.  
@@ -354,42 +349,42 @@ nlaMap(state,lakes_dd,mycolor)
 
 ```{r Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1\\label{fig:Importance_Model1}",cache=FALSE}
 all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
-importancePlot(all_ts4_rf,'gini',size=5,aes(colour=all_ts4_color))
+importancePlot(all_ts4_rf,sumTable(all_ts4[1:100]),'gini',size=5,aes(colour=all_ts4_color))
 ```
 
 \newpage
 
 ```{r Importance_Model2,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2\\label{fig:Importance_Model2}",cache=FALSE}
 all_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts3_vars]
-importancePlot(all_ts3_rf,'gini',size=5,aes(colour=all_ts3_color))
+importancePlot(all_ts3_rf,sumTable(all_ts3[1:100]),'gini',size=5,aes(colour=all_ts3_color))
 ```
 
 \newpage
 
 ```{r Importance_Model3,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3\\label{fig:Importance_Model3}",cache=FALSE}
 all_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts2_vars]
-importancePlot(all_ts2_rf,'gini',size=5,aes(colour=all_ts2_color))
+importancePlot(all_ts2_rf,sumTable(all_ts2[1:100]),'gini',size=5,aes(colour=all_ts2_color))
 ```
 
 \newpage
 
 ```{r Importance_Model4,results="asis",echo=FALSE, fig.cap="Importance plot for Model 4\\label{fig:Importance_Model4}",cache=FALSE}
 gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
-importancePlot(gis_ts4_rf,'gini',size=5,aes(colour=gis_ts4_color))
+importancePlot(gis_ts4_rf,sumTable(gis_ts4[1:100]),'gini',size=5,aes(colour=gis_ts4_color))
 ```
 
 \newpage
 
 ```{r Importance_Model5,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5\\label{fig:Importance_Model5}",cache=FALSE}
 gis_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts3_vars]
-importancePlot(gis_ts3_rf,'gini',size=5,aes(colour=gis_ts3_color))
+importancePlot(gis_ts3_rf,sumTable(gis_ts3[1:100]),'gini',size=5,aes(colour=gis_ts3_color))
 ```
 
 \newpage
 
 ```{r Importance_Model6,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6\\label{fig:Importance_Model6}",cache=FALSE}
 gis_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts2_vars]
-importancePlot(gis_ts2_rf,'gini',size=5,aes(colour=gis_ts2_color))
+importancePlot(gis_ts2_rf,sumTable(gis_ts2[1:100]),'gini',size=5,aes(colour=gis_ts2_color))
 ```
 
 \newpage
@@ -439,13 +434,6 @@ scatterPlot(scp_df,xvar="chla",yvar="abundp1",zissou[8],zissou[7],zissou[6],
 condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
 ```
 
-<!--
-\newpage
-```{r tsProbMap,echo=FALSE, fig.width=7, fig.cap="Map of the probability of lakes being eutrophic or hypereutrophic\\label{fig:tsProbMap}",cache=FALSE}
-```
--->
-
-
 \newpage
 
 #Tables
@@ -462,20 +450,8 @@ kable(xdf)
 
 \newpage
 
-```{r VarSel_Model1,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 1\\label{tab:VarSel_Model1}",cache=FALSE}
-kable(sumTable(all_ts4[1:100]),row.names=F)
-```
-
-\newpage
-
 ```{r Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1\\label{tab:Confusion_Model1}",cache=FALSE}
 kable(formatC(round(all_ts4_rf$confusion,2)),row.names=F)
-```
-
-\newpage
-
-```{r VarSel_Model2,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 2\\label{tab:VarSel_Model2}",cache=FALSE}
-kable(sumTable(all_ts3[1:100]),row.names=F)
 ```
 
 \newpage
@@ -486,20 +462,8 @@ kable(formatC(round(all_ts3_rf$confusion,2)),row.names=F)
 
 \newpage
 
-```{r VarSel_Model3,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 3\\label{tab:VarSel_Model3}",cache=FALSE}
-kable(sumTable(all_ts2[1:100]),row.names=F)
-```
-
-\newpage
-
 ```{r Confusion_Model3,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 3\\label{tab:Confusion_Model3}",cache=FALSE}
 kable(formatC(round(all_ts2_rf$confusion,2)),row.names=F)
-```
-
-\newpage
-
-```{r VarSel_Model4,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 4\\label{tab:VarSel_Model4}",cache=FALSE }
-kable(sumTable(gis_ts4[1:100]),row.names=F)
 ```
 
 \newpage
@@ -510,20 +474,8 @@ kable(formatC(round(gis_ts4_rf$confusion,2)),row.names=F)
 
 \newpage
 
-```{r VarSel_Model5,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 5\\label{tab:VarSel_Model5}",cache=FALSE}
-kable(sumTable(gis_ts3[1:100]),row.names=F)
-```
-
-\newpage
-
 ```{r Conufsion_Model5,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 5\\label{tab:Confusion_Model5}",cache=FALSE}
 kable(formatC(round(gis_ts3_rf$confusion,2)),row.names=F)
-```
-
-\newpage
-
-```{r VarSel_Model6,results="asis",echo=FALSE, tab.cap="Variable selection results for Model 6\\label{tab:VarSel_Model6}",cache=FALSE}
-kable(sumTable(gis_ts2[1:100]),row.names=F)
 ```
 
 \newpage
@@ -534,7 +486,7 @@ kable(formatC(round(gis_ts2_rf$confusion,2)),row.names=F)
 
 \newpage
 
-```{r voteTable, results="asis",echo=FALSE, tab.cap="Example Lake Random Forest Vote Results\\label{tab:voteTable}",cache=FALSE}
+```{r voteTable, results="asis",echo=FALSE, tab.cap="Example Lake (National Lake Assessment ID = NLA06608-0005) Random Forest Vote Results\\label{tab:voteTable}",cache=FALSE}
 kable(lakeVotes[,4:7][lakeVotes$COMID==23491387,],row.names=F)
 ```
 
