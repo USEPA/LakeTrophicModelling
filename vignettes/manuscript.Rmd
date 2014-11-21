@@ -291,15 +291,13 @@ Further, the maximum probability for each lake can be used as a measure of how c
 
 To test this we can examine the accuracy of trophic state predictions across the full range of trophic state probabilities, similar to an approach outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister *et al.* [-@hollister2008cprob].  We utilize this approach and examine the change in total accuracy as a function of the maximum probability for each lake.  As expected, lakes with higher maximum vote probabilites are more accurately predicted (Figure \ref{fig:condProbFig}).  This suggest that even for models with low overall accuracy there will also be a large number of cases that are predicted with high accuarcy.
 
+##Variable Selection and Importance
+
 ##Associating Trophic State and Cyanobacteria
 
 Cyanobacteria biomass should be closely related to trophic state as they make up a component of the chlorophyll concentration in a lake. These associations have been seen by others.  If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used to differentiate cyanobacteria abundance we examine distribution of cyanobacteria abundance for each trophic state and we also explore linear associations between Chlorohyll *a* and cyanobacteria abundance.
 
 The distribution of cyanobacteria abundance shows separation between all of the trophic state classificaitons (Figures \ref{fig:ts_4_cyano_cdf}, \ref{fig:ts_3_cyano_cdf}, and \ref{fig:ts_2_cyano_cdf}).  Furthermore, there is a significant linear relationship (r^2^=`r round(summary(lm(log10(ltmData$CHLA)~log10(ltmData$cyanoCellsPerML)))$r.squared,2)`) between Chl *a* and cyanobacteria abundance (Figure \ref{fig:scatterplot}).  Further, Yuan et al. [-@yuan2014managing] used the 2007 NLA to demonstrate that total nitrogen and cholorphyll *a* concentrations were good predictors of World Health Organization microsystin criteria exceedences.  These results suggest that trophic state is indeed an acceptable proxy for cyanobacteria anundance and that in lakes with higher trophic state it is also reasonable to expect higher cyanobacteria.  
-
-##Variable Selection and Importance
-
-
 
 #Conclusions
 
@@ -309,7 +307,7 @@ While some of the models (i.e. Model 4) show relatively low prediction accuracie
 
 There was great deal of agreement on the important variables for each set of models.  For the *in situ* and GIS Models NEED MORE HERE For the GIS only models  NEED MORE HERE - summarize from above on varibale importance
 
-Associations between trophic state and cynobacteria show that at the broad scale of the 2007 NLA there is a linear relationship between chlorophyll *a* and cyanobacteria abundance
+Associations between trophic state and cynobacteria show that at the broad scale of the 2007 NLA there is a linear relationship between chlorophyll *a* and cyanobacteria abundance and that using trophic state as a proxy for cyanobacteria makes sense.
 
 \newpage
 
