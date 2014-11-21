@@ -297,7 +297,11 @@ Cyanobacteria biomass should be closely related to trophic state as they make up
 
 The distribution of cyanobacteria abundance shows separation between all of the trophic state classificaitons (Figures \ref{fig:ts_4_cyano_cdf}, \ref{fig:ts_3_cyano_cdf}, and \ref{fig:ts_2_cyano_cdf}).  Furthermore, there is a significant linear relationship (r^2^=`r round(summary(lm(log10(ltmData$CHLA)~log10(ltmData$cyanoCellsPerML)))$r.squared,2)`) between Chl *a* and cyanobacteria abundance (Figure \ref{fig:scatterplot}).  Further, Yuan et al. [-@yuan2014managing] used the 2007 NLA to demonstrate that total nitrogen and cholorphyll *a* concentrations were good predictors of World Health Organization microsystin criteria exceedences.  These results suggest that trophic state is indeed an acceptable proxy for cyanobacteria anundance and that in lakes with higher trophic state it is also reasonable to expect higher cyanobacteria.  
 
-##Conclusions
+##Variable Selection and Importance
+
+
+
+#Conclusions
 
 Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which would allow for making trophic state estimates for all lakes in the United States. We were able to succesfully predict a variety of trophic state classes.  With the GIS only data models our total accuracy ranged from `r min(acc_results$total_accuracy[4:6])` to `r max(acc_results$total_accuracy[4:6])` and with the full suite of data our model accuracy had a minimum accuracy of `r min(acc_results$total_accuracy[1:3])` and maximum accuraccy of `r max(acc_results$total_accuracy[1:3])`.  
 
@@ -305,7 +309,7 @@ While some of the models (i.e. Model 4) show relatively low prediction accuracie
 
 There was great deal of agreement on the important variables for each set of models.  For the *in situ* and GIS Models NEED MORE HERE For the GIS only models  NEED MORE HERE - summarize from above on varibale importance
 
-Associations between trophic state and cynobacteria show that NEED MORE HERE - need to summarize
+Associations between trophic state and cynobacteria show that at the broad scale of the 2007 NLA there is a linear relationship between chlorophyll *a* and cyanobacteria abundance
 
 \newpage
 
