@@ -36,8 +36,8 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-#devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
-#                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
 #devtools::install_github("jhollist/wesanderson")
 #devtools::install_github("jhollist/condprob2")
 library("wesanderson")
@@ -292,6 +292,11 @@ Further, the maximum probability for each lake can be used as a measure of how c
 To test this we can examine the accuracy of trophic state predictions across the full range of trophic state probabilities, similar to an approach outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister *et al.* [-@hollister2008cprob].  We utilize this approach and examine the change in total accuracy as a function of the maximum probability for each lake.  As expected, lakes with higher maximum vote probabilites are more accurately predicted (Figure \ref{fig:condProbFig}).  This suggest that even for models with low overall accuracy there will also be a large number of cases that are predicted with high accuarcy.
 
 ##Variable Selection and Importance
+There was a great deal of agreement on the important variables for each set of models.  In line with past predictive modeling of cyanobacteria abundance, the in situ models consistently select turbidity, total nitrogen, total phosphrous, and N:P ratios as important variables [@downing2001predicting].   While there is variation in the response of cyanobacteria to changes in relative nutrient concentrations, the general pattern suggests that limiting nutrients have considerable impact once amounts increase beyond expected levels.  
+
+The mechanistic role of turbidity on lake trophic state is more complex. Turbidity is related to trophic state and chlorophyll *a* in two ways.  First, light availability in turbid waters is lower than in clear waters.  This would suggest a negative relationship between turbidity and chlorophyll *a*.  Second, chlorophyll *a* can also be a component of turbidity and lakes with higher chlorophyll *a* concentrations will also be more turbid.  This would be a cause for concern with linear models; however, with tree-based modelling approaches      As lake become more eutrophic, they have more “stuff” in them and are thus more turbid, clearly increasing chlorophyll a levels.   
+
+Our GIS models are capturing the large scale trophic status gradient of lakes across the United States.  We reliably see latitude and longitude and ecoregion selected as important variables.  It is also arguably other variables selected as important which are proxies for the lake trophic status gradient (e.g. elevation and growing degree days).   Elevation clearly plays a more nuanced role in lake trophic status.  However, the relative continental position of mountains in the United States is the spatial inverse to the distribution of agricultural lands.  Both percent cropland and evergreen forest coverage could both be also illustrating this gradient, but perhaps illustrating potential drivers of lake trophic status.  
 
 ##Associating Trophic State and Cyanobacteria
 
