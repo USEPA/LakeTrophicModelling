@@ -49,7 +49,7 @@ importancePlot <- function(rf, sumtbl, type = c("acc", "gini"), ...) {
                axis.title.x = element_text(family="serif",face = "bold", vjust = -0.5, size = 12), 
                axis.text.x = element_text(family="serif",size = 11),
                axis.text.y = element_text(family="serif",size = 11),
-               plot.margin = unit(c(0.25,0,0.1,0),"inches")) + 
+               plot.margin = grid::unit(c(0.25,0,0.1,0),"inches")) + 
          ylab("") + 
          xlab(label)
     y <- ggplot(imp_df, aes(Percent, variables)) + 
@@ -64,7 +64,7 @@ importancePlot <- function(rf, sumtbl, type = c("acc", "gini"), ...) {
             axis.text.x = element_text(family="serif",size = 11),
             axis.text.y = element_blank(),
             axis.ticks = element_blank(),
-            plot.margin = unit(c(0.25,0.875,0.1,0),"inches")) + 
+            plot.margin = grid::unit(c(0.25,0.875,0.1,0),"inches")) + 
       ylab("") + 
       xlab("Proportion of varSelRF runs selected")
     
