@@ -314,6 +314,8 @@ There was great deal of agreement on the important variables for each set of mod
 
 Associations between trophic state and cynobacteria show that at the broad scale of the 2007 NLA there is a linear relationship between chlorophyll *a* and cyanobacteria abundance and that using trophic state as a proxy for cyanobacteria makes sense.
 
+wrap up paragraph
+
 \newpage
 
 #Figures
