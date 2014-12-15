@@ -3,7 +3,7 @@
 \alias{importancePlot}
 \title{Random Forest Variable Importance Plotting}
 \usage{
-importancePlot(rf, sumtbl, type = c("acc", "gini"), ...)
+importancePlot(rf, sumtbl, data_def = NULL, type = c("acc", "gini"), ...)
 }
 \arguments{
 \item{rf}{a randomForest object}

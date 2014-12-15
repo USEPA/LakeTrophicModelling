@@ -39,7 +39,7 @@ plotCdf <- function(catVar, contVar, cdf_colors = 1:length(catVar), ...) {
                 panel.background = element_blank(), panel.grid = element_blank(), 
                 panel.border = element_rect(fill = NA), 
                 plot.title  = element_text(family="serif",size=12,face="bold",vjust=1.1),
-                legend.position = c(0.11,0.8), legend.key = element_rect(fill = 'white'),
+                legend.position = c(0.15,0.75), legend.key = element_rect(fill = 'white'),
                 legend.text = element_text(family="serif",size=15), legend.title = element_text(family="serif",size=11),
                 axis.title.x = element_text(family="serif",vjust = -0.5, size = 12),
                 axis.title.y = element_text(family="serif",vjust = 1.5, size = 12),
