@@ -55,11 +55,18 @@ data(LakeTrophicModelling)
 
 
 #Checks for existing cache (from another project)
+#Else if Repeats running chunk outside of knitr
 if(file.exists("prior_cache")){
   for(i in gsub(".rdb","",list.files("prior_cache",".rdb",full.names=T))){
     lazyLoad(i)
   }
+} else if(file.exists("vignettes/prior_cache")){
+  for(i in gsub(".rdb","",list.files("vignettes/prior_cache",".rdb",full.names=T))){
+    lazyLoad(i)
+  }
 }
+
+
 
 
 # Table Captions from @DeanK on 
@@ -240,12 +247,12 @@ While random forests are able to handle numerous correlated variables without a 
 Using both the `varSelRF` and `randomForest` R packages we ran models for six sets of variables and trophic state classifications [@diaz-uriarte2010varSelRF; @liaw2002randomForest].  These included three different combinations of the Chlorophyll *a* trophic states as the dependent variables and using all variables (*in situ* and GIS variables) or the GIS only variables (i.e. no *in situ* information) as the independent variables in the random forest.  A listing of all considered variables is in Appendix 1.  Trophic state was defined using the NLA chlorophyll *a* trophic state cut offs and the three combinations of trophic state were used to highlight the possible error caused by misclassification of adjacent classes, such as mesotrophic and eutrophic (Table \ref{tab:trophicStateTable}).  The six model combinations were:
 
 
-- **Model 1:** Chlorophyll *a* trophic state - 4 class = All variables (*in situ* water quality, lake morphometry, and landscape)
-- **Model 2:** Chlorophyll *a* trophic state - 3 class = All variables (*in situ* water quality, lake morphometry, and landscape)
-- **Model 3:** Chlorophyll *a* trophic state - 2 class = All variables (*in situ* water quality, lake morphometry, and landscape)
-- **Model 4:** Chlorophyll *a* trophic state - 4 class = All variables (lake morphometry, and landscape)
-- **Model 5:** Chlorophyll *a* trophic state - 3 class = All variables (lake morphometry, and landscape)
-- **Model 6:** Chlorophyll *a* trophic state - 2 class = All variables (lake morphometry, and landscape)
+- **Model 1:** Chlorophyll *a* trophic state (4 class) = All variables (*in situ* water quality, lake morphometry, and landscape)
+- **Model 2:** Chlorophyll *a* trophic state (3 class) = All variables (*in situ* water quality, lake morphometry, and landscape)
+- **Model 3:** Chlorophyll *a* trophic state (2 class) = All variables (*in situ* water quality, lake morphometry, and landscape)
+- **Model 4:** Chlorophyll *a* trophic state (4 class) = GIS Only variables (lake morphometry, and landscape)
+- **Model 5:** Chlorophyll *a* trophic state (3 class) = GIS Only variables (lake morphometry, and landscape)
+- **Model 6:** Chlorophyll *a* trophic state (2 class) = GIS Only variables (lake morphometry, and landscape)
 
 Our modelling work flow was as follows:
 
@@ -254,11 +261,11 @@ Our modelling work flow was as follows:
 
 ##Measures of Model Performance and Variable Importance
 
-We assess the performance of the random forest models by comparing the total prediction accuracy and the kappa coefficient of the final confusion matrix. For each of the models, the final predictions were compared to the original data via a confusion matrix. A confusion matrix shows agreement and disagreement with predicted values forming the columns of the matrix and observed values, the rows. The total accuracy (i.e. percent correctly predicted) was calculated.  Since some agreement can be expected by chance alone, it is also useful to take this type of error into account.  For this we calculated the kappa coefficient for each model as well [@cohen1960coefficient; @hubert1985comparing].   The kappa coefficient can range from -1 to 1 with 0 equalling the agreement expected by chance alone.  Values greater than 0 represent agreement greater than would be expected by chance, with values greater than 0.61 considered "substantial" agreement  [@landis1977measurement]. Additonally, random forest builds each tree on bootstrapped, random subsets of the original data thus, a separate independent validation dataset is not required and random forest error estimates are expected to be unbiased [@breiman2001random]. 
+We assess the performance of the random forest models by comparing the total prediction accuracy and the kappa coefficient of the final confusion matrix. For each of the models, the final predictions were compared to the original data via a confusion matrix. A confusion matrix shows agreement and disagreement with predicted values forming the columns of the matrix and observed values, the rows. The total accuracy (i.e. percent correctly predicted) was calculated.  Since some agreement can be expected by chance alone, it is also useful to take this type of error into account.  For this we calculated the kappa coefficient for each model as well [@cohen1960coefficient; @hubert1985comparing].   The kappa coefficient can range from -1 to 1 with 0 equalling the agreement expected by chance alone.  Values greater than 0 represent agreement greater than would be expected by chance, with values greater than 0.61 considered "substantial" agreement  [@landis1977measurement].  Negative values are rare and would indicate no agreement between the predicted and observed values. Additonally, random forest builds each tree on bootstrapped, random subsets of the original data thus, a separate independent validation dataset is not required and random forest error estimates are expected to be unbiased [@breiman2001random]. 
 
 Lastly, the random forest algorithm explicitly measures variable importance as mean decrease in Gini.  The Gini Index is a measure of how well the data are classified into homogeneous groups.  For every node, the splitting variables are permuted and the change in actual Gini and permuted Gini is recorded.  The mean decrease Gini is a summed and standardized value for each variable [@breiman2001random].  Higher values of mean decrease Gini suggest a higher importance for that variable.
 
-#Results and Discussion
+#Results 
 
 Our complete dataset includes `r dim(ltmData)[1]` lakes; however `r sum(is.na(ltmData$TS_CHLA_4))` lakes did not have chlorophyll *a* data. Thus, the base dataset for our modelling was conducted on data for `r dim(ltmData[!is.na(ltmData$TS_CHLA_4),])[1]` lakes.  As chlorophyll *a* is used to create the trophic state classifications, it was necessary to remove these data becuase no chlorophyll *a* trophic state could be determined for these lakes.   The lakes were well distributed both across the four trophic state categories (Table \ref{tab:trophicStateTable}) and spatially throughout the United States (Figure \ref{fig:nlaMap}).  
 
@@ -266,22 +273,24 @@ Our complete dataset includes `r dim(ltmData)[1]` lakes; however `r sum(is.na(lt
 Accuracy for the models built with all predictors ranged from `r round(min(acc_results[1:3,2]),3)` to `r round(max(acc_results[1:3,2]),3)` and the kappa coefficient had a minimum value of `r round(min(acc_results[1:3,3]),3)` and maximum of `r round(max(acc_results[1:3,3]),3)`.  The GIS only models had a total accuracy between `r round(min(acc_results[4:6,2]),3)` and `r round(max(acc_results[4:6,2]),3)` and kappa coefficient between `r round(min(acc_results[4:6,3]),3)` and `r round(max(acc_results[4:6,3]),3)`.  The importance of variables for the models including the *in situ* data were fairly stable while there was considerably more variation in variable importance for the three different GIS only models.  Details for each model are discussed below.
 
 *Model 1: 4 Trophic States ~ All Variables*
-The reduced model for Model 1 included potassium, nitrogen:phosphorus, total nitrogen, total phosphorus, total organic carbon, turbidity, ecoregion, organic ions, dissolved organic carbon, and maximum depth and of these, turbidity, total phosphorus, total nitrogen, and total organic carbon were the most four most important predictors of the four classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)*100`% and the Cohen's Kappa was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
+The reduced model for Model 1 included potassium, nitrogen:phosphorus, total nitrogen, total phosphorus, total organic carbon, turbidity, ecoregion, organic ions, dissolved organic carbon, and maximum depth and of these, turbidity, total phosphorus, and total nitrogen were the three most important predictors of the four classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,3)*100`% and the Cohen's Kappa was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model1}).  
 
 *Model 2: 3 Trophic States ~ All Variables*
-For Model 2, the reduced model included turbidity, total phosphorus, total nitrogen, total organic carbon, nitrogen:phosphorus, longitude, pH, estimated organic anions, elevation, maximum depth, dissolved organic carbon, potassium, latitude, ecoregion, chloride, ammonium and percent cropland (Figure \ref{fig:Importance_Model2}). The top predictors for 3 trophic state classes were turbidity, total phosphorus, total nitrogen, and total organic carbon (Figure \ref{fig:Importance_Model2}).  Model 2 accuracy was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$diag,3)*100`% and the Cohen's Kappa was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model2}).   
+For Model 2, the reduced model included turbidity, total phosphorus, total nitrogen, total organic carbon, nitrogen:phosphorus, longitude, pH, estimated organic anions, elevation, maximum depth, dissolved organic carbon, potassium, latitude, ecoregion, chloride, ammonium and percent cropland (Figure \ref{fig:Importance_Model2}). The top predictors for 3 trophic state classes were again turbidity, total phosphorus, and total nitrogen (Figure \ref{fig:Importance_Model2}).  Model 2 accuracy was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$diag,3)*100`% and the Cohen's Kappa was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model2}).   
 
 *Model 3: 2 Trophic States ~ All Variables*
-The reduced model for Model 3 was similar to Model 1 and Model 2 and included turbidity, total phosphorus, total nitrogen, nitrogen:phosphorus, potassium, ecoregion, elevation, total organic carbon, growing degree days, longitude, sodium, maximum depth, estimated organic anions, latitude, and dissolved organic carbon (Figure \ref{fig:Importance_Model3}). The top three predictors were the same for Model 3; however, elevation and growing degree days had a higher importance than total organic carbon. (Figure \ref{fig:Importance_Model3}).  Total accuracy for Model 3 was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,3)*100`% and the Cohen's Kappa was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model3}).
+The reduced model for Model 3 was similar to Model 1 and Model 2 and included turbidity, total phosphorus, total nitrogen, nitrogen:phosphorus, potassium, ecoregion, elevation, total organic carbon, growing degree days, longitude, sodium, maximum depth, estimated organic anions, latitude, and dissolved organic carbon (Figure \ref{fig:Importance_Model3}). The top three predictors were the same for Model 3. (Figure \ref{fig:Importance_Model3}).  Total accuracy for Model 3 was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,3)*100`% and the Cohen's Kappa was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model3}).
 
 *Model 4: 4 Trophic States ~ GIS Only Variables*
-The selected variables for the Model 4 were longitude, latitude, elevation, estimated mean lake depth, percent evergreen forest, estimated maximum lake depth, percent cropland, and ecoregion (Figure \ref{fig:Importance_Model4}).  The most important variables were percent evergreen forest, ecoregion, percent cropland, and longitude (Figure \ref{fig:Importance_Model4}). Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,3)*100`% and the Cohen's Kappa is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model4}).
+The selected variables for the Model 4 were longitude, latitude, elevation, estimated mean lake depth, percent evergreen forest, estimated maximum lake depth, percent cropland, and ecoregion (Figure \ref{fig:Importance_Model4}).  The three most important variables were longitude, latitude, and elevation (Figure \ref{fig:Importance_Model4}); however, all variables except ecoregion were almost equally important. Total accuracy for Model 4 is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,3)*100`% and the Cohen's Kappa is `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,3)` (Table \ref{tab:Confusion_Model4}).
 
 *Model 5: 3 Trophic States ~ GIS Only Variables*
-The reduced model for Model 5 included estimated mean lake depth, percent cropland, longitude, latitude, percent evergreen forest, elevation, estimated maximum lake depth, estimated lake volume, percent deciduous forest, percent developed open space, ecoregion, percent woody wetland, and percent shrub/scrub (Figure \ref{fig:Importance_Model5}). The most important variables for model 5 were ecoregion, percent evergreen forest, percent cropland, and estimated mean depth. (Figure \ref{fig:Importance_Model5}). Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,3)*100`% and the Cohen's Kappa is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,3)` (Table \ref{tab:Confusion_Model5}).
+The reduced model for Model 5 included estimated mean lake depth, percent cropland, longitude, latitude, percent evergreen forest, elevation, estimated maximum lake depth, estimated lake volume, percent deciduous forest, percent developed open space, ecoregion, percent woody wetland, and percent shrub/scrub (Figure \ref{fig:Importance_Model5}). The most important variables for model 5 were estimated mean lake depth, percent crobland, and longitude. (Figure \ref{fig:Importance_Model5}). Total accuracy for Model 5 is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,3)*100`% and the Cohen's Kappa is `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,3)` (Table \ref{tab:Confusion_Model5}).
 
 *Model 6: 2 Trophic States ~ GIS Only Variables*
-The variable selection process for Model 6 produced a reduced model with ecoregion, growing degree days, percent evergreen forest, percent cropland, elevation, estimated mean lake depth, longitude, latitude, watershed area, estimated maximum lake depth, percent developed open space, percent deciduous forest, and estimated lake volume (Figure \ref{fig:Importance_Model6}). Similar to models 4 and 5, the four most important variables were ecoregion, percent evergreen forest, percent cropland, and elevation (Figure \ref{fig:Importance_Model6}).  Total accuracy for Model 6 is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)*100`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model6}).
+The variable selection process for Model 6 produced a reduced model with ecoregion, growing degree days, percent evergreen forest, percent cropland, elevation, estimated mean lake depth, longitude, latitude, watershed area, estimated maximum lake depth, percent developed open space, percent deciduous forest, and estimated lake volume (Figure \ref{fig:Importance_Model6}).  The three most important variables were ecoregion, growing degree days, and percent evergreen. (Figure \ref{fig:Importance_Model6}).  Ecoregion had the highest importance with a slow decline in importance for the remainder of the variables.  Total accuracy for Model 6 is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,3)*100`% and the Cohen's Kappa is `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,3)` (Table \ref{tab:Confusion_Model6}).
+
+#Discussion
 
 ##Trophic State Probabilities
 One of the powerful features of random forests is the ability to aggregate a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake.  These values may be interpreted as the probability that a lake is in a given trophic state. For instance, for a single lake (National Lake Assessment ID = NLA06608-0005), the vote probabilities for Model 1 were `r round(lakeVotes[lakeVotes$COMID==23491387,][,4],2)` for oligotrophic, `r round(lakeVotes[lakeVotes$COMID==23491387,][,5],2)` for mesotrophic, `r round(lakeVotes[lakeVotes$COMID==23491387,][,6],2)` for eutrophic, and `r round(lakeVotes[lakeVotes$COMID==23491387,][,7],2)` for hypereutrophic.  This suggests little uncertainty in the predicted oligotrophic state.  
@@ -289,13 +298,13 @@ One of the powerful features of random forests is the ability to aggregate a ver
 Further, the maximum probability for each lake can be used as a measure of how certain the random forest model was of the prediction.  We would expect higher total accuracy for lakes that had more certain predictions.  To test this we can examine the accuracy of trophic state predictions across the full range of trophic state probabilities, similar to an approach outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister *et al.* [-@hollister2008cprob].  We utilize this approach and examine the change in total accuracy as a function of the maximum probability for each lake.  As expected, lakes with higher maximum vote probabilities are more accurately predicted (Figure \ref{fig:condProbFig}).  The increasing trend suggest that even for models with lower overall accuracy there can also be a large number of individual cases that are predicted with high accuracy.
 
 ##Variable Selection and Importance
-There was a great deal of agreement on the important variables for each set of models.  In line with past predictive modeling of cyanobacteria abundance, the *in situ* models consistently select the water quality variables (turbidity, total nitrogen, total phosphorus, and N:P ratios) as important variables [@downing2001predicting].   While there is variation in the response of cyanobacteria to changes in relative nutrient concentrations, the general pattern suggests that limiting nutrients have considerable impact once amounts increase beyond expected levels.  
+There was a great deal of agreement on the important variables for each set of models.  In line with past predictive modeling of cyanobacteria abundance and not surprising, the *in situ* models consistently select the water quality variables (turbidity, total nitrogen, total phosphorus, and N:P ratios) as important variables [@downing2001predicting].   While there is variation in the response of cyanobacteria to changes in relative nutrient concentrations, the general pattern suggests that limiting nutrients have considerable impact once amounts increase beyond expected levels.  
 
 The mechanistic role of turbidity on lake trophic state is more complex.  Light availability in turbid waters is lower than in clear waters.  This would suggest a negative relationship between turbidity and chlorophyll *a*.  Second, chlorophyll *a* can also be a component of turbidity and lakes with higher chlorophyll *a* concentrations will also be more turbid.  Last, chlorophyll *a* is not the only component of of turbidity and turbid waters can be caused by, for example, increased sediment loads or tannin.  This would be a cause for concern with linear models; however, linearity is not an assumption of tree-based modelling approaches such as random forest [need cite]. 
 
-Our models with the GIS-only variables are capturing the large scale spatial pattern of trophic status gradient of lakes across the United States.  We reliably see latitude and longitude and ecoregion selected as important variables.  It is also possible that other variables selected as important are also capturing a portion of this trend. For instance, elevation and growing degree days both have obvious spatial components, but may also be accounting for variation in temperature.  
+Our models with the GIS-only variables are capturing the large scale spatial pattern of the trophic status gradient of lakes across the United States.  We reliably see latitude and longitude and ecoregion selected as important variables.  It is also possible that other variables selected as important are also capturing a portion of this trend. For instance, elevation and growing degree days both have obvious spatial components, but may also be accounting for variation in temperature.  
 
-The land use/land cover variables are also important variables in describing trophic state patterns.  Like elevation and growing degree days, there are broad scale spatial patterns inherent in the data.  For instance, the relative continental position of mountains in the United States is the spatial inverse of the distribution of agricultural lands. However, it is known that forests are positively associated with lower nutrient loads where as agricultural land shows a negative association.  These more local scale relationships with land use/land cover are likely providing additional predictive power to the information in the broader scale data. 
+The land use/land cover variables are also important in describing trophic state patterns.  Like elevation and growing degree days, broad scale spatial patterns are inherent in the data.  For instance, the relative continental position of mountains in the United States is the spatial inverse of the distribution of agricultural lands. However, it is known that forests are positively associated with lower nutrient loads where as agricultural land shows a negative association.  These more local scale relationships with land use/land cover are likely providing additional predictive power to the information in the broader scale data. 
 
 Lastly, morphometry (e.g. depth and volume) also proved to be important in the prediction of lake trophic state.  As morphometry shows little to no broad scale spatial pattern and is unique to a given lake, these data are likely illuminating the local, lake scale drivers of trophic state.  As only depth and volume were selected this probably shows the importance of in lake nutrient processing and residence time.
 
@@ -307,7 +316,7 @@ The distribution of cyanobacteria abundance shows separation between all of the 
 
 #Conclusions
 
-Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which would allow for making trophic state estimates for all lakes in the United States. We were able to successfully predict a variety of trophic state classes.  With the GIS only data models our total accuracy ranged from `r min(acc_results$total_accuracy[4:6])` to `r max(acc_results$total_accuracy[4:6])` and with the full suite of data our model accuracy had a minimum accuracy of `r min(acc_results$total_accuracy[1:3])` and maximum accuracy of `r max(acc_results$total_accuracy[1:3])`.  
+Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which would allow for making trophic state estimates for all lakes in the United States. We were able to successfully predict a variety of trophic state classes.  With the GIS only data models our total accuracy ranged from `r round(min(acc_results$total_accuracy[4:6]),2)` to `r round(max(acc_results$total_accuracy[4:6]),2)` and with the full suite of data our model accuracy had a minimum accuracy of `r round(min(acc_results$total_accuracy[1:3]),2)` and maximum accuracy of `r round(max(acc_results$total_accuracy[1:3]),2)`.  
 
 While some of the models (i.e. Model 4) show relatively low prediction accuracies, another feature of the random forest, votes, can provide additional information.  In addition to providing a single estimate of trophic state for each lake, our models also indicate the probability that a lake was classified in any of the categories.  These probabilities may be mapped directly to show the uncertainty of a given predicted class.  Furthermore as the certainty of prediction increases so does the overall trophic state classification accuracy (Figure \ref{fig:condProbFig}). These results suggest that our models will provide reasonable estimates of trophic state across the United States.
 
@@ -397,6 +406,12 @@ importancePlot(gis_ts2_rf,sumTable(gis_ts2[1:100]), data_def=data_def,'gini',siz
 
 \newpage
 
+```{r condProbFig,echo=FALSE, fig.width=7, fig.cap="Comparison of certainity of trophic state prediction and total accuracy\\label{fig:condProbFig}",cache=FALSE}
+condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
+```
+
+\newpage
+
 ```{r ts_4_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}
 plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:9],
         y='Percent',x='Log10(Cyanobacteria Abundance)',
@@ -436,11 +451,6 @@ scatterPlot(scp_df,xvar="chla",yvar="abundp1",zissou[8],zissou[7],zissou[6],
              y="Log10(Cyanobaterial Abundance + 1)")
 ```
 
-\newpage
-
-```{r condProbFig,echo=FALSE, fig.width=7, fig.cap="Comparison of certainity of trophic state prediction and total accuracy\\label{fig:condProbFig}",cache=FALSE}
-condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
-```
 
 \newpage
 
