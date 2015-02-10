@@ -31,10 +31,10 @@ scatterPlot<-function(df,xvar,yvar,pt_col,ln_col,cl_col,...){
     geom_point(size=2,colour=pt_col) +
     scale_x_log10() +
     scale_y_log10() +
-    stat_smooth(method="lm",fill=cl_col,
-                colour=ln_col,size=2) + 
-    annotate("text", x = 0.25, y = 100000000, label = xlm_r) +
-    annotate("text", x = 0.285, y = 20000000, label = xlm_p) +
+    #stat_smooth(method="lm",fill=cl_col,
+    #            colour=ln_col,size=2) + 
+    #annotate("text", x = 0.25, y = 100000000, label = xlm_r) +
+    #annotate("text", x = 0.285, y = 20000000, label = xlm_p) +
     theme(text = element_text(family="serif"),
           panel.background = element_blank(), panel.grid = element_blank(), 
           panel.border = element_rect(fill = NA), 
@@ -45,7 +45,7 @@ scatterPlot<-function(df,xvar,yvar,pt_col,ln_col,cl_col,...){
           axis.title.y = element_text(family="serif",vjust = 1.5, size = 12),
           axis.text.x = element_text(family="serif",size = 11),
           axis.text.y = element_text(family="serif",size = 11)) + 
-    labs(y="log10(Cyanobacteria Biovolume + 1)",...)
+    labs(...)
     
   return(x)
 }

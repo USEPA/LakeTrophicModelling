@@ -444,7 +444,7 @@ ts_3<-c("oligo","meso/eu","meso/eu","hyper")
 ts_2<-c("oligo/meso","oligo/meso","eu/hyper","eu/hyper")
 co<-c("<= 0.2",">2-7",">7-30",">30")
 xdf<-data.frame(ts_4,ts_3,ts_2,co,as.vector(table(ltmData$TS_CHLA_4)))
-names(xdf)<-c("Trophic State (4)","Trophic State (3)","Trophic State (2)","Cut-off","n")
+names(xdf)<-c("Trophic State (4)","Trophic State (3)","Trophic State (2)","Cut-off (µg/L)","n")
 kable(xdf)
 ```
 
