@@ -11,7 +11,7 @@
 #' scatterPlot(mydf,xvar="chla",yvar="biovp1",zissou2[3],zissou2[2],zissou2[1],
 #'             title="Chlorophyll and Cyanobacterai Relationship",
 #'             x=expression(paste('Log10(Chl ', italic("a"),')')),
-#'             y="Log10(Cyanobaterial Biovolumes + 1)")
+#'             y="Log10(Cyanobaterial Abundance + 1)")
 #' @export
 #' @import ggplot2
 
