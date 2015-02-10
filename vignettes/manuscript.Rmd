@@ -364,42 +364,42 @@ nlaMap(state,lakes_dd,mycolor)
 
 \newpage
 
-```{r Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1\\label{fig:Importance_Model1}",cache=FALSE}
+```{r Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance.  \\label{fig:Importance_Model1}",cache=FALSE}
 all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
 importancePlot(all_ts4_rf,sumTable(all_ts4[1:100]), data_def=data_def,'gini',size=5,aes(colour=all_ts4_color))
 ```
 
 \newpage
 
-```{r Importance_Model2,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2\\label{fig:Importance_Model2}",cache=FALSE}
+```{r Importance_Model2,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model2}",cache=FALSE}
 all_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts3_vars]
 importancePlot(all_ts3_rf,sumTable(all_ts3[1:100]), data_def=data_def,'gini',size=5,aes(colour=all_ts3_color))
 ```
 
 \newpage
 
-```{r Importance_Model3,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3\\label{fig:Importance_Model3}",cache=FALSE}
+```{r Importance_Model3,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model3}",cache=FALSE}
 all_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts2_vars]
 importancePlot(all_ts2_rf,sumTable(all_ts2[1:100]), data_def=data_def,'gini',size=5,aes(colour=all_ts2_color))
 ```
 
 \newpage
 
-```{r Importance_Model4,results="asis",echo=FALSE, fig.cap="Importance plot for Model 4\\label{fig:Importance_Model4}",cache=FALSE}
+```{r Importance_Model4,results="asis",echo=FALSE, fig.cap="Importance plot for Model 4, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model4}",cache=FALSE}
 gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
 importancePlot(gis_ts4_rf,sumTable(gis_ts4[1:100]), data_def=data_def,'gini',size=5,aes(colour=gis_ts4_color))
 ```
 
 \newpage
 
-```{r Importance_Model5,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5\\label{fig:Importance_Model5}",cache=FALSE}
+```{r Importance_Model5,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model5}",cache=FALSE}
 gis_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts3_vars]
 importancePlot(gis_ts3_rf,sumTable(gis_ts3[1:100]), data_def=data_def,'gini',size=5,aes(colour=gis_ts3_color))
 ```
 
 \newpage
 
-```{r Importance_Model6,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6\\label{fig:Importance_Model6}",cache=FALSE}
+```{r Importance_Model6,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model6}",cache=FALSE}
 gis_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts2_vars]
 importancePlot(gis_ts2_rf,sumTable(gis_ts2[1:100]), data_def=data_def,'gini',size=5,aes(colour=gis_ts2_color))
 ```
@@ -414,9 +414,7 @@ condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
 
 ```{r ts_4_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}
 plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:9],
-        y='Percent',x='Log10(Cyanobacteria Abundance)',
-        title=expression(paste('CDF for Chlorophyll ', 
-                                italic("a"),' Trophic States (4 Categories)')),
+        y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
         color="Trophic State\nCategories")
 ```
 
@@ -424,9 +422,7 @@ plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:9],
 
 ```{r ts_3_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 3 trophic state classes\\label{fig:ts_3_cyano_cdf}",cache=FALSE }
 plotCdf(ltmData$TS_CHLA_3,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:8],
-       y='Percent',x='Log10(Cyanobacteria Abundance)', 
-       title=expression(paste('CDF for Chlorophyll ', 
-                              italic("a"),' Trophic States (3 Categories)')),
+       y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)', 
        color="Trophic State\nCategories")
 ```
 
@@ -434,9 +430,7 @@ plotCdf(ltmData$TS_CHLA_3,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:8],
 
 ```{r ts_2_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 2 trophic state classes\\label{fig:ts_2_cyano_cdf}",cache=FALSE}
 plotCdf(ltmData$TS_CHLA_2,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:7],
-       y='Percent',x='Log10(Cyanobacteria Abundance)',
-       title=expression(paste('CDF for Chlorophyll ', 
-                              italic("a"),' Trophic States (2 Categories)')),
+       y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
        color="Trophic State\nCategories")
 ```
 
@@ -445,10 +439,8 @@ plotCdf(ltmData$TS_CHLA_2,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:7],
 ```{r scatterplot,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria abundance scatterplot\\label{fig:scatterplot}",cache=FALSE}
 scp_df<-data.frame(chla=ltmData[["CHLA"]],abundp1=ltmData[["cyanoCellsPerML"]]+1)
 scatterPlot(scp_df,xvar="chla",yvar="abundp1",zissou[8],zissou[7],zissou[6],
-             title=expression(paste("Chlorophyll ", 
-                                    italic("a")," and Cyanobacteria Relationship")),
-             x=expression(paste('Log10(Chl ', italic("a"),')')),
-             y="Log10(Cyanobaterial Abundance + 1)")
+             x=expression(paste('Log10(Chl ', italic("a"),'(µg/L))')),
+             y="Log10(Cyanobaterial Abundance (cells/ml) + 1)")
 ```
 
 
@@ -462,7 +454,7 @@ ts_3<-c("oligotrophic","mesotrophic/eutrophic","mesotrophic/eutrophic","hypereut
 ts_2<-c("oligotrophic/mesotrophic","oligotrophic/mesotrophic","eutrophic/hypereutrophic","eutrophic/hypereutrophic")
 co<-c("<= 0.2",">2-7",">7-30",">30")
 xdf<-data.frame(ts_4,ts_3,ts_2,co,as.vector(table(ltmData$TS_CHLA_4)))
-names(xdf)<-c("Trophic State (4)","Trophic State (3)","Trophic State (2)","Cut-off","Number of Observations")
+names(xdf)<-c("Trophic State (4)","Trophic State (3)","Trophic State (2)","Cut-off (µg/L)","Number of Observations")
 kable(xdf)
 ```
 
