@@ -465,8 +465,8 @@ kable(xdf)
 
 ```{r Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model1}",cache=FALSE}
 cm1<-round(all_ts4_rf$confusion,2)
-cm1[,5]<-(1-cm1[,5])*100
-names(cm1)[5]<-'Class Accuracy'
+cm1[,5]<-paste0((1-cm1[,5])*100,"%")
+dimnames(cm1)[[2]][5]<-'Class Accuracy'
 kable(cm1,row.names=T)
 ```
 
@@ -474,8 +474,8 @@ kable(cm1,row.names=T)
 
 ```{r Confusion_Model2,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 2. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_Model2}",cache=FALSE}
 cm2<-round(all_ts3_rf$confusion,2)
-cm2[,4]<-(1-cm2[,4])*100
-names(cm2)[4]<-'Class Accuracy'
+cm2[,4]<-paste0((1-cm2[,4])*100,"%")
+dimnames(cm2)[[2]][4]<-'Class Accuracy'
 kable(cm2,row.names=T)
 ```
 
@@ -483,8 +483,8 @@ kable(cm2,row.names=T)
 
 ```{r Confusion_Model3,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 3. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model3}",cache=FALSE}
 cm3<-round(all_ts2_rf$confusion,2)
-cm3[,3]<-(1-cm3[,3])*100
-names(cm3)[3]<-'Class Accuracy'
+cm3[,3]<-paste0((1-cm3[,3])*100,"%")
+dimnames(cm3)[[2]][3]<-'Class Accuracy'
 kable(cm3,row.names=T)
 ```
 
@@ -492,8 +492,8 @@ kable(cm3,row.names=T)
 
 ```{r Confusion_Model4,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 4. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model4}",cache=FALSE }
 cm4<-round(gis_ts4_rf$confusion,2)
-cm4[,5]<-(1-cm4[,5])*100
-names(cm4)[5]<-'Class Accuracy'
+cm4[,5]<-paste0((1-cm4[,5])*100,"%")
+dimnames(cm4)[[2]][5]<-'Class Accuracy'
 kable(cm4,row.names=T)
 ```
 
@@ -501,8 +501,8 @@ kable(cm4,row.names=T)
 
 ```{r Conufsion_Model5,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 5. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model5}",cache=FALSE}
 cm5<-round(gis_ts3_rf$confusion,2)
-cm5[,4]<-(1-cm5[,4])*100
-names(cm5)[4]<-'Class Accuracy'
+cm5[,4]<-paste0((1-cm5[,4])*100,"%")
+dimnames(cm5)[[2]][4]<-'Class Accuracy'
 kable(cm5,row.names=T)
 ```
 
@@ -510,8 +510,8 @@ kable(cm5,row.names=T)
 
 ```{r Confusion_Model6,results="asis",echo=FALSE, tab.cap="Random forest confusion matrix for Model 6. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in Class Accuracy' column. \\label{tab:Confusion_Model6}",cache=FALSE}
 cm6<-round(gis_ts2_rf$confusion,2)
-cm6[,3]<-(1-cm6[,3])*100
-names(cm6)[3]<-'Class Accuracy'
+cm6[,3]<-paste0((1-cm6[,3])*100,"%")
+dimnames(cm6)[[2]][3]<-'Class Accuracy'
 kable(cm6,row.names=T)
 ```
 
