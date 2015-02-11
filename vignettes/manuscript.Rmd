@@ -36,8 +36,10 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
-                        auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+if(!require(LakeTrophicModelling)){
+  devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE,
+                            auth_token="8742a8c1c2207393659a1de1bd53527fa56ea0d7")
+}
 devtools::install_github("jhollist/wesanderson")
 devtools::install_github("jhollist/condprob2")
 library("wesanderson")
@@ -312,9 +314,9 @@ Lastly, morphometry (e.g. depth and volume) also proved to be important in the p
 
 ##Associating Trophic State and Cyanobacteria
 
-Cyanobacteria biomass should be closely related to trophic state as they contribute to the chlorophyll concentration in a lake. These associations have been seen by others.  If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used to differentiate cyanobacteria abundance we examine distribution of cyanobacteria abundance for each trophic state and we also explore linear associations between Chlorohyll *a* and cyanobacteria abundance.
+Cyanobacteria biomass should be closely associated with trophic state as cyanobacteria contribute to the chlorophyll concentration in a lake. If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state may be used to differentiate cyanobacteria abundance we examine distribution of cyanobacteria abundance for each trophic state and we also explore linear associations between Chlorohyll *a* and cyanobacteria abundance.
 
-The distribution of cyanobacteria abundance shows separation between all of the trophic state classifications (Figures \ref{fig:ts_4_cyano_cdf}, \ref{fig:ts_3_cyano_cdf}, and \ref{fig:ts_2_cyano_cdf}).  Furthermore, there is a significant linear relationship (r^2^=`r round(summary(lm(log10(ltmData$CHLA)~log10(ltmData$cyanoCellsPerML)))$r.squared,2)`) between chlorophyll *a* and cyanobacteria abundance (Figure \ref{fig:scatterplot}).  Further, Yuan et al. [-@yuan2014managing] used the 2007 NLA to demonstrate that total nitrogen and chlorophyll *a* concentrations were good predictors of World Health Organization microcystin (a toxin produced by some cyanobacteris) criteria exceedences.  These results suggest that trophic state is indeed an acceptable proxy for cyanobacteria abundance and that in lakes with higher trophic state it is also reasonable to expect higher cyanobacteria.  
+The distribution of cyanobacteria abundance shows separation between all of the trophic state classifications (Figures \ref{fig:ts_4_cyano_cdf}, \ref{fig:ts_3_cyano_cdf}, and \ref{fig:ts_2_cyano_cdf}) and there is a significant linear relationship (r^2^=`r round(summary(lm(log10(ltmData$CHLA)~log10(ltmData$cyanoCellsPerML)))$r.squared,2)`) between chlorophyll *a* and cyanobacteria abundance (Figure \ref{fig:scatterplot}).  Furthermore, Yuan et al. [-@yuan2014managing] used the 2007 NLA to demonstrate that total nitrogen and chlorophyll *a* concentrations were good predictors of World Health Organization microcystin (a toxin produced by some cyanobacteris) criteria exceedences.  These results suggest that trophic state is indeed an acceptable proxy for cyanobacteria abundance and that in lakes with higher trophic state it is also reasonable to expect higher cyanobacteria.  
 
 #Conclusions
 
@@ -462,55 +464,55 @@ kable(xdf)
 
 \newpage
 
-```{r Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in "Class Accuracy"" column. \\label{tab:Confusion_Model1}",cache=FALSE}
+```{r Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model1}",cache=FALSE}
 cm1<-round(all_ts4_rf$confusion,2)
 cm1[,5]<-(1-cm1[,5])*100
-names(cm1)[5]<-"Class Accuracy"
+names(cm1)[5]<-'Class Accuracy'
 kable(cm1,row.names=T)
 ```
 
 \newpage
 
-```{r Confusion_Model2,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 2. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in "Class Accuracy"" column.  \\label{tab:Confusion_Model2}",cache=FALSE}
+```{r Confusion_Model2,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 2. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_Model2}",cache=FALSE}
 cm2<-round(all_ts3_rf$confusion,2)
-cm2[,5]<-(1-cm2[,5])*100
-names(cm2)[5]<-"Class Accuracy"
+cm2[,4]<-(1-cm2[,4])*100
+names(cm2)[4]<-'Class Accuracy'
 kable(cm2,row.names=T)
 ```
 
 \newpage
 
-```{r Confusion_Model3,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 3. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in "Class Accuracy"" column. \\label{tab:Confusion_Model3}",cache=FALSE}
+```{r Confusion_Model3,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 3. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model3}",cache=FALSE}
 cm3<-round(all_ts2_rf$confusion,2)
-cm3[,5]<-(1-cm3[,5])*100
-names(cm3)[5]<-"Class Accuracy"
+cm3[,3]<-(1-cm3[,3])*100
+names(cm3)[3]<-'Class Accuracy'
 kable(cm3,row.names=T)
 ```
 
 \newpage
 
-```{r Confusion_Model4,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 4. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in "Class Accuracy"" column. \\label{tab:Confusion_Model4}",cache=FALSE }
+```{r Confusion_Model4,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 4. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model4}",cache=FALSE }
 cm4<-round(gis_ts4_rf$confusion,2)
 cm4[,5]<-(1-cm4[,5])*100
-names(cm4)[5]<-"Class Accuracy"
+names(cm4)[5]<-'Class Accuracy'
 kable(cm4,row.names=T)
 ```
 
 \newpage
 
-```{r Conufsion_Model5,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 5. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in "Class Accuracy"" column. \\label{tab:Confusion_Model5}",cache=FALSE}
+```{r Conufsion_Model5,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 5. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model5}",cache=FALSE}
 cm5<-round(gis_ts3_rf$confusion,2)
-cm5[,5]<-(1-cm5[,5])*100
-names(cm5)[5]<-"Class Accuracy"
+cm5[,4]<-(1-cm5[,4])*100
+names(cm5)[4]<-'Class Accuracy'
 kable(cm5,row.names=T)
 ```
 
 \newpage
 
-```{r Confusion_Model6,results="asis",echo=FALSE, tab.cap="Random forest confusion matrix for Model 6. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in "Class Accuracy"" column. \\label{tab:Confusion_Model6}",cache=FALSE}
+```{r Confusion_Model6,results="asis",echo=FALSE, tab.cap="Random forest confusion matrix for Model 6. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in Class Accuracy' column. \\label{tab:Confusion_Model6}",cache=FALSE}
 cm6<-round(gis_ts2_rf$confusion,2)
-cm6[,5]<-(1-cm6[,5])*100
-names(cm6)[5]<-"Class Accuracy"
+cm6[,3]<-(1-cm6[,3])*100
+names(cm6)[3]<-'Class Accuracy'
 kable(cm6,row.names=T)
 ```
 
