@@ -1,7 +1,7 @@
 LakeTrophicModelling
 ====================
 
-This repository contains all the materials needed to reproduce Hollister *et al.* (2014) Modeling Lake Trophic State: A Data Mining Approach.  These materials are presented as an R Package which contains code used for analyses, code used to develop figures, raw data used for all analysese, and a package vignette that contains the accepted, unformatted version of the manuscript.
+This repository contains all the materials needed to reproduce Hollister *et al.* (2015) Modeling Lake Trophic State: A Random Forest Approach.  These materials are presented as an R Package which contains code used for analyses, code used to develop figures, raw data used for all analysese, and a package vignette that contains the accepted, unformatted version of the manuscript.
 
 #Install the Package
 To install the package and gain access to the materials do the following:
@@ -16,11 +16,11 @@ library("LakeTrophicModelling")
 All the data used in this manuscript are available via:
 
 ```
-data(LakeTrophicModelling_data)
+data(LakeTrophicModelling)
 ```
 
 And the manuscript vignette can be read via:
-
+NOTE:Not currently (3/30/15) available...
 ```
 vignette("manuscript",package="LakeTrophicModelling")
 ```
