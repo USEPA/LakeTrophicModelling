@@ -14,12 +14,12 @@ affiliation:
     Drive  Narragansett, RI, 02882, USA
   affilnum: 1
 output:
-  pdf_document:
+  pdf_document: 
     fig_caption: yes
     keep_tex: yes
     number_sections: yes
     template: components/manuscript.latex
-  word_document: no
+  word_document: yes
 capsize: normalsize
 csl: components/freshwater-science.csl
 documentclass: article
@@ -58,7 +58,7 @@ library("e1071")
 library("dplyr")
 library("tidyr")
 library("condprob2")
-opts_chunk$set(dev = 'png', fig.width=7.5)
+opts_chunk$set(dev = 'tiff', dpi=300, fig.width=7.5)
 data(LakeTrophicModelling)
 
 
