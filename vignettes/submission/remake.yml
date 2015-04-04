@@ -1,0 +1,13 @@
+sources:
+  - prepare_submission.R
+
+targets:
+  all:
+    depends: 
+      - manuscript.md
+  
+  manuscript.Rmd:
+    command: file.copy("../manuscript.Rmd",target_name)
+
+  manuscript.md:
+    knitr: true
