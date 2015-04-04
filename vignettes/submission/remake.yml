@@ -8,6 +8,9 @@ targets:
   
   manuscript.Rmd:
     command: file.copy("../manuscript.Rmd",target_name)
+  
+  test:
+    command: getwd()
 
   manuscript.md:
     knitr: true
