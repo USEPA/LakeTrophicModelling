@@ -1,18 +1,8 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Original default rstudio/pandoc latex file
-%% upated by @jhollist 09/15/2014
-%% inspired by @cboetting https://github.com/cboettig/template and
-%% @rmflight blog posts:
-%% http://rmflight.github.io/posts/2014/07/analyses_as_packages.html 
-%% http://rmflight.github.io/posts/2014/07/vignetteAnalysis.html).  
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
-\usepackage{fancyhdr}
 \usepackage{fixltx2e} % provides \textsubscript
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -168,7 +158,9 @@ $endif$
 \renewcommand{\headrulewidth}{0pt}
 \rfoot{\today}
 \lfoot{\thepage}
-%%Changed default abstract width and added lines
+%%Changed default abstract width
+%\renewenvironment{abstract}{%
+
 \renewenvironment{abstract}{
   \hfill\begin{minipage}{1\textwidth}
   \rule{\textwidth}{1pt}\vspace{5pt}
@@ -209,12 +201,10 @@ $if(title)$
 \huge $title$
 \end{center}
 $endif$
-$if(running)$
-\rhead{Running head: $running$}
-$endif$
 %%Adds Author, correspond email asterisk, and affilnum from YAML
+$if(author)$
 \begin{center}
-\large
+\large 
 $for(author)$
 $if(author.name)$
 $author.name$$if(author.affilnum)$$if(author.email)$ \textsuperscript{*}$endif$ \textsuperscript{$author.affilnum$} $endif$
@@ -223,29 +213,29 @@ $author$
 $endif$
 $endfor$
 \end{center}
+$endif$
 %%Adds affiliations from YAML
 \begin{justify}
+$if(affiliation)$
 \footnotesize \emph{ 
 $for(affiliation)$
 \\*
 \textsuperscript{$affiliation.affilnum$}$affiliation.affil$\\*
 $endfor$
 }
+$endif$
 %%Adds corresponding author email(s) from YAML
-\newcounter{num}
-\setcounter{num}{1}
+$if(author)$
 \\[0.1cm]
-\footnotesize \emph{ 
+\footnotesize \emph{
+\textsuperscript{*} corresponding author: 
 $for(author)$
 $if(author.email)$
-\ifnum\value{num}=1%
-\textsuperscript{*} corresponding author:
-\fi
-$author.email$
-\stepcounter{num}
+$author.email$ 
 $endif$
 $endfor$
 }
+$endif$
 \end{justify}
 %%Adds date from YAML
 $if(date)$

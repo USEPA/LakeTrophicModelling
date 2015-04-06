@@ -22,15 +22,15 @@ condAccuracy<-function(rf,xlab="x",...){
   
   ggplot(cp,aes(x=cp.max_vote,y=cp.Raw.Data.Probability))+
     geom_point()+
-    theme(text = element_text(family="serif"),
+    theme(text = element_text(family="sans"),
           panel.background = element_blank(), #panel.grid = element_blank(), 
           panel.border = element_rect(fill = NA), 
-          plot.title  = element_text(family="serif",size=15,face="bold",vjust=1.1),
+          plot.title  = element_text(family="sans",size=15,face="bold",vjust=1.1),
           legend.position = "none", legend.key = element_rect(fill = 'white'),
-          legend.text = element_text(family="serif",size=15), legend.title = element_text(size=15),
-          axis.title.x = element_text(family="serif",vjust = -0.5, size = 12),
-          axis.title.y = element_text(family="serif",vjust = 1.5, size = 12),
-          axis.text.x = element_text(family="serif",size = 11),
-          axis.text.y = element_text(family="serif",size = 11)) + 
+          legend.text = element_text(family="sans",size=15), legend.title = element_text(size=15),
+          axis.title.x = element_text(family="sans",vjust = -0.5, size = 12),
+          axis.title.y = element_text(family="sans",vjust = 1.5, size = 12),
+          axis.text.x = element_text(family="sans",size = 11),
+          axis.text.y = element_text(family="sans",size = 11)) + 
     labs(y="Conditional Total Accuracy",x=xlab)
 }

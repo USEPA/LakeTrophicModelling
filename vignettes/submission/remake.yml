@@ -1,14 +1,16 @@
 sources:
   - prepare_submission.R
-
+  
 targets:
   all:
     depends: 
-      - manuscript.md
+      - manuscript.docx
   
-  manuscript.Rmd:
-    depends: ../manuscript.Rmd
-    command: copy()
-  
-  manuscript.md:
-    knitr: true
+  manuscript.Rmd: 
+    command: copy("../manuscript.Rmd")
+    
+  manuscript.docx:
+    command: render_doc("manuscript.Rmd") 
+    
+
+

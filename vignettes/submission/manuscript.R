@@ -21,10 +21,10 @@ library("e1071")
 library("dplyr")
 library("tidyr")
 library("condprob2")
-opts_chunk$set(dev = 'png', fig.width=7.5)
+opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
 data(LakeTrophicModelling)
 
-
+#
 #Checks for existing cache (from another project)
 #Else if Repeats running chunk outside of knitr
 if(file.exists("prior_cache")){
@@ -33,6 +33,10 @@ if(file.exists("prior_cache")){
   }
 } else if(file.exists("vignettes/prior_cache")){
   for(i in gsub(".rdb","",list.files("vignettes/prior_cache",".rdb",full.names=T))){
+    lazyLoad(i)
+  }
+} else if(file.exists("../prior_cache")){
+  for(i in gsub(".rdb","",list.files("../prior_cache",".rdb",full.names=T))){
     lazyLoad(i)
   }
 }
@@ -157,7 +161,7 @@ var_importance<-rbind(varImportance(all_ts4_rf,"Model 1"),
                            varImportance(gis_ts4_rf,"Model 4"),
                            varImportance(gis_ts3_rf,"Model 5"),
                            varImportance(gis_ts2_rf,"Model 6"))
-var_importance$variable_names<-factor(var_importance$variable_names)
+#var_importance$variable_names<-factor(var_importance$variable_names)
 #var_importance$model_id<-factor(var_importance$model_id)
 var_importance<-inner_join(var_importance,data_def[c("variable_names","description")],"variable_names")
 var_importance<-var_importance[order(var_importance$model_id,-var_importance$mean_decrease_gini, decreasing=FALSE),]                     
@@ -179,14 +183,14 @@ for(i in vars){
 }
 all_vars<-unique(all_vars)
 
-all_movies_palette<-vector()
-for(i in 1:dim(namelist)[1]){
-  all_movies_palette<-c(all_movies_palette,wes.palette(namelist[i,2],
-                                                       namelist[i,1]))
-}
-all_movies_palette<-unique(all_movies_palette)
-zissou<-c(wes.palette(5,"Zissou"),wes.palette(5,"Rushmore"))
-col_lu<-data.frame(variables=all_vars,hexcode=sample(all_movies_palette,length(all_vars)))
+#all_movies_palette<-vector()
+#for(i in 1:dim(namelist)[1]){
+#  all_movies_palette<-c(all_movies_palette,wes.palette(namelist[i,2],
+#                                                       namelist[i,1]))
+#}
+#all_movies_palette<-unique(all_movies_palette)
+#zissou<-c(wes.palette(5,"Zissou"),wes.palette(5,"Rushmore"))
+#col_lu<-data.frame(variables=all_vars,hexcode=sample(all_movies_palette,length(all_vars)))
 
 ## ----nlaMap, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations\\label{fig:nlaMap}",cache=FALSE----
 state<-map_data('state')
@@ -196,50 +200,51 @@ ll<-"+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
 lakes_alb_sp<-SpatialPoints(coordinates(lakes_alb),proj4string=CRS(p4s))
 lakes_dd<-spTransform(lakes_alb_sp,CRS=CRS(ll))
 lakes_dd<-data.frame(coordinates(lakes_dd))
-mycolor<-wes.palette(5,"Rushmore")
-mycolor<-c(mycolor[1],mycolor[2],mycolor[4])
+#mycolor<-wes.palette(5,"Rushmore")
+#mycolor<-c(mycolor[1],mycolor[2],mycolor[4])
+mycolor<-c("grey25","white","black")
 names(lakes_dd)<-c("long","lat",c())
 nlaMap(state,lakes_dd,mycolor)
 
 ## ----Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance.  \\label{fig:Importance_Model1}",cache=FALSE----
-all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
-importancePlot(all_ts4_rf,sumTable(all_ts4[1:100]), data_def=data_def,'gini',size=5,aes(colour=all_ts4_color))
+#all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
+importancePlot(all_ts4_rf,sumTable(all_ts4[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts4_color))
 
 ## ----Importance_Model2,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model2}",cache=FALSE----
-all_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts3_vars]
-importancePlot(all_ts3_rf,sumTable(all_ts3[1:100]), data_def=data_def,'gini',size=5,aes(colour=all_ts3_color))
+#all_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts3_vars]
+importancePlot(all_ts3_rf,sumTable(all_ts3[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts3_color))
 
 ## ----Importance_Model3,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model3}",cache=FALSE----
-all_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts2_vars]
-importancePlot(all_ts2_rf,sumTable(all_ts2[1:100]), data_def=data_def,'gini',size=5,aes(colour=all_ts2_color))
+#all_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts2_vars]
+importancePlot(all_ts2_rf,sumTable(all_ts2[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts2_color))
 
 ## ----Importance_Model4,results="asis",echo=FALSE, fig.cap="Importance plot for Model 4, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model4}",cache=FALSE----
-gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
-importancePlot(gis_ts4_rf,sumTable(gis_ts4[1:100]), data_def=data_def,'gini',size=5,aes(colour=gis_ts4_color))
+#gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
+importancePlot(gis_ts4_rf,sumTable(gis_ts4[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=gis_ts4_color))
 
 ## ----Importance_Model5,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model5}",cache=FALSE----
-gis_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts3_vars]
-importancePlot(gis_ts3_rf,sumTable(gis_ts3[1:100]), data_def=data_def,'gini',size=5,aes(colour=gis_ts3_color))
+#gis_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts3_vars]
+importancePlot(gis_ts3_rf,sumTable(gis_ts3[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=gis_ts3_color))
 
 ## ----Importance_Model6,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model6}",cache=FALSE----
-gis_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts2_vars]
-importancePlot(gis_ts2_rf,sumTable(gis_ts2[1:100]), data_def=data_def,'gini',size=5,aes(colour=gis_ts2_color))
+#gis_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts2_vars]
+importancePlot(gis_ts2_rf,sumTable(gis_ts2[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=gis_ts2_color))
 
 ## ----condProbFig,echo=FALSE, fig.width=7, fig.cap="Comparison of certainity of trophic state prediction and total accuracy\\label{fig:condProbFig}",cache=FALSE----
 condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
 
 ## ----ts_4_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE----
-plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:9],
+plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey75","grey50","grey25"),
         y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
         color="Trophic State\nCategories")
 
 ## ----ts_3_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 3 trophic state classes\\label{fig:ts_3_cyano_cdf}",cache=FALSE----
-plotCdf(ltmData$TS_CHLA_3,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:8],
+plotCdf(ltmData$TS_CHLA_3,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey75","grey50"),
        y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)', 
        color="Trophic State\nCategories")
 
 ## ----ts_2_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 2 trophic state classes\\label{fig:ts_2_cyano_cdf}",cache=FALSE----
-plotCdf(ltmData$TS_CHLA_2,ltmData$cyanoCellsPerML+1,cdf_colors=zissou[6:7],
+plotCdf(ltmData$TS_CHLA_2,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey50"),
        y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
        color="Trophic State\nCategories")
 

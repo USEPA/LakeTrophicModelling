@@ -35,16 +35,16 @@ scatterPlot<-function(df,xvar,yvar,pt_col,ln_col,cl_col,...){
     #            colour=ln_col,size=2) + 
     #annotate("text", x = 0.25, y = 100000000, label = xlm_r) +
     #annotate("text", x = 0.285, y = 20000000, label = xlm_p) +
-    theme(text = element_text(family="serif"),
+    theme(text = element_text(family="sans"),
           panel.background = element_blank(), panel.grid = element_blank(), 
           panel.border = element_rect(fill = NA), 
-          plot.title  = element_text(family="serif",size=12,face="bold",vjust=1.1),
+          plot.title  = element_text(family="sans",size=12,face="bold",vjust=1.1),
           legend.position = "none", legend.key = element_rect(fill = 'white'),
-          legend.text = element_text(family="serif",size=15), legend.title = element_text(size=11),
-          axis.title.x = element_text(family="serif",vjust = -0.5, size = 12),
-          axis.title.y = element_text(family="serif",vjust = 1.5, size = 12),
-          axis.text.x = element_text(family="serif",size = 11),
-          axis.text.y = element_text(family="serif",size = 11)) + 
+          legend.text = element_text(family="sans",size=15), legend.title = element_text(size=11),
+          axis.title.x = element_text(family="sans",vjust = -0.5, size = 12),
+          axis.title.y = element_text(family="sans",vjust = 1.5, size = 12),
+          axis.text.x = element_text(family="sans",size = 11),
+          axis.text.y = element_text(family="sans",size = 11)) + 
     labs(...)
     
   return(x)
