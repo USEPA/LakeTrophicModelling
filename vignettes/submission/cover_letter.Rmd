@@ -2,38 +2,32 @@
 output: pdf_document
 fontsize: 12pt
 geometry: 
-  - top=0.1in
+  - top=0.05in
   - right=0.5in
   - left=0.5in
+  - bottom=0.1in
 ---
 
 ![letterhead](epa_letterhead.jpg)
 
+April 07, 2015 \newline
 
-April 07, 2015
-
-
-Pamela Silver, Ph.D.
-Editor, Freshwater Science
-School of Science
-Penn State Erie
-Erie, PA  16563
+Pamela Silver, Ph.D.\newline
+Editor, *Freshwater Science*\newline
+School of Science\newline
+Penn State Erie\newline
+Erie, PA  16563\newline
 
 Dear Dr. Silver,
 
-Please accept for your review the submission, "Modelling Lake Trophic State: A Random Forest Approach" to be published in Freshwater Science.  In this article we detail our use of Random Forests to model trophic state in lakes across the United States.  This research makes three important contributions to the literature.  First, most prior modelling studies of lake trophic state have focused on a limited number of lakes that span local or regional extents.  Our models are built for lakes that span the conterminous United States and allow for more general statements to be made.   Second, we compare models with and without *in situ* water quality data and find that our models provide reliable predictions using broadly available data.  This allows for predictions to be made in nearly every lakes in the U.S.  Third, we utilize a data mining algorithm, Random Forests, to build our model.  Random Forest models have been shown by many to provide better and less biased predictions that most other modeling methodologies.  In short, we feel this paper builds on past work by expanding the extent and by using improved methods. 
+Please accept for your review the submission, "Modelling Lake Trophic State: A Random Forest Approach" to be published in *Freshwater Science*.  In this article we detail our use of Random Forests to model trophic state in lakes across the United States.  This research makes three important contributions.  First, most prior  studies of lake trophic state focus on a limited number of lakes that span local or regional extents.  Our models are built for lakes that span the conterminous United States.   Second, we compare models with and without *in situ* water quality data and find that models with only broadly available data still provide reliable predictions.  This allows for predictions to be made in nearly every lakes in the U.S.  Third, we utilize a data mining algorithm, Random Forests, to build our model. This approach provides accurate and unbiased predictions.  
 
+Our primary data sources are the US EPA's National Lakes Assessment from 2007, the National Land Cover Dataset from 2006, and predicted lake morphometry, which relies on the National Elevation Dataste and the National Hydrography Dataset Plus.  These datasets are provided by the US Government, have all undergone strict and extensive quality assurance and are freely available.   There are numerous publications based on these data, including some of our own prior work, most notably Hollister and Milstead (2010), Using GIS to Estimate Lake Volume from Limited Data, Lake and Reservoir Management 26(3), Hollister et al. (2011)  Predicting Maximum Lake Depth from Surrounding Topography, PLoS ONE 6(9), and Milstead et al. (2013) Estimating Summer Nutrient Concentrations in Northeastern Lakes from SPARROW Load Predictions and Modeled Hydraulic Residence Time, PLoS ONE 8(11).  
 
-The letter should describe the extent to which data, text, or illustrations have been used in existing or forthcoming papers or books, 
+Lastly, we use open source tools, open data, and open access publishing whenever possible.  Towards that end all of the data and source code for this manuscript are availble as an R package via GitHub (https://github.com/USEPA/LakeTrophicModelling).  We also plan to take advantage of the Open Access publishing options provided by *Freshwater Science* and, if accepted, publish this manuscript as Gold Open Access.  We are aware of both the additional cost for this and the page charges required by *Freshwater Science* and are able to cover these costs.  We look forward to the review process and are hopeful that our manuscript can find a home in *Freshwater Science*.
 
-The letter must attest to the bona fide nature of data used in the study that exist only on a website and must describe steps taken for quality control. The URL must be provided in the manuscript. Authors should be able to provide a hard copy of the data on request.
-
-and should state an ability to pay page charges if the paper is published. 
 
 Sincerely,
-
-
-
 
 Jeffrey W. Hollister
 401 782 9655
