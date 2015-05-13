@@ -25,7 +25,7 @@ nlaMap<-function(states,lakes,myColor=1:3){
                geom_polygon(aes(group=group),fill=myColor[2],colour=myColor[1])+
                geom_point(data=lakes,aes(x=long,y=lat),size=2,colour=myColor[3])+
                coord_map("albers", lat2 = 45.5, lat1 = 29.5)+
-               theme(panel.background = element_blank(), panel.grid = element_blank(), 
+               theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), 
                      panel.border = element_blank(), legend.position = "none", 
                      axis.text = element_blank(),axis.ticks = element_blank()) + 
                ylab("") + 
