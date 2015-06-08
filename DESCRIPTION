@@ -27,7 +27,6 @@ Imports:
     grid,
     e1071,
     maps,
-    rgdal,
     mapproj
 License: CC0
 LazyData: true
