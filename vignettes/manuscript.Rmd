@@ -45,6 +45,9 @@ if(!require(LakeTrophicModelling)){
 if(!require(wesanderson)){
 devtools::install_github("jhollist/wesanderson")
 }
+if(!require(edarf)){
+devtools::install_github("zmjones/edarf")
+}
 if(!require(condprob2)){
 devtools::install_github("jhollist/condprob2")
 }
@@ -53,6 +56,9 @@ if(!require(tidyr)){
 }
 if(!require(party)){
   install.packages("party")
+}
+if(!require(broom)){
+  install.packages("broom")
 }
 library("wesanderson")
 library("LakeTrophicModelling")
@@ -65,6 +71,8 @@ library("dplyr")
 library("tidyr")
 library("condprob2")
 library("party")
+library("broom")
+library("edarf")
 opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
 data(LakeTrophicModelling)
 
@@ -121,30 +129,33 @@ knit_hooks$set(output = function(x, options) {
 
   #Random Forest
   #all_vars<-unique(unlist(all_vsrf[1:100]))
-  all_rf<-runRandomForest(ltmData[predictors_all],log10(ltmData$CHLA), 
-                          ntree=100,importance=TRUE,proximity=TRUE)
-                          #keep.forest=TRUE,keep.inbag=TRUE)
-  cf_dat <- na.omit(data.frame(ltmData[predictors_all],CHLA=ltmData$CHLA))
-  cf_dat$DATE_COL <- factor(cf_dat$DATE_COL)
-  all_cf <- cforest(log10(CHLA)~.,data=cf_dat,
-                    control=cforest_unbiased(ntree=100,mtry=ncol(cf_dat)/3))
+  #all_rf<-runRandomForest(ltmData[predictors_all],log10(ltmData$CHLA), 
+  #                        ntree=100,importance=TRUE,proximity=TRUE)
+  #                        #keep.forest=TRUE,keep.inbag=TRUE)
+  all_cf_dat <- na.omit(data.frame(ltmData[predictors_all],CHLA=ltmData$CHLA))
+  all_cf_dat$DATE_COL <- factor(all_cf_dat$DATE_COL)
+  all_cf <- cforest(log10(CHLA)~.,data=all_cf_dat,
+                    control=cforest_unbiased(ntree=100,mtry=ncol(all_cf_dat)/3))
   all_cf_pred <- predict(all_cf)
-  par(mfrow=c(1,2))
-  plot(log10(cf_dat$CHLA),all_cf_pred)
-  plot(log10(cf_dat$CHLA),all_rf$pred)
-  glance(lm(all_cf_pred~log10(cf_dat$CHLA)))
-  glance(lm(all_rf$pred~log10(cf_dat$CHLA)))
+  all_cf_imp <- varimp(all_cf)
+  all_cf_pd<-partial_dependence(all_cf,var="NTL")
 ################################################################################
 #Model 2: GIS Only Variables
   #Variable Selction
-  gis_vsrf<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,numCore=4,100,
-          							ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  											vars.drop.num=1,outStr="gis_ts4",time=TRUE)
+  #gis_vsrf<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,numCore=4,100,
+  #        							ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+  #											vars.drop.num=1,outStr="gis_ts4",time=TRUE)
  
   #Random Forest
-  gis_vars<-unique(unlist(gis_vsrf[1:100]))
-  gis_rf<-runRandomForest(ltmData[gis_vars],ltmData$TS_CHLA_4, 
+  #gis_vars<-unique(unlist(gis_vsrf[1:100]))
+  #gis_rf<-runRandomForest(ltmData[gis_vars],ltmData$TS_CHLA_4, 
                               ntree=10000,importance=TRUE,proximity=TRUE)
+  gis_cf_dat <- na.omit(data.frame(ltmData[predictors_gis],CHLA=ltmData$CHLA))
+  gis_cf <- cforest(log10(CHLA)~.,data=gis_cf_dat,
+                    control=cforest_unbiased(ntree=100,mtry=ncol(gis_cf_dat)/3))
+  gis_cf_pred <- predict(all_cf)
+  gis_cf_imp <- varimp(gis_cf)
+  
 ```
 
 ```{r summaryStats, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
