@@ -51,6 +51,9 @@ devtools::install_github("jhollist/condprob2")
 if(!require(tidyr)){
   install.packages("tidyr")
 }
+if(!require(party)){
+  install.packages("party")
+}
 library("wesanderson")
 library("LakeTrophicModelling")
 library("knitr")
@@ -61,8 +64,7 @@ library("e1071")
 library("dplyr")
 library("tidyr")
 library("condprob2")
-library("snowfall")
-library("parallel")
+library("party")
 opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
 data(LakeTrophicModelling)
 
@@ -113,14 +115,25 @@ knit_hooks$set(output = function(x, options) {
 ################################################################################
 #Model 1: All Variables
   #Variable Selction
-  all_vsrf<-iterVarSelRF(ltmData[predictors_all],ltmData$CHLA,numCore=4,2,
-        								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-    											vars.drop.num=1,outStr="all_ts4",time=TRUE)
+  #all_vsrf<-iterVarSelRF(ltmData[predictors_all],ltmData$CHLA,numCore=4,2,
+  #      								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+  #  											vars.drop.num=1,outStr="all_ts4",time=TRUE)
 
   #Random Forest
-  all_vars<-unique(unlist(all_vsrf[1:100]))
-  all_rf<-runRandomForest(ltmData[all_vars],ltmData$CHLA, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
+  #all_vars<-unique(unlist(all_vsrf[1:100]))
+  #all_rf<-runRandomForest(ltmData[predictors_all],log10(ltmData$CHLA), 
+                          ntree=100,importance=TRUE,proximity=TRUE)
+                          #keep.forest=TRUE,keep.inbag=TRUE)
+  cf_dat <- na.omit(data.frame(ltmData[predictors_all],CHLA=ltmData$CHLA))
+  cf_dat$DATE_COL <- factor(cf_dat$DATE_COL)
+  all_cf <- cforest(log10(CHLA)~.,data=cf_dat,
+                    control=cforest_unbiased(ntree=100,mtry=ncol(cf_dat)/3))
+  all_cf_pred <- predict(all_cf)
+  par(mfrow=c(1,2))
+  plot(log10(cf_dat$CHLA),all_cf_pred)
+  plot(log10(cf_dat$CHLA),all_rf$pred)
+  glance(lm(all_cf_pred~log10(cf_dat$CHLA)))
+  glance(lm(all_rf$pred~log10(cf_dat$CHLA)))
 ################################################################################
 #Model 2: GIS Only Variables
   #Variable Selction
