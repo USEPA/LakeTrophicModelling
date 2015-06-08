@@ -61,6 +61,8 @@ library("e1071")
 library("dplyr")
 library("tidyr")
 library("condprob2")
+library("snowfall")
+library("parallel")
 opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
 data(LakeTrophicModelling)
 
@@ -109,78 +111,27 @@ knit_hooks$set(output = function(x, options) {
 #Those results loaded via lazyLoad in setup chunk
 #This chunk takes several days to complete - DO NOT EDIT!!!
 ################################################################################
-#Model 1: All Variables, 4 Trophic State Classes
+#Model 1: All Variables
   #Variable Selction
-  #all_ts4<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_4,numCore=4,100,
-  #      								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  #  											vars.drop.num=1,outStr="all_ts4",time=TRUE)
-  #all_ts4_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_4, 
-  #                          ntree=10000,importance=TRUE,proximity=TRUE)
-  #Random Forest
-  all_ts4_vars<-unique(unlist(all_ts4[1:100]))
-  all_ts4_rf<-runRandomForest(ltmData[all_ts4_vars],ltmData$TS_CHLA_4, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
-################################################################################
-#Model 2: All Variables, 3 Trophic State Classes
-  #Variable Selction
-  #all_ts3<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_3,numCore=4,100,
-  #    									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  #  											vars.drop.num=1,outStr="all_ts3",time=TRUE)
-  # all_ts3_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_3, 
-  #                            ntree=10000,importance=TRUE,proximity=TRUE)
-  #Random Forest
-  all_ts3_vars<-unique(unlist(all_ts3[1:100]))
-  all_ts3_rf<-runRandomForest(ltmData[all_ts3_vars],ltmData$TS_CHLA_3, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
-################################################################################
-#Model 3: All Variables, 2 Trophic State Classes
-  #Variable Selction
-  #all_ts2<-iterVarSelRF(ltmData[predictors_all],ltmData$TS_CHLA_2,numCore=4,100,
-  #    									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  #											vars.drop.num=1,outStr="all_ts2",time=TRUE)
-  #all_ts2_rf_full<-runRandomForest(ltmData[predictors_all],ltmData$TS_CHLA_2, 
-  #                           ntree=10000,importance=TRUE,proximity=TRUE)
-  #Random Forest
-  all_ts2_vars<-unique(unlist(all_ts2[1:100]))
-  all_ts2_rf<-runRandomForest(ltmData[all_ts2_vars],ltmData$TS_CHLA_2, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
-################################################################################
-#Model 4: GIS Only Variables, 4 Trophic State Classes
-  #Variable Selction
-  #gis_ts4<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,numCore=4,100,
-  #        							ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  #											vars.drop.num=1,outStr="gis_ts4",time=TRUE)
-  #gis_ts4_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_4, 
-  #                            ntree=10000,importance=TRUE,proximity=TRUE)
-  #Random Forest
-  gis_ts4_vars<-unique(unlist(gis_ts4[1:100]))
-  gis_ts4_rf<-runRandomForest(ltmData[gis_ts4_vars],ltmData$TS_CHLA_4, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
-################################################################################
-#Model 5: GIS Only Variables, 3 Trophic State Classes
-  #Variable Selction
-  #gis_ts3<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_3,numCore=4,100,
-  #      								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  #											vars.drop.num=1,outStr="gis_ts3",time=TRUE)
-  #gis_ts3_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_3, 
-  #                            ntree=10000,importance=TRUE,proximity=TRUE)
-  #Random Forest
-  gis_ts3_vars<-unique(unlist(gis_ts3[1:100]))
-  gis_ts3_rf<-runRandomForest(ltmData[gis_ts3_vars],ltmData$TS_CHLA_3, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
-################################################################################
-#Model 6: GIS Only Variables, 2 Trophic State Classes
-  #Variable Selction
-  #gis_ts2<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_2,numCore=4,100,
-  #    									ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  #											vars.drop.num=1,outStr="gis_ts2",time=TRUE)
-  #gis_ts2_rf_full<-runRandomForest(ltmData[predictors_gis],ltmData$TS_CHLA_2, 
-  #                            ntree=10000,importance=TRUE,proximity=TRUE)
-  #Random Forest
-  gis_ts2_vars<-unique(unlist(gis_ts2[1:100]))
-  gis_ts2_rf<-runRandomForest(ltmData[gis_ts2_vars],ltmData$TS_CHLA_2, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
+  all_vsrf<-iterVarSelRF(ltmData[predictors_all],ltmData$CHLA,numCore=4,2,
+        								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+    											vars.drop.num=1,outStr="all_ts4",time=TRUE)
 
+  #Random Forest
+  all_vars<-unique(unlist(all_vsrf[1:100]))
+  all_rf<-runRandomForest(ltmData[all_vars],ltmData$CHLA, 
+                              ntree=10000,importance=TRUE,proximity=TRUE)
+################################################################################
+#Model 2: GIS Only Variables
+  #Variable Selction
+  gis_vsrf<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,numCore=4,100,
+          							ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
+  											vars.drop.num=1,outStr="gis_ts4",time=TRUE)
+ 
+  #Random Forest
+  gis_vars<-unique(unlist(gis_vsrf[1:100]))
+  gis_rf<-runRandomForest(ltmData[gis_vars],ltmData$TS_CHLA_4, 
+                              ntree=10000,importance=TRUE,proximity=TRUE)
 ```
 
 ```{r summaryStats, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
