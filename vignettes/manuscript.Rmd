@@ -141,14 +141,19 @@ knit_hooks$set(output = function(x, options) {
   #                        ntree=1000,importance=TRUE,proximity=TRUE)
   #                        #keep.forest=TRUE,keep.inbag=TRUE)
   predictors_all <- predictors_all[predictors_all!="DATE_COL"]
-  all_cf_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
-  all_cf_dat <- all_cf_dat[complete.cases(all_cf_dat),]
+  all_rf_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
+  all_rf_dat <- all_rf_dat[complete.cases(all_rf_dat),]
+  all_rf<-randomForest(LogCHLA~.,data=all_rf_dat, 
+                         ntree=10000,importance=TRUE,proximity=TRUE,
+                          keep.forest=TRUE,keep.inbag=TRUE)
   
-  all_cf_imp <- varimp(all_cf)
+  #all_cf_imp <- varimp(all_cf)
   #all_cf_pd <- partial_dependence(all_cf,var="NTL",cutoff=30L)
-  all_cf_stats <- cforestStats(all_cf)
-  x<-data.frame(importance = all_cf_imp,parameters = names(all_cf_imp))
-  plot(x)
+  #all_cf_stats <- cforestStats(all_cf)
+  #x<-data.frame(importance = all_cf_imp,parameters = names(all_cf_imp))
+  #plot(x)
+  #all_cf.vsurf <- VSURF(all_cf_dat[,names(all_cf_dat)!="LogCHLA"],all_cf_dat$LogCHLA, ntree = 100, nfor.thres = 25,
+  #                  nfor.interp = 15, nfor.pred = 15)
 ################################################################################
 #Model 2: GIS Only Variables
   #Variable Selction
@@ -158,16 +163,17 @@ knit_hooks$set(output = function(x, options) {
  
   #Random Forest
   #gis_vars<-unique(unlist(gis_vsrf[1:100]))
-  gis_rf<-runRandomForest(ltmData[predictors_gis],log10(ltmData$CHLA), 
-                              ntree=1000,importance=TRUE,proximity=TRUE)
-  gis_cf_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
-  gis_cf_dat <- gis_cf_dat[complete.cases(gis_cf_dat),]
-  gis_cf <- cforest(LogCHLA~.,data=gis_cf_dat,
-                    control=cforest_unbiased(ntree=1000,mtry=ncol(gis_cf_dat)/3))
-  gis_cf_pred <- predict(all_cf)
-  gis_cf_imp <- varimp(gis_cf)
+  gis_rf_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
+  gis_rf_dat <- gis_rf_dat[complete.cases(gis_rf_dat),]
+  gis_rf<-randomForest(LogCHLA~.,data=gis_rf_dat, 
+                         ntree=10000,importance=TRUE,proximity=TRUE,
+                          keep.forest=TRUE,keep.inbag=TRUE)
+  #gis_cf <- cforest(LogCHLA~.,data=gis_cf_dat,
+  #                  control=cforest_unbiased(ntree=1000,mtry=ncol(gis_cf_dat)/3))
+  #gis_cf_pred <- predict(all_cf)
+  #gis_cf_imp <- varimp(gis_cf)
   #gis_cf_pd<-partial_dependence(gis_cf,var="NTL",cutoff=30L)
-  gis_cf_stats<-cforestStats(gis_cf)
+  #gis_cf_stats<-cforestStats(gis_cf)
 ```
 
 ```{r summaryStats, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}

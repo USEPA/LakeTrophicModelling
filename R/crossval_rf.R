@@ -20,7 +20,7 @@
 #' ts_brks <- c(min(all_cf_dat$LogCHLA),log10(2),log10(7),log10(30),max(all_cf_dat$LogCHLA))
 #' ts_cats <- c("oligo","meso","eu","hyper")
 #' x<-crossval_rf(all_cf_dat$LogCHLA,all_cf_dat[,names(all_cf_dat)!="LogCHLA"],
-#'             ts_brks,ts_cats,0.8,100,100)
+#'             ts_brks,ts_cats,0.8,1000,1000)
 crossval_rf <- function(y,x, breaks, cat=NULL, split, n, ntree){
   out <- list(summary=NULL,acc=NULL,all=list())
   dat <- data.frame(y=y,x)
