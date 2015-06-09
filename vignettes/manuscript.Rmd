@@ -54,6 +54,9 @@ devtools::install_github("zmjones/edarf")
 if(!require(condprob2)){
 devtools::install_github("jhollist/condprob2")
 }
+if(!require(caret)){
+  install.packages("caret")
+}
 if(!require(tidyr)){
   install.packages("tidyr")
 }
@@ -77,6 +80,7 @@ library("condprob2")
 library("party")
 library("broom")
 library("edarf")
+library("caret")
 opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
 data(LakeTrophicModelling)
 
@@ -134,15 +138,17 @@ knit_hooks$set(output = function(x, options) {
   #Random Forest
   #all_vars<-unique(unlist(all_vsrf[1:100]))
   #all_rf<-runRandomForest(ltmData[predictors_all],log10(ltmData$CHLA), 
-  #                        ntree=100,importance=TRUE,proximity=TRUE)
+  #                        ntree=1000,importance=TRUE,proximity=TRUE)
   #                        #keep.forest=TRUE,keep.inbag=TRUE)
-  all_cf_dat <- na.omit(data.frame(ltmData[predictors_all],CHLA=ltmData$CHLA))
-  all_cf_dat$DATE_COL <- factor(all_cf_dat$DATE_COL)
-  all_cf <- cforest(log10(CHLA)~.,data=all_cf_dat,
-                    control=cforest_unbiased(ntree=100,mtry=ncol(all_cf_dat)/3))
-  all_cf_pred <- predict(all_cf)
+  predictors_all <- predictors_all[predictors_all!="DATE_COL"]
+  all_cf_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
+  all_cf_dat <- all_cf_dat[complete.cases(all_cf_dat),]
+  
   all_cf_imp <- varimp(all_cf)
-  all_cf_pd<-partial_dependence(all_cf,var="NTL")
+  #all_cf_pd <- partial_dependence(all_cf,var="NTL",cutoff=30L)
+  all_cf_stats <- cforestStats(all_cf)
+  x<-data.frame(importance = all_cf_imp,parameters = names(all_cf_imp))
+  plot(x)
 ################################################################################
 #Model 2: GIS Only Variables
   #Variable Selction
@@ -152,14 +158,16 @@ knit_hooks$set(output = function(x, options) {
  
   #Random Forest
   #gis_vars<-unique(unlist(gis_vsrf[1:100]))
-  #gis_rf<-runRandomForest(ltmData[gis_vars],ltmData$TS_CHLA_4, 
-                              ntree=10000,importance=TRUE,proximity=TRUE)
-  gis_cf_dat <- na.omit(data.frame(ltmData[predictors_gis],CHLA=ltmData$CHLA))
-  gis_cf <- cforest(log10(CHLA)~.,data=gis_cf_dat,
-                    control=cforest_unbiased(ntree=100,mtry=ncol(gis_cf_dat)/3))
+  gis_rf<-runRandomForest(ltmData[predictors_gis],log10(ltmData$CHLA), 
+                              ntree=1000,importance=TRUE,proximity=TRUE)
+  gis_cf_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
+  gis_cf_dat <- gis_cf_dat[complete.cases(gis_cf_dat),]
+  gis_cf <- cforest(LogCHLA~.,data=gis_cf_dat,
+                    control=cforest_unbiased(ntree=1000,mtry=ncol(gis_cf_dat)/3))
   gis_cf_pred <- predict(all_cf)
   gis_cf_imp <- varimp(gis_cf)
-  
+  #gis_cf_pd<-partial_dependence(gis_cf,var="NTL",cutoff=30L)
+  gis_cf_stats<-cforestStats(gis_cf)
 ```
 
 ```{r summaryStats, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
@@ -457,7 +465,7 @@ scatterPlot(scp_df,xvar="chla",yvar="abundp1","black","grey50","grey25",
 ts_4<-c("oligotrophic","mesotrophic","eutrophic","hypereutrophic")
 ts_3<-c("oligotrophic","mesotrophic/eutrophic","mesotrophic/eutrophic","hypereutrophic")
 ts_2<-c("oligotrophic/mesotrophic","oligotrophic/mesotrophic","eutrophic/hypereutrophic","eutrophic/hypereutrophic")
-co<-c("<= 0.2",">2-7",">7-30",">30")
+co<-c("<= 2",">2-7",">7-30",">30")
 xdf<-data.frame(ts_4,ts_3,ts_2,co)
 names(xdf)<-c("Trophic State (4 class)","Trophic State (3 class)","Trophic State (2 class)",
               "Concentration Cut-off")
