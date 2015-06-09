@@ -42,6 +42,9 @@ abstract: no
 if(!require(LakeTrophicModelling)){
   devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE)
 }
+if(!require(edarf)){
+  devtools::install_github("zmjones/edarf",quick=TRUE)
+}
 if(!require(wesanderson)){
 devtools::install_github("jhollist/wesanderson")
 }
@@ -54,6 +57,7 @@ if(!require(tidyr)){
 if(!require(party)){
   install.packages("party")
 }
+
 library("wesanderson")
 library("LakeTrophicModelling")
 library("knitr")
@@ -65,6 +69,7 @@ library("dplyr")
 library("tidyr")
 library("condprob2")
 library("party")
+library("edarf")
 opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
 data(LakeTrophicModelling)
 
@@ -127,7 +132,7 @@ knit_hooks$set(output = function(x, options) {
   cf_dat <- na.omit(data.frame(ltmData[predictors_all],CHLA=ltmData$CHLA))
   cf_dat$DATE_COL <- factor(cf_dat$DATE_COL)
   all_cf <- cforest(log10(CHLA)~.,data=cf_dat,
-                    control=cforest_unbiased(ntree=100,mtry=ncol(cf_dat)/3))
+                    control=cforest_control(ntree=100,mtry=ncol(cf_dat)/3))
   all_cf_pred <- predict(all_cf)
   par(mfrow=c(1,2))
   plot(log10(cf_dat$CHLA),all_cf_pred)
