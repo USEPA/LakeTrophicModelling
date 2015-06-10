@@ -81,6 +81,7 @@ library("party")
 library("broom")
 library("edarf")
 library("caret")
+library("randomForest")
 opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
 data(LakeTrophicModelling)
 
