@@ -131,21 +131,24 @@ knit_hooks$set(output = function(x, options) {
 #This chunk takes several days to complete - DO NOT EDIT!!!
 ################################################################################
 #Model 1: All Variables
-  #Variable Selction
-  #all_vsrf<-iterVarSelRF(ltmData[predictors_all],ltmData$CHLA,numCore=4,2,
-  #      								ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  #  											vars.drop.num=1,outStr="all_ts4",time=TRUE)
+
+#Clean Up Data - Complete Cases
+predictors_all <- predictors_all[predictors_all!="DATE_COL"]
+all_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
+all_dat <- all_dat[complete.cases(all_dat),]  
+
+#Variable Selection
+all_vs <- varsel_regression_rf(all_dat$LogCHLA,all_dat[,names(all_dat)!="LogCHLA"],
+                     ntree=5000)  
 
   #Random Forest
   #all_vars<-unique(unlist(all_vsrf[1:100]))
   #all_rf<-runRandomForest(ltmData[predictors_all],log10(ltmData$CHLA), 
   #                        ntree=1000,importance=TRUE,proximity=TRUE)
   #                        #keep.forest=TRUE,keep.inbag=TRUE)
-  predictors_all <- predictors_all[predictors_all!="DATE_COL"]
-  all_rf_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
-  all_rf_dat <- all_rf_dat[complete.cases(all_rf_dat),]
+  
   all_rf<-randomForest(LogCHLA~.,data=all_rf_dat, 
-                         ntree=10000,importance=TRUE,proximity=TRUE,
+                         ntree=1000,importance=TRUE,proximity=TRUE,
                           keep.forest=TRUE,keep.inbag=TRUE)
   
   #all_cf_imp <- varimp(all_cf)

@@ -22,7 +22,8 @@ run RF, store variables and %MSE of model.
 data(LakeTrophicModelling)
 predictors_all <- predictors_all[predictors_all!="DATE_COL"]
 all_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
-all_dat <- all_cf_dat[complete.cases(all_cf_dat),]
-x<-varsel_regression_rf(all_dat$LogCHLA,all_cf_dat[,names(all_cf_dat)!="LogCHLA"])
+all_dat <- all_dat[complete.cases(all_dat),]
+x<-varsel_regression_rf(all_dat$LogCHLA,all_dat[,names(all_dat)!="LogCHLA"],
+                        ntree=100)
 }
 
