@@ -32,6 +32,6 @@ all_cf_dat <- all_cf_dat[complete.cases(all_cf_dat),]
 ts_brks <- c(min(all_cf_dat$LogCHLA),log10(2),log10(7),log10(30),max(all_cf_dat$LogCHLA))
 ts_cats <- c("oligo","meso","eu","hyper")
 x<-crossval_rf(all_cf_dat$LogCHLA,all_cf_dat[,names(all_cf_dat)!="LogCHLA"],
-            ts_brks,ts_cats,0.8,10,10)
+            ts_brks,ts_cats,0.8,1000,1000)
 }
 
