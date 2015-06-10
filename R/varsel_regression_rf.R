@@ -35,7 +35,7 @@ varsel_regression_rf <- function(y,x,...){
       out$vars[[idx]] <- vars
       idx <- idx + 1
     }
-    print(paste(i/length(var_sort),"% completed"))
+    print(paste(idx/length(var_sort),"% completed"))
   }
   return(out)
 }

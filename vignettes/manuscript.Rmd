@@ -140,8 +140,9 @@ all_dat <- all_dat[complete.cases(all_dat),]
 #Variable Selection
 all_vs <- varsel_regression_rf(all_dat$LogCHLA,all_dat[,names(all_dat)!="LogCHLA"],
                      ntree=5000)  
-
-  #Random Forest
+varsel_plot(all_vs)
+  
+#Random Forest
   #all_vars<-unique(unlist(all_vsrf[1:100]))
   #all_rf<-runRandomForest(ltmData[predictors_all],log10(ltmData$CHLA), 
   #                        ntree=1000,importance=TRUE,proximity=TRUE)
