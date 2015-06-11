@@ -122,7 +122,7 @@ knit_hooks$set(output = function(x, options) {
 })
 ```
 
-```{r analysis , eval=FALSE, include=FALSE, echo=FALSE, cache=FALSE}
+```{r rand_forest_runs , eval=FALSE, include=FALSE, echo=FALSE, cache=TRUE}
 ################################################################################
 #All analysis in here, that way all bits of paper have access to final objects
 #Tables, figures, and numerical results placed at end of paper.
@@ -139,74 +139,48 @@ all_dat <- all_dat[complete.cases(all_dat),]
 
 #Variable Selection
 all_vs <- varsel_regression_rf(all_dat$LogCHLA,all_dat[,names(all_dat)!="LogCHLA"],
-                     ntree=5000)  
-varsel_plot(all_vs)
-  
-all_rf<-randomForest(y=all_dat$LogCHLA,x= 
+                     ntree=5000,prog=T)  
+all_vs_plot <- varsel_plot(all_vs) #Used plot to identify approxiamte minimum
+all_vars_select <- unlist(all_vs$vars[19]) #top 20 variables
+
+#Final Model - all variables
+all_rf<-randomForest(y=all_dat$LogCHLA,x=all_dat[,all_vars_select], 
                          ntree=5000,importance=TRUE,proximity=TRUE,
                           keep.forest=TRUE,keep.inbag=TRUE)
   
-  #all_cf_imp <- varimp(all_cf)
-  #all_cf_pd <- partial_dependence(all_cf,var="NTL",cutoff=30L)
-  #all_cf_stats <- cforestStats(all_cf)
-  #x<-data.frame(importance = all_cf_imp,parameters = names(all_cf_imp))
-  #plot(x)
-  #all_cf.vsurf <- VSURF(all_cf_dat[,names(all_cf_dat)!="LogCHLA"],all_cf_dat$LogCHLA, ntree = 100, nfor.thres = 25,
-  #                  nfor.interp = 15, nfor.pred = 15)
 ################################################################################
 #Model 2: GIS Only Variables
-  #Variable Selction
-  #gis_vsrf<-iterVarSelRF(ltmData[predictors_gis],ltmData$TS_CHLA_4,numCore=4,100,
-  #        							ntree=10000,ntreeIterat=5000,vars.drop.frac=NULL,
-  #											vars.drop.num=1,outStr="gis_ts4",time=TRUE)
- 
-  #Random Forest
-  #gis_vars<-unique(unlist(gis_vsrf[1:100]))
-  gis_rf_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
-  gis_rf_dat <- gis_rf_dat[complete.cases(gis_rf_dat),]
-  gis_rf<-randomForest(LogCHLA~.,data=gis_rf_dat, 
-                         ntree=10000,importance=TRUE,proximity=TRUE,
-                          keep.forest=TRUE,keep.inbag=TRUE)
-  #gis_cf <- cforest(LogCHLA~.,data=gis_cf_dat,
-  #                  control=cforest_unbiased(ntree=1000,mtry=ncol(gis_cf_dat)/3))
-  #gis_cf_pred <- predict(all_cf)
-  #gis_cf_imp <- varimp(gis_cf)
-  #gis_cf_pd<-partial_dependence(gis_cf,var="NTL",cutoff=30L)
-  #gis_cf_stats<-cforestStats(gis_cf)
+
+#Clean Up Data - Complete Cases
+gis_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
+gis_dat <- gis_dat[complete.cases(gis_dat),]
+
+#Variable Selection
+gis_vs <- varsel_regression_rf(gis_dat$LogCHLA,gis_dat[,names(gis_dat)!="LogCHLA"],
+                     ntree=5000,prog=T)  
+gis_vs_plot <- varsel_plot(gis_vs) #Used plot to identify approxiamte minimum
+gis_vars_select <- unlist(gis_vs$vars[14]) #top 15 variables
+
+#Final Model - gis variables
+gis_rf<-randomForest(y=gis_dat$LogCHLA,x=gis_dat[,gis_vars_select], 
+                       ntree=5000,importance=TRUE,proximity=TRUE,
+                        keep.forest=TRUE,keep.inbag=TRUE)
 ```
 
 ```{r summaryStats, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
-acc_results<-data.frame(model_number=c("Model 1","Model 2","Model 3","Model 4","Model 5","Model 6"),
-                        total_accuracy=c(classAgreement(all_ts4_rf$confusion[,1:4])$diag,
-                                         classAgreement(all_ts3_rf$confusion[,1:3])$diag,
-                                         classAgreement(all_ts2_rf$confusion[,1:2])$diag,
-                                         classAgreement(gis_ts4_rf$confusion[,1:4])$diag,
-                                         classAgreement(gis_ts3_rf$confusion[,1:3])$diag,
-                                         classAgreement(gis_ts2_rf$confusion[,1:2])$diag),
-                        kappa_coeff=c(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,
-                                         classAgreement(all_ts3_rf$confusion[,1:3])$kappa,
-                                         classAgreement(all_ts2_rf$confusion[,1:2])$kappa,
-                                         classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,
-                                         classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,
-                                         classAgreement(gis_ts2_rf$confusion[,1:2])$kappa))
-var_importance<-rbind(varImportance(all_ts4_rf,"Model 1"),
-                           varImportance(all_ts3_rf,"Model 2"),
-                           varImportance(all_ts2_rf,"Model 3"),
-                           varImportance(gis_ts4_rf,"Model 4"),
-                           varImportance(gis_ts3_rf,"Model 5"),
-                           varImportance(gis_ts2_rf,"Model 6"))
-#var_importance$variable_names<-factor(var_importance$variable_names)
-#var_importance$model_id<-factor(var_importance$model_id)
+
+var_importance<-rbind(varImportance(all_rf,"All Variables"),
+                      varImportance(gis_rf,"GIS Variables"))
 var_importance<-inner_join(var_importance,data_def[c("variable_names","description")],"variable_names")
 var_importance<-var_importance[order(var_importance$model_id,-var_importance$mean_decrease_gini, decreasing=FALSE),]                     
 
 #Example Votes
-lakeVotes<-data.frame(all_ts4_rf$y,all_ts4_rf$predicted,all_ts4_rf$votes)
-lakeVotes<-data.frame(lakeVotes,max_prob=apply(lakeVotes[,3:6],1,max))
-lakeVotes$all_ts4_rf.predicted<-factor(lakeVotes$all_ts4_rf.predicted,ordered=T)
-lakeVotes<-data.frame(lakeVotes,correct_binary=lakeVotes$all_ts4_rf.y==lakeVotes$all_ts4_rf.predicted)
-lakeVotes<-data.frame(COMID=getLakeIDs(ltmData[all_ts4_vars],ltmData$TS_CHLA_4,ltmData$Comid),lakeVotes)
-lakeVotes<-na.omit(lakeVotes)
+#lakeVotes<-data.frame(all_rf$y,all_rf$predicted,all_rf$votes)
+#lakeVotes<-data.frame(lakeVotes,max_prob=apply(lakeVotes[,3:6],1,max))
+#lakeVotes$all_rf.predicted<-factor(lakeVotes$all_rf.predicted,ordered=T)
+#lakeVotes<-data.frame(lakeVotes,correct_binary=lakeVotes$all_rf.y==lakeVotes$all_rf.predicted)
+#akeVotes<-data.frame(COMID=getLakeIDs(ltmData[all_vars_select],ltmData$TS_CHLA_4,ltmData$Comid),lakeVotes)
+#lakeVotes<-na.omit(lakeVotes)
 ```
 
 

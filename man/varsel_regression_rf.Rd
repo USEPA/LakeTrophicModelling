@@ -4,7 +4,7 @@
 \alias{varsel_regression_rf}
 \title{Variable Selection with Regression RF}
 \usage{
-varsel_regression_rf(y, x, ...)
+varsel_regression_rf(y, x, prog = F, ...)
 }
 \arguments{
 \item{y}{response a vector}
@@ -24,6 +24,6 @@ predictors_all <- predictors_all[predictors_all!="DATE_COL"]
 all_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
 all_dat <- all_dat[complete.cases(all_dat),]
 x<-varsel_regression_rf(all_dat$LogCHLA,all_dat[,names(all_dat)!="LogCHLA"],
-                        ntree=100)
+                        ntree=100,prog=T)
 }
 

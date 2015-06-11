@@ -14,8 +14,8 @@
 #' all_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
 #' all_dat <- all_dat[complete.cases(all_dat),]
 #' x<-varsel_regression_rf(all_dat$LogCHLA,all_dat[,names(all_dat)!="LogCHLA"],
-#'                         ntree=100)
-varsel_regression_rf <- function(y,x,...){
+#'                         ntree=100,prog=T)
+varsel_regression_rf <- function(y,x,prog=F,...){
   out <- list(mse=NULL,rsq=NULL,num_var=NULL,vars=NULL)
   dat <- data.frame(y=y,x)
   init_rf <- randomForest(y=dat$y,x=dat[,names(x)],...)
@@ -35,7 +35,9 @@ varsel_regression_rf <- function(y,x,...){
       out$vars[[idx]] <- vars
       idx <- idx + 1
     }
-    print(paste(idx/length(var_sort),"% completed"))
+    if(prog & idx%%3==0){
+      print(paste0(round(idx/length(var_sort)*100,1),"% completed"))
+    }
   }
   return(out)
 }
