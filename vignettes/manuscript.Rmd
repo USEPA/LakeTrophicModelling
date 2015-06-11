@@ -124,11 +124,9 @@ knit_hooks$set(output = function(x, options) {
 
 ```{r rand_forest_runs , eval=FALSE, include=FALSE, echo=FALSE, cache=TRUE}
 ################################################################################
-#All analysis in here, that way all bits of paper have access to final objects
-#Tables, figures, and numerical results placed at end of paper.
-#Included for completeness.  Results already run in another project
-#Those results loaded via lazyLoad in setup chunk
-#This chunk takes several days to complete - DO NOT EDIT!!!
+#This chunk sets up the 'all' and 'gis' data, does variable selection (takes few
+# hours to run) then run the randomForest.
+# Results stored in prior_cache and loaded in setup chunk
 ################################################################################
 #Model 1: All Variables
 
@@ -167,19 +165,66 @@ gis_rf<-randomForest(y=gis_dat$LogCHLA,x=gis_dat[,gis_vars_select],
                         keep.forest=TRUE,keep.inbag=TRUE)
 ```
 
-```{r summaryStats, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
+```{r rf_var_importance, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
 
-var_importance<-rbind(varImportance(all_rf,"All Variables"),
-                      varImportance(gis_rf,"GIS Variables"))
+all_imp <- importance(all_rf)
+gis_imp <- importance(gis_rf)
+var_importance<-rbind(varImportance(all_imp,"All Variables"),
+                      varImportance(gis_imp,"GIS Variables"))
 var_importance<-inner_join(var_importance,data_def[c("variable_names","description")],"variable_names")
 var_importance<-var_importance[order(var_importance$model_id,-var_importance$mean_decrease_gini, decreasing=FALSE),]                     
+```
+
+```{r trophic_class, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}}
+#Predict and Original Chl a
+all_pred <- predict(all_rf)
+all_orig <- all_rf$y
+gis_pred <- predict(gis_rf)
+gis_orig <- gis_rf$y
+
+#Trophic State Catergories
+ts_4_brks <- c(min(log10(ltmData$CHLA),na.rm=T),log10(2),log10(7),log10(30),max(log10(ltmData$CHLA),na.rm=T))
+ts_4_cats <- c("oligo","meso","eu","hyper")
+ts_2_brks <- c(min(log10(ltmData$CHLA),na.rm=T),log10(7),max(log10(ltmData$CHLA),na.rm=T))
+ts_2_cats <- c("oligo/meso","eu/hyper")
+
+#Orig and Predict Trophic State Categories
+all_ts4_pred <- cut(all_pred,ts_4_brks,ts_4_cats)
+all_ts4_orig <- cut(all_orig,ts_4_brks,ts_4_cats)
+all_ts2_pred <- cut(all_pred,ts_2_brks,ts_2_cats)
+all_ts2_orig <- cut(all_orig,ts_2_brks,ts_2_cats)
+gis_ts4_pred <- cut(gis_pred,ts_4_brks,ts_4_cats)
+gis_ts4_orig <- cut(gis_orig,ts_4_brks,ts_4_cats)
+gis_ts2_pred <- cut(gis_pred,ts_2_brks,ts_2_cats)
+gis_ts2_orig <- cut(gis_orig,ts_2_brks,ts_2_cats)
+
+#Trophic State Confusion Matrices
+all_ts4_conmat <- table(all_ts4_pred,all_ts4_orig)
+all_ts2_conmat <- table(all_ts2_pred,all_ts2_orig)
+gis_ts4_conmat <- table(gis_ts4_pred,gis_ts4_orig)
+gis_ts2_conmat <- table(gis_ts2_pred,gis_ts2_orig)
+
+#Trophic State Total Accuracy and Kappa
+all_ts4_total_acc <- classAgreement(all_ts4_conmat)$diag
+all_ts4_kappa <- classAgreement(all_ts4_conmat)$kappa
+all_ts2_total_acc <- classAgreement(all_ts2_conmat)$diag
+all_ts2_kappa <- classAgreement(all_ts2_conmat)$kappa
+gis_ts4_total_acc <- classAgreement(gis_ts4_conmat)$diag
+gis_ts4_kappa <- classAgreement(gis_ts4_conmat)$kappa
+gis_ts2_total_acc <- classAgreement(gis_ts2_conmat)$diag
+gis_ts2_kappa <- classAgreement(gis_ts2_conmat)$kappa
+```
+
+```{r}
+#Figure out a way to get the predictions per tree so we can get votes pre lake
+#which gives us probability a lake is of a given class.
 
 #Example Votes
 #lakeVotes<-data.frame(all_rf$y,all_rf$predicted,all_rf$votes)
 #lakeVotes<-data.frame(lakeVotes,max_prob=apply(lakeVotes[,3:6],1,max))
 #lakeVotes$all_rf.predicted<-factor(lakeVotes$all_rf.predicted,ordered=T)
 #lakeVotes<-data.frame(lakeVotes,correct_binary=lakeVotes$all_rf.y==lakeVotes$all_rf.predicted)
-#akeVotes<-data.frame(COMID=getLakeIDs(ltmData[all_vars_select],ltmData$TS_CHLA_4,ltmData$Comid),lakeVotes)
+#lakeVotes<-data.frame(COMID=getLakeIDs(ltmData[all_vars_select],ltmData$TS_CHLA_4,ltmData$Comid),lakeVotes)
 #lakeVotes<-na.omit(lakeVotes)
 ```
 
@@ -190,7 +235,8 @@ var_importance<-var_importance[order(var_importance$model_id,-var_importance$mea
 
 
 **Abstract**  
-Productivity of lentic ecosystems is well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from lower trophic state (e.g. oligotrophic) to higher trophic states  (e.g. eutrophic). These broad trophic state classifications are good predictors of ecosystem condition, services, and disservices (e.g. recreation, aesthetics, and harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to parameterize the model.  This limits the application of these models to lakes with existing and, more importantly, available water quality data.  To predict trophic state in lakes without water quality data, we take advantage of the availability of a large national lakes water quality database (i.e. the National Lakes Assessment), land use/land cover data, lake morphometry data, other universally available data, and apply modern data mining approaches to build and assess models of lake trophic state.  We use random forests and random forest variable selection to identify variables to be used for predicting trophic state and we compare the performance of two sets of models of chlorophyll *a* derived trophic state.   The first set of models estimates three different trophic state classification with both *in situ* and universally available data.  The second set of models uses universally available GIS data only. Overall accuracy for models built from *in situ* and universal data ranged from `r round(min(acc_results[1:3,2]),2)*100`% to `r round(max(acc_results[1:3,2]),2)*100`%.  For the universal data only models, overall accuracy ranged from `r round(min(acc_results[4:6,2]),2)*100`% to `r round(max(acc_results[4:6,2]),2)*100`%. Lastly, presence and abundance of cyanobacteria is often strongly associated with trophic state.  To test this we examine the association between estimates of cyanobacteria abundance and measured chlorophyll *a* and find a positive relationship.  We find, that predictive models of lake trophic state may be improved with additional information on the landscape surrounding lakes and that those models provide additional information on the presence of potentially harmful cyanobacteria taxa. Lastly, the source code and data for this manuscript are available from https://github.com/USEPA/LakeTrophicModelling.
+Productivity of lentic ecosystems is well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from lower trophic state (e.g. oligotrophic) to higher trophic states  (e.g. eutrophic). These broad trophic state classifications are good predictors of ecosystem condition, services, and disservices (e.g. recreation, aesthetics, and harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to parameterize the model.  This limits the application of these models to lakes with existing and, more importantly, available water quality data.  To predict trophic state in lakes without water quality data, we take advantage of the availability of a large national lakes water quality database (i.e. the National Lakes Assessment), land use/land cover data, lake morphometry data, other universally available data, and apply modern data mining approaches to build and assess models of lake trophic state.  We use random forest to identify variables to be used for predicting trophic state and we compare the performance of two models of chlorophyll *a*.   The model estimates chlorophyll *a* with both *in situ* and universally available data.  The second model uses universally available GIS data only. Overall accuracy for models built from *in situ* and universal data ranged from "r round(min(acc_results[1:3,2]),2)*100
+"% to "r round(max(acc_results[1:3,2]),2)*100"%.  For the universal data only models, overall accuracy ranged from "r round(min(acc_results[4:6,2]),2)*100"% to "r round(max(acc_results[4:6,2]),2)*100"%. Lastly, presence and abundance of cyanobacteria is often strongly associated with trophic state.  To test this we examine the association between estimates of cyanobacteria abundance and measured chlorophyll *a* and find a positive relationship.  We find, that predictive models of lake trophic state may be improved with additional information on the landscape surrounding lakes and that those models provide additional information on the presence of potentially harmful cyanobacteria taxa. Lastly, the source code and data for this manuscript are available from https://github.com/USEPA/LakeTrophicModelling.
 
 
 \vspace{3mm}\hrule
@@ -249,39 +295,23 @@ Lastly, the random forest algorithm explicitly measures variable importance as m
 
 #Results 
 
-Our complete dataset includes `r dim(ltmData)[1]` lakes; however `r sum(is.na(ltmData$TS_CHLA_4))` lakes did not have chlorophyll *a* data. Thus, the base dataset for our modelling was conducted on data for `r dim(ltmData[!is.na(ltmData$TS_CHLA_4),])[1]` lakes.  As chlorophyll *a* is used to create the trophic state classifications, it was necessary to remove these data because no chlorophyll *a* trophic state could be determined for these lakes.  The lakes were well distributed both across the four trophic state categories (Table \ref{tab:trophicStateTable}) and spatially throughout the United States (Figure \ref{fig:nlaMap}).  
+Our complete dataset includes `r dim(ltmData)[1]` lakes; however `r sum(is.na(ltmData$CHLA))` lakes did not have chlorophyll *a* data. Thus, the base dataset for our modelling was conducted on data for `r dim(ltmData[!is.na(ltmData$TS_CHLA_4),])[1]` lakes.  As chlorophyll *a* is used to create the trophic state classifications, it was necessary to remove these data because no chlorophyll *a* trophic state could be determined for these lakes.  The lakes were well distributed both across the four trophic state categories (Table \ref{tab:trophicStateTable}) and spatially throughout the United States (Figure \ref{fig:nlaMap}).  
 
 ##Models
-Accuracy for the models built with all predictors ranged from `r round(min(acc_results[1:3,2]),2)*100`% to `r round(max(acc_results[1:3,2]),2)*100`% and the kappa coefficient had a minimum value of `r round(min(acc_results[1:3,3]),2)` and maximum of `r round(max(acc_results[1:3,3]),2)`.  The GIS only models had a total accuracy between `r round(min(acc_results[4:6,2]),2)*100`% and `r round(max(acc_results[4:6,2]),2)*100`% and kappa coefficient between `r round(min(acc_results[4:6,3]),2)` and `r round(max(acc_results[4:6,3]),2)`.  The importance of variables for the models including the *in situ* data were fairly stable while there was considerably more variation in variable importance for the three different GIS only models.  Additionally, as each model contained a different subset of variables and since we removed observations with missing data, the total number of lakes varied across the models.  Details for each model are discussed below.
+Accuracy for the models built with all predictors ranged from MSE and R2 to MSE and R2. Trophic state results were ....  The GIS only models had a total accuracy between `from MSE and R2 to MSE and R2. Trophic state results were ....  The importance of variables Details for each model are discussed below.
 
-*Model 1: 4 Trophic States ~ All Variables*
 
-Total number of lakes for Model 1 was `r sum(complete.cases(ltmData[all_ts4_vars],ltmData$TS_CHLA_4))` and the reduced model for Model 1 included turbidity, total phosphorus, total nitrogen, nitrogen:phosphorus ratio, total organic carbon, potassium, ecoregion, maximum depth, organic ions, and dissolved organic carbon. Of these, turbidity, total phosphorus, and total nitrogen were the three most important predictors of the four classes of trophic state (Figure \ref{fig:Importance_Model1}). Total accuracy for Model 1 was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$diag,2)*100`% and the Cohen's Kappa was `r round(classAgreement(all_ts4_rf$confusion[,1:4])$kappa,2)` (Table \ref{tab:Confusion_Model1}).  
+###All Variables
+The all variables model built was built using  `r nrow(all_dat)` total observations. The variable selection process for this model produced a reduced model with  (Figure \ref{fig:Importance_Model6}).  The  most important variables were ecoregion, growing degree days, and percent evergreen. (Figure \ref{fig:Importance_Model6}).  MORE HERE.
 
-*Model 2: 3 Trophic States ~ All Variables*
+###GIS Only Variables
+The gis only variables model built was built using  `r nrow(gis_dat)` total observations. The variable selection process for this model produced a reduced model with  (Figure \ref{fig:Importance_Model6}).  The  most important variables were ecoregion, growing degree days, and percent evergreen. (Figure \ref{fig:Importance_Model6}).  MORE HERE.
 
-For Model 2 there were `r sum(complete.cases(ltmData[all_ts3_vars],ltmData$TS_CHLA_3))` observations and the reduced model included turbidity, total phosphorus, total nitrogen, total organic carbon, nitrogen:phosphorus, longitude, pH, estimated organic anions, elevation, maximum depth, dissolved organic carbon, potassium, latitude, ecoregion, chloride, ammonium and percent cropland (Figure \ref{fig:Importance_Model2}). The top predictors for 3 trophic state classes were again turbidity, total phosphorus, and total nitrogen (Figure \ref{fig:Importance_Model2}).  Model 2 accuracy was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$diag,2)*100`% and the Cohen's Kappa was `r round(classAgreement(all_ts3_rf$confusion[,1:4])$kappa,2)` (Table \ref{tab:Confusion_Model2}).   
-
-*Model 3: 2 Trophic States ~ All Variables*
-
-Model 3 was built with `r sum(complete.cases(ltmData[all_ts2_vars],ltmData$TS_CHLA_2))` lakes and the reduced model was similar to Model 1 and Model 2.  This model included turbidity, total phosphorus, total nitrogen, nitrogen:phosphorus, potassium, ecoregion, elevation, total organic carbon, growing degree days, longitude, sodium, maximum depth, estimated organic anions, latitude, and dissolved organic carbon (Figure \ref{fig:Importance_Model3}). The top three predictors were the same as Models 1 and 2. (Figure \ref{fig:Importance_Model3}).  Total accuracy for Model 3 was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$diag,2)*100`% and the Cohen's Kappa was `r round(classAgreement(all_ts2_rf$confusion[,1:2])$kappa,2)` (Table \ref{tab:Confusion_Model3}).
-
-*Model 4: 4 Trophic States ~ GIS Only Variables*
-
-Model 4 had a sample size of `r sum(complete.cases(ltmData[gis_ts4_vars],ltmData$TS_CHLA_4))`. The selected variables for the Model 4 were longitude, latitude, elevation, estimated mean lake depth, percent evergreen forest, estimated maximum lake depth, percent cropland, and ecoregion (Figure \ref{fig:Importance_Model4}).  The three most important variables were longitude, latitude, and elevation (Figure \ref{fig:Importance_Model4}); however, all variables except ecoregion were almost equally important. Total accuracy for Model 4 was `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$diag,2)*100`% and the Cohen's Kappa was `r round(classAgreement(gis_ts4_rf$confusion[,1:4])$kappa,2)` (Table \ref{tab:Confusion_Model4}).
-
-*Model 5: 3 Trophic States ~ GIS Only Variables*
-
-A total of `r sum(complete.cases(ltmData[gis_ts3_vars],ltmData$TS_CHLA_3))` lakes were used for model 5 which included estimated mean lake depth, percent cropland, longitude, latitude, percent evergreen forest, elevation, estimated maximum lake depth, estimated lake volume, percent deciduous forest, percent developed open space, ecoregion, percent woody wetland, and percent shrub/scrub (Figure \ref{fig:Importance_Model5}). The most important variables for model 5 were estimated mean lake depth, percent cropland, and longitude. (Figure \ref{fig:Importance_Model5}). Total accuracy for Model 5 was `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$diag,2)*100`% and the Cohen's Kappa was `r round(classAgreement(gis_ts3_rf$confusion[,1:3])$kappa,2)` (Table \ref{tab:Confusion_Model5}).
-
-*Model 6: 2 Trophic States ~ GIS Only Variables*
-
-Model 6 was built using  `r sum(complete.cases(ltmData[gis_ts2_vars],ltmData$TS_CHLA_2))` total observations. The variable selection process for Model 6 produced a reduced model with ecoregion, growing degree days, percent evergreen forest, percent cropland, elevation, estimated mean lake depth, longitude, latitude, watershed area, estimated maximum lake depth, percent developed open space, percent deciduous forest, and estimated lake volume (Figure \ref{fig:Importance_Model6}).  The three most important variables were ecoregion, growing degree days, and percent evergreen. (Figure \ref{fig:Importance_Model6}).  Ecoregion had the highest importance with a slow decline in importance for the remainder of the variables.  Total accuracy for Model 6 was `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$diag,2)*100`% and the Cohen's Kappa was `r round(classAgreement(gis_ts2_rf$confusion[,1:2])$kappa,2)` (Table \ref{tab:Confusion_Model6}).
 
 #Discussion
 
 ##Trophic State Probabilities
-One of the powerful features of random forests is the ability to aggregate a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake.  These values may be interpreted as the probability that a lake is in a given trophic state. For instance, for a single lake (National Lake Assessment ID = NLA06608-0005), the vote probabilities for Model 1 were `r 100*round(lakeVotes[lakeVotes$COMID==23491387,][,4],2)`% for oligotrophic, `r 100*round(lakeVotes[lakeVotes$COMID==23491387,][,5],2)`% for mesotrophic, `r 100*round(lakeVotes[lakeVotes$COMID==23491387,][,6],2)`% for eutrophic, and `r 100*round(lakeVotes[lakeVotes$COMID==23491387,][,7],2)`% for hypereutrophic.  This suggests little uncertainty in the predicted oligotrophic state.  
+One of the powerful features of random forests is the ability to aggregate a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our trophic state models, we have 10,000 votes for each lake.  These values may be interpreted as the probability that a lake is in a given trophic state. For instance, for a single lake (National Lake Assessment ID = NLA06608-0005), the vote probabilities for Model 1 were "r 100*round(lakeVotes[lakeVotes$COMID==23491387,][,4],2)"% for oligotrophic, "r 100*round(lakeVotes[lakeVotes$COMID==23491387,][,5],2)"% for mesotrophic, "r 100*round(lakeVotes[lakeVotes$COMID==23491387,][,6],2)"% for eutrophic, and "r 100*round(lakeVotes[lakeVotes$COMID==23491387,][,7],2)"% for hypereutrophic.  This suggests little uncertainty in the predicted oligotrophic state.  
 
 Further, the maximum probability for each lake can be used as a measure of how certain the random forest model was of the prediction.  We would expect higher total accuracy for lakes that had more certain predictions.  Some lakes may have many votes for a single trophic state and few votes for other trophic states and these would thus have a large maximum probability and the random forest predicitions would be more certain.  Alternatively, the 10,000 votes could have been spread more equally across the trophic state classes for a lake and that lake would have a small maximum probability and the final predictions would be less certain.  This should be evident by looking at the total classification accuracy of lakes given their maximum probability is above a certain point.  To test this we can examine the accuracy of trophic state predictions across the full range of trophic state probabilities, similar to an approach outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister et al. [-@hollister2008cprob].  We utilize this approach and examine the change in total accuracy as a function of the maximum probability for each lake.  As expected, lakes with higher maximum vote probabilities were more accurately predicted (Figure \ref{fig:condProbFig}).  The increasing trend suggests that even for models with lower overall accuracy there can also be a large number of individual cases that are predicted with high accuracy.
 
@@ -304,7 +334,7 @@ The distribution of cyanobacteria abundance showed separation between all of the
 
 #Conclusions
 
-Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which allows estimation of trophic state for all lakes in the United States. We were able to successfully predict a variety of trophic state classes.  With the GIS only models our total accuracy ranged from `r 100*round(min(acc_results$total_accuracy[4:6]),2)`% to `r 100*round(max(acc_results$total_accuracy[4:6]),2)`%, and with the full suite of data our model accuracy had a minimum accuracy of `r 100*round(min(acc_results$total_accuracy[1:3]),2)`% and maximum accuracy of `r 100*round(max(acc_results$total_accuracy[1:3]),2)`%.  
+Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of chlorophyll *a* and lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which allows estimation of trophic state for all lakes in the United States. We were able to successfully predict a variety of trophic state classes.  With the GIS only models our total accuracy ranged from , and with the full suite of data our model accuracy had a minimum accuracy of %.  
 
 While some of the models (i.e. Model 4) showed relatively low prediction accuracies, another feature of the random forest, votes, can provide additional information.  In addition to providing a single estimate of trophic state for each lake, our models also indicated the probability that a lake was classified in any of the categories.  These probabilities may be mapped directly to show the uncertainty of a given predicted class.  Furthermore, as the certainty of prediction increases, so does overall trophic state classification accuracy (Figure \ref{fig:condProbFig}). These results suggest that our models will provide reasonable estimates of trophic state across the United States.
 
@@ -319,7 +349,7 @@ We would like to thank Farnaz Nojavan, Nathan Schmucker, John Kiddon, Joe LiVols
 
 #Figures
 
-```{r figSetup,echo=FALSE,eval=TRUE,cache=FALSE}
+```{r figSetup,echo=FALSE,eval=FALSE,cache=FALSE}
 #create list of all selected variables and assign a color
 vars<-ls(pattern="_vars")
 all_vars<-vector()
@@ -339,7 +369,7 @@ all_vars<-unique(all_vars)
 ```
 
 
-```{r fig1_nlaMap, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations\\label{fig:nlaMap}",cache=FALSE}
+```{r fig1_nlaMap,eval=FALSE, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations\\label{fig:nlaMap}",cache=FALSE}
 state<-map_data('state')
 lakes_alb<-data.frame(ltmData[["AlbersX"]],ltmData[["AlbersY"]])
 p4s<-"+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
@@ -356,55 +386,55 @@ nlaMap(state,lakes_dd,mycolor)
 
 \newpage
 
-```{r fig2_Importance_Model1,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance.  \\label{fig:Importance_Model1}",cache=FALSE}
+```{r fig2_Importance_Model1,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance.  \\label{fig:Importance_Model1}",cache=FALSE}
 #all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
 importancePlot(all_ts4_rf,sumTable(all_ts4[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts4_color))
 ```
 
 \newpage
 
-```{r fig3_Importance_Model2,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model2}",cache=FALSE}
+```{r fig3_Importance_Model2,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model2}",cache=FALSE}
 #all_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts3_vars]
 importancePlot(all_ts3_rf,sumTable(all_ts3[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts3_color))
 ```
 
 \newpage
 
-```{r fig4_Importance_Model3,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model3}",cache=FALSE}
+```{r fig4_Importance_Model3,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model3}",cache=FALSE}
 #all_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts2_vars]
 importancePlot(all_ts2_rf,sumTable(all_ts2[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts2_color))
 ```
 
 \newpage
 
-```{r fig5_Importance_Model4,results="asis",echo=FALSE, fig.cap="Importance plot for Model 4, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model4}",cache=FALSE}
+```{r fig5_Importance_Model4,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 4, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model4}",cache=FALSE}
 #gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
 importancePlot(gis_ts4_rf,sumTable(gis_ts4[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=gis_ts4_color))
 ```
 
 \newpage
 
-```{r fig6_Importance_Model5,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model5}",cache=FALSE}
+```{r fig6_Importance_Model5,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model5}",cache=FALSE}
 #gis_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts3_vars]
 importancePlot(gis_ts3_rf,sumTable(gis_ts3[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=gis_ts3_color))
 ```
 
 \newpage
 
-```{r fig7_Importance_Model6,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model6}",cache=FALSE}
+```{r fig7_Importance_Model6,eval=FALSE,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model6}",cache=FALSE}
 #gis_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts2_vars]
 importancePlot(gis_ts2_rf,sumTable(gis_ts2[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=gis_ts2_color))
 ```
 
 \newpage
 
-```{r fig8_condProbFig,echo=FALSE, fig.width=7, fig.cap="Comparison of certainity of trophic state prediction and total accuracy\\label{fig:condProbFig}",cache=FALSE}
+```{r fig8_condProbFig,eval=FALSE,echo=FALSE, fig.width=7, fig.cap="Comparison of certainity of trophic state prediction and total accuracy\\label{fig:condProbFig}",cache=FALSE}
 condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
 ```
 
 \newpage
 
-```{r fig9_ts_4_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}
+```{r fig9_ts_4_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}
 plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey75","grey50","grey25"),
         y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
         color="Trophic State\nCategories")
@@ -412,7 +442,7 @@ plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey75
 
 \newpage
 
-```{r fig10_ts_3_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 3 trophic state classes\\label{fig:ts_3_cyano_cdf}",cache=FALSE }
+```{r fig10_ts_3_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 3 trophic state classes\\label{fig:ts_3_cyano_cdf}",cache=FALSE }
 plotCdf(ltmData$TS_CHLA_3,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey75","grey50"),
        y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)', 
        color="Trophic State\nCategories")
@@ -420,7 +450,7 @@ plotCdf(ltmData$TS_CHLA_3,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey75
 
 \newpage
 
-```{r fig11_ts_2_cyano_cdf, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 2 trophic state classes\\label{fig:ts_2_cyano_cdf}",cache=FALSE}
+```{r fig11_ts_2_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 2 trophic state classes\\label{fig:ts_2_cyano_cdf}",cache=FALSE}
 plotCdf(ltmData$TS_CHLA_2,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey50"),
        y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
        color="Trophic State\nCategories")
@@ -428,7 +458,7 @@ plotCdf(ltmData$TS_CHLA_2,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey50
 
 \newpage
 
-```{r fig12_scatterplot,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria abundance scatterplot\\label{fig:scatterplot}",cache=FALSE}
+```{r fig12_scatterplot,eval=FALSE,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria abundance scatterplot\\label{fig:scatterplot}",cache=FALSE}
 scp_df<-data.frame(chla=ltmData[["CHLA"]],abundp1=ltmData[["cyanoCellsPerML"]]+1)
 scatterPlot(scp_df,xvar="chla",yvar="abundp1","black","grey50","grey25",
              x=expression(paste('Log10(Chl ', italic("a"),'(',mu,'g/L))')),
@@ -440,7 +470,7 @@ scatterPlot(scp_df,xvar="chla",yvar="abundp1","black","grey50","grey25",
 
 #Tables
 
-```{r trophicStateTable, results='asis', echo=FALSE, tab.cap="Chlorophyll a based trophic state cut-offs with total number of possible observations.\\label{tab:trophicStateTable}",cache=FALSE}
+```{r trophicStateTable,eval=FALSE, results='asis', echo=FALSE, tab.cap="Chlorophyll a based trophic state cut-offs with total number of possible observations.\\label{tab:trophicStateTable}",cache=FALSE}
 ts_4<-c("oligotrophic","mesotrophic","eutrophic","hypereutrophic")
 ts_3<-c("oligotrophic","mesotrophic/eutrophic","mesotrophic/eutrophic","hypereutrophic")
 ts_2<-c("oligotrophic/mesotrophic","oligotrophic/mesotrophic","eutrophic/hypereutrophic","eutrophic/hypereutrophic")
@@ -453,7 +483,7 @@ kable(xdf)
 
 \newpage
 
-```{r Confusion_Model1,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model1}",cache=FALSE}
+```{r Confusion_Model1,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model1}",cache=FALSE}
 cm1<-round(all_ts4_rf$confusion,2)
 cm1[,5]<-paste0((1-cm1[,5])*100,"%")
 dimnames(cm1)[[2]][5]<-'Class Accuracy'
@@ -462,7 +492,7 @@ kable(cm1,row.names=T)
 
 \newpage
 
-```{r Confusion_Model2,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 2. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_Model2}",cache=FALSE}
+```{r Confusion_Model2,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 2. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_Model2}",cache=FALSE}
 cm2<-round(all_ts3_rf$confusion,2)
 cm2[,4]<-paste0((1-cm2[,4])*100,"%")
 dimnames(cm2)[[2]][4]<-'Class Accuracy'
@@ -471,7 +501,7 @@ kable(cm2,row.names=T)
 
 \newpage
 
-```{r Confusion_Model3,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 3. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model3}",cache=FALSE}
+```{r Confusion_Model3,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 3. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model3}",cache=FALSE}
 cm3<-round(all_ts2_rf$confusion,2)
 cm3[,3]<-paste0((1-cm3[,3])*100,"%")
 dimnames(cm3)[[2]][3]<-'Class Accuracy'
@@ -480,7 +510,7 @@ kable(cm3,row.names=T)
 
 \newpage
 
-```{r Confusion_Model4,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 4. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model4}",cache=FALSE }
+```{r Confusion_Model4,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 4. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model4}",cache=FALSE }
 cm4<-round(gis_ts4_rf$confusion,2)
 cm4[,5]<-paste0((1-cm4[,5])*100,"%")
 dimnames(cm4)[[2]][5]<-'Class Accuracy'
@@ -489,7 +519,7 @@ kable(cm4,row.names=T)
 
 \newpage
 
-```{r Conufsion_Model5,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 5. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model5}",cache=FALSE}
+```{r Conufsion_Model5,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 5. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model5}",cache=FALSE}
 cm5<-round(gis_ts3_rf$confusion,2)
 cm5[,4]<-paste0((1-cm5[,4])*100,"%")
 dimnames(cm5)[[2]][4]<-'Class Accuracy'
@@ -498,7 +528,7 @@ kable(cm5,row.names=T)
 
 \newpage
 
-```{r Confusion_Model6,results="asis",echo=FALSE, tab.cap="Random forest confusion matrix for Model 6. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in Class Accuracy' column. \\label{tab:Confusion_Model6}",cache=FALSE}
+```{r Confusion_Model6,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random forest confusion matrix for Model 6. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in Class Accuracy' column. \\label{tab:Confusion_Model6}",cache=FALSE}
 cm6<-round(gis_ts2_rf$confusion,2)
 cm6[,3]<-paste0((1-cm6[,3])*100,"%")
 dimnames(cm6)[[2]][3]<-'Class Accuracy'
@@ -509,7 +539,7 @@ kable(cm6,row.names=T)
 
 #Appendix 1. Variable Definitions
 
-```{r data_def, results="asis",echo=FALSE,cache=FALSE}
+```{r data_def,eval=FALSE, results="asis",echo=FALSE,cache=FALSE}
 kable(data_def,row.names=FALSE)
 ```
 

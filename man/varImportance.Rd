@@ -4,10 +4,10 @@
 \alias{varImportance}
 \title{Variable Importance Summary}
 \usage{
-varImportance(rf, label = NULL)
+varImportance(rf_imp, label = NULL)
 }
 \arguments{
-\item{rf}{Random Forest Object}
+\item{rf_imp}{a Random Forest Importance Object}
 
 \item{label}{A label for the model}
 }
