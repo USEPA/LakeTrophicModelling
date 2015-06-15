@@ -42,9 +42,6 @@ abstract: no
 if(!require(LakeTrophicModelling)){
   devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE)
 }
-if(!require(edarf)){
-  devtools::install_github("zmjones/edarf",quick=TRUE)
-}
 if(!require(wesanderson)){
 devtools::install_github("jhollist/wesanderson")
 }
