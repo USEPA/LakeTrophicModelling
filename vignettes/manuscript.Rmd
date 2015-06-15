@@ -122,6 +122,21 @@ knit_hooks$set(output = function(x, options) {
 })
 ```
 
+```{r data_setup ,echo=FALSE}
+#All Variables
+#Clean Up Data - Complete Cases
+predictors_all <- predictors_all[predictors_all!="DATE_COL"]
+all_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
+row.names(all_dat)<-ltmData$NLA_ID
+all_dat <- all_dat[complete.cases(all_dat),]  
+
+#GIS Variables
+#Clean Up Data - Complete Cases
+gis_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
+row.names(gis_dat)<-ltmData$NLA_ID
+gis_dat <- gis_dat[complete.cases(gis_dat),]
+```
+
 ```{r rand_forest_runs , eval=FALSE, include=FALSE, echo=FALSE, cache=TRUE}
 ################################################################################
 #This chunk sets up the 'all' and 'gis' data, does variable selection (takes few
@@ -129,11 +144,6 @@ knit_hooks$set(output = function(x, options) {
 # Results stored in prior_cache and loaded in setup chunk
 ################################################################################
 #Model 1: All Variables
-
-#Clean Up Data - Complete Cases
-predictors_all <- predictors_all[predictors_all!="DATE_COL"]
-all_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
-all_dat <- all_dat[complete.cases(all_dat),]  
 
 #Variable Selection
 all_vs <- varsel_regression_rf(all_dat$LogCHLA,all_dat[,names(all_dat)!="LogCHLA"],
@@ -148,10 +158,6 @@ all_rf<-randomForest(y=all_dat$LogCHLA,x=all_dat[,all_vars_select],
   
 ################################################################################
 #Model 2: GIS Only Variables
-
-#Clean Up Data - Complete Cases
-gis_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
-gis_dat <- gis_dat[complete.cases(gis_dat),]
 
 #Variable Selection
 gis_vs <- varsel_regression_rf(gis_dat$LogCHLA,gis_dat[,names(gis_dat)!="LogCHLA"],
@@ -183,13 +189,13 @@ gis_pred <- predict(gis_rf)
 gis_orig <- gis_rf$y
 
 #Trophic State Catergories
-ts_4_brks <- c(min(log10(ltmData$CHLA),na.rm=T),log10(2),log10(7),log10(30),max(log10(ltmData$CHLA),na.rm=T))
+ts_4_brks <- c(min(log10(ltmData$CHLA),na.rm=T)-1,log10(2),log10(7),log10(30),max(log10(ltmData$CHLA),na.rm=T)+1)
 ts_4_cats <- c("oligo","meso","eu","hyper")
-ts_2_brks <- c(min(log10(ltmData$CHLA),na.rm=T),log10(7),max(log10(ltmData$CHLA),na.rm=T))
+ts_2_brks <- c(min(log10(ltmData$CHLA),na.rm=T)-1,log10(7),max(log10(ltmData$CHLA),na.rm=T)+1)
 ts_2_cats <- c("oligo/meso","eu/hyper")
 
 #Orig and Predict Trophic State Categories
-all_ts4_pred <- cut(all_pred,ts_4_brks,ts_4_cats)
+all_ts4_pred <- cut(all_pred,ts_4_brks,ts_4_cats,include.lowest=T)
 all_ts4_orig <- cut(all_orig,ts_4_brks,ts_4_cats)
 all_ts2_pred <- cut(all_pred,ts_2_brks,ts_2_cats)
 all_ts2_orig <- cut(all_orig,ts_2_brks,ts_2_cats)
@@ -215,9 +221,24 @@ gis_ts2_total_acc <- classAgreement(gis_ts2_conmat)$diag
 gis_ts2_kappa <- classAgreement(gis_ts2_conmat)$kappa
 ```
 
-```{r}
-#Figure out a way to get the predictions per tree so we can get votes pre lake
-#which gives us probability a lake is of a given class.
+```{r class_predict_probability}
+#Per tree chl a predictions - All Variables
+all_rf_alltree_predict <- predict(all_rf,newdata=all_dat,predict.all=TRUE)
+all_rf_ts_prob <- apply(all_rf_alltree_predict$individual,2,
+                        function(x) cut(x,ts_4_brks,ts_4_cats)) 
+all_rf_ts_prob <- apply(all_rf_ts_prob,1, function(x)
+                        table(factor(x,levels=c("oligo","meso","eu","hyper"),
+                                     ordered=T))/5000)
+all_rf_ts_prob <- data.frame(t(all_rf_ts_prob))  
+
+gis_rf_alltree_predict <- predict(gis_rf,newdata=gis_dat,predict.all=TRUE)
+gis_rf_ts_prob <- apply(gis_rf_alltree_predict$individual,2,
+                        function(x) cut(x,ts_4_brks,ts_4_cats)) 
+gis_rf_ts_prob <- apply(gis_rf_ts_prob,1, function(x)
+                        table(factor(x,levels=c("oligo","meso","eu","hyper"),
+                                     ordered=T))/5000)
+gis_rf_ts_prob <- data.frame(t(gis_rf_ts_prob))  
+
 
 #Example Votes
 #lakeVotes<-data.frame(all_rf$y,all_rf$predicted,all_rf$votes)
