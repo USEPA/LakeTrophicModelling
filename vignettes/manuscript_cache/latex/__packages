@@ -1,10 +1,4 @@
 base
-methods
-datasets
-utils
-grDevices
-graphics
-stats
 LakeTrophicModelling
 edarf
 wesanderson
@@ -13,9 +7,7 @@ lattice
 ggplot2
 caret
 tidyr
-grid
 mvtnorm
-stats4
 modeltools
 zoo
 sandwich

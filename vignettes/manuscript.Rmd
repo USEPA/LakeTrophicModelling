@@ -178,7 +178,7 @@ var_importance<-inner_join(var_importance,data_def[c("variable_names","descripti
 var_importance<-var_importance[order(var_importance$model_id,-var_importance$mean_decrease_gini, decreasing=FALSE),]                     
 ```
 
-```{r trophic_class, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}}
+```{r trophic_class, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
 #Predict and Original Chl a
 all_pred <- predict(all_rf)
 all_orig <- all_rf$y
@@ -192,7 +192,7 @@ ts_2_brks <- c(min(log10(ltmData$CHLA),na.rm=T)-1,log10(7),max(log10(ltmData$CHL
 ts_2_cats <- c("oligo/meso","eu/hyper")
 
 #Orig and Predict Trophic State Categories
-all_ts4_pred <- cut(all_pred,ts_4_brks,ts_4_cats,include.lowest=T)
+all_ts4_pred <- cut(all_pred,ts_4_brks,ts_4_cats)
 all_ts4_orig <- cut(all_orig,ts_4_brks,ts_4_cats)
 all_ts2_pred <- cut(all_pred,ts_2_brks,ts_2_cats)
 all_ts2_orig <- cut(all_orig,ts_2_brks,ts_2_cats)
@@ -218,32 +218,10 @@ gis_ts2_total_acc <- classAgreement(gis_ts2_conmat)$diag
 gis_ts2_kappa <- classAgreement(gis_ts2_conmat)$kappa
 ```
 
-```{r class_predict_probability}
+```{r class_predict_probability, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
 #Per tree chl a predictions - All Variables
-all_rf_alltree_predict <- predict(all_rf,newdata=all_dat,predict.all=TRUE)
-all_rf_ts_prob <- apply(all_rf_alltree_predict$individual,2,
-                        function(x) cut(x,ts_4_brks,ts_4_cats)) 
-all_rf_ts_prob <- apply(all_rf_ts_prob,1, function(x)
-                        table(factor(x,levels=c("oligo","meso","eu","hyper"),
-                                     ordered=T))/5000)
-all_rf_ts_prob <- data.frame(t(all_rf_ts_prob))  
-
-gis_rf_alltree_predict <- predict(gis_rf,newdata=gis_dat,predict.all=TRUE)
-gis_rf_ts_prob <- apply(gis_rf_alltree_predict$individual,2,
-                        function(x) cut(x,ts_4_brks,ts_4_cats)) 
-gis_rf_ts_prob <- apply(gis_rf_ts_prob,1, function(x)
-                        table(factor(x,levels=c("oligo","meso","eu","hyper"),
-                                     ordered=T))/5000)
-gis_rf_ts_prob <- data.frame(t(gis_rf_ts_prob))  
-
-
-#Example Votes
-#lakeVotes<-data.frame(all_rf$y,all_rf$predicted,all_rf$votes)
-#lakeVotes<-data.frame(lakeVotes,max_prob=apply(lakeVotes[,3:6],1,max))
-#lakeVotes$all_rf.predicted<-factor(lakeVotes$all_rf.predicted,ordered=T)
-#lakeVotes<-data.frame(lakeVotes,correct_binary=lakeVotes$all_rf.y==lakeVotes$all_rf.predicted)
-#lakeVotes<-data.frame(COMID=getLakeIDs(ltmData[all_vars_select],ltmData$TS_CHLA_4,ltmData$Comid),lakeVotes)
-#lakeVotes<-na.omit(lakeVotes)
+all_rf_ts_prob <- class_prob_rf(gis_rf,gis_dat,ts_4_brks,ts_4_cats,T)
+gis_rf_ts_prob <- class_prob_rf(gis_rf,gis_dat,ts_4_brks,ts_4_cats,T)  
 ```
 
 
