@@ -20,7 +20,7 @@ class_prob_rf <- function(rf_obj,newdata,breaks,labels,ordered=FALSE,
     stop("rf_obj is not a regression randomForest object.")
   }
   type <- match.arg(type)
-  preds <- predict(all_rf,newdata=all_dat,predict.all=TRUE)
+  preds <- predict(rf_obj,newdata=newdata,predict.all=TRUE)
   class_prob <- apply(preds$individual,2,
                           function(x) cut(x,breaks,labels))
   if(type=="probs"){
