@@ -158,26 +158,18 @@ lakes without water quality data, we take advantage of the availability
 of a large national lakes water quality database (i.e.~the National
 Lakes Assessment), land use/land cover data, lake morphometry data,
 other universally available data, and apply modern data mining
-approaches to build and assess models of lake trophic state. We use
-random forest to identify variables to be used for predicting trophic
-state and we compare the performance of two models of chlorophyll
-\emph{a}. The model estimates chlorophyll \emph{a} with both \emph{in
-situ} and universally available data. The second model uses universally
-available GIS data only. Overall accuracy for models built from \emph{in
-situ} and universal data ranged from ``r
-round(min(acc\_results{[}1:3,2{]}),2)\emph{100 ``\% to''r
-round(max(acc\_results{[}1:3,2{]}),2)}100''\%. For the universal data
-only models, overall accuracy ranged from ``r
-round(min(acc\_results{[}4:6,2{]}),2)\emph{100``\% to''r
-round(max(acc\_results{[}4:6,2{]}),2)}100''\%. Lastly, presence and
-abundance of cyanobacteria is often strongly associated with trophic
-state. To test this we examine the association between estimates of
-cyanobacteria abundance and measured chlorophyll \emph{a} and find a
-positive relationship. We find, that predictive models of lake trophic
-state may be improved with additional information on the landscape
-surrounding lakes and that those models provide additional information
-on the presence of potentially harmful cyanobacteria taxa. Lastly, the
-source code and data for this manuscript are available from
+approaches. To predict trophic state, we first model the continous
+values, chlorophyll \emph{a} in this case, then classify the resultant
+predictions. The first model (i.e.~the full model) estimates chlorophyll
+\emph{a} with both \emph{in situ} and universally available data and the
+mean squared error and adjusted R\textsuperscript{2} of this model was
+0.09 and 0.8. The second model (i.e.~the GIS only models) uses
+universally available GIS data only for models and the mean squared
+error was 0.22 and the adjusted R\textsuperscript{2} was 0.48. The
+accuracy of various trophic state classifications derived from the
+chlorophyll \emph{a} predictions ranged from 69\% to 87\% for the full
+model and from 49\% to 75\% for the GIS only model. The source code and
+data for this manuscript are available from
 \url{https://github.com/USEPA/LakeTrophicModelling}.
 
 \vspace{3mm}

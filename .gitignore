@@ -2,7 +2,7 @@
 .Rhistory
 .RData
 packrat/lib*/
-vignettes/manuscript_files
+vignettes/manuscript_cache/*
 
 
 
