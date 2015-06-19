@@ -157,20 +157,21 @@ importantly, available water quality data. To address this, we take
 advantage of the availability of a large national lakes water quality
 database (i.e.~the National Lakes Assessment), land use/land cover data,
 lake morphometry data, other universally available data, and apply
-modern data mining approaches to predict trophic state. We first model
-chlorophyll \emph{a}, then classify the resultant predictions. The full
-model estimates chlorophyll \emph{a} with both \emph{in situ} and
-universally available data and the mean squared error and adjusted
-R\textsuperscript{2} of this model was 0.09 and 0.8, respectively. The
-second model (i.e.~GIS only) uses universally available GIS data only.
-The mean squared error was 0.22 and the adjusted R\textsuperscript{2}
-was 0.48. The accuracy of various trophic state classifications derived
-from the chlorophyll \emph{a} predictions ranged from 69\% to 87\% for
-the full model and from 49\% to 75\% for the GIS only model. Random
-forests extend the usefulness of the class predictions by providing
-prediction probabilities for each lake. This allows us to make trophic
-state predictions and also indicate the level of uncertainity around
-that predictions. For the full model, these predicted class probabilites
+modern data mining approaches to predict trophic state. Using this data
+and random forests, we first model chlorophyll \emph{a}, then classify
+the resultant predictions into trophic states. The full model estimates
+chlorophyll \emph{a} with both \emph{in situ} and universally available
+data. The mean squared error and adjusted R\textsuperscript{2} of this
+model was 0.09 and 0.8, respectively. The second model (i.e.~GIS only)
+uses universally available GIS data only. The mean squared error was
+0.22 and the adjusted R\textsuperscript{2} was 0.48. The accuracy of
+various trophic state classifications derived from the chlorophyll
+\emph{a} predictions ranged from 69\% to 87\% for the full model and
+from 49\% to 75\% for the GIS only model. Random forests extend the
+usefulness of the class predictions by providing prediction
+probabilities for each lake. This allows us to make trophic state
+predictions and also indicate the level of uncertainity around those
+predictions. For the full model, these predicted class probabilites
 ranged from 0.42 to 1. For the GIS only model, they ranged from 0.33 to
 0.96. It is our conclusion that \emph{in situ} data are required for
 better predictions, yet GIS and universally available data provide
