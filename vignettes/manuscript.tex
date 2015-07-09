@@ -399,35 +399,34 @@ compare the root mean square error and the adjusted R\textsuperscript{2}
 of the models. Second, we examine the accuracy of the model when
 converted to two different classifications of trophic state: a standard
 4 class trophic state and 2 classes that combine the high and low
-trophic states together (Table \ref{tab:trophicStateTable}). Using these
-two classifcations we compare the total prediction accuracy and the
-kappa coefficient of the confusion matrix that results from comparine
-the objserved class versus the predicted class.
+trophic states together (Table \ref{tab:trophicStateTable}). We compare
+the two classifcations via a confusion matrix. A confusion matrix shows
+agreement and disagreement in a tabular form with predicted values
+forming the columns of the matrix and observed values, the rows. From
+this tabulated information we calculate the total accuracy (i.e.~percent
+correctly predicted) and the kappa coefficient, which takes into account
+the error expected by chance alone (i.e.~the off diagonal values of the
+matrix) (Cohen 1960, Hubert and Arabie 1985). The kappa coefficient can
+range from -1 to 1 with 0 equalling the agreement expected by chance
+alone. Values greater than 0 represent agreement greater than would be
+expected by chance, with values greater than 0.61 considered
+``substantial'' agreement (Landis and Koch 1977). Negative values are
+rare and would indicate no agreement between the predicted and observed
+values. Additonally, random forest builds each tree on bootstrapped,
+random subsets of the original data, thus, a separate independent
+validation dataset is not required and random forest error estimates are
+expected to be unbiased (Breiman 2001).
 
-A confusion matrix shows agreement and disagreement with predicted
-values forming the columns of the matrix and observed values, the rows.
-The total accuracy (i.e.~percent correctly predicted) was calculated.
-Since some agreement can be expected by chance alone, it is also useful
-to take this type of error into account. For this we calculated the
-kappa coefficient from the confusion matrix for each model as well
-(Cohen 1960, Hubert and Arabie 1985). The kappa coefficient can range
-from -1 to 1 with 0 equalling the agreement expected by chance alone.
-Values greater than 0 represent agreement greater than would be expected
-by chance, with values greater than 0.61 considered ``substantial''
-agreement (Landis and Koch 1977). Negative values are rare and would
-indicate no agreement between the predicted and observed values.
-Additonally, random forest builds each tree on bootstrapped, random
-subsets of the original data, thus, a separate independent validation
-dataset is not required and random forest error estimates are expected
-to be unbiased (Breiman 2001).
+The random forest algorithm explicitly measures variable importance with
+two metrics:mean decrease in Gini and percent increase in mean squared
+error. For each of these they measure the impact on the overall model
+when that particular variable is included and thus can be used to assess
+importance (Breiman 2001). The Gini Index has been shown to have a bias
+that is less apparent than with percent increase in mean squared error
+(Strobl et al. 2007), thus, we use this metric to asses variable
+importance.
 
-Lastly, the random forest algorithm explicitly measures variable
-importance as mean decrease in Gini. The Gini Index is a measure of how
-well the data are classified into homogeneous groups. For every node,
-the splitting variables are permuted and the change in actual Gini and
-permuted Gini is recorded. The mean decrease Gini is a summed and
-standardized value for each variable (Breiman 2001). Higher values of
-mean decrease Gini suggest a higher importance for that variable.
+Lastly, something about partial depenedence plots.
 
 \section{Results}\label{results}
 
