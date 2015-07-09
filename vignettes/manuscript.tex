@@ -284,7 +284,7 @@ across the conterminous United States (Figure \ref{fig:nlaMap}), the NLA
 provides a unique opportunity to examine broad scale patterns in lake
 productivity. The NLA collected data on biophysical measures of lake
 water quality and habitat as well as an assessment of the phytoplankton
-community. For this analysis, we examined the water quality measurements
+community. For this analysis, we only use the water quality measurements
 and total cyanobacteria abundance from the National Lakes Assessment
 (USEPA 2009).
 
@@ -363,43 +363,12 @@ Using \texttt{randomForest} R package we ran models the predict
 chlorphyll \emph{a} with two sets of predictors (Liaw and Wiener 2002);
 all precitors (\emph{in situ} and universally available GIS predictors)
 and the GIS only variables (i.e.~no \emph{in situ} information). A
-listing of all considered variables is in Appendix 1. Trophic state was
-defined using the NLA chlorophyll \emph{a} trophic state cut offs and
-the three combinations of trophic state were used to highlight the
-possible error caused by misclassification of adjacent classes, such as
-mesotrophic and eutrophic (Table \ref{tab:trophicStateTable}). Our
-separation of predictors was chosen so that we could highlight the
-additional predictive performance provided by adding the \emph{in situ}
-water quality variables on top of the GIS only variables. Lastly, we
-used only complete cases (i.e.~missing data were removed) so the total
-number of observations varied between models.
-
-The six model combinations were:
-
-\begin{itemize}
-\itemsep1pt\parskip0pt\parsep0pt
-\item
-  \textbf{Model 1:} Chlorophyll \emph{a} trophic state (4 class) = All
-  variables (\emph{in situ} water quality, lake morphometry, and
-  landscape)
-\item
-  \textbf{Model 2:} Chlorophyll \emph{a} trophic state (3 class) = All
-  variables (\emph{in situ} water quality, lake morphometry, and
-  landscape)
-\item
-  \textbf{Model 3:} Chlorophyll \emph{a} trophic state (2 class) = All
-  variables (\emph{in situ} water quality, lake morphometry, and
-  landscape)
-\item
-  \textbf{Model 4:} Chlorophyll \emph{a} trophic state (4 class) = GIS
-  Only variables (lake morphometry, and landscape)
-\item
-  \textbf{Model 5:} Chlorophyll \emph{a} trophic state (3 class) = GIS
-  Only variables (lake morphometry, and landscape)
-\item
-  \textbf{Model 6:} Chlorophyll \emph{a} trophic state (2 class) = GIS
-  Only variables (lake morphometry, and landscape)
-\end{itemize}
+listing of all considered variables is in Appendix 1. Our separation of
+predictors was chosen so that we could highlight the additional
+predictive performance provided by adding the \emph{in situ} water
+quality variables on top of the GIS only variables. Lastly, we used only
+complete cases (i.e.~missing data were removed) so the total number of
+observations varied between models.
 
 Our modelling work flow was as follows:
 
@@ -407,40 +376,50 @@ Our modelling work flow was as follows:
 \def\labelenumi{\arabic{enumi}.}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  Use \texttt{iterVarSelRF} in the \texttt{LakeTrophicModelling} R
-  package to identify a minimal set of variables that maximize accuracy
-  of the random forest algorithm (Diaz-Uriarte 2010, Hollister et al.
-  2014). This subset of variables, the reduced model, is calculated for
-  each of our 6 models.
+  Identify a minimal set of variables that maximize accuracy of the
+  random forest algorithm. This minimal set of variables, the reduced
+  model, is calculated for each of the models.
 \item
-  Using R's \texttt{randomForest} package, we pass the reduced models
-  selected with \texttt{iterVarSelRF} and assess model performance (Liaw
-  and Wiener 2002).
+  Using R's \texttt{randomForest} package, we develop two random forest
+  models.
+\item
+  Assess model performance for both the predicted chlorophyll \emph{a}
+  and for categorical trophic state classifications. Trophic state was
+  defined using the NLA chlorophyll \emph{a} trophic state cut offs and
+  the two combinations of trophic state were used to highlight the
+  possible error caused by misclassification of adjacent classes, such
+  as mesotrophic and eutrophic (Table \ref{tab:trophicStateTable}).
 \end{enumerate}
 
 \subsection{Measures of Model Performance and Variable
 Importance}\label{measures-of-model-performance-and-variable-importance}
 
-We assessed the performance of the random forest models by comparing the
-total prediction accuracy and the kappa coefficient of the final
-confusion matrix. For each of the models, the final predictions were
-compared to the original data via a confusion matrix. A confusion matrix
-shows agreement and disagreement with predicted values forming the
-columns of the matrix and observed values, the rows. The total accuracy
-(i.e.~percent correctly predicted) was calculated. Since some agreement
-can be expected by chance alone, it is also useful to take this type of
-error into account. For this we calculated the kappa coefficient from
-the confusion matrix for each model as well (Cohen 1960, Hubert and
-Arabie 1985). The kappa coefficient can range from -1 to 1 with 0
-equalling the agreement expected by chance alone. Values greater than 0
-represent agreement greater than would be expected by chance, with
-values greater than 0.61 considered ``substantial'' agreement (Landis
-and Koch 1977). Negative values are rare and would indicate no agreement
-between the predicted and observed values. Additonally, random forest
-builds each tree on bootstrapped, random subsets of the original data,
-thus, a separate independent validation dataset is not required and
-random forest error estimates are expected to be unbiased (Breiman
-2001).
+We assessed the performance of the random forest two ways. First we
+compare the root mean square error and the adjusted R\textsuperscript{2}
+of the models. Second, we examine the accuracy of the model when
+converted to two different classifications of trophic state: a standard
+4 class trophic state and 2 classes that combine the high and low
+trophic states together (Table \ref{tab:trophicStateTable}). Using these
+two classifcations we compare the total prediction accuracy and the
+kappa coefficient of the confusion matrix that results from comparine
+the objserved class versus the predicted class.
+
+A confusion matrix shows agreement and disagreement with predicted
+values forming the columns of the matrix and observed values, the rows.
+The total accuracy (i.e.~percent correctly predicted) was calculated.
+Since some agreement can be expected by chance alone, it is also useful
+to take this type of error into account. For this we calculated the
+kappa coefficient from the confusion matrix for each model as well
+(Cohen 1960, Hubert and Arabie 1985). The kappa coefficient can range
+from -1 to 1 with 0 equalling the agreement expected by chance alone.
+Values greater than 0 represent agreement greater than would be expected
+by chance, with values greater than 0.61 considered ``substantial''
+agreement (Landis and Koch 1977). Negative values are rare and would
+indicate no agreement between the predicted and observed values.
+Additonally, random forest builds each tree on bootstrapped, random
+subsets of the original data, thus, a separate independent validation
+dataset is not required and random forest error estimates are expected
+to be unbiased (Breiman 2001).
 
 Lastly, the random forest algorithm explicitly measures variable
 importance as mean decrease in Gini. The Gini Index is a measure of how
@@ -701,8 +680,8 @@ Effects Research Laboratory, US Environmental Protection Agency.
 
 \section{Tables}\label{tables}
 
-:Chlorophyll a based trophic state cut-offs with total number of
-possible observations.\label{tab:trophicStateTable}
+:Chlorophyll a based trophic state
+cut-offs.\label{tab:trophicStateTable}
 
 \newpage
 
@@ -773,10 +752,6 @@ Educational and Psychological Measurement 20:37--46.
 Hess, J. Gibson, and J. J. Lawler}. 2007. Random forests for
 classification in ecology. Ecology 88:2783--2792.
 
-\textsc{Diaz-Uriarte, R.} 2010. VarSelRF: Variable selection using
-random forests. R package version 0.7-3.
-http://CRAN.R-project.org/package=varSelRF.
-
 \textsc{D{í}az-Uriarte, R., and S. A. De Andres}. 2006. Gene selection
 and classification of microarray data using random forest. BMC
 bioinformatics 7:3.
@@ -795,10 +770,6 @@ BioScience 19:425--431.
 
 \textsc{Hollister, J. W.} 2014. Lakemorpho: Lake morphometry in R. R
 package version 1.0. http://CRAN.R-project.org/package=lakemorpho.
-
-\textsc{Hollister, J. W., W. B. Milstead, and B. J. Kreakie}. 2014.
-LakeTrophicModelling: Package to reproduce Hollister et al. (2014)
-Modeling lake trophic state: A data mining approach.
 
 \textsc{Hollister, J. W., W. B. Milstead, and M. A. Urrutia}. 2011.
 Predicting maximum lake depth from surrounding topography. PLoS ONE

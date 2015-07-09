@@ -51,9 +51,9 @@ devtools::install_github("zmjones/edarf")
 if(!require(condprob2)){
 devtools::install_github("jhollist/condprob2")
 }
-if(!require(caret)){
-  install.packages("caret")
-}
+#if(!require(caret)){
+#  install.packages("caret")
+#}
 if(!require(tidyr)){
   install.packages("tidyr")
 }
@@ -77,7 +77,7 @@ library("condprob2")
 library("party")
 library("broom")
 library("edarf")
-library("caret")
+#library("caret")
 library("randomForest")
 opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
 data(LakeTrophicModelling)
