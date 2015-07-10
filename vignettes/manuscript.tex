@@ -424,20 +424,20 @@ when that particular variable is included and thus can be used to assess
 importance (Breiman 2001). The Gini Index has been shown to have a bias
 that is less apparent than with percent increase in mean squared error
 (Strobl et al. 2007), thus, we use this metric to asses variable
-importance.
-
-Lastly, something about partial depenedence plots.
+importance. Lastly, partial depenedence plots provide a mecahnism to
+examine the partial relationship between individual variables and the
+response variable (Jones and Linder 2015). We examine these plots for
+the top variables as assigned by percent increase in mean squared error
+of for each the reduced models.
 
 \section{Results}\label{results}
 
 Our complete dataset includes 1148 lakes; however 5 lakes did not have
 chlorophyll \emph{a} data. Thus, the base dataset for our modelling was
-conducted on data for 1143 lakes. As chlorophyll \emph{a} is used to
-create the trophic state classifications, it was necessary to remove
-these data because no chlorophyll \emph{a} trophic state could be
-determined for these lakes. The lakes were well distributed both across
-the four trophic state categories (Table \ref{tab:trophicStateTable})
-and spatially throughout the United States (Figure \ref{fig:nlaMap}).
+conducted on data for 1143 lakes. The lakes were well distributed both
+across the four trophic state categories (Table
+\ref{tab:trophicStateTable}) and spatially throughout the United States
+(Figure \ref{fig:nlaMap}).
 
 \subsection{Models}\label{models}
 
@@ -802,6 +802,9 @@ Wickham, K. H. Riitters, and R. V. O'Neill}. 2001. Predicting nutrient
 and sediment loadings to streams from landscape metrics: A multiple
 watershed study from the united states mid-atlantic region. Landscape
 Ecology 16:301--312.
+
+\textsc{Jones, Z., and F. Linder}. 2015. Exploratory data analysis using
+random forests. \emph{in} The 73rd annual mPSA conference. MPSA.
 
 \textsc{Landis, J. R., and G. G. Koch}. 1977. The measurement of
 observer agreement for categorical data. biometrics 33:159--174.
