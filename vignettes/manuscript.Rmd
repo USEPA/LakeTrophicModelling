@@ -69,7 +69,7 @@ library("LakeTrophicModelling")
 library("knitr")
 library("ggplot2")
 library("sp")
-#library("rgdal")
+library("rgdal")
 library("e1071")
 library("dplyr")
 library("tidyr")
@@ -285,17 +285,24 @@ The random forest algorithm explicitly measures variable importance with two met
 #Results 
 Our complete dataset includes `r nrow(ltmData)` lakes; however `r sum(is.na(ltmData$CHLA))` lakes did not have chlorophyll *a* data. Thus, the base dataset for our modelling was conducted on data for `r nrow(ltmData[!is.na(ltmData$TS_CHLA_4),])` lakes.  The lakes were well distributed both across the four trophic state categories (Table \ref{tab:trophicStateTable}) and spatially throughout the United States (Figure \ref{fig:nlaMap}).  
 
-<!-- Jeff Start Here --!>
-##Models
-Accuracy for the models built with all predictors ranged from MSE and R2 to MSE and R2. Trophic state results were ....  The GIS only models had a total accuracy between `from MSE and R2 to MSE and R2. Trophic state results were ....  The importance of variables Details for each model are discussed below.
+##Models: All Variables
+The model built with all predictors had a mean squared error of `r round(all_rf$mse,2)` and and R\textsuperscript{2} of `r round(all_rf$rsq,2)`.  The accuracy of the four trophic states was `r round(all_ts4_total_acc,2)*100`% and the kappa coefficient was `r round(all_ts4_kappa,2)` (Table \ref{tab:Confusion_All_4}). For the combined, two trophic states it was `r round(all_ts2_total_acc,2)` and `r round(all_ts2_kappa,2)*100`% for accuracy and the kappa coefficient, respectively (Table \ref{tab:Confusion_All_2}).  
 
+The reduced, all variables model was built using `r nrow(all_dat)` total observations. The variable selection process identified 20 variables (Figure \ref{fig:all_varsel_figure}).  
+<!-- Jeff Start Here PROBLEM IN THE ABOVE NOT SINGLE VALUE SOMEWHERE--!>
+The  most important variables were ecoregion, growing degree days, and percent evergreen. (Figure \ref{fig:All_Importance}).  MORE HERE.
 
-###All Variables
-The all variables model built was built using  `r nrow(all_dat)` total observations. The variable selection process for this model produced a reduced model with  (Figure \ref{fig:Importance_Model6}).  The  most important variables were ecoregion, growing degree days, and percent evergreen. (Figure \ref{fig:Importance_Model6}).  MORE HERE.
+###Per Lake Probability
+Historgram of Binned max prob.
 
-###GIS Only Variables
-The gis only variables model built was built using  `r nrow(gis_dat)` total observations. The variable selection process for this model produced a reduced model with  (Figure \ref{fig:Importance_Model6}).  The  most important variables were ecoregion, growing degree days, and percent evergreen. (Figure \ref{fig:Importance_Model6}).  MORE HERE.
+##Models: GIS Only Variables
+The GIS only model had a mean squared error of `r round(gis_rf$mse,2)` and and R\textsuperscript{2} `r round(gis_rf$rsq,2)`. Four trophic states were predicted with a total accuracy of 
+`r round(gis_ts4_total_acc,2)*100`% and had a kappa coefficient of `r round(gis_ts4_kappa,2)` and two trophic states were correctly predicted `r round(gis_ts2_total_acc,2)*100`% of the time with a kappa coefficient of `r round(gis_ts2_kappa,2)`. 
 
+The gis only variables model was built using  `r nrow(gis_dat)` total observations. The variable selection process for this model produced a reduced model with  (Figure \ref{fig:Importance_Model6}).  The  most important variables were ecoregion, growing degree days, and percent evergreen. (Figure \ref{fig:Importance_Model6}).  MORE HERE.
+
+###Per Lake Probability
+Historgram of Binned max prob.
 
 #Discussion
 
@@ -339,6 +346,7 @@ We would like to thank Farnaz Nojavan, Nathan Schmucker, John Kiddon, Joe LiVols
 #Figures
 
 ```{r figSetup,echo=FALSE,eval=FALSE,cache=FALSE}
+###REDO
 #create list of all selected variables and assign a color
 vars<-ls(pattern="_vars")
 all_vars<-vector()
@@ -358,7 +366,7 @@ all_vars<-unique(all_vars)
 ```
 
 
-```{r fig1_nlaMap,eval=FALSE, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations\\label{fig:nlaMap}",cache=FALSE}
+```{r fig1_nlaMap,eval=TRUE, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations \\label{fig:nlaMap}",cache=FALSE}
 state<-map_data('state')
 lakes_alb<-data.frame(ltmData[["AlbersX"]],ltmData[["AlbersY"]])
 p4s<-"+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
@@ -375,71 +383,61 @@ nlaMap(state,lakes_dd,mycolor)
 
 \newpage
 
-```{r fig2_Importance_Model1,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance.  \\label{fig:Importance_Model1}",cache=FALSE}
+```{r all_var_sel_figure, eval=TRUE,results="asis",echo=FALSE, fig.cap="Variable selection plot for all variables.  Shows percent increase in mean squared error as a function of the number of variables.  \\label{fig:all_varsel_figure}",cache=FALSE}
+varsel_plot(all_vs)
+```
+
+\newpage
+
+```{r All_Importance, eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1, shows mean percnetage increase in mean square error.  Higher values of percent increase in mean squared error indicates higher importance.  \\label{fig:All_Importance}",cache=FALSE}
+##NEEDS TO BE REDONE
 #all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
-importancePlot(all_ts4_rf,sumTable(all_ts4[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts4_color))
+importancePlot(all_rf,sumTable(all_ts4[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts4_color))
 ```
 
 \newpage
 
-```{r fig3_Importance_Model2,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 2, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model2}",cache=FALSE}
-#all_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts3_vars]
-importancePlot(all_ts3_rf,sumTable(all_ts3[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts3_color))
+```{r all_partial_dependence}
 ```
 
 \newpage
 
-```{r fig4_Importance_Model3,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 3, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model3}",cache=FALSE}
-#all_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts2_vars]
-importancePlot(all_ts2_rf,sumTable(all_ts2[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts2_color))
+```{r all_probability_hist}
 ```
 
 \newpage
 
-```{r fig5_Importance_Model4,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 4, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model4}",cache=FALSE}
-#gis_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts4_vars]
-importancePlot(gis_ts4_rf,sumTable(gis_ts4[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=gis_ts4_color))
+```{r gis_var_sel_figure, eval=TRUE,results="asis",echo=FALSE, fig.cap="Variable selection plot for GIS only variables. Shows percent increase in mean squared error as a function of the number of variables.  \\label{fig:gis_varsel_figure}",cache=FALSE}
+varsel_plot(all_vs)
 ```
 
 \newpage
 
-```{r fig6_Importance_Model5,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 5, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model5}",cache=FALSE}
-#gis_ts3_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts3_vars]
-importancePlot(gis_ts3_rf,sumTable(gis_ts3[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=gis_ts3_color))
+```{r gis_importance}
 ```
 
 \newpage
 
-```{r fig7_Importance_Model6,eval=FALSE,eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 6, shows mean descrease gini and proportion of times a variable was selected for inclusion in the model.  Higher values of mean decrease gini indicate higher importance. \\label{fig:Importance_Model6}",cache=FALSE}
-#gis_ts2_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%gis_ts2_vars]
-importancePlot(gis_ts2_rf,sumTable(gis_ts2[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=gis_ts2_color))
+```{r gis_partial_dependence}
 ```
 
 \newpage
 
-```{r fig8_condProbFig,eval=FALSE,echo=FALSE, fig.width=7, fig.cap="Comparison of certainity of trophic state prediction and total accuracy\\label{fig:condProbFig}",cache=FALSE}
-condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
+```{r gis_probability_hist}
 ```
 
 \newpage
 
-```{r fig9_ts_4_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}
+```{r ts4_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}
 plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey75","grey50","grey25"),
         y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
         color="Trophic State\nCategories")
 ```
 
-\newpage
-
-```{r fig10_ts_3_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 3 trophic state classes\\label{fig:ts_3_cyano_cdf}",cache=FALSE }
-plotCdf(ltmData$TS_CHLA_3,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey75","grey50"),
-       y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)', 
-       color="Trophic State\nCategories")
-```
 
 \newpage
 
-```{r fig11_ts_2_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 2 trophic state classes\\label{fig:ts_2_cyano_cdf}",cache=FALSE}
+```{r ts2_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 2 trophic state classes\\label{fig:ts_2_cyano_cdf}",cache=FALSE}
 plotCdf(ltmData$TS_CHLA_2,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey50"),
        y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
        color="Trophic State\nCategories")
@@ -447,19 +445,18 @@ plotCdf(ltmData$TS_CHLA_2,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey50
 
 \newpage
 
-```{r fig12_scatterplot,eval=FALSE,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria abundance scatterplot\\label{fig:scatterplot}",cache=FALSE}
+```{r chla_cyano_scatterplot,eval=FALSE,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria abundance scatterplot\\label{fig:scatterplot}",cache=FALSE}
 scp_df<-data.frame(chla=ltmData[["CHLA"]],abundp1=ltmData[["cyanoCellsPerML"]]+1)
 scatterPlot(scp_df,xvar="chla",yvar="abundp1","black","grey50","grey25",
              x=expression(paste('Log10(Chl ', italic("a"),'(',mu,'g/L))')),
              y="Log10(Cyanobaterial Abundance (cells/ml) + 1)")
 ```
 
-
 \newpage
 
 #Tables
 
-```{r trophicStateTable,eval=FALSE, results='asis', echo=FALSE, tab.cap="Chlorophyll a based trophic state cut-offs.\\label{tab:trophicStateTable}",cache=FALSE}
+```{r trophicStateTable,eval=TRUE, results='asis', echo=FALSE, tab.cap="Chlorophyll a based trophic state cut-offs. \\label{tab:trophicStateTable}",cache=FALSE}
 ts_4<-c("oligotrophic","mesotrophic","eutrophic","hypereutrophic")
 ts_3<-c("oligotrophic","mesotrophic/eutrophic","mesotrophic/eutrophic","hypereutrophic")
 ts_2<-c("oligotrophic/mesotrophic","oligotrophic/mesotrophic","eutrophic/hypereutrophic","eutrophic/hypereutrophic")
@@ -472,63 +469,45 @@ kable(xdf)
 
 \newpage
 
-```{r Confusion_Model1,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 1. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model1}",cache=FALSE}
-cm1<-round(all_ts4_rf$confusion,2)
-cm1[,5]<-paste0((1-cm1[,5])*100,"%")
-dimnames(cm1)[[2]][5]<-'Class Accuracy'
-kable(cm1,row.names=T)
+```{r Confusion_All_4,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for All Variables model converted to 4 trophic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_All_4}",cache=FALSE}
+#NEED TO FIX ALL OF THESE - Tables not DFs and need to get class accuracy added
+cm<-round(all_ts4_conmat,2)
+cm[,5]<-paste0((1-cm[,5])*100,"%")
+dimnames(cm)[[2]][3]<-'Class Accuracy'
+kable(cm,row.names=T)
 ```
 
 \newpage
 
-```{r Confusion_Model2,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 2. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_Model2}",cache=FALSE}
-cm2<-round(all_ts3_rf$confusion,2)
-cm2[,4]<-paste0((1-cm2[,4])*100,"%")
-dimnames(cm2)[[2]][4]<-'Class Accuracy'
-kable(cm2,row.names=T)
+```{r Confusion_All_2,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for All Variables model converted to 2 trophic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_All_2}",cache=FALSE}
+cm<-round(all_ts2_conmat,2)
+cm[,3]<-paste0((1-cm[,3])*100,"%")
+dimnames(cm)[[2]][3]<-'Class Accuracy'
+kable(cm,row.names=T)
 ```
 
 \newpage
 
-```{r Confusion_Model3,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 3. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model3}",cache=FALSE}
-cm3<-round(all_ts2_rf$confusion,2)
-cm3[,3]<-paste0((1-cm3[,3])*100,"%")
-dimnames(cm3)[[2]][3]<-'Class Accuracy'
-kable(cm3,row.names=T)
+```{r Confusion_GIS_4,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for GIS Only model converted to 4 tropic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_GIS_4}",cache=FALSE}
+cm<-round(gis_ts4_conmat,2)
+cm[,5]<-paste0((1-cm2[,5])*100,"%")
+dimnames(cm)[[2]][5]<-'Class Accuracy'
+kable(cm,row.names=T)
 ```
 
 \newpage
 
-```{r Confusion_Model4,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 4. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model4}",cache=FALSE }
-cm4<-round(gis_ts4_rf$confusion,2)
-cm4[,5]<-paste0((1-cm4[,5])*100,"%")
-dimnames(cm4)[[2]][5]<-'Class Accuracy'
-kable(cm4,row.names=T)
+```{r Confusion_GIS_2,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for GIS Only model converted to 2 tropic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_GIS_2}",cache=FALSE}
+cm<-round(gis_ts2_conmat,2)
+cm[,3]<-paste0((1-cm2[,3])*100,"%")
+dimnames(cm)[[2]][3]<-'Class Accuracy'
+kable(cm,row.names=T)
 ```
-
-\newpage
-
-```{r Conufsion_Model5,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for Model 5. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_Model5}",cache=FALSE}
-cm5<-round(gis_ts3_rf$confusion,2)
-cm5[,4]<-paste0((1-cm5[,4])*100,"%")
-dimnames(cm5)[[2]][4]<-'Class Accuracy'
-kable(cm5,row.names=T)
-```
-
-\newpage
-
-```{r Confusion_Model6,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random forest confusion matrix for Model 6. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in Class Accuracy' column. \\label{tab:Confusion_Model6}",cache=FALSE}
-cm6<-round(gis_ts2_rf$confusion,2)
-cm6[,3]<-paste0((1-cm6[,3])*100,"%")
-dimnames(cm6)[[2]][3]<-'Class Accuracy'
-kable(cm6,row.names=T)
-```
-
 \newpage
 
 #Appendix 1. Variable Definitions
 
-```{r data_def,eval=FALSE, results="asis",echo=FALSE,cache=FALSE}
+```{r data_def,eval=TRUE, results="asis",echo=FALSE,cache=FALSE}
 kable(data_def,row.names=FALSE)
 ```
 
