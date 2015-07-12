@@ -288,9 +288,7 @@ Our complete dataset includes `r nrow(ltmData)` lakes; however `r sum(is.na(ltmD
 ##Models: All Variables
 The model built with all predictors had a mean squared error of `r round(all_rf$mse[5000],2)` and and R\textsuperscript{2} of `r round(all_rf$rsq[5000],2)`.  The accuracy of the four trophic states was `r round(all_ts4_total_acc,3)*100`% and the kappa coefficient was `r round(all_ts4_kappa,2)` (Table \ref{tab:Confusion_All_4}). For the combined, two trophic states it was `r round(all_ts2_total_acc,2)` and `r round(all_ts2_kappa,3)*100`% for accuracy and the kappa coefficient, respectively (Table \ref{tab:Confusion_All_2}).  
 
-The reduced, all variables model was built using `r nrow(all_dat)` total observations. The variable selection process identified 20 variables (Figure \ref{fig:all_varsel_figure}).  
-<!-- Jeff Start Here --!>
-The  most important variables were ecoregion, growing degree days, and percent evergreen. (Figure \ref{fig:All_Importance}).  MORE HERE.
+The reduced, all variables model was built using `r nrow(all_dat)` total observations. The variable selection process identified 20 variables (Figure \ref{fig:all_varsel_figure}).  The five most important variables were turbidity,total phosphorus, total nitrogen, elevation, and total organic carbon. (Figure \ref{fig:All_Importance}). <!-- Jeff Start Here --!> MORE HERE.
 
 ###Per Lake Probability
 Historgram of Binned max prob.
@@ -388,10 +386,8 @@ varsel_plot(all_vs)
 
 \newpage
 
-```{r All_Importance, eval=FALSE,results="asis",echo=FALSE, fig.cap="Importance plot for Model 1, shows mean percnetage increase in mean square error.  Higher values of percent increase in mean squared error indicates higher importance.  \\label{fig:All_Importance}",cache=FALSE}
-##NEEDS TO BE REDONE
-#all_ts4_color<-col_lu[["hexcode"]][col_lu[["variables"]]%in%all_ts4_vars]
-importancePlot(all_rf,sumTable(all_ts4[1:100]), data_def=data_def,'gini',size=5)#,aes(colour=all_ts4_color))
+```{r All_Importance, eval=TRUE,results="asis",echo=FALSE, fig.cap="Importance plot for All Variables., shows percent increase in mean square error.  Higher values of percent increase in mean squared error indicates higher importance.  \\label{fig:All_Importance}",cache=FALSE}
+importancePlot(all_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_color))
 ```
 
 \newpage
