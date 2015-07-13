@@ -408,7 +408,8 @@ varsel_plot(gis_vs)
 
 \newpage
 
-```{r gis_importance}
+```{r GIS_Importance, eval=TRUE,results="asis",echo=FALSE, fig.cap="Importance plot for GIS Only Variables., shows percent increase in mean square error.  Higher values of percent increase in mean squared error indicates higher importance.  \\label{fig:GIS_Importance}",cache=FALSE}
+importancePlot(gis_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_color))
 ```
 
 \newpage
