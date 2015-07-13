@@ -403,7 +403,7 @@ importancePlot(all_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 \newpage
 
 ```{r gis_var_sel_figure, eval=TRUE,results="asis",echo=FALSE, fig.cap="Variable selection plot for GIS only variables. Shows percent increase in mean squared error as a function of the number of variables.  \\label{fig:gis_varsel_figure}",cache=FALSE}
-varsel_plot(all_vs)
+varsel_plot(gis_vs)
 ```
 
 \newpage
