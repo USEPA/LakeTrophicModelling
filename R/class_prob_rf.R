@@ -21,8 +21,9 @@ class_prob_rf <- function(rf_obj,newdata,breaks,labels,ordered=FALSE,
   }
   type <- match.arg(type)
   preds <- predict(rf_obj,newdata=newdata,predict.all=TRUE)
-  class_prob <- apply(preds$individual,2,
-                          function(x) cut(x,breaks,labels))
+  preds_df <- data.frame(preds$individual)
+  class_prob <- apply(preds_df,2, function(x) cut(x,breaks,labels))
+  row.names(class_prob)<-row.names(preds_df)
   if(type=="probs"){
     class_prob <- apply(class_prob,1, function(x)
       table(factor(x,levels=labels, ordered=ordered))/rf_obj$ntree)
@@ -30,6 +31,8 @@ class_prob_rf <- function(rf_obj,newdata,breaks,labels,ordered=FALSE,
     class_prob <- apply(class_prob,1, function(x)
       table(factor(x,levels=labels, ordered=ordered)))
   }
-  
-  return(data.frame(t(class_prob)))  
+  class_prob<-data.frame(t(class_prob))
+  class_prob$nla_id<-row.names(class_prob)
+  row.names(class_prob)<-as.character(1:nrow(class_prob))
+  return(class_prob)  
 }  
