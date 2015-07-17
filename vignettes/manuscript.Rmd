@@ -402,6 +402,11 @@ importancePlot(all_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 
 \newpage
 
+```{r all_probability_map}
+```
+
+\newpage
+
 ```{r gis_var_sel_figure, eval=TRUE,results="asis",echo=FALSE, fig.cap="Variable selection plot for GIS only variables. Shows percent increase in mean squared error as a function of the number of variables.  \\label{fig:gis_varsel_figure}",cache=FALSE}
 varsel_plot(gis_vs)
 ```
@@ -422,6 +427,10 @@ importancePlot(gis_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 ```{r gis_probability_hist}
 ```
 
+\newpage
+
+```{r gis_probability_map}
+```
 \newpage
 
 ```{r ts4_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}
