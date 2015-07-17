@@ -27,8 +27,7 @@ ts_prob_map<-function(states,lakes,probs){
   gmap_m<-make_ts_map(states,lakes,"Mesotrophic", low="#efedf5",high="#756bb1")
   gmap_e<-make_ts_map(states,lakes,"Eutrophic", low="#fee6ce",high="#e6550d")
   gmap_h<-make_ts_map(states,lakes,"Hypereutrophic", low="#fee0d2",high="#de2d26")
-  gmap<-multiplot(gmap_o,gmap_e,gmap_m,gmap_h,cols=2)
-  return(gmap)
+  return(multiplot(gmap_o,gmap_e,gmap_m,gmap_h,cols=2))
 }
 
 #' helper function to generate each map
@@ -44,15 +43,15 @@ make_ts_map <- function(states,lake_prob,title,low,high){
   if(title=="Oligotrophic"){value<<-"oligo"}
   if(title=="Mesotrophic"){value<<-"meso"}
   if(title=="Eutrophic"){value<<-"eu"}
-  if(title=="Hyoereutrophic"){value<<-"meso"}
-
+  if(title=="Hypereutrophic"){value<<-"hyper"}
   gmap<-ggplot(states,aes(x=long,y=lat))+
     geom_polygon(aes(group=group),fill="white",colour="grey")+
-    geom_point(data=lakes,aes(x=long,y=lat,colour=get(value)),size=2.5)+
+    geom_point(data=lakes,aes_string(x="long",y="lat",colour=value),size=2.5)+
     coord_map("albers", lat2 = 45.5, lat1 = 29.5)+
     theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), 
           panel.border = element_blank(), 
-          axis.text = element_blank(),axis.ticks = element_blank()) + 
+          axis.text = element_blank(),axis.ticks = element_blank(),
+          plot.margin = grid::unit(c(0,0,0,0),"inches")) + 
     ggtitle(title)+
     ylab("") + 
     xlab("") +
