@@ -779,32 +779,91 @@ hypereutrophic & eutrophic/hypereutrophic &
 
 \newpage
 
-:Random Forest confusion matrix for All Variables model converted to 4
-trophic states. Columns show predicted values and rows show observed
+\begin{longtable}[c]{@{}lrrrrr@{}}
+\caption{Random Forest confusion matrix for All Variables model
+converted to 4 trophic states. Columns show predicted values and rows
+show observed values. Agreement indicated on diagonal and accuracy for
+each trophic state indicated in `Class Accuracy' column.
+\label{tab:Confusion_All_4}}\tabularnewline
+\toprule
+& oligo & meso & eu & hyper & Class Accuracy\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& oligo & meso & eu & hyper & Class Accuracy\tabularnewline
+\midrule
+\endhead
+oligo & 115 & 31 & 0 & 0 & 146\tabularnewline
+meso & 67 & 251 & 63 & 0 & 381\tabularnewline
+eu & 7 & 61 & 217 & 75 & 360\tabularnewline
+hyper & 0 & 5 & 29 & 159 & 193\tabularnewline
+\bottomrule
+\end{longtable}
+
+\newpage
+
+\begin{longtable}[c]{@{}lrrr@{}}
+\caption{Random Forest confusion matrix for All Variables model
+converted to 2 trophic states. Columns show predicted values and rows
+show observed values. Agreement indicated on diagonal and accuracy for
+each trophic state indicated in `Class Accuracy' column.
+\label{tab:Confusion_All_2}}\tabularnewline
+\toprule
+& oligo/meso & eu/hyper & Class Accuracy\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& oligo/meso & eu/hyper & Class Accuracy\tabularnewline
+\midrule
+\endhead
+oligo/meso & 464 & 63 & 527\tabularnewline
+eu/hyper & 73 & 480 & 553\tabularnewline
+\bottomrule
+\end{longtable}
+
+\newpage
+
+\begin{longtable}[c]{@{}lrrrrr@{}}
+\caption{Random Forest confusion matrix for GIS Only model converted to
+4 tropic states. Columns show predicted values and rows show observed
 values. Agreement indicated on diagonal and accuracy for each trophic
-state indicated in `Class Accuracy' column. \label{tab:Confusion_All_4}
+state indicated in `Class Accuracy' column.
+\label{tab:Confusion_GIS_4}}\tabularnewline
+\toprule
+& oligo & meso & eu & hyper & Class Accuracy\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& oligo & meso & eu & hyper & Class Accuracy\tabularnewline
+\midrule
+\endhead
+oligo & 65 & 14 & 6 & 0 & 85\tabularnewline
+meso & 101 & 213 & 98 & 18 & 430\tabularnewline
+eu & 29 & 126 & 193 & 141 & 489\tabularnewline
+hyper & 1 & 8 & 38 & 87 & 134\tabularnewline
+\bottomrule
+\end{longtable}
 
 \newpage
 
-:Random Forest confusion matrix for All Variables model converted to 2
-trophic states. Columns show predicted values and rows show observed
+\begin{longtable}[c]{@{}lrrr@{}}
+\caption{Random Forest confusion matrix for GIS Only model converted to
+2 tropic states. Columns show predicted values and rows show observed
 values. Agreement indicated on diagonal and accuracy for each trophic
-state indicated in `Class Accuracy' column. \label{tab:Confusion_All_2}
-
-\newpage
-
-:Random Forest confusion matrix for GIS Only model converted to 4 tropic
-states. Columns show predicted values and rows show observed values.
-Agreement indicated on diagonal and accuracy for each trophic state
-indicated in `Class Accuracy' column. \label{tab:Confusion_GIS_4}
-
-\newpage
-
-:Random Forest confusion matrix for GIS Only model converted to 2 tropic
-states. Columns show predicted values and rows show observed values.
-Agreement indicated on diagonal and accuracy for each trophic state
-indicated in `Class Accuracy' column. \label{tab:Confusion_GIS_2}
-\newpage
+state indicated in `Class Accuracy' column. \label{tab:Confusion_GIS_2}
+\newpage}\tabularnewline
+\toprule
+& oligo/meso & eu/hyper & Class Accuracy\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+& oligo/meso & eu/hyper & Class Accuracy\tabularnewline
+\midrule
+\endhead
+oligo/meso & 393 & 122 & 515\tabularnewline
+eu/hyper & 164 & 459 & 623\tabularnewline
+\bottomrule
+\end{longtable}
 
 \section{Appendix 1. Variable
 Definitions}\label{appendix-1.-variable-definitions}

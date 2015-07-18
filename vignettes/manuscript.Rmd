@@ -474,39 +474,39 @@ kable(xdf)
 
 \newpage
 
-```{r Confusion_All_4,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for All Variables model converted to 4 trophic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_All_4}",cache=FALSE}
+```{r Confusion_All_4,eval=TRUE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for All Variables model converted to 4 trophic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_All_4}",cache=FALSE}
 #NEED TO FIX ALL OF THESE - Tables not DFs and need to get class accuracy added
-cm<-round(all_ts4_conmat,2)
-cm[,5]<-paste0((1-cm[,5])*100,"%")
-dimnames(cm)[[2]][3]<-'Class Accuracy'
-kable(cm,row.names=T)
+cmt<-table_to_df(round(all_ts4_conmat,2)) 
+cmt$Class_Accuracy <- apply(cmt,1,sum)
+dimnames(cmt)[[2]][5]<-'Class Accuracy'
+kable(cmt,row.names=T)
 ```
 
 \newpage
 
-```{r Confusion_All_2,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for All Variables model converted to 2 trophic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_All_2}",cache=FALSE}
-cm<-round(all_ts2_conmat,2)
-cm[,3]<-paste0((1-cm[,3])*100,"%")
-dimnames(cm)[[2]][3]<-'Class Accuracy'
-kable(cm,row.names=T)
+```{r Confusion_All_2,eval=TRUE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for All Variables model converted to 2 trophic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_All_2}",cache=FALSE}
+cmt<-table_to_df(round(all_ts2_conmat,2)) 
+cmt$Class_Accuracy <- apply(cmt,1,sum)
+dimnames(cmt)[[2]][3]<-'Class Accuracy'
+kable(cmt,row.names=T)
 ```
 
 \newpage
 
-```{r Confusion_GIS_4,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for GIS Only model converted to 4 tropic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_GIS_4}",cache=FALSE}
-cm<-round(gis_ts4_conmat,2)
-cm[,5]<-paste0((1-cm2[,5])*100,"%")
-dimnames(cm)[[2]][5]<-'Class Accuracy'
-kable(cm,row.names=T)
+```{r Confusion_GIS_4,eval=TRUE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for GIS Only model converted to 4 tropic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_GIS_4}",cache=FALSE}
+cmt<-table_to_df(round(gis_ts4_conmat,2)) 
+cmt$Class_Accuracy <- apply(cmt,1,sum)
+dimnames(cmt)[[2]][5]<-'Class Accuracy'
+kable(cmt,row.names=T)
 ```
 
 \newpage
 
-```{r Confusion_GIS_2,eval=FALSE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for GIS Only model converted to 2 tropic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_GIS_2}",cache=FALSE}
-cm<-round(gis_ts2_conmat,2)
-cm[,3]<-paste0((1-cm2[,3])*100,"%")
-dimnames(cm)[[2]][3]<-'Class Accuracy'
-kable(cm,row.names=T)
+```{r Confusion_GIS_2,eval=TRUE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for GIS Only model converted to 2 tropic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_GIS_2}",cache=FALSE}
+cmt<-table_to_df(round(gis_ts2_conmat,2)) 
+cmt$Class_Accuracy <- apply(cmt,1,sum)
+dimnames(cmt)[[2]][3]<-'Class Accuracy'
+kable(cmt,row.names=T)
 ```
 \newpage
 
