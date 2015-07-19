@@ -478,7 +478,10 @@ kable(xdf)
 #NEED TO FIX ALL OF THESE - Tables not DFs and need to get class accuracy added
 cmt<-table_to_df(round(all_ts4_conmat,2)) 
 cmt$Class_Accuracy <- apply(cmt,1,sum)
-dimnames(cmt)[[2]][5]<-'Class Accuracy'
+for(i in 1:nrow(cmt)){
+  cmt$Class_Accuracy[i]<-round((cmt[i,i]/cmt$Class_Accuracy[i])*100,2)
+}
+dimnames(cmt)[[2]][5]<-'Class Accuracy (%)'
 kable(cmt,row.names=T)
 ```
 
@@ -487,7 +490,10 @@ kable(cmt,row.names=T)
 ```{r Confusion_All_2,eval=TRUE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for All Variables model converted to 2 trophic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column. \\label{tab:Confusion_All_2}",cache=FALSE}
 cmt<-table_to_df(round(all_ts2_conmat,2)) 
 cmt$Class_Accuracy <- apply(cmt,1,sum)
-dimnames(cmt)[[2]][3]<-'Class Accuracy'
+for(i in 1:nrow(cmt)){
+  cmt$Class_Accuracy[i]<-round((cmt[i,i]/cmt$Class_Accuracy[i])*100,2)
+}
+dimnames(cmt)[[2]][3]<-'Class Accuracy (%)'
 kable(cmt,row.names=T)
 ```
 
@@ -496,7 +502,10 @@ kable(cmt,row.names=T)
 ```{r Confusion_GIS_4,eval=TRUE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for GIS Only model converted to 4 tropic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_GIS_4}",cache=FALSE}
 cmt<-table_to_df(round(gis_ts4_conmat,2)) 
 cmt$Class_Accuracy <- apply(cmt,1,sum)
-dimnames(cmt)[[2]][5]<-'Class Accuracy'
+for(i in 1:nrow(cmt)){
+  cmt$Class_Accuracy[i]<-round((cmt[i,i]/cmt$Class_Accuracy[i])*100,2)
+}
+dimnames(cmt)[[2]][5]<-'Class Accuracy (%)'
 kable(cmt,row.names=T)
 ```
 
@@ -505,7 +514,10 @@ kable(cmt,row.names=T)
 ```{r Confusion_GIS_2,eval=TRUE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for GIS Only model converted to 2 tropic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:Confusion_GIS_2}",cache=FALSE}
 cmt<-table_to_df(round(gis_ts2_conmat,2)) 
 cmt$Class_Accuracy <- apply(cmt,1,sum)
-dimnames(cmt)[[2]][3]<-'Class Accuracy'
+for(i in 1:nrow(cmt)){
+  cmt$Class_Accuracy[i]<-round((cmt[i,i]/cmt$Class_Accuracy[i])*100,2)
+}
+dimnames(cmt)[[2]][3]<-'Class Accuracy (%)'
 kable(cmt,row.names=T)
 ```
 
