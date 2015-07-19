@@ -508,6 +508,7 @@ cmt$Class_Accuracy <- apply(cmt,1,sum)
 dimnames(cmt)[[2]][3]<-'Class Accuracy'
 kable(cmt,row.names=T)
 ```
+
 \newpage
 
 #Appendix 1. Variable Definitions
