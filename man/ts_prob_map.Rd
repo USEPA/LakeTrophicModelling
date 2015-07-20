@@ -4,7 +4,7 @@
 \alias{ts_prob_map}
 \title{Create map of trophic state probabilities}
 \usage{
-ts_prob_map(states, lakes, probs)
+ts_prob_map(states, lakes, probs, save_sep = FALSE)
 }
 \arguments{
 \item{states}{data for states, as data.frame}
