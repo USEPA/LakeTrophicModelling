@@ -4,28 +4,27 @@
 #' This functions produces CDF plots from predicted trophic state probabilities   
 #' 
 #' 
-#' @param probs the continuous Variable such as-'sumBioV','CHLA', 'NTL', 'PTL', etc.  Of same 
-#'                length as contVar 
+#' @param probs1 prediction probabilities for one of the models
+#' @param probs2 prediction probabilities for the other model
 #' @param ... pass additional parameters to labs (e.g. set titles, axis labels, etc.)
 #' 
 #' @examples
 #' devtools::install_github('wesanderson','karthik')
 #' library(wesanderson)
 #' data(LakeTrophicModelling)
-#' prob_cdf(gis_rf_ts_prob)
+#' prob_cdf(all_rf_ts_prob, gis_rf_ts_prob)
 #' @export
 #' @import ggplot2
 
-prob_cdf <- function(probs, ...) {
-    browser()
+prob_cdf <- function(probs1, probs2, ...) {
+    
     options(scipen = 5)  #tell r not to use scientific notation on axis labels
-    probs$max <- apply(probs[,1:4],1,max)
-    x <- ggplot(probs) +
-          stat_ecdf(color = "black", size = 3 , aes(max)) +
-          stat_ecdf(color = "blue", size = 3 , aes(oligo)) +
-          stat_ecdf(color = "yellow", size = 3 , aes(meso)) +
-          stat_ecdf(color = "orange", size = 3 , aes(eu)) +
-          stat_ecdf(color = "red", size = 3 , aes(hyper)) +
+    probs1$max <- apply(probs1[,1:4],1,max)
+    probs2$max <- apply(probs2[,1:4],1,max)
+    
+    x <- ggplot(data=probs1) +
+          stat_ecdf(color = "black", size = 3 , aes(x=max)) +
+          stat_ecdf(data=probs2, color = "red", size = 3 , aes(x=max)) +
           theme(text = element_text(family="Times"),
                 panel.background = element_blank(), panel.grid = element_blank(), 
                 panel.border = element_rect(fill = NA), 

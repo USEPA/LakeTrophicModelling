@@ -4,11 +4,12 @@
 \alias{prob_cdf}
 \title{Function to create CDFs of probability for each trophic state prediction}
 \usage{
-prob_cdf(probs, ...)
+prob_cdf(probs1, probs2, ...)
 }
 \arguments{
-\item{probs}{the continuous Variable such as-'sumBioV','CHLA', 'NTL', 'PTL', etc.  Of same
-length as contVar}
+\item{probs1}{prediction probabilities for one of the models}
+
+\item{probs2}{prediction probabilities for the other model}
 
 \item{...}{pass additional parameters to labs (e.g. set titles, axis labels, etc.)}
 }
@@ -19,6 +20,6 @@ This functions produces CDF plots from predicted trophic state probabilities
 devtools::install_github('wesanderson','karthik')
 library(wesanderson)
 data(LakeTrophicModelling)
-prob_cdf(gis_rf_ts_prob)
+prob_cdf(all_rf_ts_prob, gis_rf_ts_prob)
 }
 

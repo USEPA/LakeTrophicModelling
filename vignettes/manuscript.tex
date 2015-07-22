@@ -438,7 +438,7 @@ validation dataset is not required and random forest error estimates are
 expected to be unbiased (Breiman 2001).
 
 The random forest algorithm explicitly measures variable importance with
-two metrics:mean decrease in Gini and percent increase in mean squared
+two metrics: mean decrease in Gini and percent increase in mean squared
 error. For each of these they measure the impact on the overall model
 when that particular variable is included and thus can be used to assess
 importance (Breiman 2001). The Gini Index has been shown to have a bias
@@ -471,12 +471,10 @@ was 68.7\% and the kappa coefficient was 0.57 (Table
 The reduced, all variables model was built using 1080 total
 observations. The variable selection process identified 20 variables
 (Figure \ref{fig:all_varsel_figure}). The five most important variables
-were turbidity,total phosphorus, total nitrogen, elevation, and total
-organic carbon. (Figure \ref{fig:All_Importance}). MORE HERE.
+were turbidity, total phosphorus, total nitrogen, elevation, and total
+organic carbon. (Figure \ref{fig:All_Importance}).
 
-\subsubsection{Per Lake Probability}\label{per-lake-probability}
-
-Historgram of Binned max prob.
+{[}JEFF START HERE{]}
 
 \subsection{Models: GIS Only Variables}\label{models-gis-only-variables}
 
@@ -490,11 +488,16 @@ The gis only variables model was built using 1138 total observations.
 The variable selection process for this model produced a reduced model
 with (Figure \ref{fig:Importance_Model6}). The most important variables
 were ecoregion, growing degree days, and percent evergreen. (Figure
-\ref{fig:Importance_Model6}). MORE HERE.
+\ref{fig:Importance_Model6}). CHECK THAT THESE ARE CORRECT.
 
-\subsubsection{Per Lake Probability}\label{per-lake-probability-1}
+\subsection{Per Lake Probability}\label{per-lake-probability}
 
-Historgram of Binned max prob.
+As expected, the ``All Variables'' model provides higher total accuracy
+than the ``GIS Only'' model with a median prediction probability of 0.81
+and 0.72 (Figure \ref{fig:prob_cdf}). Yet, the two distributions are
+{[}TEST FOR DIFF IN DISTRIBUTIONS{]}
+
+{[}MORE ON MAPS OF 4 CLASSES{]}
 
 \section{Discussion}\label{discussion}
 
@@ -714,6 +717,13 @@ error indicates higher importance. \label{fig:All_Importance}}
 \end{figure}
 
 \newpage
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{manuscript_files/figure-latex/unnamed-chunk-1-1.jpeg}
+\caption{Prediction probabilities for the All Variables and GIS Only
+models. \label{fig:prob_cdf}}
+\end{figure}
 
 \newpage
 
