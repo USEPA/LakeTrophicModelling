@@ -290,13 +290,12 @@ The model built with all predictors had a mean squared error of `r round(all_rf$
 
 The reduced, all variables model was built using `r nrow(all_dat)` total observations. The variable selection process identified 20 variables (Figure \ref{fig:all_varsel_figure}).  The five most important variables were turbidity, total phosphorus, total nitrogen, elevation, and total organic carbon. (Figure \ref{fig:All_Importance}). 
 
-[JEFF START HERE]
-
 ##Models: GIS Only Variables
-The GIS only model had a mean squared error of `r round(gis_rf$mse[5000],2)` and and R\textsuperscript{2} `r round(gis_rf$rsq[5000],2)`. Four trophic states were predicted with a total accuracy of `r round(gis_ts4_total_acc,3)*100`% and had a kappa coefficient of `r round(gis_ts4_kappa,2)` and two trophic states were correctly predicted `r round(gis_ts2_total_acc,3)*100`% of the time with a kappa coefficient of `r round(gis_ts2_kappa,2)`. 
+The GIS only model had a mean squared error of `r round(gis_rf$mse[5000],2)` and and R\textsuperscript{2} `r round(gis_rf$rsq[5000],2)`. Four trophic states were predicted with a total accuracy of `r round(gis_ts4_total_acc,3)*100`% and had a kappa coefficient of `r round(gis_ts4_kappa,2)` and two trophic states were correctly predicted `r round(gis_ts2_total_acc,3)*100`% of the time with a kappa coefficient of `r round(gis_ts2_kappa,2)` (Tables \ref{tab:Confusion_GIS_4} and \ref{tab:Conusion_GIS-2}). 
 
-The gis only variables model was built using  `r nrow(gis_dat)` total observations. The variable selection process for this model produced a reduced model with  (Figure \ref{fig:Importance_Model6}).  The  most important variables were ecoregion, growing degree days, and percent evergreen. (Figure \ref{fig:Importance_Model6}).  CHECK THAT THESE ARE CORRECT.
+The gis only variables model was built using  `r nrow(gis_dat)` total observations. The variable selection process for this model produced a reduced model with 15 variables (Figure \ref{fig:gis_varsel_figure}).  The five most important variables were ecoregion, percent cropland, elevation, latitude, and percent evegreen forest. (Figure \ref{fig:GIS_Importance}).  
 
+[JEFF START HERE]
 ##Per Lake Probability
 As expected, the "All Variables" model provides higher total accuracy than the "GIS Only" model with a median prediction probability of `r round(median(apply(all_rf_ts_prob[1:4],1,max)),2)` and `r round(median(apply(gis_rf_ts_prob[1:4],1,max)),2)` (Figure \ref{fig:prob_cdf}).  Yet, the two distributions are [TEST FOR DIFF IN DISTRIBUTIONS]
 
@@ -393,20 +392,9 @@ importancePlot(all_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 
 \newpage
 
-```{r , eval=TRUE, results="asis",echo=FALSE, fig.cap="Prediction probabilities for the All Variables and GIS Only models.  \\label{fig:prob_cdf}",cache=FALSE}
-prob_cdf(all_rf_ts_prob, gis_rf_ts_prob,x="Predicition Probability",y="Proportion of Samples")
-```
-
-
-\newpage
-
 ```{r all_partial_dependence}
 ```
 
-\newpage
-
-```{r all_probability_map}
-```
 
 \newpage
 
@@ -427,28 +415,22 @@ importancePlot(gis_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 
 \newpage
 
-```{r gis_probability_hist}
+```{r , eval=TRUE, results="asis",echo=FALSE, fig.cap="Prediction probabilities for the All Variables and GIS Only models.  \\label{fig:prob_cdf}",cache=FALSE}
+prob_cdf(all_rf_ts_prob, gis_rf_ts_prob,x="Predicition Probability",y="Proportion of Samples")
 ```
 
 \newpage
 
 ```{r gis_probability_map}
 ```
+
+
 \newpage
 
 ```{r ts4_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}
 plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey75","grey50","grey25"),
         y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
         color="Trophic State\nCategories")
-```
-
-
-\newpage
-
-```{r ts2_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 2 trophic state classes\\label{fig:ts_2_cyano_cdf}",cache=FALSE}
-plotCdf(ltmData$TS_CHLA_2,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey50"),
-       y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
-       color="Trophic State\nCategories")
 ```
 
 \newpage
