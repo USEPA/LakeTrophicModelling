@@ -17,14 +17,20 @@
 #' @import ggplot2
 
 prob_cdf <- function(probs1, probs2, ...) {
-    
+    #FIX ME
     options(scipen = 5)  #tell r not to use scientific notation on axis labels
     probs1$max <- apply(probs1[,1:4],1,max)
+    probs1$maxul <- ecdf_ks_ci(probs1$max)$upper
+    probs1$maxll <- ecdf_ks_ci(probs1$max)$lower  
     probs2$max <- apply(probs2[,1:4],1,max)
+    probs2$maxul <- ecdf_ks_ci(probs2$max)$upper
+    probs2$maxll <- ecdf_ks_ci(probs2$max)$lower  
     
     x <- ggplot(data=probs1) +
           stat_ecdf(color = "black", size = 3 , aes(x=max)) +
+          geom_ribbon(aes(ymin = maxul,ymax = maxll),alpha = 0.2) +
           stat_ecdf(data=probs2, color = "red", size = 3 , aes(x=max)) +
+          geom_ribbon(data=probs2, aes(ymin = maxul,ymax = maxll),alpha = 0.2) +
           theme(text = element_text(family="Times"),
                 panel.background = element_blank(), panel.grid = element_blank(), 
                 panel.border = element_rect(fill = NA), 

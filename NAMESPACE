@@ -3,6 +3,7 @@
 export(class_prob_rf)
 export(condAccuracy)
 export(crossval_rf)
+export(ecdf_ks_ci)
 export(getCyanoAbund)
 export(getLakeIDs)
 export(importancePlot)

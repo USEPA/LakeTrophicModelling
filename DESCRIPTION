@@ -27,7 +27,8 @@ Imports:
     grid,
     e1071,
     maps,
-    mapproj
+    mapproj,
+    sfsmisc
 License: CC0
 LazyData: true
 VignetteBuilder: knitr
