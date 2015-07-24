@@ -10,4 +10,7 @@ ecdf_ks_ci(x)
 Code from sfsmisc::ecdf.KSci. Ammended here to simply output the xy for both upper and
 lower for use as input to ggplot
 }
+\examples{
+ecdf_ks_ci(all_pred_prob)
+}
 

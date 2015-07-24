@@ -20,6 +20,6 @@ This functions produces CDF plots from predicted trophic state probabilities
 devtools::install_github('wesanderson','karthik')
 library(wesanderson)
 data(LakeTrophicModelling)
-prob_cdf(all_rf_ts_prob, gis_rf_ts_prob)
+prob_cdf(all_rf_ts_prob, gis_rf_ts_prob,x="Prediction Probability",y="Proportion of Samples")
 }
 

@@ -33,6 +33,9 @@ class_prob_rf <- function(rf_obj,newdata,breaks,labels,ordered=FALSE,
   }
   class_prob<-data.frame(t(class_prob))
   class_prob$nla_id<-row.names(class_prob)
+  class_prob$max <- apply(class_prob[,1:4],1,max)
+  class_prob$pred_class <- cut(preds$aggregate,breaks,labels)
+  class_prob$obs_class <- cut(rf_obj$y,breaks,labels)
   row.names(class_prob)<-as.character(1:nrow(class_prob))
   return(class_prob)  
 }  

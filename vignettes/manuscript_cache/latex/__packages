@@ -20,3 +20,6 @@ e1071
 dplyr
 randomForest
 rmarkdown
+rgdal
+maps
+mapproj

@@ -12,25 +12,24 @@
 #' devtools::install_github('wesanderson','karthik')
 #' library(wesanderson)
 #' data(LakeTrophicModelling)
-#' prob_cdf(all_rf_ts_prob, gis_rf_ts_prob)
+#' prob_cdf(all_rf_ts_prob, gis_rf_ts_prob,x="Prediction Probability",y="Proportion of Samples")
 #' @export
 #' @import ggplot2
 
 prob_cdf <- function(probs1, probs2, ...) {
-    #FIX ME
     options(scipen = 5)  #tell r not to use scientific notation on axis labels
     probs1$max <- apply(probs1[,1:4],1,max)
-    probs1$maxul <- ecdf_ks_ci(probs1$max)$upper
-    probs1$maxll <- ecdf_ks_ci(probs1$max)$lower  
+    ci1 <- na.omit(data.frame(ecdf_ks_ci(probs1$max))) 
     probs2$max <- apply(probs2[,1:4],1,max)
-    probs2$maxul <- ecdf_ks_ci(probs2$max)$upper
-    probs2$maxll <- ecdf_ks_ci(probs2$max)$lower  
+    ci2 <- na.omit(data.frame(ecdf_ks_ci(probs2$max)))
     
     x <- ggplot(data=probs1) +
-          stat_ecdf(color = "black", size = 3 , aes(x=max)) +
-          geom_ribbon(aes(ymin = maxul,ymax = maxll),alpha = 0.2) +
-          stat_ecdf(data=probs2, color = "red", size = 3 , aes(x=max)) +
-          geom_ribbon(data=probs2, aes(ymin = maxul,ymax = maxll),alpha = 0.2) +
+          stat_ecdf(color = "black", size = 2 , aes(x=max)) +
+          geom_ribbon(data=ci1, aes(x=x, ymin = lower,ymax = upper),fill="black",
+                      alpha = 0.4) +
+          stat_ecdf(data=probs2, color = "red", size = 2 , aes(x=max)) +
+          geom_ribbon(data=ci2, aes(x=x, ymin = lower,ymax = upper),fill="red",
+                      alpha = 0.4) +
           theme(text = element_text(family="Times"),
                 panel.background = element_blank(), panel.grid = element_blank(), 
                 panel.border = element_rect(fill = NA), 

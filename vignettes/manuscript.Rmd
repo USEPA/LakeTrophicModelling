@@ -168,7 +168,7 @@ gis_rf<-randomForest(y=gis_dat$LogCHLA,x=gis_dat[,gis_vars_select],
                         keep.forest=TRUE,keep.inbag=TRUE)
 ```
 
-```{r rf_var_importance, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
+```{r rf_var_importance, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
 
 all_imp <- importance(all_rf)
 gis_imp <- importance(gis_rf)
@@ -178,7 +178,7 @@ var_importance<-inner_join(var_importance,data_def[c("variable_names","descripti
 var_importance<-var_importance[order(var_importance$model_id,-var_importance$mean_decrease_gini, decreasing=FALSE),]                     
 ```
 
-```{r trophic_class, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
+```{r trophic_class, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
 #Predict and Original Chl a
 all_pred <- predict(all_rf)
 all_orig <- all_rf$y
@@ -218,12 +218,11 @@ gis_ts2_total_acc <- classAgreement(gis_ts2_conmat)$diag
 gis_ts2_kappa <- classAgreement(gis_ts2_conmat)$kappa
 ```
 
-```{r class_predict_probability, eval=TRUE, echo=FALSE, cache=FALSE, warning=FALSE}
+```{r class_predict_probability, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
 #Per tree chl a predictions - All Variables
 all_rf_ts_prob <- class_prob_rf(all_rf,all_dat,ts_4_brks,ts_4_cats,T)
-gis_rf_ts_prob <- class_prob_rf(gis_rf,gis_dat,ts_4_brks,ts_4_cats,T) 
-gis_pred_prob<-apply(gis_rf_ts_prob[,1:4],1,max)
-all_pred_prob<-apply(all_rf_ts_prob[,1:4],1,max)
+gis_rf_ts_prob <- class_prob_rf(gis_rf,gis_dat,ts_4_brks,ts_4_cats,T)
+
 ```
 
 
@@ -233,7 +232,7 @@ all_pred_prob<-apply(all_rf_ts_prob[,1:4],1,max)
 
 
 **Abstract**  
-Productivity of lentic ecosystems is well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from lower trophic state (e.g. oligotrophic) to higher trophic states  (e.g. eutrophic). These broad trophic state classifications are good predictors of ecosystem condition, services, and disservices (e.g. recreation, aesthetics, and harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to parameterize the model.  This limits the application of these models to lakes with existing and, more importantly, available water quality data.  To address this, we take advantage of the availability of a large national lakes water quality database (i.e. the National Lakes Assessment), land use/land cover data, lake morphometry data, other universally available data, and apply modern data mining approaches to predict trophic state.   Using this data and random forests, we first model chlorophyll *a*, then classify the resultant predictions into trophic states.  The full model estimates chlorophyll *a* with both *in situ* and universally available data.  The mean squared error and adjusted R\textsuperscript{2} of this model was `r round(all_rf$mse[all_rf$ntree],2)` and `r round(all_rf$rsq[all_rf$ntree],2)`, respectively.  The second model (i.e. GIS only) uses universally available GIS data only. The mean squared error was `r round(gis_rf$mse[gis_rf$ntree],2)` and the adjusted R\textsuperscript{2} was `r round(gis_rf$rsq[gis_rf$ntree],2)`.  The accuracy of the trophic state classifications derived from the chlorophyll *a* predictions were `r round(all_ts4_total_acc,2)*100`% for the full model and `r round(gis_ts4_total_acc,2)*100`% for the GIS only model.  Random forests extend the usefulness of the class predictions by providing prediction probabilities for each lake.  This allows us to make trophic state predictions and also indicate the level of uncertainity around those predictions.  For the full model, these predicted class probabilites ranged from `r round(min(apply(all_rf_ts_prob[,-5],1,max)),2)` to `r round(max(apply(all_rf_ts_prob[,-5],1,max)),2)`.  For the GIS only model, they ranged from `r round(min(apply(gis_rf_ts_prob[,-5],1,max)),2)` to `r round(max(apply(gis_rf_ts_prob[,-5],1,max)),2)`.  It is our conclusion that *in situ* data are required for better predictions, yet GIS and universally available data provide trophic state predictions, with estimated uncertainty, that still have the potential for a broad array of applications.  The source code and data for this manuscript are available from https://github.com/USEPA/LakeTrophicModelling.
+Productivity of lentic ecosystems is well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from lower trophic state (e.g. oligotrophic) to higher trophic states  (e.g. eutrophic). These broad trophic state classifications are good predictors of ecosystem condition, services, and disservices (e.g. recreation, aesthetics, and harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to parameterize the model.  This limits the application of these models to lakes with existing and, more importantly, available water quality data.  To address this, we take advantage of the availability of a large national lakes water quality database (i.e. the National Lakes Assessment), land use/land cover data, lake morphometry data, other universally available data, and apply modern data mining approaches to predict trophic state.   Using this data and random forests, we first model chlorophyll *a*, then classify the resultant predictions into trophic states.  The full model estimates chlorophyll *a* with both *in situ* and universally available data.  The mean squared error and adjusted R\textsuperscript{2} of this model was `r round(all_rf$mse[all_rf$ntree],2)` and `r round(all_rf$rsq[all_rf$ntree],2)`, respectively.  The second model (i.e. GIS only) uses universally available GIS data only. The mean squared error was `r round(gis_rf$mse[gis_rf$ntree],2)` and the adjusted R\textsuperscript{2} was `r round(gis_rf$rsq[gis_rf$ntree],2)`.  The accuracy of the trophic state classifications derived from the chlorophyll *a* predictions were `r round(all_ts4_total_acc,2)*100`% for the full model and `r round(gis_ts4_total_acc,2)*100`% for the GIS only model.  Random forests extend the usefulness of the class predictions by providing prediction probabilities for each lake.  This allows us to make trophic state predictions and also indicate the level of uncertainity around those predictions.  For the full model, these predicted class probabilites ranged from `r round(min(all_rf_ts_prob$max),2)` to `r round(max(all_rf_ts_prob$max),2)`.  For the GIS only model, they ranged from `r round(min(gis_rf_ts_prob$max),2)` to `r round(max(gis_rf_ts_prob$max),2)`.  It is our conclusion that *in situ* data are required for better predictions, yet GIS and universally available data provide trophic state predictions, with estimated uncertainty, that still have the potential for a broad array of applications.  The source code and data for this manuscript are available from https://github.com/USEPA/LakeTrophicModelling.
 
 
 \vspace{3mm}\hrule
@@ -295,11 +294,15 @@ The GIS only model had a mean squared error of `r round(gis_rf$mse[5000],2)` and
 
 The gis only variables model was built using `r nrow(gis_dat)` total observations. The variable selection process for this model produced a reduced model with 15 variables (Figure \ref{fig:gis_varsel_figure}).  The five most important variables were ecoregion, percent cropland, elevation, latitude, and percent evegreen forest. (Figure \ref{fig:GIS_Importance}).  
 
-[JEFF START HERE]
+
 ##Per Lake Probability
-As expected, the "All Variables" model provides higher total accuracy than the "GIS Only" model with a median prediction probability of `r round(median(apply(all_rf_ts_prob[1:4],1,max)),2)` and `r round(median(apply(gis_rf_ts_prob[1:4],1,max)),2)` (Figure \ref{fig:prob_cdf}).  Yet, the two distributions are [TEST FOR DIFF IN DISTRIBUTIONS]
+The "All Variables" model provides more certain model prediction than the "GIS Only" model with a median prediction probability of `r round(median(apply(all_rf_ts_prob[1:4],1,max)),2)` versus `r round(median(apply(gis_rf_ts_prob[1:4],1,max)),2)` (Figure \ref{fig:prob_cdf}).  
+Additionally, total accuracy of the predictions is a function of this uncertainty.  Lakes with more certain predictions are more accurately classified (Figure \ref{fig:cond_prob_fig}).  For both models, when prediction probabilites are approximate 0.7 or higher, the models have an accuracy of 100%.  This represents `r round(sum(all_rf_ts_prob$max>0.7)/nrow(all_dat),2)*100`% of the lakes for the "All Variables" model and `r round(sum(gis_rf_ts_prob$max>0.7)/nrow(all_dat),2)*100`% of the lakes for the "GIS Only" model.
+
+[JEFF START HERE]
 
 [MORE ON MAPS OF 4 CLASSES]
+
 
 #Discussion
 
@@ -424,7 +427,11 @@ prob_cdf(all_rf_ts_prob, gis_rf_ts_prob,x="Predicition Probability",y="Proportio
 ```{r gis_probability_map}
 ```
 
+\newpage
 
+```{r cond_prob_fig,  eval=TRUE, results="asis",echo=FALSE, fig.cap="Accuracy of predictions as a function of lake prediction probability. The x-axis represents lakes with a prediction probability at a given level or higher.  \\label{fig:cond_prob_fig}",cache=FALSE}
+condAccuracy(all_rf_ts_prob,gis_rf_ts_prob,xImpair=0,R=1,xlab="Xc >= Prediction Probability")
+```
 \newpage
 
 ```{r ts4_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}

@@ -9,19 +9,25 @@
 #' @export
 #' @import ggplot2
 #' @examples
-#' condAccuracy(gis_ts4_rf,xImpair=0,R=1,xlab="Maximum Vote Probability")
-condAccuracy<-function(rf,xlab="x",...){
+#' condAccuracy(all_rf_ts_prob,gis_rf_ts_prob,xImpair=0,R=1,xlab="Xc >= Prediction Probability")
+condAccuracy<-function(pred_prob1,pred_prob2,xlab="x",...){
   #devtools::install_github("jhollist/condprob2")
-  max_vote<-apply(rf$votes,1,max)
-  obs<-rf$y
-  pred<-factor(rf$predicted,levels=unique(obs),ordered=is.ordered(obs))
+  max_vote<-pred_prob1$max
+  obs<-pred_prob1$obs_class
+  pred<-pred_prob1$pred_class
   correct<-pred==obs
-  cp<-condprob2::condprob(max_vote,correct,ProbComp="gt",Exceed="gte",...)
+  cp1<-condprob2::condprob(max_vote,correct,ProbComp="gt",Exceed="gte",...)
+  max_vote<-pred_prob2$max
+  obs<-pred_prob2$obs_class
+  pred<-pred_prob2$pred_class
+  correct<-pred==obs
+  cp2<-condprob2::condprob(max_vote,correct,ProbComp="gt",Exceed="gte",...)
   #plot(cp$max_vote,cp$Raw.Data.Probability)
-  cp<-data.frame(cp$max_vote,cp$Raw.Data.Probability)
-  
-  ggplot(cp,aes(x=cp.max_vote,y=cp.Raw.Data.Probability))+
-    geom_point()+
+  cp1<-data.frame(max_vote=cp1$max_vote,Raw.Data.Probability=cp1$Raw.Data.Probability)
+  cp2<-data.frame(max_vote=cp2$max_vote,Raw.Data.Probability=cp2$Raw.Data.Probability)
+  ggplot(cp1,aes(x=max_vote,y=Raw.Data.Probability))+
+    geom_point(size=2,color="red")+
+    geom_point(data=cp2,aes(x=max_vote,y=Raw.Data.Probability),size=2,color="black") +
     theme(text = element_text(family="sans"),
           panel.background = element_blank(), #panel.grid = element_blank(), 
           panel.border = element_rect(fill = NA), 

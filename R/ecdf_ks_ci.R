@@ -3,6 +3,8 @@
 #' Code from sfsmisc::ecdf.KSci. Ammended here to simply output the xy for both upper and 
 #' lower for use as input to ggplot
 #' @export
+#' @examples
+#' ecdf_ks_ci(all_pred_prob)
 ecdf_ks_ci <- function(x){
   n <- length(x)
   ec <- ecdf(x)
@@ -13,5 +15,5 @@ ecdf_ks_ci <- function(x){
   yyl <- pmax(yy - D, 0)
   ecu <- stepfun(xx, c(yyu, 1))
   ecl <- stepfun(xx, c(yyl, yyl[n]))
-  return(list(upper=ecu(xx),lower=ecl(xx)))
+  return(list(x=x, upper=ecu(x),lower=ecl(x)))
 }

@@ -184,20 +184,19 @@ chlorophyll \emph{a} with both \emph{in situ} and universally available
 data. The mean squared error and adjusted R\textsuperscript{2} of this
 model was 0.09 and 0.8, respectively. The second model (i.e.~GIS only)
 uses universally available GIS data only. The mean squared error was
-0.22 and the adjusted R\textsuperscript{2} was 0.48. The accuracy of
-various trophic state classifications derived from the chlorophyll
-\emph{a} predictions ranged from 69\% to 87\% for the full model and
-from 49\% to 75\% for the GIS only model. Random forests extend the
-usefulness of the class predictions by providing prediction
-probabilities for each lake. This allows us to make trophic state
-predictions and also indicate the level of uncertainity around those
-predictions. For the full model, these predicted class probabilites
-ranged from 0.42 to 1. For the GIS only model, they ranged from 0.33 to
-0.96. It is our conclusion that \emph{in situ} data are required for
-better predictions, yet GIS and universally available data provide
-trophic state predictions, with estimated uncertainty, that still have
-the potential for a broad array of applications. The source code and
-data for this manuscript are available from
+0.22 and the adjusted R\textsuperscript{2} was 0.48. The accuracy of the
+trophic state classifications derived from the chlorophyll \emph{a}
+predictions were 69\% for the full model and 49\% for the GIS only
+model. Random forests extend the usefulness of the class predictions by
+providing prediction probabilities for each lake. This allows us to make
+trophic state predictions and also indicate the level of uncertainity
+around those predictions. For the full model, these predicted class
+probabilites ranged from 0.42 to 1. For the GIS only model, they ranged
+from 0.33 to 0.96. It is our conclusion that \emph{in situ} data are
+required for better predictions, yet GIS and universally available data
+provide trophic state predictions, with estimated uncertainty, that
+still have the potential for a broad array of applications. The source
+code and data for this manuscript are available from
 \url{https://github.com/USEPA/LakeTrophicModelling}.
 
 \vspace{3mm}
@@ -276,14 +275,14 @@ model selection uncertainty as predictions are based upon a consensus of
 many models and not just a single model selected with some measure of
 goodness of fit.
 
-To build on past work, we have identified several areas in which this
+To build on past work, we have identified two areas in which this
 research contributes. First, we build, asses, and compare two random
 forest models of chlorophyll \emph{a} 1) \emph{in situ} and universally
 available GIS data and then 2) universally available GIS data only.
-Second, we examine the important predictors for both models. Third, we
-examine the predictions for spatial patterns. Lastly, this paper, the
-code, and the data used in the models is made available as an R package
-from \url{https://github.com/USEPA/LakeTrophicModelling}.
+Second, we examine the important predictors for both models. Lastly,
+this paper, the code, and the data used in the models is made available
+as an R package from
+\url{https://github.com/USEPA/LakeTrophicModelling}.
 
 \section{Methods}\label{methods}
 
@@ -405,10 +404,8 @@ Our modelling work flow was as follows:
 \item
   Assess model performance for both the predicted chlorophyll \emph{a}
   and for categorical trophic state classifications. Trophic state was
-  defined using the NLA chlorophyll \emph{a} trophic state cut offs and
-  the two combinations of trophic state were used to highlight the
-  possible error caused by misclassification of adjacent classes, such
-  as mesotrophic and eutrophic (Table \ref{tab:trophicStateTable}).
+  defined using the NLA chlorophyll \emph{a} trophic state cut offs
+  (Table \ref{tab:trophicStateTable}).
 \end{enumerate}
 
 \subsection{Measures of Model Performance and Variable
@@ -417,11 +414,9 @@ Importance}\label{measures-of-model-performance-and-variable-importance}
 We assessed the performance of the random forest two ways. First we
 compare the root mean square error and the adjusted R\textsuperscript{2}
 of the models. Second, we examine the accuracy of the model when
-converted to two different classifications of trophic state: a standard
-4 class trophic state and 2 classes that combine the high and low
-trophic states together (Table \ref{tab:trophicStateTable}). We compare
-the two classifcations via a confusion matrix. A confusion matrix shows
-agreement and disagreement in a tabular form with predicted values
+converted to trophic states classes (Table \ref{tab:trophicStateTable}).
+We assess the classifcations via a confusion matrix. A confusion matrix
+shows agreement and disagreement in a tabular form with predicted values
 forming the columns of the matrix and observed values, the rows. From
 this tabulated information we calculate the total accuracy (i.e.~percent
 correctly predicted) and the kappa coefficient, which takes into account
@@ -464,24 +459,18 @@ across the four trophic state categories (Table
 The model built with all predictors had a mean squared error of 0.09 and
 and R\textsuperscript{2} of 0.8. The accuracy of the four trophic states
 was 68.7\% and the kappa coefficient was 0.57 (Table
-\ref{tab:Confusion_All_4}). For the combined, two trophic states it was
-87\% and 0.748 for accuracy and the kappa coefficient, respectively
-(Table \ref{tab:Confusion_All_2}).
-
-The reduced, all variables model was built using 1080 total
-observations. The variable selection process identified 20 variables
-(Figure \ref{fig:all_varsel_figure}). The five most important variables
-were turbidity, total phosphorus, total nitrogen, elevation, and total
-organic carbon. (Figure \ref{fig:All_Importance}).
+\ref{tab:Confusion_All_4}). The reduced, all variables model was built
+using 1080 total observations. The variable selection process identified
+20 variables (Figure \ref{fig:all_varsel_figure}). The five most
+important variables were turbidity, total phosphorus, total nitrogen,
+elevation, and total organic carbon. (Figure \ref{fig:All_Importance}).
 
 \subsection{Models: GIS Only Variables}\label{models-gis-only-variables}
 
 The GIS only model had a mean squared error of 0.22 and and
 R\textsuperscript{2} 0.48. Four trophic states were predicted with a
-total accuracy of 49\% and had a kappa coefficient of 0.29 and two
-trophic states were correctly predicted 74.9\% of the time with a kappa
-coefficient of 0.5 (Tables \ref{tab:Confusion_GIS_4} and
-\ref{tab:Conusion_GIS-2}).
+total accuracy of 49\% and had a kappa coefficient of 0.29 (Table
+\ref{tab:Confusion_GIS_4}).
 
 The gis only variables model was built using 1138 total observations.
 The variable selection process for this model produced a reduced model
@@ -490,11 +479,19 @@ important variables were ecoregion, percent cropland, elevation,
 latitude, and percent evegreen forest. (Figure
 \ref{fig:GIS_Importance}).
 
-{[}JEFF START HERE{]} \#\#Per Lake Probability As expected, the ``All
-Variables'' model provides higher total accuracy than the ``GIS Only''
-model with a median prediction probability of 0.81 and 0.72 (Figure
-\ref{fig:prob_cdf}). Yet, the two distributions are {[}TEST FOR DIFF IN
-DISTRIBUTIONS{]}
+\subsection{Per Lake Probability}\label{per-lake-probability}
+
+The ``All Variables'' model provides more certain model prediction than
+the ``GIS Only'' model with a median prediction probability of 0.81
+versus 0.72 (Figure \ref{fig:prob_cdf}).\\Additionally, total accuracy
+of the predictions is a function of this uncertainty. Lakes with more
+certain predictions are more accurately classified (Figure
+\ref{fig:cond_prob_fig}). For both models, when prediction probabilites
+are approximate 0.7 or higher, the models have an accuracy of 100\%.
+This represents 81\% of the lakes for the ``All Variables'' model and
+60\% of the lakes for the ``GIS Only'' model.
+
+{[}JEFF START HERE{]}
 
 {[}MORE ON MAPS OF 4 CLASSES{]}
 
@@ -752,6 +749,9 @@ models. \label{fig:prob_cdf}}
 
 \newpage
 
+\includegraphics{manuscript_files/figure-latex/cond_prob_fig-1.jpeg}
+\newpage
+
 \newpage
 
 \newpage
@@ -805,27 +805,6 @@ hyper & 0 & 5 & 29 & 159 & 82.38\tabularnewline
 
 \newpage
 
-\begin{longtable}[c]{@{}lrrr@{}}
-\caption{Random Forest confusion matrix for All Variables model
-converted to 2 trophic states. Columns show predicted values and rows
-show observed values. Agreement indicated on diagonal and accuracy for
-each trophic state indicated in `Class Accuracy' column.
-\label{tab:Confusion_All_2}}\tabularnewline
-\toprule
-& oligo/meso & eu/hyper & Class Accuracy (\%)\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-& oligo/meso & eu/hyper & Class Accuracy (\%)\tabularnewline
-\midrule
-\endhead
-oligo/meso & 464 & 63 & 88.05\tabularnewline
-eu/hyper & 73 & 480 & 86.80\tabularnewline
-\bottomrule
-\end{longtable}
-
-\newpage
-
 \begin{longtable}[c]{@{}lrrrrr@{}}
 \caption{Random Forest confusion matrix for GIS Only model converted to
 4 tropic states. Columns show predicted values and rows show observed
@@ -844,27 +823,6 @@ oligo & 65 & 14 & 6 & 0 & 76.47\tabularnewline
 meso & 101 & 213 & 98 & 18 & 49.53\tabularnewline
 eu & 29 & 126 & 193 & 141 & 39.47\tabularnewline
 hyper & 1 & 8 & 38 & 87 & 64.93\tabularnewline
-\bottomrule
-\end{longtable}
-
-\newpage
-
-\begin{longtable}[c]{@{}lrrr@{}}
-\caption{Random Forest confusion matrix for GIS Only model converted to
-2 tropic states. Columns show predicted values and rows show observed
-values. Agreement indicated on diagonal and accuracy for each trophic
-state indicated in `Class Accuracy' column.
-\label{tab:Confusion_GIS_2}}\tabularnewline
-\toprule
-& oligo/meso & eu/hyper & Class Accuracy (\%)\tabularnewline
-\midrule
-\endfirsthead
-\toprule
-& oligo/meso & eu/hyper & Class Accuracy (\%)\tabularnewline
-\midrule
-\endhead
-oligo/meso & 393 & 122 & 76.31\tabularnewline
-eu/hyper & 164 & 459 & 73.68\tabularnewline
 \bottomrule
 \end{longtable}
 
