@@ -511,17 +511,15 @@ trophic states are more evenly distributed across the country.
 
 {[}JEFF START HERE{]}
 
-\subsection{Trophic State
-Probabilities}\label{trophic-state-probabilities}
-
-One of the powerful features of random forests is the ability to
-aggregate a very large number of competing models or trees. Each tree
-provides an independent prediction or vote for a possible outcome. In
-the context of our trophic state models, we have 10,000 votes for each
-lake. These values may be interpreted as the probability that a lake is
-in a given trophic state. For instance, for a single lake (National Lake
-Assessment ID = NLA06608-0005), the vote probabilities for Model 1 were
-``r
+{[}MOVE SOME OF THIS TO METHODS, CHECK FOR OVERLAP IN RESULTS, DETERMINE
+WHAT SHOULD GO IN DISCUSS{]} \#\#Trophic State Probabilities One of the
+powerful features of random forests is the ability to aggregate a very
+large number of competing models or trees. Each tree provides an
+independent prediction or vote for a possible outcome. In the context of
+our trophic state models, we have 5,000 votes for each lake. These
+values may be interpreted as the probability that a lake is in a given
+trophic state. For instance, for a single lake (National Lake Assessment
+ID = NLA06608-0005), the vote probabilities for Model 1 were ``r
 100\emph{round(lakeVotes{[}lakeVotes\$COMID==23491387,{]}{[},4{]},2)``\%
 for oligotrophic,''r
 100}round(lakeVotes{[}lakeVotes\$COMID==23491387,{]}{[},5{]},2)''\% for
