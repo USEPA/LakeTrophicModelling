@@ -1,7 +1,10 @@
 #' Get Class Prediction Probabilities
 #' 
 #' This function takes a regression randomForest and returns class probabilities
-#' for a provided classifcation
+#' for a provided classifcation.  These probabilities are based on a full, new dataset.  
+#' If using the dataset used to build the random forest these are not out of
+#' bag estimates.  The predicted classes that are output are directly from the random forest object, 
+#' thus they are predictions resulting from the out of bag esimates.
 #' 
 #' @param rf_obj a randomForest object of type regression
 #' @param newdata data frame used to make predictions. Can be same as original
@@ -34,7 +37,7 @@ class_prob_rf <- function(rf_obj,newdata,breaks,labels,ordered=FALSE,
   class_prob<-data.frame(t(class_prob))
   class_prob$nla_id<-row.names(class_prob)
   class_prob$max <- apply(class_prob[,1:4],1,max)
-  class_prob$pred_class <- cut(preds$aggregate,breaks,labels)
+  class_prob$pred_class <- cut(rf_obj$predicted,breaks,labels)
   class_prob$obs_class <- cut(rf_obj$y,breaks,labels)
   row.names(class_prob)<-as.character(1:nrow(class_prob))
   return(class_prob)  
