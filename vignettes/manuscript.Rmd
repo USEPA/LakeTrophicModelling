@@ -397,7 +397,7 @@ importancePlot(all_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 
 \newpage
 
-```{r all_partial_dependence}
+```{r all_partial_dependence, eval=TRUE, echo=FALSE, fig.cap="\"All Variables\" Partial dependence plots for the top 5 most important variables. \\label{fig:all_partial_dependence}",cache=FALSE}
 ```
 
 
