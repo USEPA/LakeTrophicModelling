@@ -276,11 +276,11 @@ many models and not just a single model selected with some measure of
 goodness of fit.
 
 To build on past work, we have identified two areas in which this
-research contributes. First, we build, asses, and compare two random
+research contributes. First, we build, assess, and compare two random
 forest models of chlorophyll \emph{a} 1) \emph{in situ} and universally
 available GIS data and then 2) universally available GIS data only.
 Second, we examine the important predictors for both models. Lastly,
-this paper, the code, and the data used in the models is made available
+this paper, the code, and the data used in the models are made available
 as an R package from
 \url{https://github.com/USEPA/LakeTrophicModelling}.
 
@@ -378,16 +378,16 @@ to select a minimum, easier to interpret set of variables.
 
 \subsection{Model Details}\label{model-details}
 
-Using \texttt{randomForest} R package we ran models the predict
+Using \texttt{randomForest} R package we ran models to predict
 chlorphyll \emph{a} with two sets of predictors (Liaw and Wiener 2002);
-all precitors (\emph{in situ} and universally available GIS predictors)
-and the GIS only variables (i.e.~no \emph{in situ} information). A
-listing of all considered variables is in Appendix 1. Our separation of
-predictors was chosen so that we could highlight the additional
+all predictors (\emph{in situ} and universally available GIS predictors)
+and the GIS only variables (i.e.~no \emph{in situ} information). A list
+of the full suite of variables tested is in Appendix 1. Our separation
+of predictors was chosen so that we could highlight the additional
 predictive performance provided by adding the \emph{in situ} water
 quality variables on top of the GIS only variables. Lastly, we used only
 complete cases (i.e.~missing data were removed) so the total number of
-observations varied between models.
+observations varied among models.
 
 Our modelling work flow was as follows:
 
@@ -400,7 +400,7 @@ Our modelling work flow was as follows:
   model, is calculated for each of the models.
 \item
   Using R's \texttt{randomForest} package, we develop two random forest
-  models.
+  models (All Variables and GIS only).
 \item
   Assess model performance for both the predicted chlorophyll \emph{a}
   and for categorical trophic state classifications. Trophic state was
@@ -439,7 +439,7 @@ when that particular variable is included and thus can be used to assess
 importance (Breiman 2001). The Gini Index has been shown to have a bias
 that is less apparent than with percent increase in mean squared error
 (Strobl et al. 2007), thus, we use this metric to asses variable
-importance. Lastly, partial depenedence plots provide a mecahnism to
+importance. Lastly, partial dependence plots provide a mecahnism to
 examine the partial relationship between individual variables and the
 response variable (Jones and Linder 2015). We examine these plots for
 the top variables as assigned by percent increase in mean squared error
@@ -477,7 +477,7 @@ total accuracy of 49\% and had a kappa coefficient of 0.29 (Table
 produced a reduced model with 15 variables (Figure
 \ref{fig:gis_varsel_figure}). The five most important variables were
 ecoregion, percent cropland, elevation, latitude, and percent evegreen
-forest. (Figure \ref{fig:GIS_Importance}).
+forest. (Figure \ref{fig:GIS_Importance}). Of these only
 
 {[}CREATE PARTIAL DEPENDENCE PLOTS AND ADD PARAGRAPH{]}
 
@@ -726,6 +726,13 @@ error indicates higher importance. \label{fig:All_Importance}}
 
 \newpage
 
+\begin{figure}[htbp]
+\centering
+\includegraphics{manuscript_files/figure-latex/all_partial_dependence-1.jpeg}
+\caption{``All Variables'' Partial dependence plots for the top 5 most
+important variables. \label{fig:all_partial_dependence}}
+\end{figure}
+
 \newpage
 
 \begin{figure}[htbp]
@@ -748,11 +755,18 @@ error indicates higher importance. \label{fig:GIS_Importance}}
 
 \newpage
 
+\begin{figure}[htbp]
+\centering
+\includegraphics{manuscript_files/figure-latex/unnamed-chunk-1-1.jpeg}
+\caption{``GIS Only Variables'' Partial dependence plots for the top 5
+most important variables. \label{fig:gis_partial_dependence}}
+\end{figure}
+
 \newpage
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{manuscript_files/figure-latex/unnamed-chunk-1-1.jpeg}
+\includegraphics{manuscript_files/figure-latex/unnamed-chunk-2-1.jpeg}
 \caption{Prediction probabilities for the All Variables and GIS Only
 models. \label{fig:prob_cdf}}
 \end{figure}

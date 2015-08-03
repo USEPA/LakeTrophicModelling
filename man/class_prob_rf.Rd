@@ -28,6 +28,9 @@ returns a dataframe of probabilites or number of votes for each class
 }
 \description{
 This function takes a regression randomForest and returns class probabilities
-for a provided classifcation
+for a provided classifcation.  These probabilities are based on a full, new dataset.
+If using the dataset used to build the random forest these are not out of
+bag estimates.  The predicted classes that are output are directly from the random forest object,
+thus they are predictions resulting from the out of bag esimates.
 }
 
