@@ -413,24 +413,25 @@ Importance}\label{measures-of-model-performance-and-variable-importance}
 
 We assessed the performance of the random forest two ways. First we
 compare the root mean square error and the adjusted R\textsuperscript{2}
-of the models. Second, we examine the accuracy of the model when
-converted to trophic states classes (Table \ref{tab:trophicStateTable}).
-We assess the classifcations via a confusion matrix. A confusion matrix
-shows agreement and disagreement in a tabular form with predicted values
-forming the columns of the matrix and observed values, the rows. From
-this tabulated information we calculate the total accuracy (i.e.~percent
-correctly predicted) and the kappa coefficient, which takes into account
-the error expected by chance alone (i.e.~the off diagonal values of the
-matrix) (Cohen 1960, Hubert and Arabie 1985). The kappa coefficient can
-range from -1 to 1 with 0 equalling the agreement expected by chance
-alone. Values greater than 0 represent agreement greater than would be
-expected by chance, with values greater than 0.61 considered
-``substantial'' agreement (Landis and Koch 1977). Negative values are
-rare and would indicate no agreement between the predicted and observed
-values. Additonally, random forest builds each tree on bootstrapped,
-random subsets of the original data, thus, a separate independent
-validation dataset is not required and random forest error estimates are
-expected to be unbiased (Breiman 2001).
+of the models. Second, we examine the accuracy of the model predictions
+when converted to trophic states classes (Table
+\ref{tab:trophicStateTable}). We assess the classifcations via a
+confusion matrix. A confusion matrix shows agreement and disagreement in
+a tabular form with predicted values forming the columns of the matrix
+and observed values, the rows. From this tabulated information we
+calculate the total accuracy (i.e.~percent correctly predicted) and the
+kappa coefficient, which takes into account the error expected by chance
+alone (i.e.~the off diagonal values of the matrix) (Cohen 1960, Hubert
+and Arabie 1985). The kappa coefficient can range from -1 to 1 with 0
+equalling the agreement expected by chance alone. Values greater than 0
+represent agreement greater than would be expected by chance, with
+values greater than 0.61 considered ``substantial'' agreement (Landis
+and Koch 1977). Negative values are rare and would indicate no agreement
+between the predicted and observed values. Additonally, random forest
+builds each tree on bootstrapped, random subsets of the original data,
+thus, a separate independent validation dataset is not required and
+random forest error estimates are expected to be unbiased (Breiman
+2001).
 
 The random forest algorithm explicitly measures variable importance with
 two metrics: mean decrease in Gini and percent increase in mean squared
@@ -444,6 +445,32 @@ examine the partial relationship between individual variables and the
 response variable (Jones and Linder 2015). We examine these plots for
 the top variables as assigned by percent increase in mean squared error
 of for each the reduced models.
+
+\subsection{Trophic State
+Probabilities}\label{trophic-state-probabilities}
+
+One of the powerful features of random forests is the ability to
+aggregate a very large number of competing models or trees. Each tree
+provides an independent prediction or vote for a possible outcome. In
+the context of our chlorophyll \emph{a} models, we have 5,000 estimates
+of chlorophyll \emph{a} for each lake. We convert these values to
+trophic states (Table \ref {tab:trophicStateTable}) then count up total
+votes for each class and divide by total possible votes to get an
+estimate of the probability that a lake is in a given trophic state. For
+instance, for a single lake (National Lake Assessment ID =
+NLA06608-0005), the vote probabilities for the ``All Variables'' model
+were 95\% for oligotrophic, 5\% for mesotrophic, 0\% for eutrophic, and
+0\% for hypereutrophic. The maximum probability provides the predicted
+class, in this case oligotrphic, and suggests little uncertainty in this
+prediction. We refer to this value as the ``prediction probability.''
+
+Further, we might expect higher total accuracy for lakes that have more
+certain predictions. This should be evident by looking at the total
+classification accuracy of lakes given their prediction probability is
+above a certain point. To test this we use an approache similar to one
+outlined by Paul and MacDonald (2005) and implemented by Hollister et
+al. (2008). We utilize this approach and examine the change in total
+accuracy as a function of the prediction probability for both models.
 
 \section{Results}\label{results}
 
@@ -463,9 +490,8 @@ was 68.7\% and the kappa coefficient was 0.57 (Table
 using 1080 total observations. The variable selection process identified
 20 variables (Figure \ref{fig:all_varsel_figure}). The five most
 important variables were turbidity, total phosphorus, total nitrogen,
-elevation, and total organic carbon. (Figure \ref{fig:All_Importance}).
-
-{[}CREATE PARTIAL DEPENDENCE PLOTS AND ADD PARAGRAPH{]}
+elevation, and total organic carbon (Figures \ref{fig:All_Importance} \&
+\ref{fig:all_partial_dependence}).
 
 \subsection{Models: GIS Only Variables}\label{models-gis-only-variables}
 
@@ -477,11 +503,11 @@ total accuracy of 49\% and had a kappa coefficient of 0.29 (Table
 produced a reduced model with 15 variables (Figure
 \ref{fig:gis_varsel_figure}). The five most important variables were
 ecoregion, percent cropland, elevation, latitude, and percent evegreen
-forest. (Figure \ref{fig:GIS_Importance}). Of these only
+forest (Figures \ref{fig:GIS_Importance} \&
+\ref{fig:all_partial_dependence}).
 
-{[}CREATE PARTIAL DEPENDENCE PLOTS AND ADD PARAGRAPH{]}
-
-\subsection{Per Lake Probability}\label{per-lake-probability}
+\subsection{Trophic State
+Probabilities}\label{trophic-state-probabilities-1}
 
 The ``All Variables'' model provides more certain model prediction than
 the ``GIS Only'' model with a median prediction probability of 0.81
@@ -512,45 +538,16 @@ trophic states are more evenly distributed across the country.
 {[}JEFF START HERE{]}
 
 {[}MOVE SOME OF THIS TO METHODS, CHECK FOR OVERLAP IN RESULTS, DETERMINE
-WHAT SHOULD GO IN DISCUSS{]} \#\#Trophic State Probabilities One of the
-powerful features of random forests is the ability to aggregate a very
-large number of competing models or trees. Each tree provides an
-independent prediction or vote for a possible outcome. In the context of
-our trophic state models, we have 5,000 votes for each lake. These
-values may be interpreted as the probability that a lake is in a given
-trophic state. For instance, for a single lake (National Lake Assessment
-ID = NLA06608-0005), the vote probabilities for Model 1 were ``r
-100\emph{round(lakeVotes{[}lakeVotes\$COMID==23491387,{]}{[},4{]},2)``\%
-for oligotrophic,''r
-100}round(lakeVotes{[}lakeVotes\$COMID==23491387,{]}{[},5{]},2)''\% for
-mesotrophic, ``r
-100\emph{round(lakeVotes{[}lakeVotes\$COMID==23491387,{]}{[},6{]},2)``\%
-for eutrophic, and''r
-100}round(lakeVotes{[}lakeVotes\$COMID==23491387,{]}{[},7{]},2)''\% for
-hypereutrophic. This suggests little uncertainty in the predicted
-oligotrophic state.
+WHAT SHOULD GO IN DISCUSS{]}
 
-Further, the maximum probability for each lake can be used as a measure
-of how certain the random forest model was of the prediction. We would
-expect higher total accuracy for lakes that had more certain
-predictions. Some lakes may have many votes for a single trophic state
-and few votes for other trophic states and these would thus have a large
-maximum probability and the random forest predicitions would be more
-certain. Alternatively, the 10,000 votes could have been spread more
-equally across the trophic state classes for a lake and that lake would
-have a small maximum probability and the final predictions would be less
-certain. This should be evident by looking at the total classification
-accuracy of lakes given their maximum probability is above a certain
-point. To test this we can examine the accuracy of trophic state
-predictions across the full range of trophic state probabilities,
-similar to an approach outlined by Paul and MacDonald (2005) and
-implemented by Hollister et al. (2008). We utilize this approach and
-examine the change in total accuracy as a function of the maximum
-probability for each lake. As expected, lakes with higher maximum vote
-probabilities were more accurately predicted (Figure
-\ref{fig:condProbFig}). The increasing trend suggests that even for
-models with lower overall accuracy there can also be a large number of
-individual cases that are predicted with high accuracy.
+\subsection{Trophic State
+Probabilities}\label{trophic-state-probabilities-2}
+
+As expected, lakes with higher maximum vote probabilities were more
+accurately predicted (Figure \ref{fig:condProbFig}). The increasing
+trend suggests that even for models with lower overall accuracy there
+can also be a large number of individual cases that are predicted with
+high accuracy.
 
 \subsection{Variable Selection and
 Importance}\label{variable-selection-and-importance}
@@ -757,7 +754,7 @@ error indicates higher importance. \label{fig:GIS_Importance}}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{manuscript_files/figure-latex/unnamed-chunk-1-1.jpeg}
+\includegraphics{manuscript_files/figure-latex/gis_partial_dependence-1.jpeg}
 \caption{``GIS Only Variables'' Partial dependence plots for the top 5
 most important variables. \label{fig:gis_partial_dependence}}
 \end{figure}
@@ -766,15 +763,20 @@ most important variables. \label{fig:gis_partial_dependence}}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{manuscript_files/figure-latex/unnamed-chunk-2-1.jpeg}
+\includegraphics{manuscript_files/figure-latex/unnamed-chunk-1-1.jpeg}
 \caption{Prediction probabilities for the All Variables and GIS Only
 models. \label{fig:prob_cdf}}
 \end{figure}
 
 \newpage
 
+\begin{figure}[htbp]
+\centering
 \includegraphics{manuscript_files/figure-latex/cond_prob_fig-1.jpeg}
-\newpage
+\caption{Accuracy of predictions as a function of lake prediction
+probability. The x-axis represents lakes with a prediction probability
+at a given level or higher. \label{fig:cond_prob_fig}}
+\end{figure}
 
 \newpage
 
@@ -784,6 +786,8 @@ models. \label{fig:prob_cdf}}
 \caption{Maps of prediction probabilities for each of the four
 chlorophyll \textit{a} trophic states \label{fig:gis_probability_map}}
 \end{figure}
+
+\newpage
 
 \newpage
 
