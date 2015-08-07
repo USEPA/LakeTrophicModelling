@@ -467,10 +467,11 @@ prediction. We refer to this value as the ``prediction probability.''
 Further, we might expect higher total accuracy for lakes that have more
 certain predictions. This should be evident by looking at the total
 classification accuracy of lakes given their prediction probability is
-above a certain point. To test this we use an approache similar to one
-outlined by Paul and MacDonald (2005) and implemented by Hollister et
-al. (2008). We utilize this approach and examine the change in total
-accuracy as a function of the prediction probability for both models.
+at or above a certain probability. To test this we use an approache
+similar to one outlined by Paul and MacDonald (2005) and implemented by
+Hollister et al. (2008). We utilize this approach and examine the change
+in total accuracy as a function of the prediction probability for both
+models.
 
 \section{Results}\label{results}
 
@@ -483,27 +484,25 @@ across the four trophic state categories (Table
 
 \subsection{Models: All Variables}\label{models-all-variables}
 
-The model built with all predictors had a mean squared error of 0.09 and
-and R\textsuperscript{2} of 0.8. The accuracy of the four trophic states
-was 68.7\% and the kappa coefficient was 0.57 (Table
-\ref{tab:Confusion_All_4}). The reduced, all variables model was built
-using 1080 total observations. The variable selection process identified
-20 variables (Figure \ref{fig:all_varsel_figure}). The five most
-important variables were turbidity, total phosphorus, total nitrogen,
-elevation, and total organic carbon (Figures \ref{fig:All_Importance} \&
-\ref{fig:all_partial_dependence}).
+The model built with all predictors used 1080 total observations, had a
+mean squared error of 0.09 and and R\textsuperscript{2} of 0.8. The
+accuracy of the four trophic states was 68.7\% and the kappa coefficient
+was 0.57 (Table \ref{tab:Confusion_All_4}). The variable selection
+process identified 20 variables (Figure \ref{fig:all_varsel_figure}).
+The five most important variables were turbidity, total phosphorus,
+total nitrogen, elevation, and total organic carbon (Figures
+\ref{fig:All_Importance} \& \ref{fig:all_partial_dependence}).
 
 \subsection{Models: GIS Only Variables}\label{models-gis-only-variables}
 
-The GIS only model had a mean squared error of 0.22 and and
-R\textsuperscript{2} 0.48. Four trophic states were predicted with a
-total accuracy of 49\% and had a kappa coefficient of 0.29 (Table
-\ref{tab:Confusion_GIS_4}). The gis only variables model was built using
-1138 total observations. The variable selection process for this model
-produced a reduced model with 15 variables (Figure
-\ref{fig:gis_varsel_figure}). The five most important variables were
-ecoregion, percent cropland, elevation, latitude, and percent evegreen
-forest (Figures \ref{fig:GIS_Importance} \&
+The GIS only model was built using 1138 total observations, had a mean
+squared error of 0.22 and and R\textsuperscript{2} 0.48. Four trophic
+states were predicted with a total accuracy of 49\% and had a kappa
+coefficient of 0.29 (Table \ref{tab:Confusion_GIS_4}). The variable
+selection process for this model produced a reduced model with 15
+variables (Figure \ref{fig:gis_varsel_figure}). The five most important
+variables were ecoregion, percent cropland, elevation, latitude, and
+percent evegreen forest (Figures \ref{fig:GIS_Importance} \&
 \ref{fig:all_partial_dependence}).
 
 \subsection{Trophic State
@@ -515,39 +514,41 @@ versus 0.72 (Figure \ref{fig:prob_cdf}). Additionally, total accuracy of
 the predictions is a function of this uncertainty. Lakes with more
 certain predictions are more accurately classified (Figure
 \ref{fig:cond_prob_fig}). For both models, when prediction probabilites
-are approximate 0.7 or higher, the models have an accuracy of 100\%.
-This represents 81\% of the lakes for the ``All Variables'' model and
-60\% of the lakes for the ``GIS Only'' model.
-
-The trophic state predictions may be mapped discretely, yet this
-neglects to provide details on the uncertainty of those predictions. It
-may be preferable to instead map the prediction probabilities for each
-of the four classes and given the association between low uncertainty
-and high accuracy a map of this sort shows the broad spatial patterns of
-lake trophic state across the United States. The spatial patterns show
-little variability between the two models, thus we only show the reuslts
-from the more broadly applicable ``GIS only'' model (Figure
-\ref{fig:gis_probability_map}. Hypereutrophic lakes are much more
-commonly predicted in the midwest and southeastern United States. Clear,
-oligotrophic lakes are in the northwestern united states, throught the
-western mountains and in the northeastern united states. The middle
-trophic states are more evenly distributed across the country.
+are approximately 0.8 or higher, the models have an accuracy of
+\textasciitilde{}100\%. This represents 55\% of the lakes for the ``All
+Variables'' model and 22\% of the lakes for the ``GIS Only'' model.
+Lastly, as prediction probabilites increase, the difference in total
+accuracy between the two models decreases.
 
 \section{Discussion}\label{discussion}
-
-{[}JEFF START HERE{]}
-
-{[}MOVE SOME OF THIS TO METHODS, CHECK FOR OVERLAP IN RESULTS, DETERMINE
-WHAT SHOULD GO IN DISCUSS{]}
 
 \subsection{Trophic State
 Probabilities}\label{trophic-state-probabilities-2}
 
-As expected, lakes with higher maximum vote probabilities were more
-accurately predicted (Figure \ref{fig:condProbFig}). The increasing
-trend suggests that even for models with lower overall accuracy there
-can also be a large number of individual cases that are predicted with
-high accuracy.
+Lakes with more certain predictions (i.e.~higher prediction
+probabilities) were more accurately predicted (Figure
+\ref{fig:condProbFig}). The fact that the difference in accuracy between
+the models decreased as certainty in the prediction increased suggests
+that even for models with lower overall accuracy (i.e.~the ``GIS Only''
+model) may have acceptable accuracy for a large number of individual
+cases.
+
+{[}JEFF START HERE{]}
+
+The trophic state predictions may be mapped as discrete classes, yet
+this neglects to provide details on the uncertainty of those
+predictions. It may be preferable to instead map the prediction
+probabilities for each of the four classes. Given the association
+between low uncertainty and high accuracy a map of this sort shows the
+broad spatial patterns of lake trophic state across the United States.
+The spatial patterns show little variability between the two models,
+thus we only show the reuslts from the more broadly applicable ``GIS
+only'' model (Figure \ref{fig:gis_probability_map}. Hypereutrophic lakes
+are much more commonly predicted in the midwest and southeastern United
+States. Clear, oligotrophic lakes are in the northwestern united states,
+throught the western mountains and in the northeastern united states.
+The middle trophic states are more evenly distributed across the
+country.
 
 \subsection{Variable Selection and
 Importance}\label{variable-selection-and-importance}
@@ -723,12 +724,7 @@ error indicates higher importance. \label{fig:All_Importance}}
 
 \newpage
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{manuscript_files/figure-latex/all_partial_dependence-1.jpeg}
-\caption{``All Variables'' Partial dependence plots for the top 5 most
-important variables. \label{fig:all_partial_dependence}}
-\end{figure}
+{[}NEED TO RE-WORK THE PARTIAL DEPENDENCE PLOTS{]}
 
 \newpage
 
@@ -752,12 +748,7 @@ error indicates higher importance. \label{fig:GIS_Importance}}
 
 \newpage
 
-\begin{figure}[htbp]
-\centering
-\includegraphics{manuscript_files/figure-latex/gis_partial_dependence-1.jpeg}
-\caption{``GIS Only Variables'' Partial dependence plots for the top 5
-most important variables. \label{fig:gis_partial_dependence}}
-\end{figure}
+{[}NEED TO RE-WORK THE PARTIAL DEPENDENCE PLOTS{]}
 
 \newpage
 
