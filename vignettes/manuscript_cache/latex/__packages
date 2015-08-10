@@ -25,3 +25,6 @@ maps
 mapproj
 sfsmisc
 interpretR
+foreach
+iterators
+doParallel

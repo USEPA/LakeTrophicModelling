@@ -64,6 +64,10 @@ if(!require(party)){
 if(!require(broom)){
   install.packages("broom")
 }
+
+if(!require(doParallel)){
+  install.packages("doParallel")
+}
 library("wesanderson")
 library("LakeTrophicModelling")
 library("knitr")
@@ -79,6 +83,7 @@ library("broom")
 library("edarf")
 #library("caret")
 library("randomForest")
+library("doParallel")
 opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
 data(LakeTrophicModelling)
 
@@ -99,8 +104,10 @@ if(file.exists("prior_cache")){
   }
 }
 
-
-
+#Register parallel backend for partial dependence
+numcores<-parallel::detectCores()
+cl <- makeCluster(numcores)
+registerDoParallel(cl)
 
 # Table Captions from @DeanK on 
 #http://stackoverflow.com/questions/15258233/using-table-caption-on-r-markdown-file-using-knitr-to-use-in-pandoc-to-convert-t
@@ -401,14 +408,23 @@ importancePlot(all_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 
 [NEED TO RE-WORK THE PARTIAL DEPENDENCE PLOTS]
 
-```{r all_partial_dependence, eval=FALSE, echo=FALSE, fig.cap="\"All Variables\" Partial dependence plots for the top 5 most important variables. \\label{fig:all_partial_dependence}",cache=FALSE,fig.height=8}
-par(mfrow=c(3,2))
-interpretR::parDepPlot("TURB",all_rf,data=all_dat,robust=T,ci=T,u.quant=0.975,l.quant=0.025,n.pt = 100)
-interpretR::parDepPlot("NTL",all_rf,data=all_dat,robust=T,ci=T,u.quant=0.975,l.quant=0.025, n.pt = 100)
-interpretR::parDepPlot("PTL",all_rf,data=all_dat,robust=T,ci=T,u.quant=0.975,l.quant=0.025, n.pt = 100)
-interpretR::parDepPlot("ELEV_PT",all_rf,data=all_dat,robust=T,ci=T,u.quant=0.975,l.quant=0.025,n.pt = 100)
-interpretR::parDepPlot("TOC",all_rf,data=all_dat,robust=T,ci=T,u.quant=0.975,l.quant=0.025,n.pt = 100)
-par(mfrow=c(1,1))
+```{r all_partial_dependence, eval=TRUE, echo=FALSE, fig.cap="\"All Variables\" Partial dependence plots for the top 5 most important variables. \\label{fig:all_partial_dependence}",cache=TRUE,fig.height=8}
+all_rf_turb_pd<-partial_dependence(all_rf,all_dat,"TURB",cutoff = 5L, ci=TRUE,
+                                   parallel = TRUE)
+all_rf_ntl_pd<-partial_dependence(all_rf,all_dat,"NTL",cutoff = 5L,ci=TRUE,
+                   parallel = TRUE)
+all_rf_ptl_pd<-partial_dependence(all_rf,all_dat,"PTL",cutoff = 5L,ci=TRUE,
+                   parallel = TRUE)
+all_rf_elev_pd<-partial_dependence(all_rf,all_dat,"ELEV_PT",cutoff = 5L,ci=TRUE,
+                   parallel = TRUE)
+all_rf_toc_pd<-partial_dependence(all_rf,all_dat,"TOC",cutoff = 5L,ci=TRUE,
+                   parallel = TRUE)
+multiplot(plot_pd(all_rf_turb_pd),
+          plot_pd(all_rf_ntl_pd),
+          plot_pd(all_rf_ptl_pd),
+          plot_pd(all_rf_elev_pd),
+          plot_pd(all_rf_toc_pd),
+          layout=matrix(1:6,ncol=2,byrow=TRUE))
 ```
 
 \newpage
@@ -427,14 +443,24 @@ importancePlot(gis_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 
 [NEED TO RE-WORK THE PARTIAL DEPENDENCE PLOTS]
 
-```{r gis_partial_dependence,eval=FALSE, echo=FALSE, fig.cap="\"GIS Only Variables\" Partial dependence plots for the top 5 most important variables. \\label{fig:gis_partial_dependence}",cache=TRUE,fig.height=8}
-par(mfrow=c(3,2))
-interpretR::parDepPlot("WSA_ECO9",gis_rf,data=gis_dat,robust=T,ci=T,u.quant=0.975,l.quant=0.025,n.pt = 100)
-interpretR::parDepPlot("CropsPer_3000m",gis_rf,data=gis_dat,robust=T,ci=T,u.quant=0.975,l.quant=0.025, n.pt = 100)
-interpretR::parDepPlot("ELEV_PT",gis_rf,data=gis_dat,robust=T,ci=T,u.quant=0.975,l.quant=0.025, n.pt = 100)
-interpretR::parDepPlot("AlbersY",gis_rf,data=gis_dat,robust=T,ci=T,u.quant=0.975,l.quant=0.025,n.pt = 100)
-interpretR::parDepPlot("EvergreenPer_3000m",gis_rf,data=gis_dat,robust=T,ci=T,u.quant=0.975,l.quant=0.025,n.pt = 100)
-par(mfrow=c(1,1))
+```{r gis_partial_dependence,eval=TRUE, echo=FALSE, fig.cap="\"GIS Only Variables\" Partial dependence plots for the top 5 most important variables. \\label{fig:gis_partial_dependence}",cache=TRUE,fig.height=8}
+gis_rf_ecor_pd<-partial_dependence(gis_rf,gis_dat,"WSA_ECO9",cutoff = 5L, ci=TRUE,
+                                   parallel = TRUE)
+gis_rf_crops_pd<-partial_dependence(gis_rf,gis_dat,"CropsPer_3000m",cutoff = 5L, 
+                                    ci=TRUE, parallel = TRUE)
+gis_rf_elev_pd<-partial_dependence(gis_rf,gis_dat,"ELEV_PT",cutoff = 5L, ci=TRUE,
+                   parallel = TRUE)
+gis_rf_lat_pd<-partial_dependence(gis_rf,gis_dat,"AlbersY",cutoff = 5L, ci=TRUE,
+                   parallel = TRUE)
+gis_rf_conifer_pd<-partial_dependence(gis_rf,gis_dat,"EvergreenPer_3000m",cutoff = 5L, 
+                                      ci=TRUE, parallel = TRUE)
+multiplot(plot_pd(gis_rf_ecor_pd),
+          plot_pd(gis_rf_crops_pd),
+          plot_pd(gis_rf_elev_pd),
+          plot_pd(gis_rf_lat_pd),
+          plot_pd(gis_rf_conifer_pd),
+          layout=matrix(1:6,ncol=2,byrow=TRUE))
+stopCluster(cl)
 ```
 
 \newpage
