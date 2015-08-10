@@ -518,7 +518,8 @@ are approximately 0.8 or higher, the models have an accuracy of
 \textasciitilde{}100\%. This represents 55\% of the lakes for the ``All
 Variables'' model and 22\% of the lakes for the ``GIS Only'' model.
 Lastly, as prediction probabilites increase, the difference in total
-accuracy between the two models decreases.
+accuracy between the two models decreases (Figure
+\ref{fig:cond_prob_fig} \& Table \ref{tab:cond_prob_tab}).
 
 \section{Discussion}\label{discussion}
 
@@ -530,8 +531,8 @@ probabilities) were more accurately predicted (Figure
 \ref{fig:condProbFig}). The fact that the difference in accuracy between
 the models decreased as certainty in the prediction increased suggests
 that even for models with lower overall accuracy (i.e.~the ``GIS Only''
-model) may have acceptable accuracy for a large number of individual
-cases.
+model) may have acceptable accuracy for many individual cases (Table
+\ref{tab:cond_prob_tab}.
 
 {[}JEFF START HERE{]}
 
@@ -865,6 +866,189 @@ hyper & 1 & 8 & 38 & 87 & 64.93\tabularnewline
 \end{longtable}
 
 \newpage
+
+\begin{longtable}[c]{@{}ccccccc@{}}
+\caption{Random Forest confusion matrix for GIS Only model converted to
+4 tropic states. Columns show predicted values and rows show observed
+values. Agreement indicated on diagonal and accuracy for each trophic
+state indicated in `Class Accuracy' column.
+\label{tab:cond_prob_tab}}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.08\columnwidth}\centering\strut
+Prediction Prob.
+\strut\end{minipage} &
+\begin{minipage}[b]{0.11\columnwidth}\centering\strut
+``All Var.'' Total Accuracy
+\strut\end{minipage} &
+\begin{minipage}[b]{0.13\columnwidth}\centering\strut
+``All Var.'' Percent of Sample
+\strut\end{minipage} &
+\begin{minipage}[b]{0.13\columnwidth}\centering\strut
+``All Var.'' Number of Samples
+\strut\end{minipage} &
+\begin{minipage}[b]{0.11\columnwidth}\centering\strut
+``GIS Only'' Total Accuracy
+\strut\end{minipage} &
+\begin{minipage}[b]{0.13\columnwidth}\centering\strut
+``GIS Only'' Percent of Sample
+\strut\end{minipage} &
+\begin{minipage}[b]{0.13\columnwidth}\centering\strut
+``GIS Only'' Number of Samples
+\strut\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.08\columnwidth}\centering\strut
+Prediction Prob.
+\strut\end{minipage} &
+\begin{minipage}[b]{0.11\columnwidth}\centering\strut
+``All Var.'' Total Accuracy
+\strut\end{minipage} &
+\begin{minipage}[b]{0.13\columnwidth}\centering\strut
+``All Var.'' Percent of Sample
+\strut\end{minipage} &
+\begin{minipage}[b]{0.13\columnwidth}\centering\strut
+``All Var.'' Number of Samples
+\strut\end{minipage} &
+\begin{minipage}[b]{0.11\columnwidth}\centering\strut
+``GIS Only'' Total Accuracy
+\strut\end{minipage} &
+\begin{minipage}[b]{0.13\columnwidth}\centering\strut
+``GIS Only'' Percent of Sample
+\strut\end{minipage} &
+\begin{minipage}[b]{0.13\columnwidth}\centering\strut
+``GIS Only'' Number of Samples
+\strut\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.08\columnwidth}\centering\strut
+All
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+69
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+100
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+846
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+49
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+100
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+878
+\strut\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering\strut
+0.50
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+70
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+98
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+829
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+51
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+95
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+834
+\strut\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering\strut
+0.60
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+73
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+91
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+770
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+56
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+81
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+711
+\strut\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering\strut
+0.70
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+81
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+77
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+654
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+68
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+56
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+490
+\strut\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering\strut
+0.80
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+96
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+51
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+434
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+91
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+24
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+212
+\strut\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\centering\strut
+0.90
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+100
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+20
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+173
+\strut\end{minipage} &
+\begin{minipage}[t]{0.11\columnwidth}\centering\strut
+100
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+5
+\strut\end{minipage} &
+\begin{minipage}[t]{0.13\columnwidth}\centering\strut
+41
+\strut\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
 
 \section{Appendix 1. Variable
 Definitions}\label{appendix-1.-variable-definitions}

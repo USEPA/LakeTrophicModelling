@@ -25,6 +25,8 @@ condAccuracy<-function(pred_prob1,pred_prob2,xlab="x",...){
   #plot(cp$max_vote,cp$Raw.Data.Probability)
   cp1<-data.frame(max_vote=cp1$max_vote,Raw.Data.Probability=cp1$Raw.Data.Probability)
   cp2<-data.frame(max_vote=cp2$max_vote,Raw.Data.Probability=cp2$Raw.Data.Probability)
+  cp1<<-cp1
+  cp2<<-cp2
   ggplot(cp1,aes(x=max_vote,y=Raw.Data.Probability))+
     geom_point(size=2,color="red")+
     geom_point(data=cp2,aes(x=max_vote,y=Raw.Data.Probability),size=2,color="black") +
