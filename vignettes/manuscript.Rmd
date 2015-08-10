@@ -104,11 +104,6 @@ if(file.exists("prior_cache")){
   }
 }
 
-#Register parallel backend for partial dependence
-numcores<-parallel::detectCores()
-cl <- makeCluster(numcores)
-registerDoParallel(cl)
-
 # Table Captions from @DeanK on 
 #http://stackoverflow.com/questions/15258233/using-table-caption-on-r-markdown-file-using-knitr-to-use-in-pandoc-to-convert-t
 
@@ -173,6 +168,7 @@ gis_vars_select <- unlist(gis_vs$vars[14]) #top 15 variables
 gis_rf<-randomForest(y=gis_dat$LogCHLA,x=gis_dat[,gis_vars_select], 
                        ntree=5000,importance=TRUE,proximity=TRUE,
                         keep.forest=TRUE,keep.inbag=TRUE)
+
 ```
 
 ```{r rf_var_importance, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
@@ -183,6 +179,44 @@ var_importance<-rbind(varImportance(all_imp,"All Variables"),
                       varImportance(gis_imp,"GIS Variables"))
 var_importance<-inner_join(var_importance,data_def[c("variable_names","description")],"variable_names")
 var_importance<-var_importance[order(var_importance$model_id,-var_importance$mean_decrease_gini, decreasing=FALSE),]                     
+```
+
+
+```{r rf_pd, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
+################################################################################
+#Register parallel backend for partial dependence
+numcores<-parallel::detectCores()
+cl <- makeCluster(numcores)
+registerDoParallel(cl)
+co <- 25L
+
+################################################################################
+#All variables partial dependence
+all_rf_turb_pd<-partial_dependence(all_rf,all_dat,"TURB",cutoff = co, ci=TRUE,
+                                   parallel = TRUE)
+all_rf_ntl_pd<-partial_dependence(all_rf,all_dat,"NTL",cutoff = co,ci=TRUE,
+                   parallel = TRUE)
+all_rf_ptl_pd<-partial_dependence(all_rf,all_dat,"PTL",cutoff = co,ci=TRUE,
+                   parallel = TRUE)
+all_rf_elev_pd<-partial_dependence(all_rf,all_dat,"ELEV_PT",cutoff = co,ci=TRUE,
+                   parallel = TRUE)
+all_rf_toc_pd<-partial_dependence(all_rf,all_dat,"TOC",cutoff = co,ci=TRUE,
+                   parallel = TRUE)
+
+################################################################################
+#GIS Only partial dependence
+gis_rf_ecor_pd<-partial_dependence(gis_rf,gis_dat,"WSA_ECO9",cutoff = co, ci=TRUE,
+                                   parallel = TRUE)
+gis_rf_crops_pd<-partial_dependence(gis_rf,gis_dat,"CropsPer_3000m",cutoff = co, 
+                                    ci=TRUE, parallel = TRUE)
+gis_rf_elev_pd<-partial_dependence(gis_rf,gis_dat,"ELEV_PT",cutoff = co, ci=TRUE,
+                   parallel = TRUE)
+gis_rf_lat_pd<-partial_dependence(gis_rf,gis_dat,"AlbersY",cutoff = co, ci=TRUE,
+                   parallel = TRUE)
+gis_rf_conifer_pd<-partial_dependence(gis_rf,gis_dat,"EvergreenPer_3000m",cutoff = co, 
+                                      ci=TRUE, parallel = TRUE)
+
+stopCluster(cl)
 ```
 
 ```{r trophic_class, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
@@ -406,19 +440,7 @@ importancePlot(all_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 
 \newpage
 
-[NEED TO RE-WORK THE PARTIAL DEPENDENCE PLOTS]
-
-```{r all_partial_dependence, eval=TRUE, echo=FALSE, fig.cap="\"All Variables\" Partial dependence plots for the top 5 most important variables. \\label{fig:all_partial_dependence}",cache=TRUE,fig.height=8}
-all_rf_turb_pd<-partial_dependence(all_rf,all_dat,"TURB",cutoff = 5L, ci=TRUE,
-                                   parallel = TRUE)
-all_rf_ntl_pd<-partial_dependence(all_rf,all_dat,"NTL",cutoff = 5L,ci=TRUE,
-                   parallel = TRUE)
-all_rf_ptl_pd<-partial_dependence(all_rf,all_dat,"PTL",cutoff = 5L,ci=TRUE,
-                   parallel = TRUE)
-all_rf_elev_pd<-partial_dependence(all_rf,all_dat,"ELEV_PT",cutoff = 5L,ci=TRUE,
-                   parallel = TRUE)
-all_rf_toc_pd<-partial_dependence(all_rf,all_dat,"TOC",cutoff = 5L,ci=TRUE,
-                   parallel = TRUE)
+```{r all_partial_dependence, eval=TRUE, echo=FALSE, fig.cap="All Variables partial dependence plots for the top 5 most important variables. \\label{fig:all_partial_dependence}",cache=FALSE, warning=FALSE,fig.height=7}
 multiplot(plot_pd(all_rf_turb_pd),
           plot_pd(all_rf_ntl_pd),
           plot_pd(all_rf_ptl_pd),
@@ -441,26 +463,14 @@ importancePlot(gis_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 
 \newpage
 
-[NEED TO RE-WORK THE PARTIAL DEPENDENCE PLOTS]
+```{r gis_partial_dependence,eval=TRUE, echo=FALSE, fig.cap="GIS Only Variables partial dependence plots for the top 5 most important variables. \\label{fig:gis_partial_dependence}",cache=FALSE, warning=FALSE, message=FALSE,fig.height=7}
 
-```{r gis_partial_dependence,eval=TRUE, echo=FALSE, fig.cap="\"GIS Only Variables\" Partial dependence plots for the top 5 most important variables. \\label{fig:gis_partial_dependence}",cache=TRUE,fig.height=8}
-gis_rf_ecor_pd<-partial_dependence(gis_rf,gis_dat,"WSA_ECO9",cutoff = 5L, ci=TRUE,
-                                   parallel = TRUE)
-gis_rf_crops_pd<-partial_dependence(gis_rf,gis_dat,"CropsPer_3000m",cutoff = 5L, 
-                                    ci=TRUE, parallel = TRUE)
-gis_rf_elev_pd<-partial_dependence(gis_rf,gis_dat,"ELEV_PT",cutoff = 5L, ci=TRUE,
-                   parallel = TRUE)
-gis_rf_lat_pd<-partial_dependence(gis_rf,gis_dat,"AlbersY",cutoff = 5L, ci=TRUE,
-                   parallel = TRUE)
-gis_rf_conifer_pd<-partial_dependence(gis_rf,gis_dat,"EvergreenPer_3000m",cutoff = 5L, 
-                                      ci=TRUE, parallel = TRUE)
 multiplot(plot_pd(gis_rf_ecor_pd),
           plot_pd(gis_rf_crops_pd),
           plot_pd(gis_rf_elev_pd),
           plot_pd(gis_rf_lat_pd),
           plot_pd(gis_rf_conifer_pd),
           layout=matrix(1:6,ncol=2,byrow=TRUE))
-stopCluster(cl)
 ```
 
 \newpage
@@ -477,7 +487,7 @@ condAccuracy(all_rf_ts_prob,gis_rf_ts_prob,xImpair=0,R=1,xlab="Xc >= Prediction 
 
 \newpage
 
-```{r gis_probability_map, eval=TRUE, results="asis",echo=FALSE, fig.cap="Maps of prediction probabilities for each of the four chlorophyll \\textit{a} trophic states  \\label{fig:gis_probability_map}",cache=FALSE,fig.height=10}
+```{r gis_probability_map, eval=TRUE, results="asis",echo=FALSE, fig.cap="Maps of prediction probabilities for each of the four chlorophyll \\textit{a} trophic states  \\label{fig:gis_probability_map}",cache=FALSE,fig.height=7}
 state<-map_data('state')
 lakes_alb<-data.frame(ltmData[["AlbersX"]],ltmData[["AlbersY"]],
                      ltmData[["NLA_ID"]])
