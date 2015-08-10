@@ -561,7 +561,7 @@ kable(cmt,row.names=T)
 
 \newpage
 
-```{r cond_prob_tab, eval=TRUE,results="asis",echo=FALSE, tab.cap="Random Forest confusion matrix for GIS Only model converted to 4 tropic states. Columns show predicted values and rows show observed values.  Agreement indicated on diagonal and accuracy for each trophic state indicated in 'Class Accuracy' column.  \\label{tab:cond_prob_tab}",cache=FALSE}
+```{r cond_prob_tab, eval=TRUE,results="asis",echo=FALSE, tab.cap="Summary of relationship between prediction probabilities, total accuracy, and number of lakes.  \\label{tab:cond_prob_tab}",cache=FALSE}
 all_min<-cp1
 all_50<-cp1[cp1[,1]>=0.5,]
 all_60<-cp1[cp1[,1]>=0.6,]
@@ -575,6 +575,10 @@ gis_60<-cp2[cp2[,1]>=0.6,]
 gis_70<-cp2[cp2[,1]>=0.7,]
 gis_80<-cp2[cp2[,1]>=0.8,]
 gis_90<-cp2[cp2[,1]>=0.9,]
+
+#####################################FIX ME#####################################
+#Sample size numbers are off, becuase duplicates dropped by cprob.  
+#Need to adjust these from the raw data.
 
 condprob_t<-data.frame(pred_prob=c("All","0.50","0.60","0.70","0.80","0.90"),
                        all_acc = c(all_min[1,2],all_50[1,2],all_60[1,2],
