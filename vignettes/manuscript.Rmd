@@ -182,7 +182,7 @@ var_importance<-var_importance[order(var_importance$model_id,-var_importance$mea
 ```
 
 
-```{r rf_pd, eval=FALSE, echo=FALSE, cache=TRUE, warning=FALSE}
+```{r rf_pd, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
 ################################################################################
 #Register parallel backend for partial dependence
 numcores<-parallel::detectCores()
@@ -192,29 +192,33 @@ co <- 25L
 
 ################################################################################
 #All variables partial dependence
-all_rf_turb_pd<-partial_dependence(all_rf,all_dat,"TURB",cutoff = co, ci=TRUE,
+all_rf_turb_pd<-partial_dependence(all_rf,all_dat,"TURB",cutoff = co, ci=FALSE,
                                    parallel = TRUE)
-all_rf_ntl_pd<-partial_dependence(all_rf,all_dat,"NTL",cutoff = co,ci=TRUE,
+all_rf_ntl_pd<-partial_dependence(all_rf,all_dat,"NTL",cutoff = co,ci=FALSE,
                    parallel = TRUE)
-all_rf_ptl_pd<-partial_dependence(all_rf,all_dat,"PTL",cutoff = co,ci=TRUE,
+all_rf_ptl_pd<-partial_dependence(all_rf,all_dat,"PTL",cutoff = co,ci=FALSE,
                    parallel = TRUE)
-all_rf_elev_pd<-partial_dependence(all_rf,all_dat,"ELEV_PT",cutoff = co,ci=TRUE,
+all_rf_elev_pd<-partial_dependence(all_rf,all_dat,"ELEV_PT",cutoff = co,ci=FALSE,
                    parallel = TRUE)
-all_rf_toc_pd<-partial_dependence(all_rf,all_dat,"TOC",cutoff = co,ci=TRUE,
+all_rf_toc_pd<-partial_dependence(all_rf,all_dat,"TOC",cutoff = co,ci=FALSE,
+                   parallel = TRUE)
+all_rf_np_pd<-partial_dependence(all_rf,all_dat,"NPratio",cutoff = co,ci=FALSE,
                    parallel = TRUE)
 
 ################################################################################
 #GIS Only partial dependence
-gis_rf_ecor_pd<-partial_dependence(gis_rf,gis_dat,"WSA_ECO9",cutoff = co, ci=TRUE,
+gis_rf_ecor_pd<-partial_dependence(gis_rf,gis_dat,"WSA_ECO9",cutoff = co, ci=FALSE,
                                    parallel = TRUE)
 gis_rf_crops_pd<-partial_dependence(gis_rf,gis_dat,"CropsPer_3000m",cutoff = co, 
-                                    ci=TRUE, parallel = TRUE)
-gis_rf_elev_pd<-partial_dependence(gis_rf,gis_dat,"ELEV_PT",cutoff = co, ci=TRUE,
+                                    ci=FALSE, parallel = TRUE)
+gis_rf_elev_pd<-partial_dependence(gis_rf,gis_dat,"ELEV_PT",cutoff = co, ci=FALSE,
                    parallel = TRUE)
-gis_rf_lat_pd<-partial_dependence(gis_rf,gis_dat,"AlbersY",cutoff = co, ci=TRUE,
+gis_rf_lat_pd<-partial_dependence(gis_rf,gis_dat,"AlbersY",cutoff = co, ci=FALSE,
                    parallel = TRUE)
 gis_rf_conifer_pd<-partial_dependence(gis_rf,gis_dat,"EvergreenPer_3000m",cutoff = co, 
-                                      ci=TRUE, parallel = TRUE)
+                                      ci=FALSE, parallel = TRUE)
+gis_rf_mndepth_pd<-partial_dependence(gis_rf,gis_dat,"MeanDepthCorrect",cutoff = co, 
+                                      ci=FALSE, parallel = TRUE)
 
 stopCluster(cl)
 ```
@@ -350,7 +354,7 @@ The "All Variables" model provides more certain model prediction than the "GIS O
 #Discussion
 
 ##Trophic State Probabilities
-Lakes with more certain predictions (i.e. higher prediction probabilities) were more accurately predicted (Figure \ref{fig:condProbFig}).  The fact that the difference in accuracy between the models decreased as certainty in the prediction increased suggests that even for models with lower overall accuracy (i.e. the "GIS Only" model) may have acceptable accuracy for many individual cases (Table \ref{tab:cond_prob_tab}.  
+Lakes with more certain predictions (i.e. higher prediction probabilities) were more accurately predicted (Figure \ref{fig:condProbFig}).  The fact that the difference in accuracy between the models decreased as certainty in the prediction increased suggests that even for models with lower overall accuracy (i.e. the "GIS Only" model) may have acceptable accuracy for many individual cases (Table \ref{tab:cond_prob_tab}).  
 
 [JEFF START HERE]
 
@@ -367,21 +371,21 @@ The land use/land cover variables were also important in describing trophic stat
 
 Lastly, morphometry (e.g. depth and volume) also proved to be important in the prediction of lake trophic state.  As morphometry shows little to no broad scale spatial pattern and is unique to a given lake, these data are likely illuminating the local, lake scale drivers of trophic state.  As only depth and volume were selected, this likely shows the importance of in-lake nutrient processing and residence time.
 
-##Associating Trophic State and Cyanobacteria
-
-Cyanobacteria biomass should be closely associated with trophic state as cyanobacteria contribute to the chlorophyll concentration in a lake. If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  To test if trophic state can be used to differentiate cyanobacteria abundance, we examine distribution of cyanobacteria abundance for each trophic state and also explored linear associations between chlorohyll *a* and cyanobacteria abundance.
-
-The distribution of cyanobacteria abundance showed separation between all of the trophic state classifications (Figures \ref{fig:ts_4_cyano_cdf}, \ref{fig:ts_3_cyano_cdf}, and \ref{fig:ts_2_cyano_cdf}) and there was a significant linear relationship (r^2^=`r round(summary(lm(log10(ltmData$CHLA)~log10(ltmData$cyanoCellsPerML)))$r.squared,2)`) between chlorophyll *a* and cyanobacteria abundance (Figure \ref{fig:scatterplot}).  Furthermore, Yuan et al. [-@yuan2014managing] used the 2007 NLA to demonstrate that total nitrogen and chlorophyll *a* concentrations were good predictors of World Health Organization microcystin (a toxin produced by some cyanobacteria) criteria exceedences.  These results suggest that trophic state is indeed an acceptable proxy for cyanobacteria abundance and that in lakes with higher trophic state it is also reasonable to expect higher cyanobacteria.  
-
 #Conclusions
 
-Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of chlorophyll *a* and lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which allows estimation of trophic state for all lakes in the United States. We were able to successfully predict a variety of trophic state classes.  With the GIS only models our total accuracy ranged from , and with the full suite of data our model accuracy had a minimum accuracy of %.  
+Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of chlorophyll *a* and lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which allows estimation of trophic state for all lakes in the United States. We were able to successfully predict trophic state classes.  With the GIS only models our total accuracy ranged from , and with the full suite of data our model accuracy had a minimum accuracy of %.  
 
-While some of the models (i.e. Model 4) showed relatively low prediction accuracies, another feature of the random forest, votes, can provide additional information.  In addition to providing a single estimate of trophic state for each lake, our models also indicated the probability that a lake was classified in any of the categories.  These probabilities may be mapped directly to show the uncertainty of a given predicted class.  Furthermore, as the certainty of prediction increases, so does overall trophic state classification accuracy (Figure \ref{fig:condProbFig}). These results suggest that our models will provide reasonable estimates of trophic state across the United States.
+While the "GIS Only" model showed lower prediction accuracies than the "All Variables" model, the association between the uncertainty of prediction and total accuracy (Figure \ref{fig:condProbFig} and Table \ref{tab:cond_prob_tab}) suggest that the "GIS Only" model will provide reasonable estimates of trophic state for many lakes across the United States.  Furthermore we can map the uncertainty of the predictions, thus we know the spatial patterns and location of the lakes for which we are certain, or not, of their predicted trophic state.
 
-There was great deal of agreement on the important variables for each set of models.  For the combined *in situ* and GIS models, the *in situ* water quality variables drove the predictions.  This is expected.  For the GIS only models,  the results were more nuanced with three broad categories routinely being selected as important: broad scale spatial patterns in trophic state, land use/land cover controls of trophic state, and local, lake-scale control driven by lake morphometry.  Lastly, associations between trophic state and cyanobacteria showed that, at the broad scale of the 2007 NLA, there is a linear relationship between chlorophyll *a* and cyanobacteria abundance and that using trophic state as a proxy for cyanobacteria has potential. 
+[REPLACE OR REWRITE]
+There was great deal of agreement on the important variables for each set of models.  For the combined *in situ* and GIS models, the *in situ* water quality variables drove the predictions.  This is expected.  For the GIS only models,  the results were more nuanced with three broad categories routinely being selected as important: broad scale spatial patterns in trophic state, land use/land cover controls of trophic state, and local, lake-scale control driven by lake morphometry.  
+[REPLACE OR REWRITE]
 
-These broad categories and the association between trophic state and total cyanobacteria abundance raise three important considerations related to managing eutrophication.  First, the broad scale patterning suggests regional trends.  This is important because it suggests that efforts to monitor, model and manage eutrophication and cyanobacteria should be undertaken at both national and regional levels.  Second, while direct control of water quality in lakes would have a large impact, the land use/land cover drivers (i.e. non-point sources) of water quality are also important, and better management of the spatial distribution of important classes such as forest and agriculture can provide some level of control on trophic state and amount of cyanobacteria present.  Third, in-lake processes (i.e. residence time, nutrient cycling, etc.) are, as expected, very important and need to be part of any management strategy.  Building on these efforts through updated models,  direct prediction of cyanobacteria, and additional information on the regional differences will help us get a better handle on the broad scale dynamics of productivity in lakes and the potential risk to human health from cyanobacteria blooms.
+Cyanobacteria biomass should be closely associated with trophic state as cyanobacteria contribute to the chlorophyll concentration in a lake. If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms.  Many studies have seen these associations.  For instance, Yuan et al. [-@yuan2014managing] used the 2007 NLA to demonstrate that total nitrogen and chlorophyll *a* concentrations were good predictors of World Health Organization microcystin (a toxin produced by some cyanobacteria) criteria exceedences.  These results suggest that trophic state may be an acceptable proxy for cyanobacteria abundance or presence of microcystin.  
+
+[MAKE SURE MAKES SENSE AFTER REWRITES ABOVE]
+Our results raise three important considerations related to managing eutrophication.  First, the broad scale patterning suggests regional trends.  This is important because it suggests that efforts to monitor, model and manage eutrophication and cyanobacteria should be undertaken at both national and regional levels.  Second, while direct control of water quality in lakes would have a large impact, the land use/land cover drivers (i.e. non-point sources) of water quality are also important, and better management of the spatial distribution of important classes such as forest and agriculture can provide some level of control on trophic state and amount of cyanobacteria present.  Third, in-lake processes (i.e. residence time, nutrient cycling, etc.) are, as expected, very important and need to be part of any management strategy.  Building on these efforts through updated models,  direct prediction of cyanobacteria, and additional information on the regional differences will help us get a better handle on the broad scale dynamics of productivity in lakes and the potential risk to human health from cyanobacteria blooms.
+[MAKE SURE MAKES SENSE AFTER REWRITES ABOVE]
 
 #Acknowledgements
 We would like to thank Farnaz Nojavan, Nathan Schmucker, John Kiddon, Joe LiVolsi, Tim Gleason, and Wayne Munns for constructive reviews of this paper.  This paper has not been subjected to Agency review. Therefore, it does not necessary reflect the views of the Agency. Mention of trade names or commercial products does not constitute endorsement or recommendation for use. This contribution is identified by the tracking number ORD-011075 of the Atlantic Ecology Division, Office of Research and Development, National Health and Environmental Effects Research Laboratory, US Environmental Protection Agency.
@@ -446,6 +450,7 @@ multiplot(plot_pd(all_rf_turb_pd),
           plot_pd(all_rf_ptl_pd),
           plot_pd(all_rf_elev_pd),
           plot_pd(all_rf_toc_pd),
+          plot_pd(all_rf_np_pd),
           layout=matrix(1:6,ncol=2,byrow=TRUE))
 ```
 
@@ -470,6 +475,7 @@ multiplot(plot_pd(gis_rf_ecor_pd),
           plot_pd(gis_rf_elev_pd),
           plot_pd(gis_rf_lat_pd),
           plot_pd(gis_rf_conifer_pd),
+          plot_pd(gis_rf_mndepth_pd),
           layout=matrix(1:6,ncol=2,byrow=TRUE))
 ```
 
