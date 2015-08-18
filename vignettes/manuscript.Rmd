@@ -354,7 +354,7 @@ The "All Variables" model provides more certain model prediction than the "GIS O
 #Discussion
 
 ##Trophic State Probabilities
-Lakes with more certain predictions (i.e. higher prediction probabilities) were more accurately predicted (Figure \ref{fig:condProbFig}).  The fact that the difference in accuracy between the models decreased as certainty in the prediction increased suggests that even for models with lower overall accuracy (i.e. the "GIS Only" model) may have acceptable accuracy for many individual cases (Table \ref{tab:cond_prob_tab}).  
+Lakes with more certain predictions (i.e. higher prediction probabilities) were more accurately predicted (Figure \ref{fig:cond_prob_fig}).  The fact that the difference in accuracy between the models decreased as certainty in the prediction increased suggests that, even for models with lower overall accuracy (i.e. the "GIS Only" model) may, these models may have acceptable accuracy for many individual cases (Table \ref{tab:cond_prob_tab}).  
 
 [JEFF START HERE]
 
@@ -372,6 +372,8 @@ The land use/land cover variables were also important in describing trophic stat
 Lastly, morphometry (e.g. depth and volume) also proved to be important in the prediction of lake trophic state.  As morphometry shows little to no broad scale spatial pattern and is unique to a given lake, these data are likely illuminating the local, lake scale drivers of trophic state.  As only depth and volume were selected, this likely shows the importance of in-lake nutrient processing and residence time.
 
 #Conclusions
+
+[NEED TO ADD A SPECIFIC CONCLUSION THAT GIS IS FINE]
 
 Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of chlorophyll *a* and lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which allows estimation of trophic state for all lakes in the United States. We were able to successfully predict trophic state classes.  With the GIS only models our total accuracy ranged from , and with the full suite of data our model accuracy had a minimum accuracy of %.  
 
@@ -506,23 +508,6 @@ lakes_dd<-spTransform(lakes_alb_sp,CRS=CRS(ll))
 lakes_dd<-data.frame(coordinates(lakes_dd),lakes_dd$nla_id)
 names(lakes_dd)<-c("long","lat","nla_id")
 ts_prob_map(state,lakes_dd,gis_rf_ts_prob)
-```
-
-\newpage
-
-```{r ts4_cyano_cdf,eval=FALSE, echo=FALSE, fig.width=7, fig.cap="Cumulative distribution function of cyanobacetria abundance for 4 trophic state classes\\label{fig:ts_4_cyano_cdf}",cache=FALSE}
-plotCdf(ltmData$TS_CHLA_4,ltmData$cyanoCellsPerML+1,cdf_colors=c("black","grey75","grey50","grey25"),
-        y='Percent',x='Log10(Cyanobacteria Abundance (cells/ml) + 1)',
-        color="Trophic State\nCategories")
-```
-
-\newpage
-
-```{r chla_cyano_scatterplot,eval=FALSE,echo=FALSE, fig.width=7, fig.cap="Cholorphyll *a* and cyanobacteria abundance scatterplot\\label{fig:scatterplot}",cache=FALSE}
-scp_df<-data.frame(chla=ltmData[["CHLA"]],abundp1=ltmData[["cyanoCellsPerML"]]+1)
-scatterPlot(scp_df,xvar="chla",yvar="abundp1","black","grey50","grey25",
-             x=expression(paste('Log10(Chl ', italic("a"),'(',mu,'g/L))')),
-             y="Log10(Cyanobaterial Abundance (cells/ml) + 1)")
 ```
 
 \newpage
