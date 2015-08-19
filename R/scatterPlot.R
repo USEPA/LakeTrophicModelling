@@ -28,7 +28,7 @@ scatterPlot<-function(df,xvar,yvar,pt_col,ln_col,cl_col,...){
   
   
   x <- ggplot(xdf,aes(xvar,yvar))+
-    geom_point(size=2,colour=pt_col) +
+    geom_point(size=3,colour=pt_col) +
     scale_x_log10() +
     scale_y_log10() +
     #stat_smooth(method="lm",fill=cl_col,

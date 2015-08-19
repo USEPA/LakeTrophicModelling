@@ -583,23 +583,24 @@ Turbidity was selected as the most important variable in the ``All
 variables'' model. The partial dependency analysis shows that, similar
 to the nutrients discussed above, log chlorophyll \emph{a} increases
 with increased turbidity. At first this may seem counter intuitive since
-we might expect productivity to decrease as turbidity, and therefore
-light availability increases. However, algal biomass can contribute
-heavily to measures of turbidity and we expect greater productivity to
-lead to increased turbidity. We interpret this pattern as indicating
-that as chlorophyll \emph{a} concentrations increase we see a
-concomitant increase in turbidity.
+we might expect productivity to decrease as turbidity increases, and
+therefore light availability decreases. However, algal biomass can
+contribute heavily to measures of turbidity and we expect greater
+productivity to lead to increased turbidity. We interpret this pattern
+as indicating that as chlorophyll \emph{a} concentrations increase we
+see a concomitant increase in turbidity.
 
 Elevation was selected as an important predictive variable in both the
 all variables and the GIS only models; the partial dependencies (Figures
-4 \& 7) indicate a negative relationship between elevation and
-chlorophyll \emph{a} concentration that is probably due to fact that the
-relative continental position of mountains in the United States is the
-spatial inverse of the distribution of agricultural and urban lands. As
-elevation increases we expect decreased loads due to smaller watershed
-contributing areas. In contrast lower elevation sites will have larger
-drainage areas and greater potential for increased nutrient loads from
-urban and agricultural sources.
+\ref{fig:all_partial_dependence} \& \ref{fig:gis_partial_dependence})
+indicate a negative relationship between elevation and chlorophyll
+\emph{a} concentration that is probably due to fact that the location of
+mountains in the United States is the spatial inverse of the
+distribution of agricultural and urban lands. As elevation increases we
+expect decreased loads due to smaller watershed contributing areas. In
+contrast lower elevation sites will have larger drainage areas and
+greater potential for increased nutrient loads from urban and
+agricultural sources.
 
 Our models with the ``GIS only'' variables captured the large scale
 spatial pattern of the trophic status gradient of lakes across the
@@ -608,8 +609,8 @@ most sensitive to latitude and ecoregion. In general Chlorophyll
 \emph{a} concentrations are highest in the Southern portions of the
 study area where temperatures can be higher (a known driver of
 productivity), elevations lower, and agricultural impacts more
-pronounced. Likewise ecoregion (see Figure ???) has a pronounced affect
-indicting continental scale effects of land use and geography.
+pronounced. Likewise ecoregion (see Figure \ref{fig:}) has a pronounced
+affect indicting continental scale effects of land use and geography.
 Agriculturally dominated landscapes such as the Temperate Plains,
 Southern Plains, and Coastal Plains show the highest levels of
 Chlorophyll \emph{a}. Whereas high elevation zones (Western Mountains),
@@ -636,16 +637,16 @@ nutrient processing and residence time.
 
 \section{Conclusions}\label{conclusions}
 
-{[}NEED TO ADD A SPECIFIC CONCLUSION THAT GIS IS FINE{]}
-
 Our research goals were to explore the utility of a widely used data
 mining algorithm, random forests, in the modelling of chlorophyll
 \emph{a} and lake trophic state. Further, we hoped to examine the
 utility of these models when built with only ubiquitous GIS data, which
 allows estimation of trophic state for all lakes in the United States.
-We were able to successfully predict trophic state classes. With the GIS
-only models our total accuracy ranged from , and with the full suite of
-data our model accuracy had a minimum accuracy of \%.
+The ``All variables'' model had an RMSE of 0.09 and an adjusted
+R\textsuperscript{2} of 0.8 whereas, the GIS only models had an RMSE of
+0.22 and the adjusted R\textsuperscript{2} was 0.48. Our total accuracy
+in predicting chlorophyll \emph{a} based trophic states was 69\% for the
+``All variables'' model and 49\% for the ``GIS only'' model.
 
 While the ``GIS only'' model showed lower prediction accuracies than the
 ``All variables'' model, the association between the uncertainty of
@@ -655,31 +656,40 @@ provide reasonable estimates of trophic state for many lakes across the
 United States. Furthermore we can map the uncertainty of the
 predictions, thus we know the spatial patterns and location of the lakes
 for which we are certain, or not, of their predicted trophic state.
+Given this and that these models may be applied to any lake in the
+United States we can recomend using this model. Future iterations of
+this modelling effort may be able to utilize modeled predictions of
+nutrients to improve accuracy and also maintain broad applicability
+(Milstead et al. 2013).
 
-{[}REPLACE OR REWRITE{]} There was great deal of agreement on the
-important variables for each set of models. For the combined \emph{in
-situ} and GIS models, the \emph{in situ} water quality variables drove
-the predictions. This is expected. For the GIS only models, the results
-were more nuanced with three broad categories routinely being selected
-as important: broad scale spatial patterns in trophic state, land
-use/land cover controls of trophic state, and local, lake-scale control
-driven by lake morphometry.\\{[}REPLACE OR REWRITE{]}
+For the ``All variables'' model, the \emph{in situ} water quality
+variables drove the predictions. This is not surprising. For the ``GIS
+only''" model, the results were more nuanced. Three broad categories
+were routinely being selected as important: broad scale spatial patterns
+in trophic state, land use/land cover controls of trophic state, and
+local, lake-scale control driven by lake morphometry.
 
-Cyanobacteria biomass should be closely associated with trophic state as
-cyanobacteria contribute to the chlorophyll concentration in a lake. If
-these associations are strong enough we may be able to expand models
-such as those reported here to also predict probability of cyanobacteria
-blooms. Many studies have seen these associations. For instance, Yuan et
-al. (2014) used the 2007 NLA to demonstrate that total nitrogen and
-chlorophyll \emph{a} concentrations were good predictors of World Health
-Organization microcystin (a toxin produced by some cyanobacteria)
-criteria exceedences. These results suggest that trophic state may be an
-acceptable proxy for cyanobacteria abundance or presence of microcystin.
+A potentially usfeful benefit of models of trophic state and chlorophyll
+\emph{a} are their use in assesing risk due to cyanobacteria.
+Cyanobacteria biomass should be closely associated with chlorophyll
+\emph{a} and trophic state as cyanobacteria contribute to the
+chlorophyll concentration in a lake. If these associations are strong
+enough we may be able to expand models such as those reported here to
+also predict probability of cyanobacteria blooms and other indices
+realted to cyanobcteria (e.g.~toxin presence). Others have seen these
+associations. For instance, Yuan et al. (2014) used the 2007 NLA to
+demonstrate that total nitrogen and chlorophyll \emph{a} concentrations
+were good predictors of World Health Organization microcystin (a toxin
+produced by some cyanobacteria) criteria exceedences. Using this same
+data, we see a positive trend between cholorophyll \emph{a} and
+cyanobacteria abundance (Figure \ref{fig:scatterplot}). Both of these
+suggest that trophic state may be an acceptable proxy for cyanobacteria
+abundance or presence of microcystin.
 
-{[}MAKE SURE MAKES SENSE AFTER REWRITES ABOVE{]} Our results raise three
-important considerations related to managing eutrophication. First, the
-broad scale patterning suggests regional trends. This is important
-because it suggests that efforts to monitor, model and manage
+Our results raise three important considerations related to managing
+eutrophication. First, the broad scale patterning, indicated by
+ecoregion as an important variable, suggests regional trends. This is
+noteworthy because it suggests that efforts to monitor, model and manage
 eutrophication and cyanobacteria should be undertaken at both national
 and regional levels. Second, while direct control of water quality in
 lakes would have a large impact, the land use/land cover drivers
@@ -687,13 +697,13 @@ lakes would have a large impact, the land use/land cover drivers
 management of the spatial distribution of important classes such as
 forest and agriculture can provide some level of control on trophic
 state and amount of cyanobacteria present. Third, in-lake processes
-(i.e.~residence time, nutrient cycling, etc.) are, as expected, very
+(i.e.~residence time, nutrient cycling, etc.) are, as expected,
 important and need to be part of any management strategy. Building on
 these efforts through updated models, direct prediction of
 cyanobacteria, and additional information on the regional differences
 will help us get a better handle on the broad scale dynamics of
 productivity in lakes and the potential risk to human health from
-cyanobacteria blooms. {[}MAKE SURE MAKES SENSE AFTER REWRITES ABOVE{]}
+cyanobacteria blooms.
 
 \section{Acknowledgements}\label{acknowledgements}
 
@@ -812,6 +822,15 @@ chlorophyll \textit{a} trophic states \label{fig:gis_probability_map}}
 \caption{Maps of prediction probabilities for the discrete, predicted
 chlorophyll \textit{a} trophic state. Shows spatial patterns of
 prediction uncertainty. \label{fig:predicted_prob_map}}
+\end{figure}
+
+\newpage
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{manuscript_files/figure-latex/chla_cyano_scatterplot-1.jpeg}
+\caption{Cholorphyll \emph{a} and cyanobacteria abundance
+scatterplot\label{fig:scatterplot}}
 \end{figure}
 
 \newpage
