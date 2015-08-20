@@ -629,6 +629,8 @@ pander::pandoc.table(condprob_t,keep.line.breaks=T,split.tables=Inf)
 #Appendix 1. Variable Definitions
 
 ```{r data_def,eval=TRUE, results="asis",echo=FALSE,cache=FALSE}
+data_def<-arrange(data_def,type, variable_names)
+names(data_def)<-c("Variable Names","Description", "Source")
 kable(data_def,row.names=FALSE)
 ```
 
