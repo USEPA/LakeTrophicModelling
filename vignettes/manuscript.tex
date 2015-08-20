@@ -586,22 +586,23 @@ ratios less than \textasciitilde{}14 chlorophyll \emph{a} increases but
 after \textasciitilde{}14 there is marked decrease. The effect of the
 nitrogen phosphorus ratio on chlorophyll has been the subject of
 considerable research and our results are consistent with the majority
-of the findings suggesting that at low ratio values nitrogen is
-limiting. Conversely at higher ratios the phosphorus levels may be
-limiting. This would be a cause for concern with linear models; however,
-linearity is not an assumption of tree-based modelling approaches such
-as random forest.
+of the findings suggesting that at low ratio values nitrogen is limiting
+(Downing and McCauley 1992, Smith and Schindler 2009). Conversely at
+higher ratios the phosphorus levels may be limiting. This would be a
+cause for concern with linear models; however, linearity is not an
+assumption of tree-based modelling approaches such as random forest.
 
 Turbidity was selected as the most important variable in the ``All
 variables'' model. The partial dependency analysis shows that, similar
 to the nutrients discussed above, log chlorophyll \emph{a} increases
 with increased turbidity. At first this may seem counter intuitive since
 we might expect productivity to decrease as turbidity increases, and
-therefore light availability decreases. However, algal biomass can
-contribute heavily to measures of turbidity and we expect greater
-productivity to lead to increased turbidity. We interpret this pattern
-as indicating that as chlorophyll \emph{a} concentrations increase we
-see a concomitant increase in turbidity.
+therefore light availability decreases (Tilzer 1988, Bilotta and Brazier
+2008). However, algal biomass can contribute heavily to measures of
+turbidity and we expect greater productivity to lead to increased
+turbidity (Hansson 1992). We interpret this pattern as indicating that
+as chlorophyll \emph{a} concentrations increase we see a concomitant
+increase in turbidity.
 
 Elevation was selected as an important predictive variable in both the
 all variables and the GIS only models; the partial dependencies (Figures
@@ -642,10 +643,10 @@ increases we are likely to see increased elevation and soil differences
 that limit agriculture.
 
 Lastly, morphometry (e.g.~depth) also proved to be important in the
-prediction of lake trophic state. As morphometry shows little to no
-broad scale spatial pattern and is unique to a given lake, these data
-are likely illuminating the local, lake scale drivers such as in-lake
-nutrient processing and residence time.
+prediction of lake trophic state (Genkai-Kato and Carpenter 2005). As
+morphometry shows little to no broad scale spatial pattern and is unique
+to a given lake, these data are likely illuminating the local, lake
+scale drivers such as in-lake nutrient processing and residence time.
 
 \section{Conclusions}\label{conclusions}
 
@@ -1115,83 +1116,83 @@ Definitions}\label{appendix-1.-variable-definitions}
 
 \begin{longtable}[c]{@{}lll@{}}
 \toprule
-variable\_names & description & type\tabularnewline
+Variable Names & Description & Source\tabularnewline
 \midrule
 \endhead
-PercentImperv\_3000m & Percent Impervious & GIS\tabularnewline
-WaterPer\_3000m & Percent Water & GIS\tabularnewline
-IceSnowPer\_3000m & Percent Ice/Snow & GIS\tabularnewline
-DevOpenPer\_3000m & Percent Developed Open Space & GIS\tabularnewline
+AlbersX & Longitude & GIS\tabularnewline
+AlbersY & Latitude & GIS\tabularnewline
+BASINAREA & Watershed Area & GIS\tabularnewline
+BarrenPer\_3000m & Percent Barren & GIS\tabularnewline
+CropsPer\_3000m & Percent Cropland & GIS\tabularnewline
+DDs45 & Growing Degree Days & GIS\tabularnewline
+DeciduousPer\_3000m & Percent Decidous Forest & GIS\tabularnewline
+DevHighPer\_3000m & Percent High Intensity Development &
+GIS\tabularnewline
 DevLowPer\_3000m & Percent Low Intensity Development &
 GIS\tabularnewline
 DevMedPer\_3000m & Percent Medium Intensity Development &
 GIS\tabularnewline
-DevHighPer\_3000m & Percent High Intensity Development &
-GIS\tabularnewline
-BarrenPer\_3000m & Percent Barren & GIS\tabularnewline
-DeciduousPer\_3000m & Percent Decidous Forest & GIS\tabularnewline
-EvergreenPer\_3000m & Percent Evergreen Forest & GIS\tabularnewline
-MixedForPer\_3000m & Percent Mixed Forest & GIS\tabularnewline
-ShrubPer\_3000m & Percent Shrub/Scrub & GIS\tabularnewline
-GrassPer\_3000m & Percent Grassland & GIS\tabularnewline
-PasturePer\_3000m & Percent Pasture & GIS\tabularnewline
-CropsPer\_3000m & Percent Cropland & GIS\tabularnewline
-WoodyWetPer\_3000m & Percent Woody Wetland & GIS\tabularnewline
-HerbWetPer\_3000m & Percent Herbaceuos Wetland & GIS\tabularnewline
-AlbersX & Longitude & GIS\tabularnewline
-AlbersY & Latitude & GIS\tabularnewline
-LakeArea & Lake Surface Area & GIS\tabularnewline
-LakePerim & Lake Perimeter & GIS\tabularnewline
-ShoreDevel & Shoreline Development Index & GIS\tabularnewline
-DATE\_COL & Date Samples Collected & Water Quality\tabularnewline
-WSA\_ECO9 & Ecoregion & GIS\tabularnewline
-BASINAREA & Watershed Area & GIS\tabularnewline
-DEPTHMAX & Maximum Depth & Water Quality\tabularnewline
+DevOpenPer\_3000m & Percent Developed Open Space & GIS\tabularnewline
 ELEV\_PT & Elevation & GIS\tabularnewline
-DO2\_2M & Dissolved Oxygen & Water Quality\tabularnewline
-PH\_FIELD & pH & Water Quality\tabularnewline
-COND & Conductivity & Water Quality\tabularnewline
-ANC & Acid Neutralizing Capacity & Water Quality\tabularnewline
-TURB & Turbidity & Water Quality\tabularnewline
-TOC & Total Organic Carbon & Water Quality\tabularnewline
-DOC & Dissolved Organic Carbon & Water Quality\tabularnewline
-NH4 & Ammonium & Water Quality\tabularnewline
-NO3\_NO2 & Nitrate/Nitrite & Water Quality\tabularnewline
-NTL & Total Nitrogen & Water Quality\tabularnewline
-PTL & Total Phosphorus & Water Quality\tabularnewline
-CL & Chloride & Water Quality\tabularnewline
-NO3 & Nitrate & Water Quality\tabularnewline
-SO4 & Sulfate & Water Quality\tabularnewline
-CA & Calcium & Water Quality\tabularnewline
-MG & Magnesium & Water Quality\tabularnewline
-Na & Sodium & Water Quality\tabularnewline
-K & Potassium & Water Quality\tabularnewline
-COLOR & Color & Water Quality\tabularnewline
-SIO2 & Silica & Water Quality\tabularnewline
-H & Hydrogen Ions & Water Quality\tabularnewline
-OH & Hydroxide & Water Quality\tabularnewline
-NH4ION & Calculate Ammonium & Water Quality\tabularnewline
-CATSUM & Cation Sum & Water Quality\tabularnewline
-ANSUM2 & Anion Sum & Water Quality\tabularnewline
-ANDEF2 & Anion Deficit & Water Quality\tabularnewline
-SOBC & Base Cation Sum & Water Quality\tabularnewline
-BALANCE2 & Ion Balance & Water Quality\tabularnewline
-ORGION & Estimated Organic Anions & Water Quality\tabularnewline
-CONCAL2 & Calculated Conductivity & Water Quality\tabularnewline
-CONDHO2 & D-H-O Calculated Conductivity & Water Quality\tabularnewline
-TmeanW & Mean Profile Water Temperature & Water Quality\tabularnewline
-DDs45 & Growing Degree Days & GIS\tabularnewline
-MaxLength & Maximum Lake Length & GIS\tabularnewline
-MaxWidth & Maximum Lake Width & GIS\tabularnewline
-MeanWidth & Mean Lake Width & GIS\tabularnewline
+EvergreenPer\_3000m & Percent Evergreen Forest & GIS\tabularnewline
+FetchE & Fetch from East & GIS\tabularnewline
 FetchN & Fetch from North & GIS\tabularnewline
 FetchNE & Fetch form Northeast & GIS\tabularnewline
-FetchE & Fetch from East & GIS\tabularnewline
 FetchSE & Fetch from Southeast & GIS\tabularnewline
+GrassPer\_3000m & Percent Grassland & GIS\tabularnewline
+HerbWetPer\_3000m & Percent Herbaceuos Wetland & GIS\tabularnewline
+IceSnowPer\_3000m & Percent Ice/Snow & GIS\tabularnewline
+LakeArea & Lake Surface Area & GIS\tabularnewline
+LakePerim & Lake Perimeter & GIS\tabularnewline
 MaxDepthCorrect & Estimated Maximum Lake Depth & GIS\tabularnewline
-VolumeCorrect & Estimated Lake Volume & GIS\tabularnewline
+MaxLength & Maximum Lake Length & GIS\tabularnewline
+MaxWidth & Maximum Lake Width & GIS\tabularnewline
 MeanDepthCorrect & Estimated Mean Lake Depth & GIS\tabularnewline
+MeanWidth & Mean Lake Width & GIS\tabularnewline
+MixedForPer\_3000m & Percent Mixed Forest & GIS\tabularnewline
+PasturePer\_3000m & Percent Pasture & GIS\tabularnewline
+PercentImperv\_3000m & Percent Impervious & GIS\tabularnewline
+ShoreDevel & Shoreline Development Index & GIS\tabularnewline
+ShrubPer\_3000m & Percent Shrub/Scrub & GIS\tabularnewline
+VolumeCorrect & Estimated Lake Volume & GIS\tabularnewline
+WSA\_ECO9 & Ecoregion & GIS\tabularnewline
+WaterPer\_3000m & Percent Water & GIS\tabularnewline
+WoodyWetPer\_3000m & Percent Woody Wetland & GIS\tabularnewline
+ANC & Acid Neutralizing Capacity & Water Quality\tabularnewline
+ANDEF2 & Anion Deficit & Water Quality\tabularnewline
+ANSUM2 & Anion Sum & Water Quality\tabularnewline
+BALANCE2 & Ion Balance & Water Quality\tabularnewline
+CA & Calcium & Water Quality\tabularnewline
+CATSUM & Cation Sum & Water Quality\tabularnewline
+CL & Chloride & Water Quality\tabularnewline
+COLOR & Color & Water Quality\tabularnewline
+CONCAL2 & Calculated Conductivity & Water Quality\tabularnewline
+COND & Conductivity & Water Quality\tabularnewline
+CONDHO2 & D-H-O Calculated Conductivity & Water Quality\tabularnewline
+DATE\_COL & Date Samples Collected & Water Quality\tabularnewline
+DEPTHMAX & Maximum Depth & Water Quality\tabularnewline
+DO2\_2M & Dissolved Oxygen & Water Quality\tabularnewline
+DOC & Dissolved Organic Carbon & Water Quality\tabularnewline
+H & Hydrogen Ions & Water Quality\tabularnewline
+K & Potassium & Water Quality\tabularnewline
+MG & Magnesium & Water Quality\tabularnewline
+NH4 & Ammonium & Water Quality\tabularnewline
+NH4ION & Calculate Ammonium & Water Quality\tabularnewline
+NO3 & Nitrate & Water Quality\tabularnewline
+NO3\_NO2 & Nitrate/Nitrite & Water Quality\tabularnewline
 NPratio & Nitrogen:Phophorus Ratio & Water Quality\tabularnewline
+NTL & Total Nitrogen & Water Quality\tabularnewline
+Na & Sodium & Water Quality\tabularnewline
+OH & Hydroxide & Water Quality\tabularnewline
+ORGION & Estimated Organic Anions & Water Quality\tabularnewline
+PH\_FIELD & pH & Water Quality\tabularnewline
+PTL & Total Phosphorus & Water Quality\tabularnewline
+SIO2 & Silica & Water Quality\tabularnewline
+SO4 & Sulfate & Water Quality\tabularnewline
+SOBC & Base Cation Sum & Water Quality\tabularnewline
+TOC & Total Organic Carbon & Water Quality\tabularnewline
+TURB & Turbidity & Water Quality\tabularnewline
+TmeanW & Mean Profile Water Temperature & Water Quality\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -1199,6 +1200,10 @@ NPratio & Nitrogen:Phophorus Ratio & Water Quality\tabularnewline
 
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
+
+\textsc{Bilotta, G., and R. Brazier}. 2008. Understanding the influence
+of suspended solids on water quality and aquatic biota. Water research
+42:2849--2861.
 
 \textsc{Breiman, L.} 2001. Random forests. Machine learning 45:5--32.
 
@@ -1221,6 +1226,9 @@ classification in ecology. Ecology 88:2783--2792.
 and classification of microarray data using random forest. BMC
 bioinformatics 7:3.
 
+\textsc{Downing, J. A., and E. McCauley}. 1992. The nitrogen: Phosphorus
+relationship in lakes. Limnology and Oceanography 37:936--945.
+
 \textsc{Downing, J. A., S. B. Watson, and E. McCauley}. 2001. Predicting
 cyanobacteria dominance in lakes. Canadian journal of fisheries and
 aquatic sciences 58:1905--1908.
@@ -1229,6 +1237,13 @@ aquatic sciences 58:1905--1908.
 2014. Do we need hundreds of classifiers to solve real world
 classification problems? Journal of Machine Learning Research
 15:3133--3181.
+
+\textsc{Genkai-Kato, M., and S. R. Carpenter}. 2005. Eutrophication due
+to phosphorus recycling in relation to lake morphometry, temperature,
+and macrophytes. Ecology 86:210--219.
+
+\textsc{Hansson, L.-A.} 1992. Factors regulating periphytic algal
+biomass. Limnology and Oceanography 37:322--328.
 
 \textsc{Hasler, A. D.} 1969. Cultural eutrophication is reversible.
 BioScience 19:425--431.
@@ -1317,6 +1332,10 @@ Journal of Great Lakes Research 39:211--223.
 estuarine, and coastal waters. Pages 7--49 \emph{in} Successes,
 limitations, and frontiers in ecosystem science. Springer.
 
+\textsc{Smith, V. H., and D. W. Schindler}. 2009. Eutrophication
+science: Where do we go from here? Trends in Ecology \& Evolution
+24:201--207.
+
 \textsc{Smith, V. H., S. B. Joye, R. W. Howarth, and others}. 2006.
 Eutrophication of freshwater and marine ecosystems. Limnology and
 Oceanography 51:351--355.
@@ -1328,6 +1347,10 @@ and terrestrial ecosystems. Environmental pollution 100:179--196.
 \textsc{Strobl, C., A.-L. Boulesteix, A. Zeileis, and T. Hothorn}. 2007.
 Bias in random forest variable importance measures: Illustrations,
 sources and a solution. BMC bioinformatics 8:25.
+
+\textsc{Tilzer, M. M.} 1988. Secchi disk---chlorophyll relationships in
+a lake with highly variable phytoplankton biomass. Hydrobiologia
+162:163--171.
 
 \textsc{USEPA}. 2009. National lakes assessment: A collaborative survey
 of the nation's lakes. ePA 841-r-09-001. Office of Water; Office of
