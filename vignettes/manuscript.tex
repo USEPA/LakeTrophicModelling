@@ -243,20 +243,19 @@ As trophic state and related indices can be best defined by a number of
 \emph{in situ} water quality parameters (modeled or measured), most
 models have used this information as predictors (Imboden and G{ä}chter
 1978, Salas and Martino 1991, Carvalho et al. 2011, Milstead et al.
-2013). This leads to accurate models, but also requires data that are
-often sparse and not always available, thus limiting the population of
-lakes for which we can make predictions. A possible solution for this
-issue is to build models that use widely available data that are
-correlated to many of the \emph{in situ} variables. For instance,
-landscape metrics of forests, agriculture, wetlands, and urban land in
-contributing watersheds have all been shown to explain a significant
-proportion of the variation (ranging from 50-86\%, depending on study)
-in nutrients in receiving waters (Jones et al. 2001, 2004, Seilheimer et
-al. 2013). Building on these previously identified associations might
-allow us to use only landscape and other universally available data to
-build models. Identifying predictors using this type of ubiquitous data
-would allow for estimating trophic state in both monitored and
-unmonitored lakes.
+2013). This leads to accurate models, but this data is often sparse and
+not always available, thus limiting the population of lakes for which we
+can make predictions. A possible solution for this issue is to build
+models that use widely available data that are correlated to many of the
+\emph{in situ} variables. For instance, landscape metrics of forests,
+agriculture, wetlands, and urban land in contributing watersheds have
+all been shown to explain a significant proportion of the variation
+(ranging from 50-86\%, depending on study) in nutrients in receiving
+waters (Jones et al. 2001, 2004, Seilheimer et al. 2013). Building on
+these previously identified associations might allow us to use only
+landscape and other universally available data to build models.
+Identifying predictors using this type of ubiquitous data would allow
+for estimating trophic state in both monitored and unmonitored lakes.
 
 Many published models of nutrients and trophic state in freshwater
 systems are based on linear modelling methods such as standard least
@@ -264,7 +263,7 @@ squares regression or linear mixed models (Jones et al. 2001, 2004).
 While these methods have proven to be reliable, they have limitations
 (e.g.~independence, distribution assumptions, and outlier sensitivity).
 Using data mining approaches, such as random forests, avoids many of the
-limitations, may reduce bias and often provides better predictions
+limitations, may reduce bias, and often provides better predictions
 (Breiman 2001, Cutler et al. 2007, Peters et al. 2007, Fernández-Delgado
 et al. 2014). For instance, random forests are non-parametric and thus
 the data do not need to come from a specific distribution
@@ -275,15 +274,15 @@ model selection uncertainty as predictions are based upon a consensus of
 many models and not just a single model selected with some measure of
 goodness of fit.
 
-To build on past work, we have identified three areas in which this
-research contributes. First, we build, assess, and compare two random
-forest models of chlorophyll \emph{a} 1) \emph{in situ} and universally
-available GIS data and then 2) universally available GIS data only.
-Second, we convert the chlorophyll \emph{a} estimates, for both models,
-to trophic state and assess the prediction accuracy and uncertainty.
-Third, we examine the important predictors for both models. Lastly, this
-paper, the code, and the data used in the models are made available as
-an R package from \url{https://github.com/USEPA/LakeTrophicModelling}.
+The research presented here builds on past work in three areas. First,
+we built, assessed, and compared two random forest models of chlorophyll
+\emph{a} 1) \emph{in situ} and universally available GIS data and then
+2) universally available GIS data only. Second, we converted the
+chlorophyll \emph{a} estimates, for both models, to trophic state and
+assessed prediction accuracy and uncertainty. Third, we examined the
+important predictors for both models. Lastly, this paper, the code, and
+the data used in the models are available as an R package from
+\url{https://github.com/USEPA/LakeTrophicModelling}.
 
 \section{Methods}\label{methods}
 
@@ -297,17 +296,18 @@ morphometery modeled from the NHDPlus and National Elevation Data Set
 in extent and provide a unique snapshot view of the condition of lakes
 in the conterminous United States during the summer of 2007.
 
-The NLA data were collected during the summer of 2007 and the final data
-were released in 2009 (USEPA 2009 for detailed description of methods).
-With consistent methods and metrics collected at over 1000 locations
-across the conterminous United States (Figure \ref{fig:nlaMap}), the NLA
-provides a unique opportunity to examine broad scale patterns in lake
-productivity. The NLA collected data on biophysical measures of lake
-water quality and habitat as well as an assessment of the phytoplankton
-community. For this analysis, we only use the various water quality
-measurements from the National Lakes Assessment (USEPA 2009).
+The NLA dataset was collected during the summer of 2007 and the final
+datasets were released in 2009 (USEPA 2009 for detailed description of
+methods). With consistent methods and metrics collected at over 1000
+locations across the conterminous United States (Figure
+\ref{fig:nlaMap}), the NLA provides a unique opportunity to examine
+broad scale patterns in lake productivity. The NLA collected data on
+biophysical measures of lake water quality and habitat as well as an
+assessment of the phytoplankton community. For this analysis, we only
+use the various water quality measurements from the National Lakes
+Assessment (USEPA 2009).
 
-Adding to the monitoring data collected via the NLA, we use the 2006
+Adding to the monitoring data collected via the NLA, we used the 2006
 NLCD data to examine landscape-level drivers of trophic status in lakes.
 The NLCD is a national land use/land cover dataset that also provides
 estimates of impervious surface. We calculated total proportion of each
@@ -338,8 +338,8 @@ and a predetermined number of decision trees are developed. With each
 new tree, the sample data subset is randomly selected and with each new
 split, the subset of predictor variables are randomly selected. A
 detailed discussion of the benefits of a random forest approach is
-beyond the scope of this paper. To find out more see Breiman (2001) and
-Cutler et al. (2007).
+beyond the scope of this paper. For a more detail description of random
+forests see Breiman (2001) and Cutler et al. (2007).
 
 Random forests are able to handle numerous correlated variables without
 a decrease in prediction accuracy; however, one possible shortcoming of
@@ -355,10 +355,10 @@ suggested alternative variable importance measures, but this is only
 needed with a large number of categorical variables which are selected
 against with traditional random forest approach (Strobl et al. 2007).
 
-In our case, we are predicting a continuous variable, chlorophyll
-\emph{a}, directly thus \texttt{varSelRF}, does not apply, and all of
-our variables are continuous so the approach suggested by Strobl (2007)
-is not necessary. Thus we developed an approach, similar to
+In our case, we predicted a continuous variable, chlorophyll \emph{a},
+directly thus \texttt{varSelRF}, does not apply, and all of our
+variables are continuous so the approach suggested by Strobl (2007) is
+not necessary. Thus we developed an approach, similar to
 \texttt{varSelRF} but applied to random forest with regression trees.
 With this approach we fit a full random forest model that includes all
 variables and a large number of trees. We then rank the variables using
@@ -441,8 +441,8 @@ random forest error estimates are expected to be unbiased (Breiman
 
 The random forest algorithm explicitly measures variable importance with
 two metrics: mean decrease in Gini and percent increase in mean squared
-error. For each of these they measure the impact on the overall model
-when that particular variable is included and thus can be used to assess
+error. Each of these measure the impact on the overall model when that
+particular variable is included and thus can be used to assess
 importance (Breiman 2001). The Gini Index has been shown to have a bias
 (Strobl et al. 2007), thus, we use percent increase in mean squared
 error to assess variable importance. Lastly, partial dependence plots
@@ -542,29 +542,29 @@ cases (Table \ref{tab:cond_prob_tab}). Additionally, the prediction
 probabilities may be mapped for each of the four classes (Figure
 \ref{fig:gis_probability_map}).
 
-A map of this sort indicates several things. First, since low
-uncertainty is associated with high accuracy this map shows the broad
-spatial patterns of lake trophic state across the United States. The
-spatial patterns show little variability between the ``All variables''
-and ``GIS only'' models, thus we only show the reuslts from the more
-broadly applicable ``GIS only'' model (Figure
-\ref{fig:gis_probability_map}). Hypereutrophic lakes are much more
-commonly predicted in the midwest and southeastern United States. Clear,
-oligotrophic lakes are in the northwestern United States, through the
-western mountains and in the northeastern united states. The middle
-trophic states are more evenly distributed across the country. Secondly,
-instead of mapping the probabilities for each trophic state separately,
-we can also map the prediction probabilities of the discrete predicted
-class. (Figure \ref{fig:predicted_prob_map}). This map shows where the
-model predicts well and where it is less certain. In general, the map
-shows most points with higher prediction probabilities than the midpoint
-of the range and the distribution of prediction probabilities is skewed
-left (Figure \ref{fig:pred_prob_dist}). While these patterns are not
-strong, they suggest that with slight improvements in the ``GIS only''
-model we could skew the prediction probabilites futher left and easily
-improve the overall accuracy of the model. This could be done using
-modeled, national estimates of nutrient loads (Moore et al. 2011, e.g.
-Milstead et al. 2013).
+This map provides several insights. First, since low uncertainty is
+associated with high accuracy, this map shows the broad spatial patterns
+of lake trophic state across the United States. The spatial patterns
+show little variability between the ``All variables'' and ``GIS only''
+models, thus we only show the reuslts from the more broadly applicable
+``GIS only'' model (Figure \ref{fig:gis_probability_map}).
+Hypereutrophic lakes are much more commonly predicted in the midwest and
+southeastern United States. Clear, oligotrophic lakes are in the
+northwestern United States, through the western mountains and in the
+northeastern united states. The middle trophic states are more evenly
+distributed across the country. Secondly, instead of mapping the
+probabilities for each trophic state separately, we can also map the
+prediction probabilities of the discrete predicted class. (Figure
+\ref{fig:predicted_prob_map}). This map shows where the model predicts
+well and where it is less certain. In general, the map shows most points
+with higher prediction probabilities than the midpoint of the range and
+the distribution of prediction probabilities is skewed left (Figure
+\ref{fig:pred_prob_dist}). While these patterns are not strong, they
+suggest that with slight improvements in the ``GIS only'' model we could
+skew the prediction probabilites futher left and easily improve the
+overall accuracy of the model. This could be done using modeled,
+national estimates of nutrient loads (Moore et al. 2011, e.g. Milstead
+et al. 2013).
 
 \subsection{Partial dependencies of explanatory
 variables}\label{partial-dependencies-of-explanatory-variables}
@@ -623,12 +623,13 @@ sensitive to latitude and ecoregion. In general, chlorophyll \emph{a}
 concentrations are highest in the Southern portions of the study area
 where temperatures can be higher (a known driver of productivity),
 elevations lower, and agricultural impacts more pronounced. Likewise
-ecoregion (see Figure \ref{fig:}) has a pronounced affect indicting
-continental scale effects of land use and geography. Agriculturally
-dominated landscapes such as the Temperate Plains, Southern Plains, and
-Coastal Plains show the highest levels of Chlorophyll \emph{a}. Whereas
-high elevation zones (Western Mountains), arid lands (Xeric), Northern
-habitats (Upper Midwest) have lower concentrations.
+ecoregion (see Figure \ref{fig:ecoregion_map}) has a pronounced affect
+indicting continental scale effects of land use and geography.
+Agriculturally dominated landscapes such as the Temperate Plains,
+Southern Plains, and Coastal Plains show the highest levels of
+Chlorophyll \emph{a}. Whereas high elevation zones (Western Mountains),
+arid lands (Xeric), Northern habitats (Upper Midwest) have lower
+concentrations.
 
 Further evidence for the role of land use/land cover variables is shown
 by the selection of the percent cropland and percent evergreen forest
@@ -663,7 +664,7 @@ in predicting chlorophyll \emph{a} based trophic states was 69\% for the
 
 While the ``GIS only'' model showed lower prediction accuracies than the
 ``All variables'' model, the association between the uncertainty of
-prediction and total accuracy (Figure \ref{fig:condProbFig} and Table
+prediction and total accuracy (Figure \ref{fig:cond_prob_fig} and Table
 \ref{tab:cond_prob_tab}) suggest that the ``GIS only'' model will
 provide reasonable estimates of trophic state for many lakes across the
 United States. Furthermore, we can map the uncertainty of the
@@ -843,7 +844,15 @@ prediction uncertainty. \label{fig:predicted_prob_map}}
 \centering
 \includegraphics{manuscript_files/figure-latex/pred_prob_dist-1.jpeg}
 \caption{Distribution of predicted probabilities.
-\label{fig:predicted_prob_dist}}
+\label{fig:pred_prob_dist}}
+\end{figure}
+
+\newpage
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{manuscript_files/figure-latex/ecoregion_map-1.jpeg}
+\caption{Wadeable Sreams assesment ecoregions \label{fig:ecoregion_map}}
 \end{figure}
 
 \newpage
