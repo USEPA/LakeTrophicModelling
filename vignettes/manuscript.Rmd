@@ -1,5 +1,5 @@
 ---
-title: 'Modelling Lake Trophic State: A Random Forest Approach'
+title: 'Modelling lake trophic state: A random forest approach'
 author:
 - affilnum: 1
   email: hollister.jeff@epa.gov
