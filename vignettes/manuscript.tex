@@ -7,7 +7,7 @@
 %% http://rmflight.github.io/posts/2014/07/vignetteAnalysis.html).  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass[11pt,]{article}
+\documentclass[12pt,]{article}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
@@ -243,20 +243,19 @@ As trophic state and related indices can be best defined by a number of
 \emph{in situ} water quality parameters (modeled or measured), most
 models have used this information as predictors (Imboden and G{ä}chter
 1978, Salas and Martino 1991, Carvalho et al. 2011, Milstead et al.
-2013). This leads to accurate models, but also requires data that are
-often sparse and not always available, thus limiting the population of
-lakes for which we can make predictions. A possible solution for this
-issue is to build models that use widely available data that are
-correlated to many of the \emph{in situ} variables. For instance,
-landscape metrics of forests, agriculture, wetlands, and urban land in
-contributing watersheds have all been shown to explain a significant
-proportion of the variation (ranging from 50-86\%, depending on study)
-in nutrients in receiving waters (Jones et al. 2001, 2004, Seilheimer et
-al. 2013). Building on these previously identified associations might
-allow us to use only landscape and other universally available data to
-build models. Identifying predictors using this type of ubiquitous data
-would allow for estimating trophic state in both monitored and
-unmonitored lakes.
+2013). This leads to accurate models, but this data is often sparse and
+not always available, thus limiting the population of lakes for which we
+can make predictions. A possible solution for this issue is to build
+models that use widely available data that are correlated to many of the
+\emph{in situ} variables. For instance, landscape metrics of forests,
+agriculture, wetlands, and urban land in contributing watersheds have
+all been shown to explain a significant proportion of the variation
+(ranging from 50-86\%, depending on study) in nutrients in receiving
+waters (Jones et al. 2001, 2004, Seilheimer et al. 2013). Building on
+these previously identified associations might allow us to use only
+landscape and other universally available data to build models.
+Identifying predictors using this type of ubiquitous data would allow
+for estimating trophic state in both monitored and unmonitored lakes.
 
 Many published models of nutrients and trophic state in freshwater
 systems are based on linear modelling methods such as standard least
@@ -264,7 +263,7 @@ squares regression or linear mixed models (Jones et al. 2001, 2004).
 While these methods have proven to be reliable, they have limitations
 (e.g.~independence, distribution assumptions, and outlier sensitivity).
 Using data mining approaches, such as random forests, avoids many of the
-limitations, may reduce bias and often provides better predictions
+limitations, may reduce bias, and often provides better predictions
 (Breiman 2001, Cutler et al. 2007, Peters et al. 2007, Fernández-Delgado
 et al. 2014). For instance, random forests are non-parametric and thus
 the data do not need to come from a specific distribution
@@ -275,15 +274,15 @@ model selection uncertainty as predictions are based upon a consensus of
 many models and not just a single model selected with some measure of
 goodness of fit.
 
-To build on past work, we have identified three areas in which this
-research contributes. First, we build, assess, and compare two random
-forest models of chlorophyll \emph{a} 1) \emph{in situ} and universally
-available GIS data and then 2) universally available GIS data only.
-Second, we convert the chlorophyll \emph{a} estimates, for both models,
-to trophic state and assess the prediction accuracy and uncertainty.
-Third, we examine the important predictors for both models. Lastly, this
-paper, the code, and the data used in the models are made available as
-an R package from \url{https://github.com/USEPA/LakeTrophicModelling}.
+The research presented here builds on past work in three areas. First,
+we built, assessed, and compared two random forest models of chlorophyll
+\emph{a} 1) \emph{in situ} and universally available GIS data and then
+2) universally available GIS data only. Second, we converted the
+chlorophyll \emph{a} estimates, for both models, to trophic state and
+assessed prediction accuracy and uncertainty. Third, we examined the
+important predictors for both models. Lastly, this paper, the code, and
+the data used in the models are available as an R package from
+\url{https://github.com/USEPA/LakeTrophicModelling}.
 
 \section{Methods}\label{methods}
 
@@ -297,17 +296,18 @@ morphometery modeled from the NHDPlus and National Elevation Data Set
 in extent and provide a unique snapshot view of the condition of lakes
 in the conterminous United States during the summer of 2007.
 
-The NLA data were collected during the summer of 2007 and the final data
-were released in 2009 (USEPA 2009 for detailed description of methods).
-With consistent methods and metrics collected at over 1000 locations
-across the conterminous United States (Figure \ref{fig:nlaMap}), the NLA
-provides a unique opportunity to examine broad scale patterns in lake
-productivity. The NLA collected data on biophysical measures of lake
-water quality and habitat as well as an assessment of the phytoplankton
-community. For this analysis, we only use the various water quality
-measurements from the National Lakes Assessment (USEPA 2009).
+The NLA dataset was collected during the summer of 2007 and the final
+datasets were released in 2009 (USEPA 2009 for detailed description of
+methods). With consistent methods and metrics collected at over 1000
+locations across the conterminous United States (Figure
+\ref{fig:nlaMap}), the NLA provides a unique opportunity to examine
+broad scale patterns in lake productivity. The NLA collected data on
+biophysical measures of lake water quality and habitat as well as an
+assessment of the phytoplankton community. For this analysis, we only
+use the various water quality measurements from the National Lakes
+Assessment (USEPA 2009).
 
-Adding to the monitoring data collected via the NLA, we use the 2006
+Adding to the monitoring data collected via the NLA, we used the 2006
 NLCD data to examine landscape-level drivers of trophic status in lakes.
 The NLCD is a national land use/land cover dataset that also provides
 estimates of impervious surface. We calculated total proportion of each
@@ -338,8 +338,8 @@ and a predetermined number of decision trees are developed. With each
 new tree, the sample data subset is randomly selected and with each new
 split, the subset of predictor variables are randomly selected. A
 detailed discussion of the benefits of a random forest approach is
-beyond the scope of this paper. To find out more see Breiman (2001) and
-Cutler et al. (2007).
+beyond the scope of this paper. For a more detail description of random
+forests see Breiman (2001) and Cutler et al. (2007).
 
 Random forests are able to handle numerous correlated variables without
 a decrease in prediction accuracy; however, one possible shortcoming of
@@ -355,10 +355,10 @@ suggested alternative variable importance measures, but this is only
 needed with a large number of categorical variables which are selected
 against with traditional random forest approach (Strobl et al. 2007).
 
-In our case, we are predicting a continuous variable, chlorophyll
-\emph{a}, directly thus \texttt{varSelRF}, does not apply, and all of
-our variables are continuous so the approach suggested by Strobl (2007)
-is not necessary. Thus we developed an approach, similar to
+In our case, we predicted a continuous variable, chlorophyll \emph{a},
+directly thus \texttt{varSelRF}, does not apply, and all of our
+variables are continuous so the approach suggested by Strobl (2007) is
+not necessary. Thus we developed an approach, similar to
 \texttt{varSelRF} but applied to random forest with regression trees.
 With this approach we fit a full random forest model that includes all
 variables and a large number of trees. We then rank the variables using
@@ -441,11 +441,11 @@ random forest error estimates are expected to be unbiased (Breiman
 
 The random forest algorithm explicitly measures variable importance with
 two metrics: mean decrease in Gini and percent increase in mean squared
-error. For each of these they measure the impact on the overall model
-when that particular variable is included and thus can be used to assess
+error. Each of these measure the impact on the overall model when that
+particular variable is included and thus can be used to assess
 importance (Breiman 2001). The Gini Index has been shown to have a bias
 (Strobl et al. 2007), thus, we use percent increase in mean squared
-error to asses variable importance. Lastly, partial dependence plots
+error to assess variable importance. Lastly, partial dependence plots
 provide a mecahnism to examine the partial relationship between
 individual variables and the response variable (Jones and Linder 2015).
 We examine these plots for the top variables as assigned by percent
@@ -542,29 +542,29 @@ cases (Table \ref{tab:cond_prob_tab}). Additionally, the prediction
 probabilities may be mapped for each of the four classes (Figure
 \ref{fig:gis_probability_map}).
 
-A map of this sort indicates several things. First, since low
-uncertainty is associated with high accuracy this map shows the broad
-spatial patterns of lake trophic state across the United States. The
-spatial patterns show little variability between the ``All variables''
-and ``GIS only'' models, thus we only show the reuslts from the more
-broadly applicable ``GIS only'' model (Figure
-\ref{fig:gis_probability_map}). Hypereutrophic lakes are much more
-commonly predicted in the midwest and southeastern United States. Clear,
-oligotrophic lakes are in the northwestern United States, through the
-western mountains and in the northeastern united states. The middle
-trophic states are more evenly distributed across the country. Secondly,
-instead of mapping the probabilities for each trophic state separately,
-we can also map the prediction probabilities of the discrete predicted
-class. (Figure \ref{fig:predicted_prob_map}). This map shows where the
-model predicts well and where it is less certain. In general, the map
-shows most points with higher prediction probabilities than the midpoint
-of the range and the distribution of prediction probabilities is skewed
-left (Figure \ref{fig:pred_prob_dist}). While these patterns are not
-strong, they suggest that with slight improvements in the ``GIS only''
-model we could skew the prediction probabilites futher left and easily
-improve the overall accuracy of the model. This could be done using
-modeled, national estimates of nutrient loads (Moore et al. 2011, e.g.
-Milstead et al. 2013).
+This map provides several insights. First, since low uncertainty is
+associated with high accuracy, this map shows the broad spatial patterns
+of lake trophic state across the United States. The spatial patterns
+show little variability between the ``All variables'' and ``GIS only''
+models, thus we only show the reuslts from the more broadly applicable
+``GIS only'' model (Figure \ref{fig:gis_probability_map}).
+Hypereutrophic lakes are much more commonly predicted in the midwest and
+southeastern United States. Clear, oligotrophic lakes are in the
+northwestern United States, through the western mountains and in the
+northeastern united states. The middle trophic states are more evenly
+distributed across the country. Secondly, instead of mapping the
+probabilities for each trophic state separately, we can also map the
+prediction probabilities of the discrete predicted class. (Figure
+\ref{fig:predicted_prob_map}). This map shows where the model predicts
+well and where it is less certain. In general, the map shows most points
+with higher prediction probabilities than the midpoint of the range and
+the distribution of prediction probabilities is skewed left (Figure
+\ref{fig:pred_prob_dist}). While these patterns are not strong, they
+suggest that with slight improvements in the ``GIS only'' model we could
+skew the prediction probabilites futher left and easily improve the
+overall accuracy of the model. This could be done using modeled,
+national estimates of nutrient loads (Moore et al. 2011, e.g. Milstead
+et al. 2013).
 
 \subsection{Partial dependencies of explanatory
 variables}\label{partial-dependencies-of-explanatory-variables}
@@ -586,22 +586,23 @@ ratios less than \textasciitilde{}14 chlorophyll \emph{a} increases but
 after \textasciitilde{}14 there is marked decrease. The effect of the
 nitrogen phosphorus ratio on chlorophyll has been the subject of
 considerable research and our results are consistent with the majority
-of the findings suggesting that at low ratio values nitrogen is
-limiting. Conversely at higher ratios the phosphorus levels may be
-limiting. This would be a cause for concern with linear models; however,
-linearity is not an assumption of tree-based modelling approaches such
-as random forest.
+of the findings suggesting that at low ratio values nitrogen is limiting
+(Downing and McCauley 1992, Smith and Schindler 2009). Conversely at
+higher ratios the phosphorus levels may be limiting. This would be a
+cause for concern with linear models; however, linearity is not an
+assumption of tree-based modelling approaches such as random forest.
 
 Turbidity was selected as the most important variable in the ``All
 variables'' model. The partial dependency analysis shows that, similar
 to the nutrients discussed above, log chlorophyll \emph{a} increases
 with increased turbidity. At first this may seem counter intuitive since
 we might expect productivity to decrease as turbidity increases, and
-therefore light availability decreases. However, algal biomass can
-contribute heavily to measures of turbidity and we expect greater
-productivity to lead to increased turbidity. We interpret this pattern
-as indicating that as chlorophyll \emph{a} concentrations increase we
-see a concomitant increase in turbidity.
+therefore light availability decreases (Tilzer 1988, Bilotta and Brazier
+2008). However, algal biomass can contribute heavily to measures of
+turbidity and we expect greater productivity to lead to increased
+turbidity (Hansson 1992). We interpret this pattern as indicating that
+as chlorophyll \emph{a} concentrations increase we see a concomitant
+increase in turbidity.
 
 Elevation was selected as an important predictive variable in both the
 all variables and the GIS only models; the partial dependencies (Figures
@@ -622,12 +623,13 @@ sensitive to latitude and ecoregion. In general, chlorophyll \emph{a}
 concentrations are highest in the Southern portions of the study area
 where temperatures can be higher (a known driver of productivity),
 elevations lower, and agricultural impacts more pronounced. Likewise
-ecoregion (see Figure \ref{fig:}) has a pronounced affect indicting
-continental scale effects of land use and geography. Agriculturally
-dominated landscapes such as the Temperate Plains, Southern Plains, and
-Coastal Plains show the highest levels of Chlorophyll \emph{a}. Whereas
-high elevation zones (Western Mountains), arid lands (Xeric), Northern
-habitats (Upper Midwest) have lower concentrations.
+ecoregion (see Figure \ref{fig:ecoregion_map}) has a pronounced affect
+indicting continental scale effects of land use and geography.
+Agriculturally dominated landscapes such as the Temperate Plains,
+Southern Plains, and Coastal Plains show the highest levels of
+Chlorophyll \emph{a}. Whereas high elevation zones (Western Mountains),
+arid lands (Xeric), Northern habitats (Upper Midwest) have lower
+concentrations.
 
 Further evidence for the role of land use/land cover variables is shown
 by the selection of the percent cropland and percent evergreen forest
@@ -642,10 +644,10 @@ increases we are likely to see increased elevation and soil differences
 that limit agriculture.
 
 Lastly, morphometry (e.g.~depth) also proved to be important in the
-prediction of lake trophic state. As morphometry shows little to no
-broad scale spatial pattern and is unique to a given lake, these data
-are likely illuminating the local, lake scale drivers such as in-lake
-nutrient processing and residence time.
+prediction of lake trophic state (Genkai-Kato and Carpenter 2005). As
+morphometry shows little to no broad scale spatial pattern and is unique
+to a given lake, these data are likely illuminating the local, lake
+scale drivers such as in-lake nutrient processing and residence time.
 
 \section{Conclusions}\label{conclusions}
 
@@ -662,7 +664,7 @@ in predicting chlorophyll \emph{a} based trophic states was 69\% for the
 
 While the ``GIS only'' model showed lower prediction accuracies than the
 ``All variables'' model, the association between the uncertainty of
-prediction and total accuracy (Figure \ref{fig:condProbFig} and Table
+prediction and total accuracy (Figure \ref{fig:cond_prob_fig} and Table
 \ref{tab:cond_prob_tab}) suggest that the ``GIS only'' model will
 provide reasonable estimates of trophic state for many lakes across the
 United States. Furthermore, we can map the uncertainty of the
@@ -842,7 +844,15 @@ prediction uncertainty. \label{fig:predicted_prob_map}}
 \centering
 \includegraphics{manuscript_files/figure-latex/pred_prob_dist-1.jpeg}
 \caption{Distribution of predicted probabilities.
-\label{fig:predicted_prob_dist}}
+\label{fig:pred_prob_dist}}
+\end{figure}
+
+\newpage
+
+\begin{figure}[htbp]
+\centering
+\includegraphics{manuscript_files/figure-latex/ecoregion_map-1.jpeg}
+\caption{Wadeable Sreams assesment ecoregions \label{fig:ecoregion_map}}
 \end{figure}
 
 \newpage
@@ -1115,83 +1125,83 @@ Definitions}\label{appendix-1.-variable-definitions}
 
 \begin{longtable}[c]{@{}lll@{}}
 \toprule
-variable\_names & description & type\tabularnewline
+Variable Names & Description & Source\tabularnewline
 \midrule
 \endhead
-PercentImperv\_3000m & Percent Impervious & GIS\tabularnewline
-WaterPer\_3000m & Percent Water & GIS\tabularnewline
-IceSnowPer\_3000m & Percent Ice/Snow & GIS\tabularnewline
-DevOpenPer\_3000m & Percent Developed Open Space & GIS\tabularnewline
+AlbersX & Longitude & GIS\tabularnewline
+AlbersY & Latitude & GIS\tabularnewline
+BASINAREA & Watershed Area & GIS\tabularnewline
+BarrenPer\_3000m & Percent Barren & GIS\tabularnewline
+CropsPer\_3000m & Percent Cropland & GIS\tabularnewline
+DDs45 & Growing Degree Days & GIS\tabularnewline
+DeciduousPer\_3000m & Percent Decidous Forest & GIS\tabularnewline
+DevHighPer\_3000m & Percent High Intensity Development &
+GIS\tabularnewline
 DevLowPer\_3000m & Percent Low Intensity Development &
 GIS\tabularnewline
 DevMedPer\_3000m & Percent Medium Intensity Development &
 GIS\tabularnewline
-DevHighPer\_3000m & Percent High Intensity Development &
-GIS\tabularnewline
-BarrenPer\_3000m & Percent Barren & GIS\tabularnewline
-DeciduousPer\_3000m & Percent Decidous Forest & GIS\tabularnewline
-EvergreenPer\_3000m & Percent Evergreen Forest & GIS\tabularnewline
-MixedForPer\_3000m & Percent Mixed Forest & GIS\tabularnewline
-ShrubPer\_3000m & Percent Shrub/Scrub & GIS\tabularnewline
-GrassPer\_3000m & Percent Grassland & GIS\tabularnewline
-PasturePer\_3000m & Percent Pasture & GIS\tabularnewline
-CropsPer\_3000m & Percent Cropland & GIS\tabularnewline
-WoodyWetPer\_3000m & Percent Woody Wetland & GIS\tabularnewline
-HerbWetPer\_3000m & Percent Herbaceuos Wetland & GIS\tabularnewline
-AlbersX & Longitude & GIS\tabularnewline
-AlbersY & Latitude & GIS\tabularnewline
-LakeArea & Lake Surface Area & GIS\tabularnewline
-LakePerim & Lake Perimeter & GIS\tabularnewline
-ShoreDevel & Shoreline Development Index & GIS\tabularnewline
-DATE\_COL & Date Samples Collected & Water Quality\tabularnewline
-WSA\_ECO9 & Ecoregion & GIS\tabularnewline
-BASINAREA & Watershed Area & GIS\tabularnewline
-DEPTHMAX & Maximum Depth & Water Quality\tabularnewline
+DevOpenPer\_3000m & Percent Developed Open Space & GIS\tabularnewline
 ELEV\_PT & Elevation & GIS\tabularnewline
-DO2\_2M & Dissolved Oxygen & Water Quality\tabularnewline
-PH\_FIELD & pH & Water Quality\tabularnewline
-COND & Conductivity & Water Quality\tabularnewline
-ANC & Acid Neutralizing Capacity & Water Quality\tabularnewline
-TURB & Turbidity & Water Quality\tabularnewline
-TOC & Total Organic Carbon & Water Quality\tabularnewline
-DOC & Dissolved Organic Carbon & Water Quality\tabularnewline
-NH4 & Ammonium & Water Quality\tabularnewline
-NO3\_NO2 & Nitrate/Nitrite & Water Quality\tabularnewline
-NTL & Total Nitrogen & Water Quality\tabularnewline
-PTL & Total Phosphorus & Water Quality\tabularnewline
-CL & Chloride & Water Quality\tabularnewline
-NO3 & Nitrate & Water Quality\tabularnewline
-SO4 & Sulfate & Water Quality\tabularnewline
-CA & Calcium & Water Quality\tabularnewline
-MG & Magnesium & Water Quality\tabularnewline
-Na & Sodium & Water Quality\tabularnewline
-K & Potassium & Water Quality\tabularnewline
-COLOR & Color & Water Quality\tabularnewline
-SIO2 & Silica & Water Quality\tabularnewline
-H & Hydrogen Ions & Water Quality\tabularnewline
-OH & Hydroxide & Water Quality\tabularnewline
-NH4ION & Calculate Ammonium & Water Quality\tabularnewline
-CATSUM & Cation Sum & Water Quality\tabularnewline
-ANSUM2 & Anion Sum & Water Quality\tabularnewline
-ANDEF2 & Anion Deficit & Water Quality\tabularnewline
-SOBC & Base Cation Sum & Water Quality\tabularnewline
-BALANCE2 & Ion Balance & Water Quality\tabularnewline
-ORGION & Estimated Organic Anions & Water Quality\tabularnewline
-CONCAL2 & Calculated Conductivity & Water Quality\tabularnewline
-CONDHO2 & D-H-O Calculated Conductivity & Water Quality\tabularnewline
-TmeanW & Mean Profile Water Temperature & Water Quality\tabularnewline
-DDs45 & Growing Degree Days & GIS\tabularnewline
-MaxLength & Maximum Lake Length & GIS\tabularnewline
-MaxWidth & Maximum Lake Width & GIS\tabularnewline
-MeanWidth & Mean Lake Width & GIS\tabularnewline
+EvergreenPer\_3000m & Percent Evergreen Forest & GIS\tabularnewline
+FetchE & Fetch from East & GIS\tabularnewline
 FetchN & Fetch from North & GIS\tabularnewline
 FetchNE & Fetch form Northeast & GIS\tabularnewline
-FetchE & Fetch from East & GIS\tabularnewline
 FetchSE & Fetch from Southeast & GIS\tabularnewline
+GrassPer\_3000m & Percent Grassland & GIS\tabularnewline
+HerbWetPer\_3000m & Percent Herbaceuos Wetland & GIS\tabularnewline
+IceSnowPer\_3000m & Percent Ice/Snow & GIS\tabularnewline
+LakeArea & Lake Surface Area & GIS\tabularnewline
+LakePerim & Lake Perimeter & GIS\tabularnewline
 MaxDepthCorrect & Estimated Maximum Lake Depth & GIS\tabularnewline
-VolumeCorrect & Estimated Lake Volume & GIS\tabularnewline
+MaxLength & Maximum Lake Length & GIS\tabularnewline
+MaxWidth & Maximum Lake Width & GIS\tabularnewline
 MeanDepthCorrect & Estimated Mean Lake Depth & GIS\tabularnewline
+MeanWidth & Mean Lake Width & GIS\tabularnewline
+MixedForPer\_3000m & Percent Mixed Forest & GIS\tabularnewline
+PasturePer\_3000m & Percent Pasture & GIS\tabularnewline
+PercentImperv\_3000m & Percent Impervious & GIS\tabularnewline
+ShoreDevel & Shoreline Development Index & GIS\tabularnewline
+ShrubPer\_3000m & Percent Shrub/Scrub & GIS\tabularnewline
+VolumeCorrect & Estimated Lake Volume & GIS\tabularnewline
+WSA\_ECO9 & Ecoregion & GIS\tabularnewline
+WaterPer\_3000m & Percent Water & GIS\tabularnewline
+WoodyWetPer\_3000m & Percent Woody Wetland & GIS\tabularnewline
+ANC & Acid Neutralizing Capacity & Water Quality\tabularnewline
+ANDEF2 & Anion Deficit & Water Quality\tabularnewline
+ANSUM2 & Anion Sum & Water Quality\tabularnewline
+BALANCE2 & Ion Balance & Water Quality\tabularnewline
+CA & Calcium & Water Quality\tabularnewline
+CATSUM & Cation Sum & Water Quality\tabularnewline
+CL & Chloride & Water Quality\tabularnewline
+COLOR & Color & Water Quality\tabularnewline
+CONCAL2 & Calculated Conductivity & Water Quality\tabularnewline
+COND & Conductivity & Water Quality\tabularnewline
+CONDHO2 & D-H-O Calculated Conductivity & Water Quality\tabularnewline
+DATE\_COL & Date Samples Collected & Water Quality\tabularnewline
+DEPTHMAX & Maximum Depth & Water Quality\tabularnewline
+DO2\_2M & Dissolved Oxygen & Water Quality\tabularnewline
+DOC & Dissolved Organic Carbon & Water Quality\tabularnewline
+H & Hydrogen Ions & Water Quality\tabularnewline
+K & Potassium & Water Quality\tabularnewline
+MG & Magnesium & Water Quality\tabularnewline
+NH4 & Ammonium & Water Quality\tabularnewline
+NH4ION & Calculate Ammonium & Water Quality\tabularnewline
+NO3 & Nitrate & Water Quality\tabularnewline
+NO3\_NO2 & Nitrate/Nitrite & Water Quality\tabularnewline
 NPratio & Nitrogen:Phophorus Ratio & Water Quality\tabularnewline
+NTL & Total Nitrogen & Water Quality\tabularnewline
+Na & Sodium & Water Quality\tabularnewline
+OH & Hydroxide & Water Quality\tabularnewline
+ORGION & Estimated Organic Anions & Water Quality\tabularnewline
+PH\_FIELD & pH & Water Quality\tabularnewline
+PTL & Total Phosphorus & Water Quality\tabularnewline
+SIO2 & Silica & Water Quality\tabularnewline
+SO4 & Sulfate & Water Quality\tabularnewline
+SOBC & Base Cation Sum & Water Quality\tabularnewline
+TOC & Total Organic Carbon & Water Quality\tabularnewline
+TURB & Turbidity & Water Quality\tabularnewline
+TmeanW & Mean Profile Water Temperature & Water Quality\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -1200,148 +1210,161 @@ NPratio & Nitrogen:Phophorus Ratio & Water Quality\tabularnewline
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
 
-\textsc{Breiman, L.} 2001. Random forests. Machine learning 45:5--32.
+Bilotta, G., and R. Brazier. 2008. Understanding the influence of
+suspended solids on water quality and aquatic biota. Water research
+42:2849--2861.
 
-\textsc{Carlson, R. E.} 1977. A trophic state index for lakes. Limnology
-and oceanography 22:361--369.
+Breiman, L. 2001. Random forests. Machine learning 45:5--32.
 
-\textsc{Carvalho, L., C. A. Miller, E. M. Scott, G. A. Codd, P. S.
-Davies, and A. N. Tyler}. 2011. Cyanobacterial blooms: Statistical
-models describing risk factors for national-scale lake assessment and
-lake management. Science of The Total Environment 409:5353--5358.
+Carlson, R. E. 1977. A trophic state index for lakes. Limnology and
+oceanography 22:361--369.
 
-\textsc{Cohen, J.} 1960. A coefficient of agreement for nominal scales.
+Carvalho, L., C. A. Miller, E. M. Scott, G. A. Codd, P. S. Davies, and
+A. N. Tyler. 2011. Cyanobacterial blooms: Statistical models describing
+risk factors for national-scale lake assessment and lake management.
+Science of The Total Environment 409:5353--5358.
+
+Cohen, J. 1960. A coefficient of agreement for nominal scales.
 Educational and Psychological Measurement 20:37--46.
 
-\textsc{Cutler, D. R., T. C. Edwards Jr, K. H. Beard, A. Cutler, K. T.
-Hess, J. Gibson, and J. J. Lawler}. 2007. Random forests for
-classification in ecology. Ecology 88:2783--2792.
+Cutler, D. R., T. C. Edwards Jr, K. H. Beard, A. Cutler, K. T. Hess, J.
+Gibson, and J. J. Lawler. 2007. Random forests for classification in
+ecology. Ecology 88:2783--2792.
 
-\textsc{D{í}az-Uriarte, R., and S. A. De Andres}. 2006. Gene selection
-and classification of microarray data using random forest. BMC
+D{í}az-Uriarte, R., and S. A. De Andres. 2006. Gene selection and
+classification of microarray data using random forest. BMC
 bioinformatics 7:3.
 
-\textsc{Downing, J. A., S. B. Watson, and E. McCauley}. 2001. Predicting
+Downing, J. A., and E. McCauley. 1992. The nitrogen:phosphorus
+relationship in lakes. Limnology and Oceanography 37:936--945.
+
+Downing, J. A., S. B. Watson, and E. McCauley. 2001. Predicting
 cyanobacteria dominance in lakes. Canadian journal of fisheries and
 aquatic sciences 58:1905--1908.
 
-\textsc{Fernández-Delgado, M., E. Cernadas, S. Barro, and D. Amorim}.
-2014. Do we need hundreds of classifiers to solve real world
-classification problems? Journal of Machine Learning Research
-15:3133--3181.
+Fernández-Delgado, M., E. Cernadas, S. Barro, and D. Amorim. 2014. Do we
+need hundreds of classifiers to solve real world classification
+problems? Journal of Machine Learning Research 15:3133--3181.
 
-\textsc{Hasler, A. D.} 1969. Cultural eutrophication is reversible.
-BioScience 19:425--431.
+Genkai-Kato, M., and S. R. Carpenter. 2005. Eutrophication due to
+phosphorus recycling in relation to lake morphometry, temperature, and
+macrophytes. Ecology 86:210--219.
 
-\textsc{Hollister, J. W.} 2014. Lakemorpho: Lake morphometry in R. R
-package version 1.0. http://CRAN.R-project.org/package=lakemorpho.
+Hansson, L.-A. 1992. Factors regulating periphytic algal biomass.
+Limnology and Oceanography 37:322--328.
 
-\textsc{Hollister, J. W., W. B. Milstead, and M. A. Urrutia}. 2011.
-Predicting maximum lake depth from surrounding topography. PLoS ONE
-6:e25764.
+Hasler, A. D. 1969. Cultural eutrophication is reversible. BioScience
+19:425--431.
 
-\textsc{Hollister, J. W., H. A. Walker, and J. F. Paul}. 2008. CProb: A
+Hollister, J. W. 2014. Lakemorpho: Lake morphometry in R. R package
+version 1.0. http://CRAN.R-project.org/package=lakemorpho.
+
+Hollister, J. W., W. B. Milstead, and M. A. Urrutia. 2011. Predicting
+maximum lake depth from surrounding topography. PLoS ONE 6:e25764.
+
+Hollister, J. W., H. A. Walker, and J. F. Paul. 2008. CProb: A
 computational tool for conducting conditional probability analysis.
 Journal of environmental quality 37:2392--2396.
 
-\textsc{Hollister, J., and W. B. Milstead}. 2010. Using gIS to estimate
-lake volume from limited data. Lake and Reservoir Management
-26:194--199.
+Hollister, J., and W. B. Milstead. 2010. Using GIS to estimate lake
+volume from limited data. Lake and Reservoir Management 26:194--199.
 
-\textsc{Homer, C., C. Huang, L. Yang, B. Wylie, and M. Coan}. 2004.
-Development of a 2001 national land-cover database for the united
-states. Photogrammetric Engineering \& Remote Sensing 70:829--840.
+Homer, C., C. Huang, L. Yang, B. Wylie, and M. Coan. 2004. Development
+of a 2001 national land-cover database for the united states.
+Photogrammetric Engineering \& Remote Sensing 70:829--840.
 
-\textsc{Hubert, L., and P. Arabie}. 1985. Comparing partitions. Journal
-of classification 2:193--218.
+Hubert, L., and P. Arabie. 1985. Comparing partitions. Journal of
+classification 2:193--218.
 
-\textsc{Imboden, D., and R. G{ä}chter}. 1978. A dynamic lake model for
-trophic state prediction. Ecological modelling 4:77--98.
+Imboden, D., and R. G{ä}chter. 1978. A dynamic lake model for trophic
+state prediction. Ecological modelling 4:77--98.
 
-\textsc{Jones, J., M. Knowlton, D. Obrecht, and E. Cook}. 2004.
-Importance of landscape variables and morphology on nutrients in
-missouri reservoirs. Canadian Journal of Fisheries and Aquatic Sciences
-61:1503--1512.
+Jones, J., M. Knowlton, D. Obrecht, and E. Cook. 2004. Importance of
+landscape variables and morphology on nutrients in missouri reservoirs.
+Canadian Journal of Fisheries and Aquatic Sciences 61:1503--1512.
 
-\textsc{Jones, K. B., A. C. Neale, M. S. Nash, R. D. Van Remortel, J. D.
-Wickham, K. H. Riitters, and R. V. O'Neill}. 2001. Predicting nutrient
+Jones, K. B., A. C. Neale, M. S. Nash, R. D. Van Remortel, J. D.
+Wickham, K. H. Riitters, and R. V. O'Neill. 2001. Predicting nutrient
 and sediment loadings to streams from landscape metrics: A multiple
 watershed study from the united states mid-atlantic region. Landscape
 Ecology 16:301--312.
 
-\textsc{Jones, Z., and F. Linder}. 2015. Exploratory data analysis using
-random forests. \emph{in} The 73rd annual mPSA conference. MPSA.
+Jones, Z., and F. Linder. 2015. Exploratory data analysis using random
+forests. \emph{in} The 73rd annual mPSA conference. MPSA.
 
-\textsc{Landis, J. R., and G. G. Koch}. 1977. The measurement of
-observer agreement for categorical data. biometrics 33:159--174.
+Landis, J. R., and G. G. Koch. 1977. The measurement of observer
+agreement for categorical data. biometrics 33:159--174.
 
-\textsc{Liaw, A., and M. Wiener}. 2002. Classification and regression by
+Liaw, A., and M. Wiener. 2002. Classification and regression by
 randomForest. R News 2:18--22.
 
-\textsc{Milstead, W. B., J. W. Hollister, R. B. Moore, and H. A.
-Walker}. 2013. Estimating summer nutrient concentrations in northeastern
-lakes from sPARROW load predictions and modeled lake depth and volume.
-PloS one 8:e81457.
+Milstead, W. B., J. W. Hollister, R. B. Moore, and H. A. Walker. 2013.
+Estimating summer nutrient concentrations in northeastern lakes from
+SPARROW load predictions and modeled lake depth and volume. PloS one
+8:e81457.
 
-\textsc{Moore, R. B., C. M. Johnston, R. A. Smith, and B. Milstead}.
-2011. Source and delivery of nutrients to receiving waters in the
-northeastern and mid-atlantic regions of the united states. JAWRA
-Journal of the American Water Resources Association 47:965--990.
+Moore, R. B., C. M. Johnston, R. A. Smith, and B. Milstead. 2011. Source
+and delivery of nutrients to receiving waters in the northeastern and
+mid-atlantic regions of the united states. JAWRA Journal of the American
+Water Resources Association 47:965--990.
 
-\textsc{Paul, J. F., and M. E. McDonald}. 2005. Development of
-empirical, geographically specific water quality criteria: A conditional
+Paul, J. F., and M. E. McDonald. 2005. Development of empirical,
+geographically specific water quality criteria: A conditional
 probability analysis approach 41:1211--1223.
 
-\textsc{Peters, J., B. D. Baets, N. E. Verhoest, R. Samson, S. Degroeve,
-P. D. Becker, and W. Huybrechts}. 2007. Random forests as a tool for
+Peters, J., B. D. Baets, N. E. Verhoest, R. Samson, S. Degroeve, P. D.
+Becker, and W. Huybrechts. 2007. Random forests as a tool for
 ecohydrological distribution modelling. Ecological Modelling
 207:304--318.
 
-\textsc{Rodhe, W.} 1969. Crystallization of eutrophication concepts in
-northern europe.
+Rodhe, W. 1969. Crystallization of eutrophication concepts in northern
+europe.
 
-\textsc{Salas, H. J., and P. Martino}. 1991. A simplified phosphorus
-trophic state model for warm-water tropical lakes. Water research
-25:341--350.
+Salas, H. J., and P. Martino. 1991. A simplified phosphorus trophic
+state model for warm-water tropical lakes. Water research 25:341--350.
 
-\textsc{Schindler, D. W., and J. R. Vallentyne}. 2008. The algal bowl:
+Schindler, D. W., and J. R. Vallentyne. 2008. The algal bowl:
 Overfertilization of the world's freshwaters and estuaries. Page 334.
 University of Alberta Press Edmonton.
 
-\textsc{Seilheimer, T. S., P. L. Zimmerman, K. M. Stueve, and C. H.
-Perry}. 2013. Landscape-scale modeling of water quality in lake superior
-and lake michigan watersheds: How useful are forest-based indicators?
-Journal of Great Lakes Research 39:211--223.
+Seilheimer, T. S., P. L. Zimmerman, K. M. Stueve, and C. H. Perry. 2013.
+Landscape-scale modeling of water quality in lake superior and lake
+michigan watersheds: How useful are forest-based indicators? Journal of
+Great Lakes Research 39:211--223.
 
-\textsc{Smith, V. H.} 1998. Cultural eutrophication of inland,
-estuarine, and coastal waters. Pages 7--49 \emph{in} Successes,
-limitations, and frontiers in ecosystem science. Springer.
+Smith, V. H. 1998. Cultural eutrophication of inland, estuarine, and
+coastal waters. Pages 7--49 \emph{in} Successes, limitations, and
+frontiers in ecosystem science. Springer.
 
-\textsc{Smith, V. H., S. B. Joye, R. W. Howarth, and others}. 2006.
+Smith, V. H., and D. W. Schindler. 2009. Eutrophication science: Where
+do we go from here? Trends in Ecology \& Evolution 24:201--207.
+
+Smith, V. H., S. B. Joye, R. W. Howarth, and others. 2006.
 Eutrophication of freshwater and marine ecosystems. Limnology and
 Oceanography 51:351--355.
 
-\textsc{Smith, V. H., G. D. Tilman, and J. C. Nekola}. 1999.
-Eutrophication: Impacts of excess nutrient inputs on freshwater, marine,
-and terrestrial ecosystems. Environmental pollution 100:179--196.
+Smith, V. H., G. D. Tilman, and J. C. Nekola. 1999. Eutrophication:
+Impacts of excess nutrient inputs on freshwater, marine, and terrestrial
+ecosystems. Environmental pollution 100:179--196.
 
-\textsc{Strobl, C., A.-L. Boulesteix, A. Zeileis, and T. Hothorn}. 2007.
-Bias in random forest variable importance measures: Illustrations,
-sources and a solution. BMC bioinformatics 8:25.
+Strobl, C., A.-L. Boulesteix, A. Zeileis, and T. Hothorn. 2007. Bias in
+random forest variable importance measures: Illustrations, sources and a
+solution. BMC bioinformatics 8:25.
 
-\textsc{USEPA}. 2009. National lakes assessment: A collaborative survey
-of the nation's lakes. ePA 841-r-09-001. Office of Water; Office of
-Research; Development, US Environmental Protection Agency Washington,
-DC.
+Tilzer, M. M. 1988. Secchi disk---chlorophyll relationships in a lake
+with highly variable phytoplankton biomass. Hydrobiologia 162:163--171.
 
-\textsc{Xian, G., C. Homer, and J. Fry}. 2009. Updating the 2001
-national land cover database land cover classification to 2006 by using
-landsat imagery change detection methods. Remote Sensing of Environment
+USEPA. 2009. National lakes assessment: A collaborative survey of the
+nation's lakes. ePA 841-r-09-001. Office of Water; Office of Research;
+Development, US Environmental Protection Agency Washington, DC.
+
+Xian, G., C. Homer, and J. Fry. 2009. Updating the 2001 national land
+cover database land cover classification to 2006 by using landsat
+imagery change detection methods. Remote Sensing of Environment
 113:1133--1147.
 
-\textsc{Yuan, L. L., A. I. Pollard, S. Pather, J. L. Oliver, and L.
-D'Anglada}. 2014. Managing microcystin: Identifying national-scale
-thresholds for total nitrogen and chlorophyll a. Freshwater Biology
-59:1970--1981.
+Yuan, L. L., A. I. Pollard, S. Pather, J. L. Oliver, and L. D'Anglada.
+2014. Managing microcystin: Identifying national-scale thresholds for
+total nitrogen and chlorophyll a. Freshwater Biology 59:1970--1981.
 
 \end{document}
