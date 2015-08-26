@@ -28,3 +28,4 @@ interpretR
 foreach
 iterators
 doParallel
+pander

@@ -23,9 +23,9 @@ output:
     fig_caption: yes
     reference_docx: 
 capsize: normalsize
-csl: components/freshwater-science.csl
+csl: components/ecology.csl
 documentclass: article
-fontsize: 11pt
+fontsize: 12pt
 linenumbers: yes
 bibliography: components/LakeTrophicModelling.bib
 running: Modelling Lake Trophic State
