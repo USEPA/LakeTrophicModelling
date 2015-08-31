@@ -165,20 +165,20 @@ Ecology Division, 27 Tarzwell Drive Narragansett, RI, 02882, USA\\*
 
 \textbf{Abstract}\\Productivity of lentic ecosystems is well studied and
 it is widely accepted that as nutrient inputs increase, productivity
-increases and lakes transition from lower trophic state
-(e.g.~oligotrophic) to higher trophic states (e.g.~eutrophic). These
-broad trophic state classifications are good predictors of ecosystem
-condition, services, and disservices (e.g.~recreation, aesthetics, and
-harmful algal blooms). While the relationship between nutrients and
-trophic state provides reliable predictions, it requires \emph{in situ}
-water quality data in order to parameterize the model. This limits the
-application of these models to lakes with existing and, more
+increases and lakes transition from lower trophic state (e.g.,
+oligotrophic) to higher trophic states (e.g., eutrophic). These broad
+trophic state classifications are good predictors of ecosystem
+condition, services (e.g., recreation and aesthetics), and disservices
+(e.g., harmful algal blooms). While the relationship between nutrients
+and trophic state provides reliable predictions, it requires \emph{in
+situ} water quality data in order to parameterize the model. This limits
+the application of these models to lakes with existing and, more
 importantly, available water quality data. To address this, we take
 advantage of the availability of a large national lakes water quality
-database (i.e.~the National Lakes Assessment), land use/land cover data,
-lake morphometry data, other universally available data, and apply data
-mining approaches to predict trophic state. Using this data and random
-forests, we first model chlorophyll \emph{a}, then classify the
+database (i.e., the National Lakes Assessment), land use/land cover
+data, lake morphometry data, other universally available data, and apply
+data mining approaches to predict trophic state. Using these data and
+random forests, we first model chlorophyll \emph{a}, then classify the
 resultant predictions into trophic states. The full model estimates
 chlorophyll \emph{a} with both \emph{in situ} and universally available
 data. The mean squared error and adjusted R\textsuperscript{2} of this
@@ -208,34 +208,33 @@ code and data for this manuscript are available from
 \section{Introduction}\label{introduction}
 
 Productivity in lentic systems is often categorized across a range of
-trophic states (e.g.~the trophic continuum) from early successional
-(i.e.~oligotrophic) to late successional lakes (i.e.~hypereutrophic)
+trophic states (e.g., the trophic continuum) from early successional
+(i.e., oligotrophic) to late successional lakes (i.e., hypereutrophic)
 with lakes naturally occurring across this range (Carlson 1977).
 Oligotrophic lakes occur in nutrient poor areas or have a more recent
 geologic history, are often found in higher elevations, have clear
 water, and are usually favored for drinking water or direct contact
-recreation (e.g.~swimming). Lakes with higher productivity
-(e.g.~mesotrophic and eutrophic lakes) have greater nutrient loads, tend
-to be less clear, have greater density of aquatic plants, and often
-support more diverse and abundant fish communities. Higher primary
-productivity is not necessarily a predictor of poor ecological condition
-as it is natural for lakes to shift from lower to higher trophic states
-but this is a slow process (Rodhe 1969). However, at the highest
-productivity levels (hypereutrophic lakes) biological integrity is
-compromised (Hasler 1969, Smith et al. 1999, Schindler and Vallentyne
-2008).
+recreation (e.g., swimming). Lakes with higher productivity (e.g.,
+mesotrophic and eutrophic lakes) have greater nutrient loads, tend to be
+less clear, have greater density of aquatic plants, and often support
+more diverse and abundant fish communities. Higher primary productivity
+is not necessarily a predictor of poor ecological condition as it is
+natural for lakes to shift from lower to higher trophic states but this
+is a slow process (Rodhe 1969). However, at the highest productivity
+levels (hypereutrophic lakes) biological integrity is compromised
+(Hasler 1969, Smith et al. 1999, Schindler and Vallentyne 2008).
 
 Monitoring trophic state allows for rapid assessment of a lakes
 biological productivity and identification of lakes with unusually high
-productivity (e.g.~hypereutrophic). These cases are indicative of lakes
+productivity (e.g., hypereutrophic). These cases are indicative of lakes
 under greater anthropogenic nutrient loads, also known as cultural
 eutrophication, and are more likely to be at risk of fish kills, beach
 fouling, and harmful algal blooms (Smith 1998, Smith et al. 1999, 2006).
 Given the association between trophic state and many ecosystem services
 and disservices, being able to accurately model trophic state could
 provide a first cut at identifying lakes with the potential for harmful
-algal blooms (i.e.~from cyanobacteria) or other problems associated with
-cultural eutrophication. This type of information could be used for
+algal blooms (i.e., from cyanobacteria) or other problems associated
+with cultural eutrophication. This type of information could be used for
 setting priorities for managment and allow for more efficient use of
 limited resources.
 
@@ -243,17 +242,17 @@ As trophic state and related indices can be best defined by a number of
 \emph{in situ} water quality parameters (modeled or measured), most
 models have used this information as predictors (Imboden and G{ä}chter
 1978, Salas and Martino 1991, Carvalho et al. 2011, Milstead et al.
-2013). This leads to accurate models, but this data is often sparse and
-not always available, thus limiting the population of lakes for which we
-can make predictions. A possible solution for this issue is to build
-models that use widely available data that are correlated to many of the
-\emph{in situ} variables. For instance, landscape metrics of forests,
-agriculture, wetlands, and urban land in contributing watersheds have
-all been shown to explain a significant proportion of the variation
-(ranging from 50-86\%, depending on study) in nutrients in receiving
-waters (Jones et al. 2001, 2004, Seilheimer et al. 2013). Building on
-these previously identified associations might allow us to use only
-landscape and other universally available data to build models.
+2013). This leads to accurate models, but these data are often sparse
+and not always available, thus limiting the population of lakes for
+which we can make predictions. A possible solution for this issue is to
+build models that use widely available data that are correlated to many
+of the \emph{in situ} variables. For instance, landscape metrics of
+forests, agriculture, wetlands, and urban land in contributing
+watersheds have all been shown to explain a significant proportion of
+the variation (ranging from 50-86\%, depending on study) in nutrients in
+receiving waters (Jones et al. 2001, 2004, Seilheimer et al. 2013).
+Building on these previously identified associations might allow us to
+use only landscape and other universally available data to build models.
 Identifying predictors using this type of ubiquitous data would allow
 for estimating trophic state in both monitored and unmonitored lakes.
 
@@ -261,28 +260,32 @@ Many published models of nutrients and trophic state in freshwater
 systems are based on linear modelling methods such as standard least
 squares regression or linear mixed models (Jones et al. 2001, 2004).
 While these methods have proven to be reliable, they have limitations
-(e.g.~independence, distribution assumptions, and outlier sensitivity).
+(e.g., independence, distribution assumptions, and outlier sensitivity).
 Using data mining approaches, such as random forests, avoids many of the
 limitations, may reduce bias, and often provides better predictions
 (Breiman 2001, Cutler et al. 2007, Peters et al. 2007, Fernández-Delgado
 et al. 2014). For instance, random forests are non-parametric and thus
-the data do not need to come from a specific distribution
-(e.g.~Gaussian) and can contain collinear variables (Cutler et al.
-2007). Second, random forests work well with very large numbers of
-predictors (Cutler et al. 2007). Lastly, random forests can deal with
-model selection uncertainty as predictions are based upon a consensus of
-many models and not just a single model selected with some measure of
+the data do not need to come from a specific distribution (e.g.,
+Gaussian) and can contain collinear variables (Cutler et al. 2007).
+Second, random forests work well with very large numbers of predictors
+(Cutler et al. 2007). Lastly, random forests can deal with model
+selection uncertainty as predictions are based upon a consensus of many
+models and not just a single model selected with some measure of
 goodness of fit.
 
 The research presented here builds on past work in three areas. First,
-we built, assessed, and compared two random forest models of chlorophyll
+we build, assess, and compare two random forest models of chlorophyll
 \emph{a} 1) \emph{in situ} and universally available GIS data and then
-2) universally available GIS data only. Second, we converted the
+2) universally available GIS data only. Second, we convert the
 chlorophyll \emph{a} estimates, for both models, to trophic state and
-assessed prediction accuracy and uncertainty. Third, we examined the
-important predictors for both models. Lastly, this paper, the code, and
-the data used in the models are available as an R package from
-\url{https://github.com/USEPA/LakeTrophicModelling}.
+assess prediction accuracy and uncertainty. Third, we examined the
+important predictors for both models.
+
+To promote repeatable research and open access to data and code, the
+analysis code, and the data used in the models are available as an R
+package from \url{https://github.com/USEPA/LakeTrophicModelling}. This
+will allow people with basic R skills to reproduce the paper with the
+figures and tables, and rerun or modify the analyses.
 
 \section{Methods}\label{methods}
 
@@ -319,7 +322,7 @@ buffer size is greater than the immediate parcel but smaller than
 regional and whole-basin measures.
 
 To account for unique aspects of each lake and to characterize lake
-productivity, we used measures of lake morphometry (i.e.~depth, volume,
+productivity, we used measures of lake morphometry (i.e., depth, volume,
 fetch, etc.). As these data are difficult to obtain for large numbers of
 lakes over broad regions, we used modeled estimates of lake morphometry
 (Hollister and Milstead 2010, Hollister et al. 2011, Hollister 2014).
@@ -336,10 +339,9 @@ categories (Breiman 2001). Bootstrapped sample data are recursively
 partitioned according to a given random subset of predictor variables
 and a predetermined number of decision trees are developed. With each
 new tree, the sample data subset is randomly selected and with each new
-split, the subset of predictor variables are randomly selected. A
-detailed discussion of the benefits of a random forest approach is
-beyond the scope of this paper. For a more detail description of random
-forests see Breiman (2001) and Cutler et al. (2007).
+split, the subset of predictor variables are randomly selected. For a
+more detail description of random forests see Breiman (2001) and Cutler
+et al. (2007).
 
 Random forests are able to handle numerous correlated variables without
 a decrease in prediction accuracy; however, one possible shortcoming of
@@ -380,17 +382,17 @@ variables.
 \subsection{Model Details}\label{model-details}
 
 Using \texttt{randomForest} R package we ran models to predict
-chlorphyll \emph{a} with two sets of predictors (Liaw and Wiener 2002).
+chlorophyll \emph{a} with two sets of predictors (Liaw and Wiener 2002).
 The first included \emph{in situ} and universally available GIS
-predictors. We refer to this as the ``All variables'' model. Second, we
-use just the univerally available data (i.e.~no \emph{in situ}
-information). This is referred to as the ``GIS only'' model. A list of
-the full suite of variables tested is in Appendix 1. Our separation of
-predictors was chosen so that we could highlight the additional
-predictive performance provided by adding the \emph{in situ} water
-quality variables on top of the GIS only variables. Lastly, we used only
-complete cases (i.e.~missing data were removed) so the total number of
-observations varied among models.
+predictors. We refer to this as the ``All variables'' model. For the
+second model we used just the univerally available data (i.e., no
+\emph{in situ} information). This is referred to as the ``GIS only''
+model. A list of the full suite of variables tested is in Appendix 1.
+Our separation of predictors was chosen so that we could highlight the
+additional predictive performance provided by adding the \emph{in situ}
+water quality variables on top of the GIS only variables. Lastly, we
+used only complete cases (i.e., missing data were removed) so the total
+number of observations varied among models.
 
 Our modelling work flow was as follows:
 
@@ -418,25 +420,25 @@ Our modelling work flow was as follows:
 Importance}\label{measures-of-model-performance-and-variable-importance}
 
 We assessed the performance of the random forest two ways. First we
-compare the root mean square error and the adjusted R\textsuperscript{2}
-of the models. Second, we examine the accuracy of the model predictions
-when converted to trophic states classes (Table
-\ref{tab:trophicStateTable}). We assess the classifcations via a
+compared the root mean square error and the adjusted
+R\textsuperscript{2} of the models. Second, we examined the accuracy of
+the model predictions when converted to trophic states classes (Table
+\ref{tab:trophicStateTable}). We assessed the classifcations via a
 confusion matrix. A confusion matrix shows agreement and disagreement in
 a tabular form with predicted values forming the columns of the matrix
 and observed values, the rows. From this tabulated information we
-calculate the total accuracy (i.e.~percent correctly predicted) and the
-kappa coefficient, which takes into account the error expected by chance
-alone (i.e.~the off diagonal values of the matrix) (Cohen 1960, Hubert
-and Arabie 1985). The kappa coefficient can range from -1 to 1 with 0
-equalling the agreement expected by chance alone. Values greater than 0
-represent agreement greater than would be expected by chance, with
-values greater than 0.61 considered ``substantial'' agreement (Landis
-and Koch 1977). Negative values are rare and would indicate no agreement
-between the predicted and observed values. Additonally, random forest
-builds each tree on bootstrapped, random subsets of the original data,
-thus, a separate independent validation dataset is not required and
-random forest error estimates are expected to be unbiased (Breiman
+calculated the total accuracy (i.e., percent correctly predicted) and
+the kappa coefficient, which takes into account the error expected by
+chance alone (i.e., the off diagonal values of the matrix) (Cohen 1960,
+Hubert and Arabie 1985). The kappa coefficient can range from -1 to 1
+with 0 equalling the agreement expected by chance alone. Values greater
+than 0 represent agreement greater than would be expected by chance,
+with values greater than 0.61 considered ``substantial'' agreement
+(Landis and Koch 1977). Negative values are rare and would indicate no
+agreement between the predicted and observed values. Additonally, random
+forest builds each tree on bootstrapped, random subsets of the original
+data, thus, a separate independent validation dataset is not required
+and random forest error estimates are expected to be unbiased (Breiman
 2001).
 
 The random forest algorithm explicitly measures variable importance with
@@ -444,11 +446,11 @@ two metrics: mean decrease in Gini and percent increase in mean squared
 error. Each of these measure the impact on the overall model when that
 particular variable is included and thus can be used to assess
 importance (Breiman 2001). The Gini Index has been shown to have a bias
-(Strobl et al. 2007), thus, we use percent increase in mean squared
+(Strobl et al. 2007), thus, we used percent increase in mean squared
 error to assess variable importance. Lastly, partial dependence plots
-provide a mecahnism to examine the partial relationship between
+provide a mechanism to examine the partial relationship between
 individual variables and the response variable (Jones and Linder 2015).
-We examine these plots for the top variables as assigned by percent
+We examined these plots for the top variables as assigned by percent
 increase in mean squared error for each the reduced models.
 
 \subsection{Trophic State
@@ -482,10 +484,9 @@ models.
 
 Our complete dataset included 1148 lakes; however 5 lakes did not have
 chlorophyll \emph{a} data. Thus, the base dataset for our modelling was
-conducted on data for 1143 lakes. The lakes were well distributed both
-across the four trophic state categories (Table
-\ref{tab:trophicStateTable}) and spatially throughout the United States
-(Figure \ref{fig:nlaMap}).
+conducted on data for 1143 lakes. The lakes were well distributed across
+the four trophic state categories (Table \ref{tab:trophicStateTable})
+and spatially throughout the United States (Figure \ref{fig:nlaMap}).
 
 \subsection{Models: All Variables}\label{models-all-variables}
 
@@ -493,11 +494,12 @@ The model built with all predictors used 1080 total observations, had a
 mean squared error of 0.09 and and R\textsuperscript{2} of 0.8. The
 accuracy of the four trophic states was 68.7\% and the kappa coefficient
 was 0.57 (Table \ref{tab:Confusion_All_4}). The variable selection
-process identified 20 variables (Figure \ref{fig:all_varsel_figure}).
-The six most important variables were turbidity, total phosphorus, total
-nitrogen, elevation, total organic carbon, and N:P ratio (Figures
-\ref{fig:All_Importance}). The role that each played in predicting
-chlorophyll \emph{a} varied (Figure \ref{fig:all_partial_dependence}).
+process identified a reduced model with 20 variables (Figure
+\ref{fig:all_varsel_figure}). The six most important variables were
+turbidity, total phosphorus, total nitrogen, elevation, total organic
+carbon, and N:P ratio (Figures \ref{fig:All_Importance}). The role that
+each played in predicting chlorophyll \emph{a} varied (Figure
+\ref{fig:all_partial_dependence}).
 
 \subsection{Models: GIS Only Variables}\label{models-gis-only-variables}
 
@@ -532,7 +534,7 @@ accuracy between the two models decreased (Figure
 \subsection{Trophic State
 Probabilities}\label{trophic-state-probabilities-2}
 
-Not surprisingly, lakes with more certain predictions (i.e.~higher
+Not surprisingly, lakes with more certain predictions (i.e., higher
 prediction probabilities) were more accurately predicted (Figure
 \ref{fig:cond_prob_fig}). The fact that the difference in accuracy
 between the two models decreased as certainty in the prediction
@@ -558,13 +560,14 @@ prediction probabilities of the discrete predicted class. (Figure
 \ref{fig:predicted_prob_map}). This map shows where the model predicts
 well and where it is less certain. In general, the map shows most points
 with higher prediction probabilities than the midpoint of the range and
-the distribution of prediction probabilities is skewed left (Figure
-\ref{fig:pred_prob_dist}). While these patterns are not strong, they
-suggest that with slight improvements in the ``GIS only'' model we could
-skew the prediction probabilites futher left and easily improve the
-overall accuracy of the model. This could be done using modeled,
-national estimates of nutrient loads (Moore et al. 2011, e.g. Milstead
-et al. 2013).
+the distribution of prediction probabilities is skewed left indicating a
+bias towards higher prediction probabilities and therefore greater
+accuracy (Figure \ref{fig:pred_prob_dist}). While these patterns are not
+strong, they suggest that with slight improvements in the ``GIS only''
+model we could skew the prediction probabilites futher left and easily
+improve the overall accuracy of the model. This could be done using
+modeled, national estimates of nutrient loads (Moore et al. 2011, e.g.,
+Milstead et al. 2013).
 
 \subsection{Partial dependencies of explanatory
 variables}\label{partial-dependencies-of-explanatory-variables}
@@ -602,7 +605,7 @@ therefore light availability decreases (Tilzer 1988, Bilotta and Brazier
 turbidity and we expect greater productivity to lead to increased
 turbidity (Hansson 1992). We interpret this pattern as indicating that
 as chlorophyll \emph{a} concentrations increase we see a concomitant
-increase in turbidity.
+increase in turbidity due to increased algal cell densities.
 
 Elevation was selected as an important predictive variable in both the
 all variables and the GIS only models; the partial dependencies (Figures
@@ -643,7 +646,7 @@ chlorophyll \emph{a} concentrations (Figure
 increases we are likely to see increased elevation and soil differences
 that limit agriculture.
 
-Lastly, morphometry (e.g.~depth) also proved to be important in the
+Lastly, morphometry (e.g., depth) also proved to be important in the
 prediction of lake trophic state (Genkai-Kato and Carpenter 2005). As
 morphometry shows little to no broad scale spatial pattern and is unique
 to a given lake, these data are likely illuminating the local, lake
@@ -684,17 +687,17 @@ in trophic state, land use/land cover controls of trophic state, and
 local, lake-scale control driven by lake morphometry.
 
 A potentially usfeful benefit of models of trophic state and chlorophyll
-\emph{a} are their use in assesing risk due to cyanobacteria.
+\emph{a} are their use in assessing risk due to cyanobacteria.
 Cyanobacteria biomass should be closely associated with chlorophyll
 \emph{a} and trophic state as cyanobacteria contribute to the
 chlorophyll concentration in a lake. If these associations are strong
 enough we may be able to expand models such as those reported here to
 also predict probability of cyanobacteria blooms and other indices
-realted to cyanobcteria (e.g.~toxin presence). Others have seen these
+realated to cyanobacteria (e.g., toxin presence). Others have seen these
 associations. For instance, Yuan et al. (2014) used the 2007 NLA to
 demonstrate that total nitrogen and chlorophyll \emph{a} concentrations
 were good predictors of World Health Organization microcystin (a toxin
-produced by some cyanobacteria) criteria exceedences. Using this same
+produced by some cyanobacteria) criteria exceedences. Using these same
 data, we see a positive trend between cholorophyll \emph{a} and
 cyanobacteria abundance (Figure \ref{fig:scatterplot}). Both of these
 suggest that trophic state may be an acceptable proxy for cyanobacteria
@@ -706,12 +709,12 @@ ecoregion as an important variable, suggests regional trends. This is
 noteworthy because it suggests that efforts to monitor, model and manage
 eutrophication and cyanobacteria should be undertaken at both national
 and regional levels. Second, while direct control of water quality in
-lakes would have a large impact, the land use/land cover drivers
-(i.e.~non-point sources) of water quality are also important, and better
+lakes would have a large impact, the land use/land cover drivers (i.e.,
+non-point sources) of water quality are also important, and better
 management of the spatial distribution of important classes such as
 forest and agriculture can provide some level of control on trophic
 state and amount of cyanobacteria present. Third, in-lake processes
-(i.e.~residence time, nutrient cycling, etc.) are, as expected,
+(i.e., residence time, nutrient cycling, etc.) are, as expected,
 important and need to be part of any management strategy. Building on
 these efforts through updated models, direct prediction of
 cyanobacteria, and additional information on the regional differences
