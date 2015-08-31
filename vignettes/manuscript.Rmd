@@ -72,6 +72,10 @@ if(!require(interpretR)){
 if(!require(doParallel)){
   install.packages("doParallel")
 }
+if(!require(viridis)){
+  devtools::install_github("CRAN/viridis")
+}
+library("viridis")
 library("wesanderson")
 library("LakeTrophicModelling")
 library("knitr")
@@ -191,42 +195,31 @@ var_importance<-var_importance[order(var_importance$model_id,-var_importance$mea
 ```{r rf_pd, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
 ################################################################################
 #Register parallel backend for partial dependence
-numcores<-parallel::detectCores()
-cl <- makeCluster(numcores)
-registerDoParallel(cl)
-co <- 25L
+#numcores<-parallel::detectCores()
+#cl <- makeCluster(numcores)
+#registerDoParallel(cl)
+co <- 100
 
 ################################################################################
 #All variables partial dependence
-all_rf_turb_pd<-partial_dependence(all_rf,all_dat,"TURB",cutoff = co, ci=FALSE,
-                                   parallel = TRUE)
-all_rf_ntl_pd<-partial_dependence(all_rf,all_dat,"NTL",cutoff = co,ci=FALSE,
-                   parallel = TRUE)
-all_rf_ptl_pd<-partial_dependence(all_rf,all_dat,"PTL",cutoff = co,ci=FALSE,
-                   parallel = TRUE)
-all_rf_elev_pd<-partial_dependence(all_rf,all_dat,"ELEV_PT",cutoff = co,ci=FALSE,
-                   parallel = TRUE)
-all_rf_toc_pd<-partial_dependence(all_rf,all_dat,"TOC",cutoff = co,ci=FALSE,
-                   parallel = TRUE)
-all_rf_np_pd<-partial_dependence(all_rf,all_dat,"NPratio",cutoff = co,ci=FALSE,
-                   parallel = TRUE)
+all_rf_turb_pd<-partialPlot(all_rf,all_dat,"TURB",n.pt=co,plot=FALSE)
+all_rf_ntl_pd<-partialPlot(all_rf,all_dat,"NTL",n.pt=co,plot=FALSE)
+all_rf_ptl_pd<-partialPlot(all_rf,all_dat,"PTL",n.pt=co,plot=FALSE)
+all_rf_elev_pd<-partialPlot(all_rf,all_dat,"ELEV_PT",n.pt=co,plot=FALSE)
+all_rf_toc_pd<-partialPlot(all_rf,all_dat,"TOC",n.pt=co,plot=FALSE)
+all_rf_np_pd<-partialPlot(all_rf,all_dat,"NPratio",n.pt=co,plot=FALSE)
 
 ################################################################################
 #GIS Only partial dependence
-gis_rf_ecor_pd<-partial_dependence(gis_rf,gis_dat,"WSA_ECO9",cutoff = co, ci=FALSE,
-                                   parallel = TRUE)
-gis_rf_crops_pd<-partial_dependence(gis_rf,gis_dat,"CropsPer_3000m",cutoff = co, 
-                                    ci=FALSE, parallel = TRUE)
-gis_rf_elev_pd<-partial_dependence(gis_rf,gis_dat,"ELEV_PT",cutoff = co, ci=FALSE,
-                   parallel = TRUE)
-gis_rf_lat_pd<-partial_dependence(gis_rf,gis_dat,"AlbersY",cutoff = co, ci=FALSE,
-                   parallel = TRUE)
-gis_rf_conifer_pd<-partial_dependence(gis_rf,gis_dat,"EvergreenPer_3000m",cutoff = co, 
-                                      ci=FALSE, parallel = TRUE)
-gis_rf_mndepth_pd<-partial_dependence(gis_rf,gis_dat,"MeanDepthCorrect",cutoff = co, 
-                                      ci=FALSE, parallel = TRUE)
-
-stopCluster(cl)
+gis_rf_ecor_pd<-partialPlot(gis_rf,gis_dat,"WSA_ECO9",plot=FALSE)
+gis_rf_crops_pd<-partialPlot(gis_rf,gis_dat,"CropsPer_3000m",n.pt=co,plot=FALSE)
+gis_rf_elev_pd<-partialPlot(gis_rf,gis_dat,"ELEV_PT",n.pt=co,plot=FALSE)
+gis_rf_lat_pd<-partialPlot(gis_rf,gis_dat,"AlbersY",n.pt=co,plot=FALSE)
+gis_rf_conifer_pd<-partialPlot(gis_rf,gis_dat,"EvergreenPer_3000m",n.pt=co,
+                               plot=FALSE)
+gis_rf_mndepth_pd<-partialPlot(gis_rf,gis_dat,"MeanDepthCorrect",n.pt=co,
+                               plot=FALSE)
+#stopCluster(cl)
 ```
 
 ```{r trophic_class, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
@@ -428,22 +421,25 @@ all_vars<-unique(all_vars)
 #all_movies_palette<-unique(all_movies_palette)
 #zissou<-c(wes.palette(5,"Zissou"),wes.palette(5,"Rushmore"))
 #col_lu<-data.frame(variables=all_vars,hexcode=sample(all_movies_palette,length(all_vars)))
+
 ```
 
 
 ```{r fig1_nlaMap,eval=TRUE, echo=FALSE, fig.cap="Map of the distribution of National Lakes Assesment Sampling locations \\label{fig:nlaMap}",cache=FALSE}
 state<-map_data('state')
-lakes_alb<-data.frame(ltmData[["AlbersX"]],ltmData[["AlbersY"]])
+lakes_alb<-data.frame(ltmData[["AlbersX"]],ltmData[["AlbersY"]],data=ltmData$TS_CHLA_4)
 p4s<-"+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
 ll<-"+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"
-lakes_alb_sp<-SpatialPoints(coordinates(lakes_alb),proj4string=CRS(p4s))
+lakes_alb_sp<-SpatialPointsDataFrame(coordinates(lakes_alb[,1:2]),proj4string=CRS(p4s),data = lakes_alb["data"])
 lakes_dd<-spTransform(lakes_alb_sp,CRS=CRS(ll))
-lakes_dd<-data.frame(coordinates(lakes_dd))
+lakes_dd<-data.frame(coordinates(lakes_dd),lakes_dd$data)
 #mycolor<-wes.palette(5,"Rushmore")
 #mycolor<-c(mycolor[1],mycolor[2],mycolor[4])
 mycolor<-c("grey25","white","black")
-names(lakes_dd)<-c("long","lat",c())
-nlaMap(state,lakes_dd,mycolor)
+#cbPalette <- c("#0072B2","#999999","#F0E442","#D55E00")
+cbPalette <- viridis(4)
+names(lakes_dd)<-c("long","lat","data")
+nlaMap(state,lakes_dd,mycolor,cats=TRUE,catColor=cbPalette)
 ```
 
 \newpage
@@ -461,12 +457,24 @@ importancePlot(all_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 \newpage
 
 ```{r all_partial_dependence, eval=TRUE, echo=FALSE, fig.cap="All Variables partial dependence plots for the top 5 most important variables. \\label{fig:all_partial_dependence}",cache=FALSE, warning=FALSE,fig.height=7}
-multiplot(plot_pd(all_rf_turb_pd),
-          plot_pd(all_rf_ntl_pd),
-          plot_pd(all_rf_ptl_pd),
-          plot_pd(all_rf_elev_pd),
-          plot_pd(all_rf_toc_pd),
-          plot_pd(all_rf_np_pd),
+multiplot(partial_plot(all_rf_turb_pd,
+                       x="Turbidity (NTU)",
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
+          partial_plot(all_rf_ntl_pd,
+                       x=expression(paste('Total Nitrogen',' (',mu,'g/L)')),
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
+          partial_plot(all_rf_ptl_pd,
+                       x=expression(paste('Total Phosporus',' (',mu,'g/L)')),
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
+          partial_plot(all_rf_elev_pd,
+                       x="Elevation (m)",
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
+          partial_plot(all_rf_toc_pd,
+                       x="Total Organic Carbon (mg/L)",
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
+          partial_plot(all_rf_np_pd,
+                       x="N:P Ratio",
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
           layout=matrix(1:6,ncol=2,byrow=TRUE))
 ```
 
@@ -486,12 +494,29 @@ importancePlot(gis_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_
 
 ```{r gis_partial_dependence,eval=TRUE, echo=FALSE, fig.cap="GIS Only Variables partial dependence plots for the top 5 most important variables. \\label{fig:gis_partial_dependence}",cache=FALSE, warning=FALSE, message=FALSE,fig.height=7}
 
-multiplot(plot_pd(gis_rf_ecor_pd),
-          plot_pd(gis_rf_crops_pd),
-          plot_pd(gis_rf_elev_pd),
-          plot_pd(gis_rf_lat_pd),
-          plot_pd(gis_rf_conifer_pd),
-          plot_pd(gis_rf_mndepth_pd),
+#Order Ecoregions E-W
+gis_rf_ecor_pd$x <- factor(gis_rf_ecor_pd$x,levels=c("NAP","CPL","SAP","TPL","UMW","SPL",
+                                                   "NPL","WMT","XER"),
+                           ordered=TRUE)
+
+multiplot(partial_plot(gis_rf_ecor_pd,
+                       x="Ecoregion",
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
+          partial_plot(gis_rf_crops_pd,
+                       x="Cropland (%)",
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
+          partial_plot(gis_rf_elev_pd,
+                       x="Elevation (m)",
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
+          partial_plot(gis_rf_lat_pd,
+                       x="Latitude (m)",
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
+          partial_plot(gis_rf_conifer_pd,
+                       x="Conifer (%)",
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
+          partial_plot(gis_rf_mndepth_pd,
+                       x="Mean Lake Depth (m)",
+                       y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
           layout=matrix(1:6,ncol=2,byrow=TRUE))
 ```
 
@@ -539,8 +564,18 @@ density_plot(gis_rf_ts_prob,xvar="max",x="Predicted Probability")
 
 \newpage
 
-```{r ecoregion_map, eval=TRUE, results="asis",echo=FALSE, fig.cap="Wadeable Sreams assesment ecoregions  \\label{fig:ecoregion_map}",cache=FALSE,fig.height=7,message=FALSE}
-
+```{r ecoregion_map, eval=TRUE, results="asis",echo=FALSE, fig.cap="Wadeable Streams Assesment ecoregions  \\label{fig:ecoregion_map}",cache=FALSE,fig.height=7,message=FALSE}
+wsa9@data$WSA_9<-factor(wsa9@data$WSA_9,levels=c("NAP","CPL","SAP","TPL","UMW","SPL",
+                                                   "NPL","WMT","XER"),
+                           labels=c("Northern Appalachians (NAP)","Coastal Plains (CPL)",
+                                    "Southern Appalachians (SAP)",
+                                    "Temporate Plains (TPL)",
+                                    "Upper Midwest (UMW)","Southern Plains (SPL)",
+                                    "Northern Plains (NPL)","Western Mountains (WMT)",
+                                    "Xeric (XER)"),
+                           ordered=TRUE)
+#my_col<-data.frame(WSA_9=c(NA,levels(wsa9@data$WSA_9)),color=viridis(10))
+#wsa9@data<-merge(wsa9@data,my_col)
 ecor_map(wsa9)
 ```
 
@@ -549,8 +584,8 @@ ecor_map(wsa9)
 ```{r chla_cyano_scatterplot,eval=TRUE,echo=FALSE, fig.cap="Cholorphyll *a* and cyanobacteria abundance scatterplot\\label{fig:scatterplot}",cache=FALSE}
 scp_df<-data.frame(chla=ltmData[["CHLA"]],abundp1=ltmData[["cyanoCellsPerML"]]+1)
 scatterPlot(scp_df,xvar="chla",yvar="abundp1","black","grey50","grey25",
-             x=expression(paste('Log10(Chl ', italic("a"),' (',mu,'g/L))')),
-             y="Log10(Cyanobaterial Abundance (cells/ml) + 1)")
+             x=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)')),
+             y="Log10 Cyanobaterial Abundance (cells/ml) + 1")
 ```
 
 \newpage

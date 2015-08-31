@@ -4,12 +4,14 @@
 \alias{nlaMap}
 \title{Create map of NLA samples}
 \usage{
-nlaMap(states, lakes, myColor = 1:3)
+nlaMap(states, lakes, cats = F, myColor = 1:3, catColor = NULL)
 }
 \arguments{
 \item{states}{data for states, as data.frame}
 
 \item{lakes}{point locations for lake samples as data.frame}
+
+\item{cats}{plot ts categories?}
 
 \item{myColor}{vector of length 3 with colors for fill, lines, and points in that order}
 }

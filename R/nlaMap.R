@@ -4,6 +4,7 @@
 #' 
 #' @param states data for states, as data.frame
 #' @param lakes point locations for lake samples as data.frame
+#' @param cats plot ts categories?
 #' @param myColor vector of length 3 with colors for fill, lines, and points in that order
 #' 
 #' @examples
@@ -18,17 +19,32 @@
 #' nlaMap(state,lakes_dd)
 #' @export
 #' @import ggplot2
-nlaMap<-function(states,lakes,myColor=1:3){
-  #browser()
-
+nlaMap<-function(states,lakes,cats=F,myColor=1:3,catColor=NULL){
+  #Color Blind Friendly Palette
+  if(cats){
+    gmap<-ggplot(states,aes(x=long,y=lat))+
+      geom_polygon(aes(group=group),fill=myColor[2],colour=myColor[1])+
+      geom_point(data=lakes,aes(x=long,y=lat,color=factor(data)),size=2.5)+
+      scale_color_manual(values=catColor,
+                         name="Trophic\nState",
+                         breaks=c("Oligo", "Meso", "Eu","Hyper"),
+                         labels=c("Oligotrophc", "Mesotrophic", "Eutrophic","Hypereutrophic"))+
+      coord_map("albers", lat2 = 45.5, lat1 = 29.5) +
+      theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), 
+            panel.border = element_blank(),
+            axis.text = element_blank(),axis.ticks = element_blank()) + 
+      ylab("") + 
+      xlab("")
+  } else {
   gmap<-ggplot(states,aes(x=long,y=lat))+
                geom_polygon(aes(group=group),fill=myColor[2],colour=myColor[1])+
-               geom_point(data=lakes,aes(x=long,y=lat),size=2,colour=myColor[3])+
+               geom_point(data=lakes,aes(x=long,y=lat),size=2.5,colour=myColor[3])+
                coord_map("albers", lat2 = 45.5, lat1 = 29.5)+
                theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), 
                      panel.border = element_blank(), legend.position = "none", 
                      axis.text = element_blank(),axis.ticks = element_blank()) + 
                ylab("") + 
                xlab("")
+  }
   return(gmap)
 }

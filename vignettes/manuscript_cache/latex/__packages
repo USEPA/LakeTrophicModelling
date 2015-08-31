@@ -29,3 +29,4 @@ foreach
 iterators
 doParallel
 pander
+maptools
