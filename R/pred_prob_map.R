@@ -24,25 +24,27 @@
 pred_prob_map<-function(states,lakes,probs,save_sep=FALSE){
   lakes<-merge(lakes,probs,by="nla_id")
   value<-"max"
-  title<-"Predicted Probability"
-  low<-"#E0EEEE"
-  high<-"#00688B"
+  title<-""
+  low<-viridis(3)[2]
+  high<-viridis(3)[1]
   mid_pt<-mean(range(lakes$max))
   gmap<-ggplot(states,aes(x=long,y=lat))+
     geom_polygon(aes(group=group),fill="white",colour="grey")+
-    geom_point(data=lakes,aes_string(x="long",y="lat",colour=value),size=3.5)+
+    geom_point(data=lakes,aes_string(x="long",y="lat",colour=value),size=2.5)+
     coord_map("albers", lat2 = 45.5, lat1 = 29.5)+
-    theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), 
-          panel.border = element_blank(), 
-          axis.text = element_blank(),axis.ticks = element_blank(),
-          plot.margin = grid::unit(c(0,0,0,0),"inches")) + 
+    theme(text = element_text(family="sans"),
+          panel.background = element_blank(), #panel.grid = element_blank(), 
+          panel.border = element_rect(fill = NA), 
+          plot.title  = element_text(family="sans",size=15,face="bold",vjust=1.1),
+          legend.key = element_rect(fill = 'white'),
+          legend.text = element_text(family="sans",size=15), legend.title = element_text(size=15),
+          axis.title.x = element_text(family="sans",vjust = -0.5, size = 12),
+          axis.title.y = element_text(family="sans",vjust = 1.5, size = 12),
+          axis.text.x = element_text(family="sans",size = 11),
+          axis.text.y = element_text(family="sans",size = 11)) + 
     ggtitle(title)+
     ylab("") + 
     xlab("") +
-    scale_colour_gradient2("Probability",midpoint = mid_pt) +
-    guides(fill = guide_legend(
-      title.theme = element_text(size=10),
-      keywidth = 0.5, keyheight = 0.5
-    ))
+    scale_colour_gradient2("Probability",low=low,midpoint = mid_pt,high=high)
   return(gmap)
 }

@@ -1,0 +1,12 @@
+---
+title: "Untitled"
+author: "Jeff W. Hollister"
+date: "9/1/2015"
+output: pdf_document
+---
+|                 | oligo| meso|  eu| hyper| Class Accuracy (%)|
+|:----------------|-----:|----:|---:|-----:|------------------:|
+|Predicted/nOligo |   115|   31|   0|     0|              78.77|
+|meso             |    67|  251|  63|     0|              65.88|
+|eu               |     7|   61| 217|    75|              60.28|
+|hyper            |     0|    5|  29|   159|              82.38|

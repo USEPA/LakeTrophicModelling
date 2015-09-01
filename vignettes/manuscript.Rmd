@@ -182,7 +182,7 @@ gis_rf<-randomForest(y=gis_dat$LogCHLA,x=gis_dat[,gis_vars_select],
 ```
 
 ```{r rf_var_importance, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
-
+data_def <- read.csv("../inst/extdata/data.def.csv")
 all_imp <- importance(all_rf)
 gis_imp <- importance(gis_rf)
 var_importance<-rbind(varImportance(all_imp,"All variables"),
@@ -301,7 +301,7 @@ To promote repeatable research  and open access to data and code, the analysis c
 ##Data and Study Area
 We utilized three primary sources of data for this study, the National Lakes Assessment (NLA), the National Land Cover Dataset (NLCD), and  lake morphometery modeled from the NHDPlus and National Elevation Data Set [@usepa2009national;@homer2004development;@xian2009updating;@hollister2010volume;@hollister_predicting_2011;@lakemorpho2014].  All datasets are national in extent and provide a unique snapshot view of the condition of lakes in the conterminous United States during the summer of 2007.
 
-The NLA dataset was collected during the summer of 2007 and the final datasets were released in 2009 [@usepa2009national for detailed description of methods].  With consistent methods and metrics collected at over 1000 locations across the conterminous United States (Figure \ref{fig:nlaMap}), the NLA provides a unique opportunity to examine broad scale patterns in lake productivity.  The NLA collected data on biophysical measures of lake water quality and habitat as well as an assessment of the phytoplankton community.  For this analysis, we only use the various water quality measurements from the National Lakes Assessment [@usepa2009national].   
+The NLA dataset was collected during the summer of 2007 and the final datasets were released in 2009 [@usepa2009national for detailed description of methods].  With consistent methods and metrics collected at over 1000 locations across the conterminous United States (Figure \ref{fig:nlaMap}), the NLA provides a unique opportunity to examine broad scale patterns in lake productivity.  The NLA collected data on biophysical measures of lake water quality and habitat as well as an assessment of the phytoplankton community.  For this analysis, we only use the various water quality measurements from the National Lakes Assessment [@usepa2009national].  Additionally, the NLA included ecological regions as defined in the Wadeable Streams Assessment (Figure \ref{fig:ecoregion_map}) [@usepa2006wadeable; @omernik1987ecoregions].   
 
 Adding to the monitoring data collected via the NLA, we used the 2006 NLCD data to examine landscape-level drivers of trophic status in lakes.  The NLCD is a national land use/land cover dataset that also provides estimates of impervious surface.  We calculated total proportion of each NLCD land use land cover class and total percent impervious surface within a 3 kilometer buffer surrounding each lake [@homer2004development;@xian2009updating].  A three kilometer buffer was selected as an intermediate measure of the adjacent neighborhood; the three kilometer buffer size is greater than the immediate parcel but smaller than regional  and whole-basin measures.  
 
@@ -378,7 +378,7 @@ Turbidity was selected as the most important variable in the "All variables" mod
 
 Elevation was selected as an important predictive variable in both the all variables and the GIS only models; the partial dependencies (Figures \ref{fig:all_partial_dependence} & \ref{fig:gis_partial_dependence}) indicate a negative relationship between elevation and chlorophyll *a* concentration that is probably due to fact that the location of mountains in the United States is the spatial inverse of the distribution of agricultural and urban lands.  As elevation increases we expect decreased loads due to smaller watershed contributing areas. In contrast lower elevation sites will have larger drainage areas and greater potential for increased nutrient loads from urban and agricultural sources.  
 
-The variables in the "GIS only" model captured the large scale spatial pattern of the trophic status gradient of lakes across the United States.  In addition to elevation, mentioned above, the model was most sensitive to latitude and ecoregion.  In general, chlorophyll *a* concentrations are highest in the Southern portions of the study area where temperatures can be higher (a known driver of productivity), elevations lower, and agricultural impacts more pronounced.   Likewise ecoregion (see Figure \ref{fig:ecoregion_map}) has a pronounced affect indicting continental scale effects of land use and geography.  Agriculturally dominated landscapes such as the Temperate Plains, Southern Plains, and Coastal Plains show the highest levels of Chlorophyll *a*.  Whereas high elevation zones (Western Mountains), arid lands (Xeric), Northern habitats (Upper Midwest) have lower concentrations.
+The variables in the "GIS only" model captured the large scale spatial pattern of the trophic status gradient of lakes across the United States.  In addition to elevation, mentioned above, the model was most sensitive to latitude and ecoregion.  In general, chlorophyll *a* concentrations are highest in the Southern portions of the study area where temperatures can be higher (a known driver of productivity), elevations lower, and agricultural impacts more pronounced.   Likewise ecoregion (see Figures \ref{fig:ecoregion_map} & \ref{fig:gis_partial_dependence}) has a pronounced affect indicting continental scale effects of land use and geography.  Agriculturally dominated landscapes such as the Temperate Plains, Southern Plains, and Coastal Plains show the highest levels of Chlorophyll *a*.  Whereas high elevation zones (Western Mountains), arid lands (Xeric), Northern habitats (Upper Midwest) have lower concentrations.
 
 Further evidence for the role of land use/land cover variables is shown by the selection of the percent cropland and percent evergreen forest variables.  As indicated by the partial dependency plots (Figure \ref{fig:gis_partial_dependence}), chlorophyll *a* increases with cropland and decreases with evergreen cover.  It is not surprising that croplands were selected given the overwhelming impact of agriculture on the eutrophication process.   The negative association of evergreens and chlorophyll *a* concentrations (Figure \ref{fig:gis_partial_dependence}).  As the percent of evergreens increases we are likely to see increased elevation and soil differences that limit agriculture.  
 
@@ -444,6 +444,24 @@ nlaMap(state,lakes_dd,mycolor,cats=TRUE,catColor=cbPalette)
 
 \newpage
 
+```{r ecoregion_map, eval=TRUE, results="asis",echo=FALSE, fig.cap="Wadeable Streams Assesment ecoregions  \\label{fig:ecoregion_map}",cache=FALSE,message=FALSE}
+wsa9@data$WSA_9<-factor(wsa9@data$WSA_9,levels=c("NAP","CPL","SAP","TPL","UMW","SPL",
+                                                   "NPL","WMT","XER"),
+                           labels=c("Northern\nAppalachians (NAP)",
+                                    "Coastal\nPlains (CPL)",
+                                    "Southern\nAppalachians (SAP)",
+                                    "Temporate\nPlains (TPL)",
+                                    "Upper\nMidwest (UMW)","Southern\nPlains (SPL)",
+                                    "Northern\nPlains (NPL)","Western\nMountains (WMT)",
+                                    "Xeric (XER)"),
+                           ordered=TRUE)
+#my_col<-data.frame(WSA_9=c(NA,levels(wsa9@data$WSA_9)),color=viridis(10))
+#wsa9@data<-merge(wsa9@data,my_col)
+ecor_map(wsa9)
+```
+
+\newpage
+
 ```{r all_var_sel_figure, eval=TRUE,results="asis",echo=FALSE, fig.cap="Variable selection plot for all variables.  Shows percent increase in mean squared error as a function of the number of variables.  \\label{fig:all_varsel_figure}",cache=FALSE}
 varsel_plot(all_vs)
 ```
@@ -451,7 +469,7 @@ varsel_plot(all_vs)
 \newpage
 
 ```{r All_Importance, eval=TRUE,results="asis",echo=FALSE, fig.cap="Importance plot for All Variables., shows percent increase in mean square error.  Higher values of percent increase in mean squared error indicates higher importance.  \\label{fig:All_Importance}",cache=FALSE}
-importancePlot(all_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_color))
+importancePlot(all_rf, data_def=data_def,type='acc',size=3)#,aes(colour=all_ts4_color))
 ```
 
 \newpage
@@ -487,7 +505,7 @@ varsel_plot(gis_vs)
 \newpage
 
 ```{r GIS_Importance, eval=TRUE,results="asis",echo=FALSE, fig.cap="Importance plot for GIS Only Variables., shows percent increase in mean square error.  Higher values of percent increase in mean squared error indicates higher importance.  \\label{fig:GIS_Importance}",cache=FALSE}
-importancePlot(gis_rf, data_def=data_def,type='acc',size=5)#,aes(colour=all_ts4_color))
+importancePlot(gis_rf, data_def=data_def,type='acc',size=3)#,aes(colour=all_ts4_color))
 ```
 
 \newpage
@@ -523,6 +541,12 @@ multiplot(partial_plot(gis_rf_ecor_pd,
 \newpage
 
 ```{r prob_cdf, eval=TRUE, results="asis",echo=FALSE, fig.cap="Prediction probabilities for the All Variables and GIS Only models.  \\label{fig:prob_cdf}",cache=FALSE}
+all_rf_ts_prob$model <- rep("All variables",nrow(all_rf_ts_prob))
+gis_rf_ts_prob$model <- rep("GIS only",nrow(gis_rf_ts_prob))
+all_ci <- data.frame(ecdf_ks_ci(all_rf_ts_prob$max))
+gis_ci <- data.frame(ecdf_ks_ci(gis_rf_ts_prob$max))
+all_rf_ts_prob <- data.frame(all_rf_ts_prob,all_ci[,2:3])
+gis_rf_ts_prob <- data.frame(gis_rf_ts_prob,gis_ci[,2:3])
 prob_cdf(all_rf_ts_prob, gis_rf_ts_prob,x="Predicition Probability",y="Proportion of Samples")
 ```
 
@@ -551,7 +575,7 @@ ts_prob_map(state,lakes_dd,gis_rf_ts_prob)
 
 \newpage
 
-```{r predicted_prob_map,eval=TRUE, results="asis",echo=FALSE, fig.cap="Maps of prediction probabilities for the discrete, predicted chlorophyll \\textit{a} trophic state.  Shows spatial patterns of prediction uncertainty.  \\label{fig:predicted_prob_map}",cache=FALSE,fig.height=7}
+```{r predicted_prob_map,eval=TRUE, results="asis",echo=FALSE, fig.cap="Maps of prediction probabilities for the discrete, predicted chlorophyll \\textit{a} trophic state.  Shows spatial patterns of prediction uncertainty.  \\label{fig:predicted_prob_map}",cache=FALSE}
 
 pred_prob_map(state,lakes_dd,gis_rf_ts_prob)
 ```
@@ -562,22 +586,6 @@ pred_prob_map(state,lakes_dd,gis_rf_ts_prob)
 density_plot(gis_rf_ts_prob,xvar="max",x="Predicted Probability")
 ```
 
-\newpage
-
-```{r ecoregion_map, eval=TRUE, results="asis",echo=FALSE, fig.cap="Wadeable Streams Assesment ecoregions  \\label{fig:ecoregion_map}",cache=FALSE,fig.height=7,message=FALSE}
-wsa9@data$WSA_9<-factor(wsa9@data$WSA_9,levels=c("NAP","CPL","SAP","TPL","UMW","SPL",
-                                                   "NPL","WMT","XER"),
-                           labels=c("Northern Appalachians (NAP)","Coastal Plains (CPL)",
-                                    "Southern Appalachians (SAP)",
-                                    "Temporate Plains (TPL)",
-                                    "Upper Midwest (UMW)","Southern Plains (SPL)",
-                                    "Northern Plains (NPL)","Western Mountains (WMT)",
-                                    "Xeric (XER)"),
-                           ordered=TRUE)
-#my_col<-data.frame(WSA_9=c(NA,levels(wsa9@data$WSA_9)),color=viridis(10))
-#wsa9@data<-merge(wsa9@data,my_col)
-ecor_map(wsa9)
-```
 
 \newpage
 
@@ -599,7 +607,7 @@ ts_2<-c("oligotrophic/mesotrophic","oligotrophic/mesotrophic","eutrophic/hypereu
 co<-c("<= 2",">2-7",">7-30",">30")
 xdf<-data.frame(ts_4,ts_2,co)
 names(xdf)<-c("Trophic State (4 class)","Trophic State (2 class)",
-              "Concentration Cut-off")
+              "$\\mu$g/L Cut-off")
 kable(xdf)
 ```
 
@@ -690,6 +698,7 @@ pander::pandoc.table(condprob_t,keep.line.breaks=T,split.tables=Inf)
 
 ```{r data_def,eval=TRUE, results="asis",echo=FALSE,cache=FALSE}
 data_def<-arrange(data_def,type, variable_names)
+##Get Summary Stats and Try to Fix ug\l in table
 names(data_def)<-c("Variable Names","Description", "Source")
 kable(data_def,row.names=FALSE)
 ```

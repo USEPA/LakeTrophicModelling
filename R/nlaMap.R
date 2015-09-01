@@ -32,7 +32,10 @@ nlaMap<-function(states,lakes,cats=F,myColor=1:3,catColor=NULL){
       coord_map("albers", lat2 = 45.5, lat1 = 29.5) +
       theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), 
             panel.border = element_blank(),
-            axis.text = element_blank(),axis.ticks = element_blank()) + 
+            axis.text = element_blank(),axis.ticks = element_blank(),
+            legend.key.width=unit(2, "line"), 
+            legend.key.height=unit(0.5, "line"),
+            legend.position="bottom", legend.direction="horizontal") + 
       ylab("") + 
       xlab("")
   } else {

@@ -26,10 +26,12 @@ ecor_map<-function(ecor){
     coord_map("albers", lat2 = 45.5, lat1 = 29.5)+
     theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(),
           panel.border = element_blank(), #legend.position = "none",
-          axis.text = element_blank(),axis.ticks = element_blank()) +
+          axis.text = element_blank(),axis.ticks = element_blank(),
+          legend.text = element_text(size=10),
+          legend.key.width = unit(0.5, "line")) +
     ylab("") +
     xlab("") +
-    scale_fill_manual(values=viridis(10))
+    scale_fill_manual(name="",values=viridis(10))
     
   return(gmap)
 }

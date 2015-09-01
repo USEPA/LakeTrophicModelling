@@ -23,10 +23,10 @@
 #' @import ggplot2
 ts_prob_map<-function(states,lakes,probs,save_sep=FALSE){
   lakes<-merge(lakes,probs,by="nla_id")
-  gmap_o<-make_ts_map(states,lakes,"Oligotrophic",low="#bdd7e7",high="#08519c")
-  gmap_m<-make_ts_map(states,lakes,"Mesotrophic", low="#efedf5",high="#756bb1")
-  gmap_e<-make_ts_map(states,lakes,"Eutrophic", low="#fee6ce",high="#e6550d")
-  gmap_h<-make_ts_map(states,lakes,"Hypereutrophic", low="#fee0d2",high="#de2d26")
+  gmap_o<-make_ts_map(states,lakes,"Oligotrophic",high=viridis(4)[1])#"#08519c")
+  gmap_m<-make_ts_map(states,lakes,"Mesotrophic",high=viridis(4)[2])#"#756bb1")
+  gmap_e<-make_ts_map(states,lakes,"Eutrophic", high=viridis(4)[3])#"#e6550d")
+  gmap_h<-make_ts_map(states,lakes,"Hypereutrophic", high=viridis(4)[4])#"#de2d26")
   if(save_sep){
     ggsave("oligo_prob.jpg",gmap_o,width=8.5)
     ggsave("meso_prob.jpg",gmap_m,width=8.5)
@@ -51,20 +51,19 @@ make_ts_map <- function(states,lake_prob,title,low,high){
   if(title=="Eutrophic"){value<<-"eu"}
   if(title=="Hypereutrophic"){value<<-"hyper"}
   gmap<-ggplot(states,aes(x=long,y=lat))+
-    geom_polygon(aes(group=group),fill="white",colour="grey")+
     geom_point(data=lake_prob,aes_string(x="long",y="lat",colour=value),size=2.5)+
+    geom_polygon(aes(group=group),alpha=0,colour="grey")+
     coord_map("albers", lat2 = 45.5, lat1 = 29.5)+
     theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), 
           panel.border = element_blank(), 
           axis.text = element_blank(),axis.ticks = element_blank(),
-          plot.margin = grid::unit(c(0,0,0,0),"inches")) + 
+          plot.margin = grid::unit(c(0,0,0,0),"inches"),
+          legend.key.width=unit(2, "line"), 
+          legend.key.height=unit(0.5, "line"),
+          legend.position="bottom", legend.direction="horizontal") + 
     ggtitle(title)+
     ylab("") + 
     xlab("") +
-    scale_colour_gradient("Probability",low=low,high=high) +
-    guides(fill = guide_legend(
-      title.theme = element_text(size=10),
-      keywidth = 0.5, keyheight = 0.5
-      ))
+    scale_colour_gradient("Probability",low="white",high=high)
   return(gmap)
 }

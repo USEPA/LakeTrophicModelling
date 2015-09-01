@@ -308,7 +308,9 @@ broad scale patterns in lake productivity. The NLA collected data on
 biophysical measures of lake water quality and habitat as well as an
 assessment of the phytoplankton community. For this analysis, we only
 use the various water quality measurements from the National Lakes
-Assessment (USEPA 2009).
+Assessment (USEPA 2009). Additionally, the NLA included ecological
+regions as defined in the Wadeable Streams Assessment (Figure
+\ref{fig:ecoregion_map}) (Omernik 1987, USEPA 2006).
 
 Adding to the monitoring data collected via the NLA, we used the 2006
 NLCD data to examine landscape-level drivers of trophic status in lakes.
@@ -626,13 +628,13 @@ sensitive to latitude and ecoregion. In general, chlorophyll \emph{a}
 concentrations are highest in the Southern portions of the study area
 where temperatures can be higher (a known driver of productivity),
 elevations lower, and agricultural impacts more pronounced. Likewise
-ecoregion (see Figure \ref{fig:ecoregion_map}) has a pronounced affect
-indicting continental scale effects of land use and geography.
-Agriculturally dominated landscapes such as the Temperate Plains,
-Southern Plains, and Coastal Plains show the highest levels of
-Chlorophyll \emph{a}. Whereas high elevation zones (Western Mountains),
-arid lands (Xeric), Northern habitats (Upper Midwest) have lower
-concentrations.
+ecoregion (see Figures \ref{fig:ecoregion_map} \&
+\ref{fig:gis_partial_dependence}) has a pronounced affect indicting
+continental scale effects of land use and geography. Agriculturally
+dominated landscapes such as the Temperate Plains, Southern Plains, and
+Coastal Plains show the highest levels of Chlorophyll \emph{a}. Whereas
+high elevation zones (Western Mountains), arid lands (Xeric), Northern
+habitats (Upper Midwest) have lower concentrations.
 
 Further evidence for the role of land use/land cover variables is shown
 by the selection of the percent cropland and percent evergreen forest
@@ -749,6 +751,15 @@ locations \label{fig:nlaMap}}
 
 \begin{figure}[htbp]
 \centering
+\includegraphics{manuscript_files/figure-latex/ecoregion_map-1.jpeg}
+\caption{Wadeable Streams Assesment ecoregions
+\label{fig:ecoregion_map}}
+\end{figure}
+
+\newpage
+
+\begin{figure}[htbp]
+\centering
 \includegraphics{manuscript_files/figure-latex/all_var_sel_figure-1.jpeg}
 \caption{Variable selection plot for all variables. Shows percent
 increase in mean squared error as a function of the number of variables.
@@ -854,14 +865,6 @@ prediction uncertainty. \label{fig:predicted_prob_map}}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics{manuscript_files/figure-latex/ecoregion_map-1.jpeg}
-\caption{Wadeable Sreams assesment ecoregions \label{fig:ecoregion_map}}
-\end{figure}
-
-\newpage
-
-\begin{figure}[htbp]
-\centering
 \includegraphics{manuscript_files/figure-latex/chla_cyano_scatterplot-1.jpeg}
 \caption{Cholorphyll \emph{a} and cyanobacteria abundance
 scatterplot\label{fig:scatterplot}}
@@ -875,12 +878,12 @@ scatterplot\label{fig:scatterplot}}
 \caption{Chlorophyll a based trophic state cut-offs.
 \label{tab:trophicStateTable}}\tabularnewline
 \toprule
-Trophic State (4 class) & Trophic State (2 class) & Concentration
+Trophic State (4 class) & Trophic State (2 class) & \(\mu\)g/L
 Cut-off\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-Trophic State (4 class) & Trophic State (2 class) & Concentration
+Trophic State (4 class) & Trophic State (2 class) & \(\mu\)g/L
 Cut-off\tabularnewline
 \midrule
 \endhead
@@ -1126,85 +1129,96 @@ All
 \section{Appendix 1. Variable
 Definitions}\label{appendix-1.-variable-definitions}
 
-\begin{longtable}[c]{@{}lll@{}}
+\begin{longtable}[c]{@{}rlll@{}}
 \toprule
-Variable Names & Description & Source\tabularnewline
+Variable Names & Description & Source & NA\tabularnewline
 \midrule
 \endhead
-AlbersX & Longitude & GIS\tabularnewline
-AlbersY & Latitude & GIS\tabularnewline
-BASINAREA & Watershed Area & GIS\tabularnewline
-BarrenPer\_3000m & Percent Barren & GIS\tabularnewline
-CropsPer\_3000m & Percent Cropland & GIS\tabularnewline
-DDs45 & Growing Degree Days & GIS\tabularnewline
-DeciduousPer\_3000m & Percent Decidous Forest & GIS\tabularnewline
-DevHighPer\_3000m & Percent High Intensity Development &
+18 & AlbersX & Longitude (Albers meters) & GIS\tabularnewline
+19 & AlbersY & Latitude (Albers meters) & GIS\tabularnewline
+8 & BarrenPer\_3000m & Percent Barren & GIS\tabularnewline
+25 & BASINAREA & Watershed Area (sq. meters) & GIS\tabularnewline
+15 & CropsPer\_3000m & Percent Cropland & GIS\tabularnewline
+60 & DDs45 & Growing Degree Days (Days) & GIS\tabularnewline
+9 & DeciduousPer\_3000m & Percent Decidous Forest & GIS\tabularnewline
+7 & DevHighPer\_3000m & Percent High Intensity Development &
 GIS\tabularnewline
-DevLowPer\_3000m & Percent Low Intensity Development &
+5 & DevLowPer\_3000m & Percent Low Intensity Development &
 GIS\tabularnewline
-DevMedPer\_3000m & Percent Medium Intensity Development &
+6 & DevMedPer\_3000m & Percent Medium Intensity Development &
 GIS\tabularnewline
-DevOpenPer\_3000m & Percent Developed Open Space & GIS\tabularnewline
-ELEV\_PT & Elevation & GIS\tabularnewline
-EvergreenPer\_3000m & Percent Evergreen Forest & GIS\tabularnewline
-FetchE & Fetch from East & GIS\tabularnewline
-FetchN & Fetch from North & GIS\tabularnewline
-FetchNE & Fetch form Northeast & GIS\tabularnewline
-FetchSE & Fetch from Southeast & GIS\tabularnewline
-GrassPer\_3000m & Percent Grassland & GIS\tabularnewline
-HerbWetPer\_3000m & Percent Herbaceuos Wetland & GIS\tabularnewline
-IceSnowPer\_3000m & Percent Ice/Snow & GIS\tabularnewline
-LakeArea & Lake Surface Area & GIS\tabularnewline
-LakePerim & Lake Perimeter & GIS\tabularnewline
-MaxDepthCorrect & Estimated Maximum Lake Depth & GIS\tabularnewline
-MaxLength & Maximum Lake Length & GIS\tabularnewline
-MaxWidth & Maximum Lake Width & GIS\tabularnewline
-MeanDepthCorrect & Estimated Mean Lake Depth & GIS\tabularnewline
-MeanWidth & Mean Lake Width & GIS\tabularnewline
-MixedForPer\_3000m & Percent Mixed Forest & GIS\tabularnewline
-PasturePer\_3000m & Percent Pasture & GIS\tabularnewline
-PercentImperv\_3000m & Percent Impervious & GIS\tabularnewline
-ShoreDevel & Shoreline Development Index & GIS\tabularnewline
-ShrubPer\_3000m & Percent Shrub/Scrub & GIS\tabularnewline
-VolumeCorrect & Estimated Lake Volume & GIS\tabularnewline
-WSA\_ECO9 & Ecoregion & GIS\tabularnewline
-WaterPer\_3000m & Percent Water & GIS\tabularnewline
-WoodyWetPer\_3000m & Percent Woody Wetland & GIS\tabularnewline
-ANC & Acid Neutralizing Capacity & Water Quality\tabularnewline
-ANDEF2 & Anion Deficit & Water Quality\tabularnewline
-ANSUM2 & Anion Sum & Water Quality\tabularnewline
-BALANCE2 & Ion Balance & Water Quality\tabularnewline
-CA & Calcium & Water Quality\tabularnewline
-CATSUM & Cation Sum & Water Quality\tabularnewline
-CL & Chloride & Water Quality\tabularnewline
-COLOR & Color & Water Quality\tabularnewline
-CONCAL2 & Calculated Conductivity & Water Quality\tabularnewline
-COND & Conductivity & Water Quality\tabularnewline
-CONDHO2 & D-H-O Calculated Conductivity & Water Quality\tabularnewline
-DATE\_COL & Date Samples Collected & Water Quality\tabularnewline
-DEPTHMAX & Maximum Depth & Water Quality\tabularnewline
-DO2\_2M & Dissolved Oxygen & Water Quality\tabularnewline
-DOC & Dissolved Organic Carbon & Water Quality\tabularnewline
-H & Hydrogen Ions & Water Quality\tabularnewline
-K & Potassium & Water Quality\tabularnewline
-MG & Magnesium & Water Quality\tabularnewline
-NH4 & Ammonium & Water Quality\tabularnewline
-NH4ION & Calculate Ammonium & Water Quality\tabularnewline
-NO3 & Nitrate & Water Quality\tabularnewline
-NO3\_NO2 & Nitrate/Nitrite & Water Quality\tabularnewline
-NPratio & Nitrogen:Phophorus Ratio & Water Quality\tabularnewline
-NTL & Total Nitrogen & Water Quality\tabularnewline
-Na & Sodium & Water Quality\tabularnewline
-OH & Hydroxide & Water Quality\tabularnewline
-ORGION & Estimated Organic Anions & Water Quality\tabularnewline
-PH\_FIELD & pH & Water Quality\tabularnewline
-PTL & Total Phosphorus & Water Quality\tabularnewline
-SIO2 & Silica & Water Quality\tabularnewline
-SO4 & Sulfate & Water Quality\tabularnewline
-SOBC & Base Cation Sum & Water Quality\tabularnewline
-TOC & Total Organic Carbon & Water Quality\tabularnewline
-TURB & Turbidity & Water Quality\tabularnewline
-TmeanW & Mean Profile Water Temperature & Water Quality\tabularnewline
+4 & DevOpenPer\_3000m & Percent Developed Open Space &
+GIS\tabularnewline
+27 & ELEV\_PT & Elevation (meters) & GIS\tabularnewline
+10 & EvergreenPer\_3000m & Percent Evergreen Forest & GIS\tabularnewline
+66 & FetchE & Fetch from East (m) & GIS\tabularnewline
+64 & FetchN & Fetch from North (m) & GIS\tabularnewline
+65 & FetchNE & Fetch form Northeast (m) & GIS\tabularnewline
+67 & FetchSE & Fetch from Southeast (m) & GIS\tabularnewline
+13 & GrassPer\_3000m & Percent Grassland & GIS\tabularnewline
+17 & HerbWetPer\_3000m & Percent Herbaceuos Wetland & GIS\tabularnewline
+3 & IceSnowPer\_3000m & Percent Ice/Snow & GIS\tabularnewline
+20 & LakeArea & Lake Surface Area (sq. meters) & GIS\tabularnewline
+21 & LakePerim & Lake Perimeter (meters) & GIS\tabularnewline
+68 & MaxDepthCorrect & Estimated Maximum Lake Depth (m) &
+GIS\tabularnewline
+61 & MaxLength & Maximum Lake Length (m) & GIS\tabularnewline
+62 & MaxWidth & Maximum Lake Width (m) & GIS\tabularnewline
+70 & MeanDepthCorrect & Estimated Mean Lake Depth (m) &
+GIS\tabularnewline
+63 & MeanWidth & Mean Lake Width (m) & GIS\tabularnewline
+11 & MixedForPer\_3000m & Percent Mixed Forest & GIS\tabularnewline
+14 & PasturePer\_3000m & Percent Pasture & GIS\tabularnewline
+1 & PercentImperv\_3000m & Percent Impervious & GIS\tabularnewline
+22 & ShoreDevel & Shoreline Development Index & GIS\tabularnewline
+12 & ShrubPer\_3000m & Percent Shrub/Scrub & GIS\tabularnewline
+69 & VolumeCorrect & Estimated Lake Volume (cubic meters) &
+GIS\tabularnewline
+2 & WaterPer\_3000m & Percent Water & GIS\tabularnewline
+16 & WoodyWetPer\_3000m & Percent Woody Wetland & GIS\tabularnewline
+24 & WSA\_ECO9 & Ecoregion & GIS\tabularnewline
+31 & ANC & Acid Neutralizing Capacity (ueq/L) & Water
+Quality\tabularnewline
+53 & ANDEF2 & Anion Deficit (ueq/L) & Water Quality\tabularnewline
+52 & ANSUM2 & Sum of Anions using ANC (ueq/L) & Water
+Quality\tabularnewline
+55 & BALANCE2 & Ion Balance (\%) & Water Quality\tabularnewline
+42 & CA & Calcium (ueq/L) & Water Quality\tabularnewline
+51 & CATSUM & Sum of Cations (ueq/L) & Water Quality\tabularnewline
+39 & CL & Chloride (ueq/L) & Water Quality\tabularnewline
+46 & COLOR & Color (PCU) & Water Quality\tabularnewline
+57 & CONCAL2 & Calculated Conductivity (uS/cm) & Water
+Quality\tabularnewline
+30 & COND & Conductivity (uS/cm) & Water Quality\tabularnewline
+58 & CONDHO2 & D-H-O Calculated Conductivity (uS/cm) & Water
+Quality\tabularnewline
+23 & DATE\_COL & Date Samples Collected & Water Quality\tabularnewline
+26 & DEPTHMAX & Maximum Depth (meters) & Water Quality\tabularnewline
+28 & DO2\_2M & Dissolved Oxygen (mg/L) & Water Quality\tabularnewline
+34 & DOC & Dissolved Organic Carbon (mg/L) & Water
+Quality\tabularnewline
+48 & H & Hydrogen Ions (ueq/L) & Water Quality\tabularnewline
+45 & K & Potassium (ueq/L) & Water Quality\tabularnewline
+43 & MG & Magnesium (ueq/L) & Water Quality\tabularnewline
+44 & Na & Sodium (ueq/L) & Water Quality\tabularnewline
+35 & NH4 & Ammonium (mg/L) & Water Quality\tabularnewline
+50 & NH4ION & Calculated Ammonium (ueq/L) & Water Quality\tabularnewline
+40 & NO3 & Nitrate (ueq/L) & Water Quality\tabularnewline
+36 & NO3\_NO2 & Nitrate/Nitrite (mg N/L) & Water Quality\tabularnewline
+71 & NPratio & Nitrogen:Phophorus Ratio & Water Quality\tabularnewline
+37 & NTL & Total Nitrogen (\(\\mu\)g/L) & Water Quality\tabularnewline
+49 & OH & Hydroxide (ueq/L) & Water Quality\tabularnewline
+56 & ORGION & Estimated Organic Anions (ueq/L) & Water
+Quality\tabularnewline
+29 & PH\_FIELD & pH & Water Quality\tabularnewline
+38 & PTL & Total Phosphorus (\(\\mu\)g/L) & Water Quality\tabularnewline
+47 & SIO2 & Silica (mg/L) & Water Quality\tabularnewline
+41 & SO4 & Sulfate (ueq/L) & Water Quality\tabularnewline
+54 & SOBC & Sum of Base Cation (ueq/L) & Water Quality\tabularnewline
+59 & TmeanW & Mean Profile Water Temperature (C ) & Water
+Quality\tabularnewline
+33 & TOC & Total Organic Carbon (mg/L) & Water Quality\tabularnewline
+32 & TURB & Turbidity (NTU) & Water Quality\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -1311,6 +1325,9 @@ and delivery of nutrients to receiving waters in the northeastern and
 mid-atlantic regions of the united states. JAWRA Journal of the American
 Water Resources Association 47:965--990.
 
+Omernik, J. M. 1987. Ecoregions of the conterminous united states.
+Annals of the Association of American geographers 77:118--125.
+
 Paul, J. F., and M. E. McDonald. 2005. Development of empirical,
 geographically specific water quality criteria: A conditional
 probability analysis approach 41:1211--1223.
@@ -1356,6 +1373,10 @@ solution. BMC bioinformatics 8:25.
 
 Tilzer, M. M. 1988. Secchi disk---chlorophyll relationships in a lake
 with highly variable phytoplankton biomass. Hydrobiologia 162:163--171.
+
+USEPA. 2006. Wadeable streams assessment: A collaborative survey of the
+nation's streams. ePA 841-b-06-002. Office of Water; Office of Research;
+Development, US Environmental Protection Agency Washington, DC.
 
 USEPA. 2009. National lakes assessment: A collaborative survey of the
 nation's lakes. ePA 841-r-09-001. Office of Water; Office of Research;

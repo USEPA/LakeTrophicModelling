@@ -23,22 +23,26 @@ condAccuracy<-function(pred_prob1,pred_prob2,xlab="x",...){
   correct<-pred==obs
   cp2<-condprob2::condprob(max_vote,correct,ProbComp="gt",Exceed="gte",...)
   #plot(cp$max_vote,cp$Raw.Data.Probability)
-  cp1<-data.frame(max_vote=cp1$max_vote,Raw.Data.Probability=cp1$Raw.Data.Probability)
-  cp2<-data.frame(max_vote=cp2$max_vote,Raw.Data.Probability=cp2$Raw.Data.Probability)
+  cp1<-data.frame(max_vote=cp1$max_vote,Raw.Data.Probability=cp1$Raw.Data.Probability,
+                  model=rep(pred_prob1$model[1],length(cp1[[1]])))
+  cp2<-data.frame(max_vote=cp2$max_vote,Raw.Data.Probability=cp2$Raw.Data.Probability,
+                  model=rep(pred_prob2$model[1],length(cp2[[1]])))
+  df<-rbind(cp1,cp2)
   cp1<<-cp1
   cp2<<-cp2
-  ggplot(cp1,aes(x=max_vote,y=Raw.Data.Probability))+
-    geom_point(size=2,color="red")+
-    geom_point(data=cp2,aes(x=max_vote,y=Raw.Data.Probability),size=2,color="black") +
+  ggp<-ggplot(df,aes(x=max_vote,y=Raw.Data.Probability,colour=model))+
+    geom_point(size=2)+
     theme(text = element_text(family="sans"),
           panel.background = element_blank(), #panel.grid = element_blank(), 
           panel.border = element_rect(fill = NA), 
           plot.title  = element_text(family="sans",size=15,face="bold",vjust=1.1),
-          legend.position = "none", legend.key = element_rect(fill = 'white'),
+          legend.key = element_rect(fill = 'white'),
           legend.text = element_text(family="sans",size=15), legend.title = element_text(size=15),
           axis.title.x = element_text(family="sans",vjust = -0.5, size = 12),
           axis.title.y = element_text(family="sans",vjust = 1.5, size = 12),
           axis.text.x = element_text(family="sans",size = 11),
           axis.text.y = element_text(family="sans",size = 11)) + 
-    labs(y="Conditional Total Accuracy",x=xlab)
+    labs(y="Total Accuracy",x=xlab) +
+    scale_colour_manual(name='',values = viridis(2))
+  return(ggp)
 }
