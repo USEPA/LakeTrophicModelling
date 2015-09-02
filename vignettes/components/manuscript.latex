@@ -166,7 +166,7 @@ $endif$
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
-\rfoot{\today}
+\rfoot{Generated on: \today}
 \lfoot{\thepage}
 %%Changed default abstract width and added lines
 \renewenvironment{abstract}{
@@ -195,7 +195,7 @@ $author$
 $endif$
 $endfor$
 }
-\date{$date$}
+\date{Generated on: $date$}
 $for(header-includes)$
 $header-includes$
 $endfor$
@@ -250,7 +250,7 @@ $endfor$
 %%Adds date from YAML
 $if(date)$
 \begin{center}
-\small \emph{$date$} \\
+\small \emph{Generated on: $date$} \\
 \end{center}
 $endif$
 \normalsize

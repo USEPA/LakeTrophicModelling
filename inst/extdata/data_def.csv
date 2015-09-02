@@ -1,0 +1,72 @@
+variable_names,description,type
+PercentImperv_3000m,% Impervious,GIS
+WaterPer_3000m,% Water,GIS
+IceSnowPer_3000m,% Ice/Snow,GIS
+DevOpenPer_3000m,% Developed Open Space,GIS
+DevLowPer_3000m,% Low Intensity Development,GIS
+DevMedPer_3000m,% Medium Intensity Development,GIS
+DevHighPer_3000m,% High Intensity Development,GIS
+BarrenPer_3000m,% Barren,GIS
+DeciduousPer_3000m,% Decidous Forest,GIS
+EvergreenPer_3000m,% Evergreen Forest,GIS
+MixedForPer_3000m,% Mixed Forest,GIS
+ShrubPer_3000m,% Shrub/Scrub,GIS
+GrassPer_3000m,% Grassland,GIS
+PasturePer_3000m,% Pasture,GIS
+CropsPer_3000m,% Cropland,GIS
+WoodyWetPer_3000m,% Woody Wetland,GIS
+HerbWetPer_3000m,% Herbaceuos Wetland,GIS
+AlbersX,Longitude (Albers meters),GIS
+AlbersY,Latitude  (Albers meters),GIS
+LakeArea,Lake Surface Area (sq. meters),GIS
+LakePerim,Lake Perimeter (meters),GIS
+ShoreDevel,Shoreline Development Index,GIS
+DATE_COL,Date Samples Collected,NLA
+WSA_ECO9,Ecoregion,GIS
+BASINAREA,Watershed Area (sq. meters),GIS
+DEPTHMAX,Maximum Depth (meters),NLA
+ELEV_PT,Elevation (meters),GIS
+DO2_2M,Dissolved Oxygen (mg/L),NLA
+PH_FIELD,pH,NLA
+COND,Conductivity (uS/cm),NLA
+ANC,Acid Neutralizing Capacity (ueq/L),NLA
+TURB,Turbidity (NTU),NLA
+TOC,Total Organic Carbon (mg/L),NLA
+DOC,Dissolved Organic Carbon (mg/L),NLA
+NH4,Ammonium (mg/L),NLA
+NO3_NO2,Nitrate/Nitrite (mg N/L),NLA
+NTL,Total Nitrogen ($\mu$g/L),NLA
+PTL,Total Phosphorus ($\mu$g/L),NLA
+CL,Chloride (ueq/L),NLA
+NO3,Nitrate (ueq/L),NLA
+SO4,Sulfate (ueq/L),NLA
+CA,Calcium (ueq/L),NLA
+MG,Magnesium (ueq/L),NLA
+Na,Sodium (ueq/L),NLA
+K,Potassium (ueq/L),NLA
+COLOR,Color (PCU),NLA
+SIO2,Silica (mg/L),NLA
+H,Hydrogen Ions (ueq/L),NLA
+OH,Hydroxide (ueq/L),NLA
+NH4ION,Calculated Ammonium (ueq/L),NLA
+CATSUM,Sum of Cations (ueq/L),NLA
+ANSUM2,Sum of Anions using ANC (ueq/L),NLA
+ANDEF2,Anion Deficit (ueq/L),NLA
+SOBC,Sum of Base Cation (ueq/L),NLA
+BALANCE2,Ion Balance (%),NLA
+ORGION,Est. Organic Anions (ueq/L),NLA
+CONCAL2,Calculated Conductivity (uS/cm),NLA
+CONDHO2,D-H-O Calculated Conductivity (uS/cm),NLA
+TmeanW,Mean Profile Water Temp. (C),NLA
+DDs45,Growing Degree Days (Days),GIS
+MaxLength,Maximum Lake Length (m),GIS
+MaxWidth,Maximum Lake Width (m),GIS
+MeanWidth,Mean Lake Width (m),GIS
+FetchN,Fetch from North (m),GIS
+FetchNE,Fetch form Northeast (m),GIS
+FetchE,Fetch from East (m),GIS
+FetchSE,Fetch from Southeast (m),GIS
+MaxDepthCorrect,Est. Maximum Lake Depth (m),GIS
+VolumeCorrect,Est. Lake Volume (cubic meters),GIS
+MeanDepthCorrect,Est. Mean Lake Depth (m),GIS
+NPratio,Nitrogen:Phophorus Ratio,NLA
