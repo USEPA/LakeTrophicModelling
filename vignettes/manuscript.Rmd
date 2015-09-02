@@ -719,10 +719,8 @@ kable(data_def,row.names=FALSE,align = 'l',padding=0)
 \newpage
 
 ```{r session_info, echo=FALSE}
-#Send session info to a file: NOT WORKING
-#sink("sessionInfo.txt")
-#sessionInfo()
-#sink()
+#Send session info to a file: 
+capture.output(sessionInfo(),file="sessioninfo.txt")
 ```
 
 #References
