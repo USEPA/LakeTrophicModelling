@@ -1,0 +1,35 @@
+Dear Dr. Hollister: 
+
+Thank you very much for submitting your manuscript "Modelling lake trophic state: A random forest approach" to Ecosphere for review. The reviewers and I appreciate the work you have accomplished. Based on the reviews, a major revision would be required before publication. Because this revision will likely take significant time to complete and Ecosphere is a rapid-publication journal, we will not be able to accept this manuscript for publication. However, we encourage you to revise the manuscript according to the review comments and then submit the new manuscript to Ecosphere. 
+
+Should you decide to revise the manuscript for further consideration in Ecosphere, your revisions should address the specific points made by each reviewer. Please include a cover letter, indicating your responses to the review comments and the changes you have made in the manuscript. If you disagree with a reviewer's point, explain why. You would need to submit the new manuscript at http://ecosphere.esapubs.org. Please indicate in the Comment field the manuscript number of the previous submission. The resubmission would be assigned a new manuscript number and may be sent out for additional review. 
+
+Sincerely, 
+
+Debra P. C. Peters 
+Editor-in-Chief, Ecosphere 
+
+__________________________________________ 
+
+
+Reviewer #1 (Comments to Author): 
+
+This manuscript describes the predictive accuracy for lake chlorophyll-a concentration and trophic status by two different random forest models: one which includes all variables available from the EPA National Lakes Assessment and the National Land Cover Dataset; and another which included 'GIS only' NLCD data. The authors showed that the predictive ability of the 'all data' model was higher than the GIS only model; and draw conclusions about the ability of the models to predict risk of cyanobacteria in lakes. One of the main recommendations of the paper is to use this approach in targeting limited management resources to improving water quality. 
+
+The paper is clear, well written, and the methods are extensively documented in publicly available code on Github. I commend the authors on this transparent approach to the scientific process. 
+
+Two general comments on the manuscript: 1) Why didn't the authors spin up a 2nd set of random forest models for cyanobacterial density, given that those data were available? It is not clear why they authors just point to the general relationship between chl-a and cyano density, rather than actually modeling it. 2) The authors rightly acknowledge that the GIS only models do not have great predictive accuracy for any one lake, however the discussion does point to the relevance of this work for making lake-specific management decision. I think it would be very interesting if, in the discussion, the authors focussed on how this method could be applied to questions related to scaling-up process estimates (e.g., GPP contribution from lakes across the nation). Issues related to uncertainty with the in situ and GIS only models might also be informative to such future research efforts. 
+
+___________________________________ 
+
+Reviewer #2 (Comments to Author): 
+
+The authors present a contrasting set of regression tree models (random forest approach) to model lake trophic state based on the National Lakes Assessment data set. The analysis demonstrates the potential to use landscape analyses to generate probabilistic estimates of lake trophic state, and thus serve as a screening tool for lake classification. As such, it has the potential to make a substantial contribution to the landscape limnology literature. In particular, developing the probabilistic approach ("prediction probability") is a compelling strength of this study, as is the nationally-extensive scope of the data. The paper is well-organized, and well-written, though there are many figures. To broaden the interest of the paper to readers of ESA journals, the introduction could speak more broadly to the problem of ecological classification and its implication for resource management. I do have some specific concerns, however, with the submitted manuscript. 
+
+Foremost, the approach of modeling trophic state as indicated by chlorophyll concentration in the all variables model strikes me as somewhat circular - essentially modeling one well known indicator of trophic state (chlorophyll) using other well-known indicators of trophic state (TP concentration, turbidity). To the point, Carlson's (1996) trophic state index incorporated both TP and chlorophyll concentration. A further concern with the random forest model is that a common and important watershed-derived factor - color - was not included (Soranno et al. 2008). DOC might serve as a proxy, but only roughly so (Pace and Cole 2002). Another concern with the model is the presentation of its utility in application. The authors present a kappa coefficient of 0.6 as a benchmark for model quality, yet both models fell below that threshold (the GIS only model substantially so) - what is the implication? Even if the GIS only model is successful in specific instances (L322), the boundary
+conditions for those instances remain uncharacterized. A final concern is the choice of the 3 km buffer for the GIS analysis. Others have explored the scaling problem associated with landscape predictors of lake water quality in much greater detail (Cheruvelil et al. 2013 comes to mind, in particular), and the choice is not well-justified in the methods. 
+
+Beyond the modeling, I had a few other concerns. First, the cyanobacteria analysis is presented only in the discussion, allowing limited scrutiny. If the analysis is of merit, it should be described in the methods and presented in the results. Also, regarding the partial dependence plots, how is TN concentration saturating with respect to chlorophyll concentration given the N:P - chlorophyll concentration relationship shown? 
+
+
+___________________________________ 
