@@ -283,7 +283,7 @@ Productivity of lentic ecosystems is well studied and it is widely accepted that
 \vspace{3mm}\hrule
 \doublespace
 
-**Keywords:** Harmful Algal Blooms; Cyanobacteria; Nutrients; National Lakes Assessment; chlorophyll
+**Keywords:** Harmful Algal Blooms; Cyanobacteria; Open Science; Nutrients; National Lakes Assessment
 
 #Introduction
 Productivity in lentic systems is often categorized across a range of trophic states (e.g., the trophic continuum) from early successional (i.e., oligotrophic) to late successional lakes (i.e., hypereutrophic) with lakes naturally occurring across this range [@carlson1977trophic]. Oligotrophic lakes occur in nutrient poor areas or have a more recent geologic history, are often found in higher elevations, have clear water, and are usually favored for drinking water or direct contact recreation (e.g., swimming).   Lakes with higher productivity (e.g., mesotrophic and eutrophic lakes) have greater nutrient loads, tend to be less clear, have greater density of aquatic plants, and often support more diverse and abundant fish communities. Higher primary productivity is not necessarily a predictor of poor ecological condition as it is natural for lakes to shift from lower to higher trophic states but this is a slow process [@rodhe1969crystallization]. However, at the highest productivity levels (hypereutrophic lakes) biological integrity is compromised [@hasler1969cultural; @schindler2008algal; @smith1999eutrophication].  

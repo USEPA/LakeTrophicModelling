@@ -1,0 +1,35 @@
+---
+output: pdf_document
+fontsize: 12pt
+geometry: 
+  - top=0.05in
+  - right=0.5in
+  - left=0.5in
+  - bottom=0.1in
+---
+
+![letterhead](epa_letterhead.jpg)
+
+`r format(Sys.Date(), "%B %d, %Y")` \newline
+
+Debra Peters\newline
+Editor, *Ecosphere*\newline
+USDA ARS\newline
+Las Cruces, NM  88003\newline
+
+Dear Dr. Peters,
+
+Please accept for your review our resubmission, "Modelling Lake Trophic State: A Random Forest Approach."  We have caerfully reviewed the comments from both reviewers and have made changes to our manuscript accordingly.  Included in this cover letter are an itemized list of both reviewers comments as well as details on how we updated the manuscript.   
+
+
+Sincerely,
+
+Jeffrey W. Hollister
+401 782 9655
+hollister.jeff@epa.gov
+
+W. Bryan Milstead
+milstead.bryan@epa.gov
+
+Betty J. Kreakie
+kreakie.betty@epa.gov

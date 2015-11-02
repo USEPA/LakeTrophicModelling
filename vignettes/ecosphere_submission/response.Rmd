@@ -1,0 +1,41 @@
+---
+output: pdf_document
+fontsize: 12pt
+geometry: margin=0.5in
+---
+
+##Response to Reviewers
+
+###Reviewer 1: 
+
+- R1-1: "Why didn't the authors spin up a 2nd set of random forest models for cyanobacterial density, given that those data were available? It is not clear why they authors just point to the general relationship between chl-a and cyano density, rather than actually modeling it."
+    - Response: 
+    
+- R1-2: "The authors rightly acknowledge that the GIS only models do not have great predictive accuracy for any one lake, however the discussion does point to the relevance of this work for making lake-specific management decision. I think it would be very interesting if, in the discussion, the authors focussed on how this method could be applied to questions related to scaling-up process estimates (e.g., GPP contribution from lakes across the nation). "
+    - Response: 
+    
+- R1-3: "Issues related to uncertainty with the in situ and GIS only models might also be informative to such future research efforts. "
+    - Response: 
+    
+###Reviewer 2:
+
+- R2-1: "To broaden the interest of the paper to readers of ESA journals, the introduction could speak more broadly to the problem of ecological classification and its implication for resource management."
+    - Response: 
+
+- R2-2: "Foremost, the approach of modeling trophic state as indicated by chlorophyll concentration in the all variables model strikes me as somewhat circular - essentially modeling one well known indicator of trophic state (chlorophyll) using other well-known indicators of trophic state (TP concentration, turbidity). To the point, Carlson's (1996) trophic state index incorporated both TP and chlorophyll concentration. "
+    - Response: 
+
+- R2-3: "A further concern with the random forest model is that a common and important watershed-derived factor - color - was not included (Soranno et al. 2008). DOC might serve as a proxy, but only roughly so (Pace and Cole 2002). "
+    - Response: 
+
+- R2-4: "Another concern with the model is the presentation of its utility in application. The authors present a kappa coefficient of 0.6 as a benchmark for model quality, yet both models fell below that threshold (the GIS only model substantially so) - what is the implication? Even if the GIS only model is successful in specific instances (L322), the boundary conditions for those instances remain uncharacterized."
+    - Response: 
+
+- R2-5: "A final concern is the choice of the 3 km buffer for the GIS analysis. Others have explored the scaling problem associated with landscape predictors of lake water quality in much greater detail (Cheruvelil et al. 2013 comes to mind, in particular), and the choice is not well-justified in the methods."
+    - Response: 
+
+- R2-6: "First, the cyanobacteria analysis is presented only in the discussion, allowing limited scrutiny. If the analysis is of merit, it should be described in the methods and presented in the results."
+    - Response: 
+
+- R2-7: "Also, regarding the partial dependence plots, how is TN concentration saturating with respect to chlorophyll concentration given the N:P - chlorophyll concentration relationship shown?"
+    - Response: 
