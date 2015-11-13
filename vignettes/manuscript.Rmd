@@ -89,7 +89,7 @@ library("condprob2")
 library("party")
 library("broom")
 library("edarf")
-#library("caret")
+library("caret")
 library("randomForest")
 library("doParallel")
 opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
@@ -145,7 +145,7 @@ gis_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
 row.names(gis_dat)<-ltmData$NLA_ID
 gis_dat <- gis_dat[complete.cases(gis_dat),]
 #ecoregion shape
-wsa9<-readOGR("../inst/extdata/","wsa9_low48",verbose=FALSE)
+wsa9<-readOGR("../inst/extdata/.","wsa9_low48",verbose=FALSE)
 ```
 
 ```{r rand_forest_runs , eval=FALSE, include=FALSE, echo=FALSE, cache=FALSE}
@@ -197,9 +197,9 @@ var_importance<-var_importance[order(var_importance$model_id,-var_importance$mea
 ```{r rf_pd, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
 ################################################################################
 #Register parallel backend for partial dependence
-#numcores<-parallel::detectCores()
-#cl <- makeCluster(numcores)
-#registerDoParallel(cl)
+numcores<-parallel::detectCores()
+cl <- makeCluster(numcores)
+registerDoParallel(cl)
 co <- 100
 
 ################################################################################
@@ -221,7 +221,7 @@ gis_rf_conifer_pd<-partialPlot(gis_rf,gis_dat,"EvergreenPer_3000m",n.pt=co,
                                plot=FALSE)
 gis_rf_mndepth_pd<-partialPlot(gis_rf,gis_dat,"MeanDepthCorrect",n.pt=co,
                                plot=FALSE)
-#stopCluster(cl)
+stopCluster(cl)
 ```
 
 ```{r trophic_class, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}

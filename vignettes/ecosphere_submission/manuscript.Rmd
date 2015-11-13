@@ -39,9 +39,7 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-if(!require(LakeTrophicModelling)){
-  devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE)
-}
+
 if(!require(wesanderson)){
 devtools::install_github("jhollist/wesanderson")
 }
@@ -75,6 +73,11 @@ if(!require(doParallel)){
 if(!require(viridis)){
   devtools::install_github("CRAN/viridis")
 }
+
+if(!require(LakeTrophicModelling)){
+  devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE)
+}
+
 library("viridis")
 library("wesanderson")
 library("LakeTrophicModelling")
@@ -369,7 +372,7 @@ The "All variables" model provides more certain model predictions with a median 
 ##Trophic State Probabilities
 Not surprisingly, lakes with more certain predictions (i.e., higher prediction probabilities) were more accurately predicted (Figure \ref{fig:cond_prob_fig}).  The fact that the difference in accuracy between the two models decreased as certainty in the prediction increased suggests that models with lower overall accuracy, such as the "GIS only" model, may have acceptable accuracy for many individual cases (Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis}).  Additionally, the prediction probabilities may be mapped for each of the four classes (Figure \ref{fig:gis_probability_map}). The spatial patterns show little variability between the "All variables" and "GIS only" models, thus we only show the results from the more broadly applicable "GIS only" model (Figure \ref{fig:gis_probability_map}).   
 
-This map provides several insights.  First, since low uncertainty is associated with high accuracy, this map shows the broad spatial patterns of lake trophic state across the United States (i.e darker colors more likely to be correctly predicted).   Hypereutrophic lakes are much more commonly predicted in the Midwest and southeastern United States.  Clear, oligotrophic lakes are in the northwestern United States, through the western mountains and in the northeastern united states.  The middle trophic states are more evenly distributed across the country.  Lastly, this particular map is very similar to simply mapping the raw data. However, it highlights what could be done if the "GIS only" model were used to map data without measured chlorophyll *a* values which would provide probabilities of given trophic states for all lakes in the 
+This map provides several insights.  First, since low uncertainty is associated with high accuracy, this map shows the broad spatial patterns of lake trophic state across the United States (i.e darker colors more likely to be correctly predicted).   Hypereutrophic lakes are much more commonly predicted in the Midwest and southeastern United States.  Clear, oligotrophic lakes are in the northwestern United States, through the western mountains and in the northeastern united states.  The middle trophic states are more evenly distributed across the country.  Lastly, this particular map is very similar to simply mapping the raw data. However, it highlights what could be done if the "GIS only" model were used to map data without measured chlorophyll *a* values which would provide probabilities of given trophic states for all lakes in the United States.
 
 ## Partial dependencies of explanatory variables
 In line with past predictive modelling of chlorophyll *a* concentrations the "All variables" model selected the water quality variables (turbidity, total organic carbon, total nitrogen, total phosphorus, and N:P ratios) as important variables [@downing2001predicting].   While there is variation in the response of chlorophyll *a* to changes in nutrient concentrations, the general pattern suggests that limiting nutrients have predictable impacts.  If we examine the partial dependencies of these variables we see a general linear increase in log chlorophyll *a* with nitrogen, phosphorus and organic carbon concentrations (Figure \ref{fig:all_partial_dependence}).  This relationship holds until nutrient concentrations become saturated.  The partial dependency plots (Figure \ref{fig:all_partial_dependence}) for the nitrogen:phosphorus ratio is more complicated, indicating that for ratios less than ~14 chlorophyll *a* increases but after ~14 there is marked decrease. The effect of the nitrogen phosphorus ratio on chlorophyll has been the subject of considerable research and our results are consistent with the majority of the findings suggesting that at low ratio values nitrogen is limiting [@downing1992nitrogen; @smith2009eutrophication].  Conversely, at higher ratios the phosphorus levels may be limiting. This would be a cause for concern with linear models; however, linearity is not an assumption of tree-based modelling approaches such as random forest. 
@@ -390,9 +393,9 @@ Our research goals were to explore the utility of a widely used data mining algo
 
 While the "GIS only" model showed lower prediction accuracies than the "All variables" model, the association between the uncertainty of prediction and total accuracy (Figure \ref{fig:cond_prob_fig} and Tables Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis}) suggest that the "GIS only" model will provide reasonable estimates of trophic state for many lakes across the United States.  Furthermore, we can map the uncertainty of the predictions, thus, we know the spatial patterns and location of the lakes for which we are certain, or not, of their predicted trophic state.  Given this and that these models may be applied to any lake in the United States we can recommend using this model.  Future iterations of this modelling effort may be able to utilize modeled predictions of nutrients to improve accuracy and also maintain broad applicability [@milstead2013estimating].
 
-For the "All variables" model, the *in situ* water quality variables drove the predictions.  This is not surprising.  For the "GIS only"" model,  the results were more nuanced. Three broad categories were routinely being selected as important: broad scale spatial patterns in trophic state, land use/land cover controls of trophic state, and local, lake-scale control driven by lake morphometry.  
+ADD PARARGRAPH HERE ON SCALING UP AND UNCERTAINTY WITH GIS ONLY MODEL
 
-A potentially useful benefit of models of trophic state and chlorophyll *a* are their use in assessing risk due to cyanobacteria.  Cyanobacteria biomass should be closely associated with chlorophyll *a* and trophic state as cyanobacteria contribute to the chlorophyll concentration in a lake. If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms and other indices related to cyanobacteria (e.g., toxin presence).  Others have seen these associations.  For instance, Kasinak et al. [-@kasinak2015benchtop] used bench top flourometers and showed a strong correlation between chlorophyll *a* and phycocyanin.  Using the NLA data, we see a positive trend between chlorophyll *a* and cyanobacteria abundance (Figure \ref{fig:scatterplot}).  Both of these suggest that trophic state may be an acceptable proxy for cyanobacteria.
+For the "All variables" model, the *in situ* water quality variables drove the predictions.  This is not surprising.  For the "GIS only"" model,  the results were more nuanced. Three broad categories were routinely being selected as important: broad scale spatial patterns in trophic state, land use/land cover controls of trophic state, and local, lake-scale control driven by lake morphometry.  
 
 Our results raise three important considerations related to managing eutrophication.  First, the broad scale patterning, indicated by ecoregion as an important variable, suggests regional trends.  This is noteworthy because it suggests that efforts to monitor, model and manage eutrophication and cyanobacteria should be undertaken at both national and regional levels.  Second, while direct control of water quality in lakes would have a large impact, the land use/land cover drivers (i.e., non-point sources) of water quality are also important, and better management of the spatial distribution of important classes such as forest and agriculture can provide some level of control on trophic state and amount of cyanobacteria present.  Third, in-lake processes (i.e., residence time, nutrient cycling, etc.) are, as expected, important and need to be part of any management strategy.  Building on these efforts through updated models,  direct prediction of cyanobacteria, and additional information on the regional differences will help us get a better handle on the broad scale dynamics of productivity in lakes and the potential risk to human health from cyanobacteria blooms.
 

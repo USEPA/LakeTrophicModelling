@@ -9,13 +9,13 @@ geometry: margin=0.5in
 ###Reviewer 1: 
 
 - R1-1: "Why didn't the authors spin up a 2nd set of random forest models for cyanobacterial density, given that those data were available? It is not clear why they authors just point to the general relationship between chl-a and cyano density, rather than actually modeling it."
-    - Response: 
+    - Response: Reviewer 1 makes an excellent point here.  We are in the process of modelling cyanobacteria more directly; however, we feel that including that with this current manuscript is a bit beyond its scope.  Given this we have removed the paragraph in the conclusion pertaining to cyanobacteria. 
     
 - R1-2: "The authors rightly acknowledge that the GIS only models do not have great predictive accuracy for any one lake, however the discussion does point to the relevance of this work for making lake-specific management decision. I think it would be very interesting if, in the discussion, the authors focussed on how this method could be applied to questions related to scaling-up process estimates (e.g., GPP contribution from lakes across the nation). "
-    - Response: 
+    - Response: Another good point by Reviewer 1.  The benefit of the GIS Only model is in its applicability to all lakes.  We have added a paragraph to the Conclusions that addresses this.  
     
 - R1-3: "Issues related to uncertainty with the in situ and GIS only models might also be informative to such future research efforts. "
-    - Response: 
+    - Response: Related to R1-2.  Uncertainity discusses in added paragaraph in Conclusions.
     
 ###Reviewer 2:
 
