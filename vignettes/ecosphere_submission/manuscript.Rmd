@@ -663,9 +663,6 @@ all_60_samp<-nrow(all_rf_ts_prob[all_rf_ts_prob$max >= cp1[cp1[,1]>=0.6,][1,1],]
 all_70_samp<-nrow(all_rf_ts_prob[all_rf_ts_prob$max >= cp1[cp1[,1]>=0.7,][1,1],])
 all_80_samp<-nrow(all_rf_ts_prob[all_rf_ts_prob$max >= cp1[cp1[,1]>=0.8,][1,1],])
 all_90_samp<-nrow(all_rf_ts_prob[all_rf_ts_prob$max >= cp1[cp1[,1]>=0.9,][1,1],])
-#####################################FIX ME#####################################
-#Sample size numbers are off, becuase duplicates dropped by cprob.  
-#Need to adjust these from the raw data.
 
 condprob_t<-data.frame(pred_prob=c("All","0.50","0.60","0.70","0.80","0.90"),
                        all_acc = c(all_min_acc,all_50_acc,all_60_acc,
@@ -710,9 +707,6 @@ gis_60_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.6,][1,1],]
 gis_70_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.7,][1,1],])
 gis_80_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.8,][1,1],])
 gis_90_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.9,][1,1],])
-#####################################FIX ME#####################################
-#Sample size numbers are off, becuase duplicates dropped by cprob.  
-#Need to adjust these from the raw data.
 
 condprob_t<-data.frame(pred_prob=c("All","0.50","0.60","0.70","0.80","0.90"),
                        gis_acc = c(gis_min_acc,gis_50_acc,gis_60_acc,
