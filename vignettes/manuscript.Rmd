@@ -39,9 +39,7 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-if(!require(LakeTrophicModelling)){
-  devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE)
-}
+
 if(!require(wesanderson)){
 devtools::install_github("jhollist/wesanderson")
 }
@@ -75,6 +73,11 @@ if(!require(doParallel)){
 if(!require(viridis)){
   devtools::install_github("CRAN/viridis")
 }
+
+if(!require(LakeTrophicModelling)){
+  devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE)
+}
+
 library("viridis")
 library("wesanderson")
 library("LakeTrophicModelling")
@@ -89,7 +92,7 @@ library("condprob2")
 library("party")
 library("broom")
 library("edarf")
-library("caret")
+#library("caret")
 library("randomForest")
 library("doParallel")
 opts_chunk$set(dev = 'jpeg', dpi=300, fig.width=7.5, knitr.table.format="html")
@@ -145,7 +148,7 @@ gis_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
 row.names(gis_dat)<-ltmData$NLA_ID
 gis_dat <- gis_dat[complete.cases(gis_dat),]
 #ecoregion shape
-wsa9<-readOGR("../inst/extdata/.","wsa9_low48",verbose=FALSE)
+wsa9<-readOGR("../inst/extdata/","wsa9_low48",verbose=FALSE)
 ```
 
 ```{r rand_forest_runs , eval=FALSE, include=FALSE, echo=FALSE, cache=FALSE}
@@ -197,9 +200,9 @@ var_importance<-var_importance[order(var_importance$model_id,-var_importance$mea
 ```{r rf_pd, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
 ################################################################################
 #Register parallel backend for partial dependence
-numcores<-parallel::detectCores()
-cl <- makeCluster(numcores)
-registerDoParallel(cl)
+#numcores<-parallel::detectCores()
+#cl <- makeCluster(numcores)
+#registerDoParallel(cl)
 co <- 100
 
 ################################################################################
@@ -221,7 +224,7 @@ gis_rf_conifer_pd<-partialPlot(gis_rf,gis_dat,"EvergreenPer_3000m",n.pt=co,
                                plot=FALSE)
 gis_rf_mndepth_pd<-partialPlot(gis_rf,gis_dat,"MeanDepthCorrect",n.pt=co,
                                plot=FALSE)
-stopCluster(cl)
+#stopCluster(cl)
 ```
 
 ```{r trophic_class, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
@@ -278,12 +281,12 @@ gis_rf_ts_prob <- class_prob_rf(gis_rf,gis_dat,ts_4_brks,ts_4_cats,T)
 
 
 **Abstract**  
-Productivity of lentic ecosystems is well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from lower trophic state (e.g., oligotrophic) to higher trophic states  (e.g., eutrophic). These broad trophic state classifications are good predictors of ecosystem condition, services (e.g., recreation and aesthetics), and disservices (e.g., harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to parameterize the model.  This limits the application of these models to lakes with existing and, more importantly, available water quality data.  To address this, we take advantage of the availability of a large national lakes water quality database (i.e., the National Lakes Assessment), land use/land cover data, lake morphometry data, other universally available data, and apply data mining approaches to predict trophic state.   Using these data and random forests, we first model chlorophyll *a*, then classify the resultant predictions into trophic states.  The full model estimates chlorophyll *a* with both *in situ* and universally available data.  The mean squared error and adjusted R\textsuperscript{2} of this model was `r round(all_rf$mse[all_rf$ntree],2)` and `r round(all_rf$rsq[all_rf$ntree],2)`, respectively.  The second model uses universally available GIS data only. The mean squared error was `r round(gis_rf$mse[gis_rf$ntree],2)` and the adjusted R\textsuperscript{2} was `r round(gis_rf$rsq[gis_rf$ntree],2)`.  The accuracy of the trophic state classifications derived from the chlorophyll *a* predictions were `r round(all_ts4_total_acc,2)*100`% for the full model and `r round(gis_ts4_total_acc,2)*100`% for the "GIS only" model.  Random forests extend the usefulness of the class predictions by providing prediction probabilities for each lake.  This allows us to make trophic state predictions and also indicate the level of uncertainty around those predictions.  For the full model, these predicted class probabilities ranged from `r round(min(all_rf_ts_prob$max),2)` to `r round(max(all_rf_ts_prob$max),2)`.  For the GIS only model, they ranged from `r round(min(gis_rf_ts_prob$max),2)` to `r round(max(gis_rf_ts_prob$max),2)`.  It is our conclusion that *in situ* data are required for better predictions, yet GIS and universally available data provide trophic state predictions, with estimated uncertainty, that still have the potential for a broad array of applications.  The source code and data for this manuscript are available from https://github.com/USEPA/LakeTrophicModelling. <!--Isn't this private? jwh: Nope-->
+Productivity of lentic ecosystems is well studied and it is widely accepted that as nutrient inputs increase,  productivity increases and lakes transition from lower trophic state (e.g., oligotrophic) to higher trophic states  (e.g., eutrophic). These broad trophic state classifications are good predictors of ecosystem condition, services (e.g., recreation and aesthetics), and disservices (e.g., harmful algal blooms). While the relationship between  nutrients and trophic state provides reliable predictions, it requires *in situ* water quality data in order to parameterize the model.  This limits the application of these models to lakes with existing and, more importantly, available water quality data.  To address this, we take advantage of the availability of a large national lakes water quality database (i.e., the National Lakes Assessment), land use/land cover data, lake morphometry data, other universally available data, and apply data mining approaches to predict trophic state.   Using these data and random forests, we first model chlorophyll *a*, then classify the resultant predictions into trophic states.  The full model estimates chlorophyll *a* with both *in situ* and universally available data.  The mean squared error and adjusted R\textsuperscript{2} of this model was `r round(all_rf$mse[all_rf$ntree],2)` and `r round(all_rf$rsq[all_rf$ntree],2)`, respectively.  The second model uses universally available GIS data only. The mean squared error was `r round(gis_rf$mse[gis_rf$ntree],2)` and the adjusted R\textsuperscript{2} was `r round(gis_rf$rsq[gis_rf$ntree],2)`.  The accuracy of the trophic state classifications derived from the chlorophyll *a* predictions were `r round(all_ts4_total_acc,2)*100`% for the full model and `r round(gis_ts4_total_acc,2)*100`% for the "GIS only" model.  Random forests extend the usefulness of the class predictions by providing prediction probabilities for each lake.  This allows us to make trophic state predictions and also indicate the level of uncertainty around those predictions.  For the full model, these predicted class probabilities ranged from `r round(min(all_rf_ts_prob$max),2)` to `r round(max(all_rf_ts_prob$max),2)`.  For the GIS only model, they ranged from `r round(min(gis_rf_ts_prob$max),2)` to `r round(max(gis_rf_ts_prob$max),2)`.  It is our conclusion that *in situ* data are required for better predictions, yet GIS and universally available data provide trophic state predictions, with estimated uncertainty, that still have the potential for a broad array of applications.  The source code and data for this manuscript are available from https://github.com/USEPA/LakeTrophicModelling. <!---Isn't this private? jwh: Nope-->
 
 \vspace{3mm}\hrule
 \doublespace
 
-**Keywords:** Harmful Algal Blooms; Cyanobacteria; Nutrients; National Lakes Assessment; chlorophyll
+**Keywords:** Harmful Algal Blooms; Cyanobacteria; Open Science; Nutrients; National Lakes Assessment
 
 #Introduction
 Productivity in lentic systems is often categorized across a range of trophic states (e.g., the trophic continuum) from early successional (i.e., oligotrophic) to late successional lakes (i.e., hypereutrophic) with lakes naturally occurring across this range [@carlson1977trophic]. Oligotrophic lakes occur in nutrient poor areas or have a more recent geologic history, are often found in higher elevations, have clear water, and are usually favored for drinking water or direct contact recreation (e.g., swimming).   Lakes with higher productivity (e.g., mesotrophic and eutrophic lakes) have greater nutrient loads, tend to be less clear, have greater density of aquatic plants, and often support more diverse and abundant fish communities. Higher primary productivity is not necessarily a predictor of poor ecological condition as it is natural for lakes to shift from lower to higher trophic states but this is a slow process [@rodhe1969crystallization]. However, at the highest productivity levels (hypereutrophic lakes) biological integrity is compromised [@hasler1969cultural; @schindler2008algal; @smith1999eutrophication].  
@@ -314,30 +317,30 @@ Random forests are able to handle numerous correlated variables without a decrea
 
 In our case, we predicted a continuous variable, chlorophyll *a*, directly thus `varSelRF`, does not apply, and nearly all of our variables are continuous so the approach suggested by Strobl [-@strobl2007bias] is not necessary.  Thus we developed an approach, similar to `varSelRF` but applied to random forest with regression trees.  With this approach we fit a full random forest model that includes all variables and a large number of trees.  We then rank the variables using the increase in mean square error, which has been shown to be a less biased metric of importance than the mean decrease in the Gini coefficient [@strobl2007bias].  Using this ranking, we then iterate through the variables and create a random forest with the top two variables and record mean square error and adjusted R\textsuperscript{2} of the resultant random forest. We then repeat this process by adding the next most important variable in order of importance.  With this information we identify both the top variables and the point at which adding variables does not improve the fit of the overall model.  These variables are selected and used as the "reduced model."  With this method, a minimum set of variables that maximizes model accuracy is provided.  This allows us to start with a full suite of predictor variables from which to select a minimum, easier to interpret set of variables.  
 
-<!--wbm: it is unclear to me how you are predictiong the "continuous variable".  Are you using the random forest similar to the CART process with the tree leading to a regression equation? If so, what are the predictor variables for the regression equations?  TN & TP? This is the section that needs more information. -->
+<!---wbm: it is unclear to me how you are predictiong the "continuous variable".  Are you using the random forest similar to the CART process with the tree leading to a regression equation? If so, what are the predictor variables for the regression equations?  TN & TP? This is the section that needs more information. --->
 
 <!-- jwh response: The regression trees are built with all the predictors and for each split the variables use are randomly selected.  Not feasible to list all possible regression equations... -->
 
-<!--wbm: So each tree-or actually each node within a trea-will have a different set of predictors variable(s) in the final equation.  Too late now but, it would be interesting to see which variables were selected and how often-->
+<!---wbm: So each tree-or actually each node within a trea-will have a different set of predictors variable(s) in the final equation.  Too late now but, it would be interesting to see which variables were selected and how often-->
 
 ##Model Details
-We used the `randomForest` package in R to build predictive models of chlorophyll *a* with two sets of predictors [@liaw2002randomForest].  The first included *in situ* and universally available GIS predictors.  We refer to this as the "All variables" model.  For the second model we used just the universally available data (i.e., no *in situ* information).  This is referred to as the "GIS only" model. A list of the full suite of variables tested is in Appendix 1. Our separation of predictors was chosen so that we could highlight the additional predictive performance provided by adding the *in situ* water quality variables on top of the GIS only variables.  Lastly, we used only complete cases (i.e., missing data were removed) so the total number of observations varied among models. 
+We used the `randomForest` package in R to build predictive models of chlorophyll *a* with two sets of predictors [@liaw2002randomForest].  The first included *in situ* and universally available GIS predictors.  We refer to this as the "All variables" model.  For the second model we used just the universally available data (i.e., no *in situ* information).  This is referred to as the "GIS only" model. A list of all considered variables is in Appendix 1. Our separation of predictors was chosen so that we could highlight the additional predictive performance provided by adding the *in situ* water quality variables on top of the GIS only variables.  Lastly, we used only complete cases (i.e., missing data were removed) so the total number of observations varied among models. 
 
 Our modelling work flow was as follows:
 
-1. Identify a minimal set of variables that maximize accuracy of the random forest algorithm. This minimal set of variables, the reduced model, is calculated for each of the models. 
+1. Identify a minimal set of variables from the full suite of variables (Appendix 1) that maximize accuracy of the random forest algorithm. This minimal set of variables, the reduced model, is calculated for each of the models. 
 2. Using R's `randomForest` package, we develop two random forest models with 5000 trees ("All variables" and "GIS only").
 3. Assess model performance for both the predicted chlorophyll *a* and for categorical trophic state classifications.  Trophic state was defined using the NLA chlorophyll *a* trophic state cut offs (Table \ref{tab:trophicStateTable}). 
 4. Examine importance and partial dependence of the most important variables.
 
 ##Measures of Model Performance and Variable Importance
 
-We assessed the performance of the random forest two ways.  First we compared the root mean square error and the adjusted R\textsuperscript{2} of the models.  Second, we examined the accuracy of the model predictions when converted to trophic states classes  via a confusion matrix (Table \ref{tab:trophicStateTable}). A confusion matrix shows agreement and disagreement in a tabular form with predicted values forming the columns of the matrix and observed values, the rows.  From this tabulated information we calculated the total accuracy (i.e., percent correctly predicted) and the kappa coefficient, which takes into account the error expected by chance alone (i.e., the off diagonal values of the matrix) [@cohen1960coefficient; @hubert1985comparing].   The kappa coefficient can range from -1 to 1 with 0 equaling the agreement expected by chance alone.  Values greater than 0 represent agreement greater than would be expected by chance.  A kappa coefficient greater than approximately 0.6 is considered "substantial" agreement  [@landis1977measurement].  Negative values are rare and would indicate no agreement between the predicted and observed values. Additionally, random forest builds each tree on bootstrapped, random subsets of the original data, thus, a separate independent validation dataset is not required and random forest error estimates are expected to be unbiased [@breiman2001random]. 
+We assessed the performance of the random forest two ways.  First we compared the root mean square error and the adjusted R\textsuperscript{2} of the models.  Second, we examined the accuracy of the model predictions when converted to trophic states classes  via a confusion matrix (Table \ref{tab:trophicStateTable}). A confusion matrix shows agreement and disagreement in a tabular form with predicted values forming the columns of the matrix and observed values, the rows.  From this tabulated information we calculated the total accuracy (i.e., percent correctly predicted) and the kappa coefficient, which takes into account the error expected by chance alone (i.e., the off diagonal values of the matrix) [@cohen1960coefficient; @hubert1985comparing].   The kappa coefficient can range from -1 to 1 with 0 equaling the agreement expected by chance alone.  Values greater than 0 represent agreement greater than would be expected by chance.  A kappa coefficient greater than approximately 0.6 is considered "substantial" agreement  [@landis1977measurement].  Negative values are rare and would indicate no agreement between the predicted and observed values. We use kappa as a means of comparison across models as well as within subsets of a given model.  Additionally, random forest builds each tree on bootstrapped, random subsets of the original data, thus, a separate independent validation dataset is not required and random forest error estimates are expected to be unbiased [@breiman2001random]. 
 
-<!--wbm: are they data bootstrapped? I thought that a random subset of the data were generated (as mentioned above) for each tree (i.e.,, sampled without replacement)-->
-<!--jwh: They are bootstrapped.  That results in ~2/3 training and ~1/3 test-->
-<!--wbm: but bootstrapping implies resampling with replacement whereas I think that the random forest takes a random subset of the data-sampling without replacement-->
-<!--jwh: Nope, they are bootstrapped.  See https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm#ooberr -->
+<!---wbm: are they data bootstrapped? I thought that a random subset of the data were generated (as mentioned above) for each tree (i.e.,, sampled without replacement)--->
+<!--jwh: They are bootstrapped.  That results in ~2/3 training and ~1/3 test--->
+<!---wbm: but bootstrapping implies resampling with replacement whereas I think that the random forest takes a random subset of the data-sampling without replacement--->
+<!---jwh: Nope, they are bootstrapped.  See https://www.stat.berkeley.edu/~breiman/RandomForests/cc_home.htm#ooberr --->
 
 Random forests explicitly measure variable importance with two metrics: mean decrease in Gini and percent increase in mean squared error.  These measure the impact on the overall model when a particular variable is included and thus can be used to assess importance [@breiman2001random]. The Gini Index has been shown to have a bias [@strobl2007bias], thus, we used percent increase in mean squared error to assess variable importance.  Lastly, partial dependence plots provide a mechanism to examine the partial relationship between individual variables and the response variable [@jones2015exploratory]. We examined these plots for the top variables as assigned by percent increase in mean squared error for each the reduced models. 
 
@@ -364,12 +367,14 @@ The GIS only model was built using `r nrow(gis_dat)` total observations, had a m
 ##Trophic State Probabilities
 The "All variables" model provides more certain model predictions with a median prediction probability of `r round(median(apply(all_rf_ts_prob[1:4],1,max)),2)` versus `r round(median(apply(gis_rf_ts_prob[1:4],1,max)),2)` for the "GIS only" model (Figure \ref{fig:prob_cdf}).  Additionally, total accuracy of the predictions is a function of this uncertainty.  Lakes with more certain predictions were more accurately classified (Figure \ref{fig:cond_prob_fig}).  For both models, when prediction probabilities are approximately 0.8 or higher, the models had an accuracy of ~100%.  This represents `r round(sum(all_rf_ts_prob$max>0.8)/nrow(all_dat),2)*100`% of the lakes for the "All variables" model and `r round(sum(gis_rf_ts_prob$max>0.8)/nrow(gis_dat),2)*100`% of the lakes for the "GIS only" model.  Lastly, as prediction probabilities increased, the difference in total accuracy between the two models decreased (Figure \ref{fig:cond_prob_fig} & Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis} ). 
 
+ADD CHANGE IN KAPPA AS PREDICTION PROBS CHANGE IN HERE
+
 #Discussion
 
 ##Trophic State Probabilities
 Not surprisingly, lakes with more certain predictions (i.e., higher prediction probabilities) were more accurately predicted (Figure \ref{fig:cond_prob_fig}).  The fact that the difference in accuracy between the two models decreased as certainty in the prediction increased suggests that models with lower overall accuracy, such as the "GIS only" model, may have acceptable accuracy for many individual cases (Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis}).  Additionally, the prediction probabilities may be mapped for each of the four classes (Figure \ref{fig:gis_probability_map}). The spatial patterns show little variability between the "All variables" and "GIS only" models, thus we only show the results from the more broadly applicable "GIS only" model (Figure \ref{fig:gis_probability_map}).   
 
-This map provides several insights.  First, since low uncertainty is associated with high accuracy, this map shows the broad spatial patterns of lake trophic state across the United States (i.e darker colors more likely to be correctly predicted).   Hypereutrophic lakes are much more commonly predicted in the Midwest and southeastern United States.  Clear, oligotrophic lakes are in the northwestern United States, through the western mountains and in the northeastern united states.  The middle trophic states are more evenly distributed across the country.  Lastly, this particular map is very similar to simply mapping the raw data. However, it highlights what could be done if the "GIS only" model were used to map data without measured chlorophyll *a* values which would provide probabilities of given trophic states for all lakes in the 
+This map provides several insights.  First, since low uncertainty is associated with high accuracy, this map shows the broad spatial patterns of lake trophic state across the United States (i.e darker colors more likely to be correctly predicted).   Hypereutrophic lakes are much more commonly predicted in the Midwest and southeastern United States.  Clear, oligotrophic lakes are in the northwestern United States, through the western mountains and in the northeastern united states.  The middle trophic states are more evenly distributed across the country.  Lastly, this particular map is very similar to simply mapping the raw data. However, it highlights what could be done if the "GIS only" model were used to map data without measured chlorophyll *a* values which would provide probabilities of given trophic states for all lakes in the United States.
 
 ## Partial dependencies of explanatory variables
 In line with past predictive modelling of chlorophyll *a* concentrations the "All variables" model selected the water quality variables (turbidity, total organic carbon, total nitrogen, total phosphorus, and N:P ratios) as important variables [@downing2001predicting].   While there is variation in the response of chlorophyll *a* to changes in nutrient concentrations, the general pattern suggests that limiting nutrients have predictable impacts.  If we examine the partial dependencies of these variables we see a general linear increase in log chlorophyll *a* with nitrogen, phosphorus and organic carbon concentrations (Figure \ref{fig:all_partial_dependence}).  This relationship holds until nutrient concentrations become saturated.  The partial dependency plots (Figure \ref{fig:all_partial_dependence}) for the nitrogen:phosphorus ratio is more complicated, indicating that for ratios less than ~14 chlorophyll *a* increases but after ~14 there is marked decrease. The effect of the nitrogen phosphorus ratio on chlorophyll has been the subject of considerable research and our results are consistent with the majority of the findings suggesting that at low ratio values nitrogen is limiting [@downing1992nitrogen; @smith2009eutrophication].  Conversely, at higher ratios the phosphorus levels may be limiting. This would be a cause for concern with linear models; however, linearity is not an assumption of tree-based modelling approaches such as random forest. 
@@ -390,9 +395,9 @@ Our research goals were to explore the utility of a widely used data mining algo
 
 While the "GIS only" model showed lower prediction accuracies than the "All variables" model, the association between the uncertainty of prediction and total accuracy (Figure \ref{fig:cond_prob_fig} and Tables Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis}) suggest that the "GIS only" model will provide reasonable estimates of trophic state for many lakes across the United States.  Furthermore, we can map the uncertainty of the predictions, thus, we know the spatial patterns and location of the lakes for which we are certain, or not, of their predicted trophic state.  Given this and that these models may be applied to any lake in the United States we can recommend using this model.  Future iterations of this modelling effort may be able to utilize modeled predictions of nutrients to improve accuracy and also maintain broad applicability [@milstead2013estimating].
 
-For the "All variables" model, the *in situ* water quality variables drove the predictions.  This is not surprising.  For the "GIS only"" model,  the results were more nuanced. Three broad categories were routinely being selected as important: broad scale spatial patterns in trophic state, land use/land cover controls of trophic state, and local, lake-scale control driven by lake morphometry.  
+ADD PARARGRAPH HERE ON SCALING UP AND UNCERTAINTY WITH GIS ONLY MODEL
 
-A potentially useful benefit of models of trophic state and chlorophyll *a* are their use in assessing risk due to cyanobacteria.  Cyanobacteria biomass should be closely associated with chlorophyll *a* and trophic state as cyanobacteria contribute to the chlorophyll concentration in a lake. If these associations are strong enough we may be able to expand models such as those reported here to also predict probability of cyanobacteria blooms and other indices related to cyanobacteria (e.g., toxin presence).  Others have seen these associations.  For instance, Kasinak et al. [-@kasinak2015benchtop] used bench top flourometers and showed a strong correlation between chlorophyll *a* and phycocyanin.  Using the NLA data, we see a positive trend between chlorophyll *a* and cyanobacteria abundance (Figure \ref{fig:scatterplot}).  Both of these suggest that trophic state may be an acceptable proxy for cyanobacteria.
+For the "All variables" model, the *in situ* water quality variables drove the predictions.  This is not surprising.  For the "GIS only"" model,  the results were more nuanced. Three broad categories were routinely being selected as important: broad scale spatial patterns in trophic state, land use/land cover controls of trophic state, and local, lake-scale control driven by lake morphometry.  
 
 Our results raise three important considerations related to managing eutrophication.  First, the broad scale patterning, indicated by ecoregion as an important variable, suggests regional trends.  This is noteworthy because it suggests that efforts to monitor, model and manage eutrophication and cyanobacteria should be undertaken at both national and regional levels.  Second, while direct control of water quality in lakes would have a large impact, the land use/land cover drivers (i.e., non-point sources) of water quality are also important, and better management of the spatial distribution of important classes such as forest and agriculture can provide some level of control on trophic state and amount of cyanobacteria present.  Third, in-lake processes (i.e., residence time, nutrient cycling, etc.) are, as expected, important and need to be part of any management strategy.  Building on these efforts through updated models,  direct prediction of cyanobacteria, and additional information on the regional differences will help us get a better handle on the broad scale dynamics of productivity in lakes and the potential risk to human health from cyanobacteria blooms.
 
@@ -586,16 +591,6 @@ pred_prob_map(state,lakes_dd,gis_rf_ts_prob)
 density_plot(gis_rf_ts_prob,xvar="max",x="Predicted Probability")
 ```
 
-
-\newpage
-
-```{r chla_cyano_scatterplot,eval=TRUE,echo=FALSE, fig.cap="Cholorphyll *a* and cyanobacteria abundance scatterplot\\label{fig:scatterplot}",cache=FALSE}
-scp_df<-data.frame(chla=ltmData[["CHLA"]],abundp1=ltmData[["cyanoCellsPerML"]]+1)
-scatterPlot(scp_df,xvar="chla",yvar="abundp1","black","grey50","grey25",
-             x=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)')),
-             y="Log10 Cyanobaterial Abundance (cells/ml) + 1")
-```
-
 \newpage
 
 #Tables
@@ -663,9 +658,6 @@ all_60_samp<-nrow(all_rf_ts_prob[all_rf_ts_prob$max >= cp1[cp1[,1]>=0.6,][1,1],]
 all_70_samp<-nrow(all_rf_ts_prob[all_rf_ts_prob$max >= cp1[cp1[,1]>=0.7,][1,1],])
 all_80_samp<-nrow(all_rf_ts_prob[all_rf_ts_prob$max >= cp1[cp1[,1]>=0.8,][1,1],])
 all_90_samp<-nrow(all_rf_ts_prob[all_rf_ts_prob$max >= cp1[cp1[,1]>=0.9,][1,1],])
-#####################################FIX ME#####################################
-#Sample size numbers are off, becuase duplicates dropped by cprob.  
-#Need to adjust these from the raw data.
 
 condprob_t<-data.frame(pred_prob=c("All","0.50","0.60","0.70","0.80","0.90"),
                        all_acc = c(all_min_acc,all_50_acc,all_60_acc,
@@ -710,9 +702,6 @@ gis_60_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.6,][1,1],]
 gis_70_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.7,][1,1],])
 gis_80_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.8,][1,1],])
 gis_90_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.9,][1,1],])
-#####################################FIX ME#####################################
-#Sample size numbers are off, becuase duplicates dropped by cprob.  
-#Need to adjust these from the raw data.
 
 condprob_t<-data.frame(pred_prob=c("All","0.50","0.60","0.70","0.80","0.90"),
                        gis_acc = c(gis_min_acc,gis_50_acc,gis_60_acc,

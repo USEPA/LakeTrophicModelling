@@ -27,9 +27,22 @@ condAccuracy<-function(pred_prob1,pred_prob2,xlab="x",...){
                   model=rep(pred_prob1$model[1],length(cp1[[1]])))
   cp2<-data.frame(max_vote=cp2$max_vote,Raw.Data.Probability=cp2$Raw.Data.Probability,
                   model=rep(pred_prob2$model[1],length(cp2[[1]])))
+  
+  #browser()
+  cp1_k <- vector("numeric",nrow(cp1))
+  for(i in 1:nrow(cp1)){
+    x<-dplyr::filter(pred_prob1,max>=cp1$max_vote[i])
+    cp1_k[i] <- classAgreement(table(x$pred_class,x$obs_class))$kappa
+ 
+  }
+  cp2_k <- vector("numeric",nrow(cp2))
+  for(i in 1:nrow(cp2)){
+    x<-dplyr::filter(pred_prob2,max>=cp2$max_vote[i])
+    cp2_k[i] <- classAgreement(table(x$pred_class,x$obs_class))$kappa 
+  }
+  cp1<<-data.frame(cp1,kappa=cp1_k)
+  cp2<<-data.frame(cp2,kappa=cp2_k)
   df<-rbind(cp1,cp2)
-  cp1<<-cp1
-  cp2<<-cp2
   ggp<-ggplot(df,aes(x=max_vote,y=Raw.Data.Probability,colour=model))+
     geom_point(size=2)+
     theme(text = element_text(family="sans"),

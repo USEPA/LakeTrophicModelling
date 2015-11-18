@@ -1,4 +1,4 @@
-R version 3.2.1 (2015-06-18)
+R version 3.2.2 (2015-08-14)
 Platform: x86_64-redhat-linux-gnu (64-bit)
 Running under: Red Hat Enterprise Linux Server release 6.7 (Santiago)
 
@@ -15,29 +15,38 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] maptools_0.8-36          mapproj_1.2-3           
- [3] maps_2.3-10              dplyr_0.4.2             
- [5] e1071_1.6-4              rgdal_1.0-4             
- [7] sp_1.1-1                 ggplot2_1.0.1           
- [9] knitr_1.10.5             viridis_0.1             
-[11] doParallel_1.0.8         iterators_1.0.7         
-[13] foreach_1.4.2            interpretR_0.2.3        
-[15] randomForest_4.6-11      broom_0.3.7             
-[17] party_1.0-21             strucchange_1.5-1       
-[19] sandwich_2.3-3           zoo_1.7-12              
-[21] modeltools_0.2-21        mvtnorm_1.0-2           
-[23] tidyr_0.2.0              pander_0.5.2            
-[25] condprob2_2.0            edarf_0.1               
-[27] wesanderson_0.3.2        LakeTrophicModelling_0.1
+ [1] maptools_0.8-36          sfsmisc_1.0-27          
+ [3] mapproj_1.2-3            maps_2.3-10             
+ [5] rmarkdown_0.8.1          caret_6.0-52            
+ [7] lattice_0.20-33          dplyr_0.4.3             
+ [9] e1071_1.6-4              rgdal_1.0-7             
+[11] sp_1.2-0                 ggplot2_1.0.1           
+[13] knitr_1.11               viridis_0.1             
+[15] doParallel_1.0.8         iterators_1.0.7         
+[17] foreach_1.4.2            interpretR_0.2.3        
+[19] randomForest_4.6-11      broom_0.3.7             
+[21] party_1.0-21             strucchange_1.5-1       
+[23] sandwich_2.3-3           zoo_1.7-12              
+[25] modeltools_0.2-21        mvtnorm_1.0-2           
+[27] tidyr_0.2.0              pander_0.5.2            
+[29] condprob2_2.0            edarf_0.1               
+[31] wesanderson_0.3.2        LakeTrophicModelling_0.1
 
 loaded via a namespace (and not attached):
- [1] Rcpp_0.11.6      lattice_0.20-31  class_7.3-12     assertthat_0.1  
- [5] digest_0.6.8     psych_1.5.4      R6_2.0.1         plyr_1.8.3      
- [9] evaluate_0.7     highr_0.5        lazyeval_0.1.10  rmarkdown_0.6.1 
-[13] proto_0.3-10     labeling_0.3     splines_3.2.1    stringr_1.0.0   
-[17] foreign_0.8-63   munsell_0.4.2    mnormt_1.5-3     rgeos_0.3-11    
-[21] htmltools_0.2.6  varSelRF_0.7-5   coin_1.0-24      codetools_0.2-11
-[25] MASS_7.3-40      gtable_0.1.2     DBI_0.3.1        magrittr_1.5    
-[29] formatR_1.2      scales_0.2.5     stringi_0.5-5    reshape2_1.4.1  
-[33] AUC_0.3.0        tools_3.2.1      snowfall_1.84-6  sfsmisc_1.0-27  
-[37] survival_2.38-1  yaml_2.1.13      colorspace_1.2-6
+ [1] splines_3.2.2       AUC_0.3.0           gtools_3.5.0       
+ [4] assertthat_0.1      highr_0.5           coin_1.0-24        
+ [7] yaml_2.1.13         quantreg_5.11       digest_0.6.8       
+[10] minqa_1.2.4         colorspace_1.2-6    htmltools_0.2.6    
+[13] Matrix_1.2-2        plyr_1.8.3          psych_1.5.4        
+[16] varSelRF_0.7-5      BradleyTerry2_1.0-6 SparseM_1.6        
+[19] scales_0.2.5        brglm_0.5-9         lme4_1.1-8         
+[22] mgcv_1.8-7          car_2.0-25          lazyeval_0.1.10    
+[25] nnet_7.3-10         pbkrtest_0.4-2      mnormt_1.5-3       
+[28] proto_0.3-10        survival_2.38-3     magrittr_1.5       
+[31] evaluate_0.8        nlme_3.1-121        MASS_7.3-43        
+[34] foreign_0.8-65      class_7.3-13        tools_3.2.2        
+[37] formatR_1.2         stringr_1.0.0       munsell_0.4.2      
+[40] snowfall_1.84-6     nloptr_1.0.4        labeling_0.3       
+[43] gtable_0.1.2        codetools_0.2-14    DBI_0.3.1          
+[46] reshape2_1.4.1      R6_2.1.1            rgeos_0.3-13       
+[49] stringi_0.5-5       Rcpp_0.12.1        
