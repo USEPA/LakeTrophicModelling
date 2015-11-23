@@ -200,9 +200,9 @@ var_importance<-var_importance[order(var_importance$model_id,-var_importance$mea
 ```{r rf_pd, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
 ################################################################################
 #Register parallel backend for partial dependence
-#numcores<-parallel::detectCores()
-#cl <- makeCluster(numcores)
-#registerDoParallel(cl)
+numcores<-parallel::detectCores()
+cl <- makeCluster(numcores)
+registerDoParallel(cl)
 co <- 100
 
 ################################################################################
@@ -224,7 +224,7 @@ gis_rf_conifer_pd<-partialPlot(gis_rf,gis_dat,"EvergreenPer_3000m",n.pt=co,
                                plot=FALSE)
 gis_rf_mndepth_pd<-partialPlot(gis_rf,gis_dat,"MeanDepthCorrect",n.pt=co,
                                plot=FALSE)
-#stopCluster(cl)
+stopCluster(cl)
 ```
 
 ```{r trophic_class, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
@@ -347,7 +347,7 @@ Random forests explicitly measure variable importance with two metrics: mean dec
 ##Trophic State Probabilities
 One of the powerful features of random forests is the ability to aggregate a very large number of competing models or trees.  Each tree provides an independent prediction or vote for a possible outcome.  In the context of our chlorophyll *a* models, we have 5,000 estimates of chlorophyll *a* for each lake.  We convert these values to trophic states (Table \ref {tab:trophicStateTable}) then count up total votes for each class and divide by total possible votes to get an estimate of the probability that a lake is in a given trophic state. For instance, for a single lake (National Lake Assessment ID = NLA06608-0005), the vote probabilities for the "All variables" model were `r 100*round(all_rf_ts_prob[all_rf_ts_prob$nla_id=="NLA06608-0005",][1],2)`% for oligotrophic, `r 100*round(all_rf_ts_prob[all_rf_ts_prob$nla_id=="NLA06608-0005",][2],2)`% for mesotrophic, `r 100*round(all_rf_ts_prob[all_rf_ts_prob$nla_id=="NLA06608-0005",][3],2)`% for eutrophic, and `r 100*round(all_rf_ts_prob[all_rf_ts_prob$nla_id=="NLA06608-0005",][4],2)`% for hypereutrophic.  The maximum probability provides the predicted class, in this case oligotrophic, and suggests little uncertainty in this prediction.  We refer to this value as the "prediction probability."
 
-Further, we might expect higher total accuracy for lakes that have more certain predictions.  This should be evident by looking at the total classification accuracy of lakes given their prediction probability is at or above a certain probability.  To test this we use an approach similar to one outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister et al. [-@hollister2008cprob] and examine the change in total accuracy as a function of the prediction probability for both models.  
+Further, we might expect higher total accuracy for lakes that have more certain predictions.  This should be evident by looking at the Kappa coefficient of lakes given their prediction probability is at or above a certain probability.  To test this we use an approach similar to one outlined by Paul and MacDonald [-@paul2005development] and implemented by Hollister et al. [-@hollister2008cprob] and examine the change in Kappa coefficient as a function of the prediction probability for both models.  
 
 #Results 
 Our complete dataset included `r nrow(ltmData)` lakes; however `r sum(is.na(ltmData$CHLA))` lakes did not have chlorophyll *a* data. Thus, the base dataset for our modelling was conducted on data for `r nrow(ltmData[!is.na(ltmData$TS_CHLA_4),])` lakes.  The lakes were well distributed  across the four trophic state categories (Table \ref{tab:trophicStateTable}) and spatially throughout the United States (Figure \ref{fig:nlaMap}).
@@ -365,14 +365,12 @@ The model built with all predictors used `r nrow(all_dat)` total observations, h
 The GIS only model was built using `r nrow(gis_dat)` total observations, had a mean squared error of `r round(gis_rf$mse[5000],2)` and and R\textsuperscript{2} `r round(gis_rf$rsq[5000],2)`. Four trophic states were predicted with a total accuracy of `r round(gis_ts4_total_acc,3)*100`% and had a kappa coefficient of `r round(gis_ts4_kappa,2)` (Table \ref{tab:Confusion_GIS_4}).  The variable selection process for this model produced a reduced model with 15 variables (Figure \ref{fig:gis_varsel_figure}).  The six most important variables were ecoregion, percent cropland, elevation, latitude, percent evergreen forest, and mean lake depth (Figures \ref{fig:GIS_Importance} & \ref{fig:all_partial_dependence}).  
 
 ##Trophic State Probabilities
-The "All variables" model provides more certain model predictions with a median prediction probability of `r round(median(apply(all_rf_ts_prob[1:4],1,max)),2)` versus `r round(median(apply(gis_rf_ts_prob[1:4],1,max)),2)` for the "GIS only" model (Figure \ref{fig:prob_cdf}).  Additionally, total accuracy of the predictions is a function of this uncertainty.  Lakes with more certain predictions were more accurately classified (Figure \ref{fig:cond_prob_fig}).  For both models, when prediction probabilities are approximately 0.8 or higher, the models had an accuracy of ~100%.  This represents `r round(sum(all_rf_ts_prob$max>0.8)/nrow(all_dat),2)*100`% of the lakes for the "All variables" model and `r round(sum(gis_rf_ts_prob$max>0.8)/nrow(gis_dat),2)*100`% of the lakes for the "GIS only" model.  Lastly, as prediction probabilities increased, the difference in total accuracy between the two models decreased (Figure \ref{fig:cond_prob_fig} & Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis} ). 
-
-ADD CHANGE IN KAPPA AS PREDICTION PROBS CHANGE IN HERE
+The "All variables" model provides more certain model predictions with a median prediction probability of `r round(median(apply(all_rf_ts_prob[1:4],1,max)),2)` versus `r round(median(apply(gis_rf_ts_prob[1:4],1,max)),2)` for the "GIS only" model (Figure \ref{fig:prob_cdf}).  Additionally, the Kappa coefficeint of the predictions is a function of this uncertainty.  Lakes with more certain predictions were more accurately classified and had higher Kappa coefficients (Figure \ref{fig:cond_prob_fig}).  For both models, when prediction probabilities are approximately 0.8 or higher, the models had a Kappa Coefficeint of ~1.  This represents `r round(sum(all_rf_ts_prob$max>0.8)/nrow(all_dat),2)*100`% of the lakes for the "All variables" model and `r round(sum(gis_rf_ts_prob$max>0.8)/nrow(gis_dat),2)*100`% of the lakes for the "GIS only" model.  A Kappa coefficient of 0.6 or higher is considered "substantial" aggrement [@landis1977measurement].  For the "GIS only" model this is seen with `r round(sum(gis_rf_ts_prob$max>cp2[cp2$kappa >= 0.6,][1,1])/nrow(gis_dat),2)*100`% of the lakes.  Lastly, as prediction probabilities increased, the difference in kappa coefficient between the two models decreased (Figure \ref{fig:cond_prob_fig} & Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis} ). 
 
 #Discussion
 
 ##Trophic State Probabilities
-Not surprisingly, lakes with more certain predictions (i.e., higher prediction probabilities) were more accurately predicted (Figure \ref{fig:cond_prob_fig}).  The fact that the difference in accuracy between the two models decreased as certainty in the prediction increased suggests that models with lower overall accuracy, such as the "GIS only" model, may have acceptable accuracy for many individual cases (Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis}).  Additionally, the prediction probabilities may be mapped for each of the four classes (Figure \ref{fig:gis_probability_map}). The spatial patterns show little variability between the "All variables" and "GIS only" models, thus we only show the results from the more broadly applicable "GIS only" model (Figure \ref{fig:gis_probability_map}).   
+Not surprisingly, lakes with more certain predictions (i.e., higher prediction probabilities) were more accurately predicted (Figure \ref{fig:cond_prob_fig}).  The fact that the difference in accuracy (as measured by the Kappa coefficient) between the two models decreased as certainty in the prediction increased suggests that models with lower overall accuracy, such as the "GIS only" model, may have acceptable accuracy for many individual cases (Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis}).  Additionally, the prediction probabilities may be mapped for each of the four classes (Figure \ref{fig:gis_probability_map}). The spatial patterns show little variability between the "All variables" and "GIS only" models, thus we only show the results from the more broadly applicable "GIS only" model (Figure \ref{fig:gis_probability_map}).   
 
 This map provides several insights.  First, since low uncertainty is associated with high accuracy, this map shows the broad spatial patterns of lake trophic state across the United States (i.e darker colors more likely to be correctly predicted).   Hypereutrophic lakes are much more commonly predicted in the Midwest and southeastern United States.  Clear, oligotrophic lakes are in the northwestern United States, through the western mountains and in the northeastern united states.  The middle trophic states are more evenly distributed across the country.  Lastly, this particular map is very similar to simply mapping the raw data. However, it highlights what could be done if the "GIS only" model were used to map data without measured chlorophyll *a* values which would provide probabilities of given trophic states for all lakes in the United States.
 
@@ -393,9 +391,9 @@ Lastly, morphometry (e.g., depth) also proved to be important in the prediction 
 
 Our research goals were to explore the utility of a widely used data mining algorithm, random forests, in the modelling of chlorophyll *a* and lake trophic state. Further, we hoped to examine the utility of these models when built with only ubiquitous GIS data, which allows estimation of trophic state for all lakes in the United States.  The "All variables" model had an RMSE of `r round(all_rf$mse[all_rf$ntree],2)` and an adjusted R\textsuperscript{2} of `r round(all_rf$rsq[all_rf$ntree],2)` whereas, the GIS only models had an RMSE of `r round(gis_rf$mse[gis_rf$ntree],2)` and the adjusted R\textsuperscript{2} was `r round(gis_rf$rsq[gis_rf$ntree],2)`.  Our total accuracy in predicting chlorophyll *a* based trophic states was `r round(all_ts4_total_acc,2)*100`% for the "All variables" model and `r round(gis_ts4_total_acc,2)*100`% for the "GIS only" model.  
 
-While the "GIS only" model showed lower prediction accuracies than the "All variables" model, the association between the uncertainty of prediction and total accuracy (Figure \ref{fig:cond_prob_fig} and Tables Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis}) suggest that the "GIS only" model will provide reasonable estimates of trophic state for many lakes across the United States.  Furthermore, we can map the uncertainty of the predictions, thus, we know the spatial patterns and location of the lakes for which we are certain, or not, of their predicted trophic state.  Given this and that these models may be applied to any lake in the United States we can recommend using this model.  Future iterations of this modelling effort may be able to utilize modeled predictions of nutrients to improve accuracy and also maintain broad applicability [@milstead2013estimating].
+While the "GIS only" model showed lower prediction accuracies than the "All variables" model, the association between the uncertainty of prediction and total accuracy (Figure \ref{fig:cond_prob_fig} and Tables Tables \ref{tab:cond_prob_tab_all} & \ref{tab:cond_prob_tab_gis}) suggest that the "GIS only" model will provide reasonable estimates of trophic state for many lakes across the United States.  Furthermore, we can map the uncertainty of the predictions, thus, we know the spatial patterns and location of the lakes for which we are certain, or not, of their predicted trophic state.  Given this and that these models may be applied to any lake in the United States we can recommend using this model.  
 
-ADD PARARGRAPH HERE ON SCALING UP AND UNCERTAINTY WITH GIS ONLY MODEL
+Future iterations of this modelling effort may be able to utilize modeled predictions of nutrients to improve accuracy and also maintain broad applicability [@milstead2013estimating].  Changes such as these have several advantages.  First, this would allow for estimating changes to chlorophyll *a* and trophic state as a function of changing nutrient loads, which are expected due to climate change [@jones2014lake; @adrian2009lakes; @jeppesen2011climate; @moss2011allied].  Second, predictions of chlorophyll *a*, with measures of uncertainty, could be used in efforts to scale up the contributions from lakes to broad scale estimates of gross primary production.  
 
 For the "All variables" model, the *in situ* water quality variables drove the predictions.  This is not surprising.  For the "GIS only"" model,  the results were more nuanced. Three broad categories were routinely being selected as important: broad scale spatial patterns in trophic state, land use/land cover controls of trophic state, and local, lake-scale control driven by lake morphometry.  
 
@@ -634,12 +632,12 @@ kable(cmt,row.names=T)
 \newpage
 
 ```{r cond_prob_tab_all, eval=TRUE,results="asis",echo=FALSE, tab.cap="Summary of relationship between prediction probabilities, total accuracy, and number of lakes for the All variables model.  \\label{tab:cond_prob_tab_all}",cache=FALSE}
-all_min_acc<-cp1[1,2]
-all_50_acc<-cp1[cp1[,1]>=0.5,][1,2]
-all_60_acc<-cp1[cp1[,1]>=0.6,][1,2]
-all_70_acc<-cp1[cp1[,1]>=0.7,][1,2]
-all_80_acc<-cp1[cp1[,1]>=0.8,][1,2]
-all_90_acc<-cp1[cp1[,1]>=0.9,][1,2]
+all_min_acc<-cp1[1,4]
+all_50_acc<-cp1[cp1[,1]>=0.5,][1,4]
+all_60_acc<-cp1[cp1[,1]>=0.6,][1,4]
+all_70_acc<-cp1[cp1[,1]>=0.7,][1,4]
+all_80_acc<-cp1[cp1[,1]>=0.8,][1,4]
+all_90_acc<-cp1[cp1[,1]>=0.9,][1,4]
 all_min_perc<-(nrow(all_rf_ts_prob[all_rf_ts_prob$max >= cp1[1,1],])/
                  nrow(all_rf_ts_prob))
 all_50_perc<-(nrow(all_rf_ts_prob[all_rf_ts_prob$max >= cp1[cp1[,1]>=0.5,][1,1],])/
@@ -669,7 +667,7 @@ condprob_t<-data.frame(pred_prob=c("All","0.50","0.60","0.70","0.80","0.90"),
 condprob_t[,2:3]<-round(condprob_t[,2:3],2)
 condprob_t[,2:3]<-100*condprob_t[,2:3]
 names(condprob_t)<-c("Prediction Prob.",
-                     "Total Accuracy",
+                     "Kappa Coefficient",
                      "Percent of Sample",
                      "Number of Samples")
 kable(condprob_t,row.names=F)
@@ -678,30 +676,30 @@ kable(condprob_t,row.names=F)
 \newpage
 
 ```{r cond_prob_tab_gis, eval=TRUE,results="asis",echo=FALSE, tab.cap="Summary of relationship between prediction probabilities, total accuracy, and number of lakes for the GIS only model.  \\label{tab:cond_prob_tab_gis}",cache=FALSE}
-gis_min_acc<-cp1[1,2]
-gis_50_acc<-cp1[cp1[,1]>=0.5,][1,2]
-gis_60_acc<-cp1[cp1[,1]>=0.6,][1,2]
-gis_70_acc<-cp1[cp1[,1]>=0.7,][1,2]
-gis_80_acc<-cp1[cp1[,1]>=0.8,][1,2]
-gis_90_acc<-cp1[cp1[,1]>=0.9,][1,2]
-gis_min_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[1,1],])/
+gis_min_acc<-cp2[1,4]
+gis_50_acc<-cp2[cp2[,1]>=0.5,][1,4]
+gis_60_acc<-cp2[cp2[,1]>=0.6,][1,4]
+gis_70_acc<-cp2[cp2[,1]>=0.7,][1,4]
+gis_80_acc<-cp2[cp2[,1]>=0.8,][1,4]
+gis_90_acc<-cp2[cp2[,1]>=0.9,][1,4]
+gis_min_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[1,1],])/
                  nrow(gis_rf_ts_prob))
-gis_50_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.5,][1,1],])/
+gis_50_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[cp2[,1]>=0.5,][1,1],])/
                  nrow(gis_rf_ts_prob))
-gis_60_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.6,][1,1],])/
+gis_60_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[cp2[,1]>=0.6,][1,1],])/
                  nrow(gis_rf_ts_prob))
-gis_70_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.7,][1,1],])/
+gis_70_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[cp2[,1]>=0.7,][1,1],])/
                  nrow(gis_rf_ts_prob))
-gis_80_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.8,][1,1],])/
+gis_80_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[cp2[,1]>=0.8,][1,1],])/
                  nrow(gis_rf_ts_prob))
-gis_90_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.9,][1,1],])/
+gis_90_perc<-(nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[cp2[,1]>=0.9,][1,1],])/
                  nrow(gis_rf_ts_prob))
-gis_min_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[1,1],])
-gis_50_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.5,][1,1],])
-gis_60_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.6,][1,1],])
-gis_70_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.7,][1,1],])
-gis_80_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.8,][1,1],])
-gis_90_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp1[cp1[,1]>=0.9,][1,1],])
+gis_min_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[1,1],])
+gis_50_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[cp2[,1]>=0.5,][1,1],])
+gis_60_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[cp2[,1]>=0.6,][1,1],])
+gis_70_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[cp2[,1]>=0.7,][1,1],])
+gis_80_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[cp2[,1]>=0.8,][1,1],])
+gis_90_samp<-nrow(gis_rf_ts_prob[gis_rf_ts_prob$max >= cp2[cp2[,1]>=0.9,][1,1],])
 
 condprob_t<-data.frame(pred_prob=c("All","0.50","0.60","0.70","0.80","0.90"),
                        gis_acc = c(gis_min_acc,gis_50_acc,gis_60_acc,

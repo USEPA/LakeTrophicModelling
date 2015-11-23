@@ -205,8 +205,8 @@ code and data for this manuscript are available from
 
 \doublespace
 
-\textbf{Keywords:} Harmful Algal Blooms; Cyanobacteria; Nutrients;
-National Lakes Assessment; chlorophyll
+\textbf{Keywords:} Harmful Algal Blooms; Cyanobacteria; Open Science;
+Nutrients; National Lakes Assessment
 
 \section{Introduction}\label{introduction}
 
@@ -387,12 +387,12 @@ Wiener 2002). The first included \emph{in situ} and universally
 available GIS predictors. We refer to this as the ``All variables''
 model. For the second model we used just the universally available data
 (i.e., no \emph{in situ} information). This is referred to as the ``GIS
-only'' model. A list of the full suite of variables tested is in
-Appendix 1. Our separation of predictors was chosen so that we could
-highlight the additional predictive performance provided by adding the
-\emph{in situ} water quality variables on top of the GIS only variables.
-Lastly, we used only complete cases (i.e., missing data were removed) so
-the total number of observations varied among models.
+only'' model. A list of all considered variables is in Appendix 1. Our
+separation of predictors was chosen so that we could highlight the
+additional predictive performance provided by adding the \emph{in situ}
+water quality variables on top of the GIS only variables. Lastly, we
+used only complete cases (i.e., missing data were removed) so the total
+number of observations varied among models.
 
 Our modelling work flow was as follows:
 
@@ -400,9 +400,10 @@ Our modelling work flow was as follows:
 \def\labelenumi{\arabic{enumi}.}
 \itemsep1pt\parskip0pt\parsep0pt
 \item
-  Identify a minimal set of variables that maximize accuracy of the
-  random forest algorithm. This minimal set of variables, the reduced
-  model, is calculated for each of the models.
+  Identify a minimal set of variables from the full suite of variables
+  (Appendix 1) that maximize accuracy of the random forest algorithm.
+  This minimal set of variables, the reduced model, is calculated for
+  each of the models.
 \item
   Using R's \texttt{randomForest} package, we develop two random forest
   models with 5000 trees (``All variables'' and ``GIS only'').
@@ -435,11 +436,12 @@ expected by chance alone. Values greater than 0 represent agreement
 greater than would be expected by chance. A kappa coefficient greater
 than approximately 0.6 is considered ``substantial'' agreement (Landis
 and Koch 1977). Negative values are rare and would indicate no agreement
-between the predicted and observed values. Additionally, random forest
-builds each tree on bootstrapped, random subsets of the original data,
-thus, a separate independent validation dataset is not required and
-random forest error estimates are expected to be unbiased (Breiman
-2001).
+between the predicted and observed values. We use kappa as a means of
+comparison across models as well as within subsets of a given model.
+Additionally, random forest builds each tree on bootstrapped, random
+subsets of the original data, thus, a separate independent validation
+dataset is not required and random forest error estimates are expected
+to be unbiased (Breiman 2001).
 
 Random forests explicitly measure variable importance with two metrics:
 mean decrease in Gini and percent increase in mean squared error. These
@@ -473,12 +475,12 @@ this prediction. We refer to this value as the ``prediction
 probability.''
 
 Further, we might expect higher total accuracy for lakes that have more
-certain predictions. This should be evident by looking at the total
-classification accuracy of lakes given their prediction probability is
-at or above a certain probability. To test this we use an approach
-similar to one outlined by Paul and MacDonald (2005) and implemented by
-Hollister et al. (2008) and examine the change in total accuracy as a
-function of the prediction probability for both models.
+certain predictions. This should be evident by looking at the Kappa
+coefficient of lakes given their prediction probability is at or above a
+certain probability. To test this we use an approach similar to one
+outlined by Paul and MacDonald (2005) and implemented by Hollister et
+al. (2008) and examine the change in Kappa coefficient as a function of
+the prediction probability for both models.
 
 \section{Results}\label{results}
 
@@ -518,17 +520,19 @@ Probabilities}\label{trophic-state-probabilities-1}
 
 The ``All variables'' model provides more certain model predictions with
 a median prediction probability of 0.81 versus 0.72 for the ``GIS only''
-model (Figure \ref{fig:prob_cdf}). Additionally, total accuracy of the
-predictions is a function of this uncertainty. Lakes with more certain
-predictions were more accurately classified (Figure
-\ref{fig:cond_prob_fig}). For both models, when prediction probabilities
-are approximately 0.8 or higher, the models had an accuracy of
-\textasciitilde{}100\%. This represents 55\% of the lakes for the ``All
-variables'' model and 22\% of the lakes for the ``GIS only'' model.
-Lastly, as prediction probabilities increased, the difference in total
-accuracy between the two models decreased (Figure
-\ref{fig:cond_prob_fig} \& Tables \ref{tab:cond_prob_tab_all} \&
-\ref{tab:cond_prob_tab_gis} ).
+model (Figure \ref{fig:prob_cdf}). Additionally, the Kappa coefficeint
+of the predictions is a function of this uncertainty. Lakes with more
+certain predictions were more accurately classified and had higher Kappa
+coefficients (Figure \ref{fig:cond_prob_fig}). For both models, when
+prediction probabilities are approximately 0.8 or higher, the models had
+a Kappa Coefficeint of \textasciitilde{}1. This represents 55\% of the
+lakes for the ``All variables'' model and 22\% of the lakes for the
+``GIS only'' model. A Kappa coefficient of 0.6 or higher is considered
+``substantial'' aggrement (Landis and Koch 1977). For the ``GIS only''
+model this is seen with 22\% of the lakes FIX ME Lastly, as prediction
+probabilities increased, the difference in kappa coefficient between the
+two models decreased (Figure \ref{fig:cond_prob_fig} \& Tables
+\ref{tab:cond_prob_tab_all} \& \ref{tab:cond_prob_tab_gis} ).
 
 \section{Discussion}\label{discussion}
 
@@ -537,13 +541,13 @@ Probabilities}\label{trophic-state-probabilities-2}
 
 Not surprisingly, lakes with more certain predictions (i.e., higher
 prediction probabilities) were more accurately predicted (Figure
-\ref{fig:cond_prob_fig}). The fact that the difference in accuracy
-between the two models decreased as certainty in the prediction
-increased suggests that models with lower overall accuracy, such as the
-``GIS only'' model, may have acceptable accuracy for many individual
-cases (Tables \ref{tab:cond_prob_tab_all} \&
-\ref{tab:cond_prob_tab_gis}). Additionally, the prediction probabilities
-may be mapped for each of the four classes (Figure
+\ref{fig:cond_prob_fig}). The fact that the difference in accuracy (as
+measured by the Kappa coefficient) between the two models decreased as
+certainty in the prediction increased suggests that models with lower
+overall accuracy, such as the ``GIS only'' model, may have acceptable
+accuracy for many individual cases (Tables \ref{tab:cond_prob_tab_all}
+\& \ref{tab:cond_prob_tab_gis}). Additionally, the prediction
+probabilities may be mapped for each of the four classes (Figure
 \ref{fig:gis_probability_map}). The spatial patterns show little
 variability between the ``All variables'' and ``GIS only'' models, thus
 we only show the results from the more broadly applicable ``GIS only''
@@ -561,6 +565,7 @@ this particular map is very similar to simply mapping the raw data.
 However, it highlights what could be done if the ``GIS only'' model were
 used to map data without measured chlorophyll \emph{a} values which
 would provide probabilities of given trophic states for all lakes in the
+United States.
 
 \subsection{Partial dependencies of explanatory
 variables}\label{partial-dependencies-of-explanatory-variables}
@@ -673,27 +678,14 @@ model. Future iterations of this modelling effort may be able to utilize
 modeled predictions of nutrients to improve accuracy and also maintain
 broad applicability (Milstead et al. 2013).
 
+ADD PARARGRAPH HERE ON SCALING UP AND UNCERTAINTY WITH GIS ONLY MODEL
+
 For the ``All variables'' model, the \emph{in situ} water quality
 variables drove the predictions. This is not surprising. For the ``GIS
 only''" model, the results were more nuanced. Three broad categories
 were routinely being selected as important: broad scale spatial patterns
 in trophic state, land use/land cover controls of trophic state, and
 local, lake-scale control driven by lake morphometry.
-
-A potentially useful benefit of models of trophic state and chlorophyll
-\emph{a} are their use in assessing risk due to cyanobacteria.
-Cyanobacteria biomass should be closely associated with chlorophyll
-\emph{a} and trophic state as cyanobacteria contribute to the
-chlorophyll concentration in a lake. If these associations are strong
-enough we may be able to expand models such as those reported here to
-also predict probability of cyanobacteria blooms and other indices
-related to cyanobacteria (e.g., toxin presence). Others have seen these
-associations. For instance, Kasinak et al. (2015) used bench top
-flourometers and showed a strong correlation between chlorophyll
-\emph{a} and phycocyanin. Using the NLA data, we see a positive trend
-between chlorophyll \emph{a} and cyanobacteria abundance (Figure
-\ref{fig:scatterplot}). Both of these suggest that trophic state may be
-an acceptable proxy for cyanobacteria.
 
 Our results raise three important considerations related to managing
 eutrophication. First, the broad scale patterning, indicated by
@@ -815,6 +807,10 @@ models. \label{fig:prob_cdf}}
 
 \newpage
 
+\begin{verbatim}
+## Warning: Removed 2 rows containing missing values (geom_point).
+\end{verbatim}
+
 \begin{figure}[htbp]
 \centering
 \includegraphics{manuscript_files/figure-latex/cond_prob_fig-1.jpeg}
@@ -835,15 +831,6 @@ chlorophyll \textit{a} trophic states \label{fig:gis_probability_map}}
 \newpage
 
 \newpage
-
-\newpage
-
-\begin{figure}[htbp]
-\centering
-\includegraphics{manuscript_files/figure-latex/chla_cyano_scatterplot-1.jpeg}
-\caption{Cholorphyll \emph{a} and cyanobacteria abundance
-scatterplot\label{fig:scatterplot}}
-\end{figure}
 
 \newpage
 
@@ -924,20 +911,20 @@ hyper & 1 & 8 & 38 & 87 & 64.93\tabularnewline
 accuracy, and number of lakes for the All variables model.
 \label{tab:cond_prob_tab_all}}\tabularnewline
 \toprule
-Prediction Prob. & Total Accuracy & Percent of Sample & Number of
+Prediction Prob. & Kappa Coefficient & Percent of Sample & Number of
 Samples\tabularnewline
 \midrule
 \endfirsthead
 \toprule
-Prediction Prob. & Total Accuracy & Percent of Sample & Number of
+Prediction Prob. & Kappa Coefficient & Percent of Sample & Number of
 Samples\tabularnewline
 \midrule
 \endhead
-All & 69 & 100 & 1080\tabularnewline
-0.50 & 70 & 98 & 1063\tabularnewline
-0.60 & 73 & 92 & 999\tabularnewline
-0.70 & 81 & 81 & 870\tabularnewline
-0.80 & 96 & 55 & 596\tabularnewline
+All & 57 & 100 & 1080\tabularnewline
+0.50 & 59 & 98 & 1063\tabularnewline
+0.60 & 63 & 92 & 999\tabularnewline
+0.70 & 73 & 81 & 870\tabularnewline
+0.80 & 95 & 55 & 596\tabularnewline
 0.90 & 100 & 21 & 227\tabularnewline
 \bottomrule
 \end{longtable}
@@ -958,11 +945,11 @@ Prediction Prob. & Total Accuracy & Percent of Sample & Number of
 Samples\tabularnewline
 \midrule
 \endhead
-All & 69 & 100 & 1135\tabularnewline
-0.50 & 70 & 96 & 1089\tabularnewline
-0.60 & 73 & 83 & 949\tabularnewline
-0.70 & 81 & 57 & 651\tabularnewline
-0.80 & 96 & 22 & 247\tabularnewline
+All & 29 & 100 & 1138\tabularnewline
+0.50 & 31 & 96 & 1091\tabularnewline
+0.60 & 38 & 83 & 949\tabularnewline
+0.70 & 56 & 57 & 651\tabularnewline
+0.80 & 88 & 22 & 247\tabularnewline
 0.90 & 100 & 4 & 43\tabularnewline
 \bottomrule
 \end{longtable}
@@ -981,9 +968,9 @@ AlbersX & Longitude (Albers meters) & GIS & 126757.1 &
 34305.5\tabularnewline
 AlbersY & Latitude (Albers meters) & GIS & 436908.1 &
 17367.2\tabularnewline
+BarrenPer\_3000m & \% Barren & GIS & 0.7 & 0.1\tabularnewline
 BASINAREA & Watershed Area (sq. meters) & GIS & 3208.5 &
 788.1\tabularnewline
-BarrenPer\_3000m & \% Barren & GIS & 0.7 & 0.1\tabularnewline
 CropsPer\_3000m & \% Cropland & GIS & 13.3 & 0.6\tabularnewline
 DDs45 & Growing Degree Days (Days) & GIS & 2750.0 & 41.0\tabularnewline
 DeciduousPer\_3000m & \% Decidous Forest & GIS & 17.1 &
@@ -1026,9 +1013,9 @@ ShoreDevel & Shoreline Development Index & GIS & 2.7 &
 ShrubPer\_3000m & \% Shrub/Scrub & GIS & 10.4 & 0.6\tabularnewline
 VolumeCorrect & Est. Lake Volume (cubic meters) & GIS & 101211909.9 &
 27438696.4\tabularnewline
-WSA\_ECO9 & Ecoregion & GIS & NA & NA\tabularnewline
 WaterPer\_3000m & \% Water & GIS & 4.1 & 0.2\tabularnewline
 WoodyWetPer\_3000m & \% Woody Wetland & GIS & 5.2 & 0.3\tabularnewline
+WSA\_ECO9 & Ecoregion & GIS & NA & NA\tabularnewline
 ANC & Acid Neutralizing Capacity (ueq/L) & NLA & 2584.2 &
 171.7\tabularnewline
 ANDEF2 & Anion Deficit (ueq/L) & NLA & -506.4 & 143.2\tabularnewline
@@ -1051,13 +1038,13 @@ DOC & Dissolved Organic Carbon (mg/L) & NLA & 8.6 & 0.5\tabularnewline
 H & Hydrogen Ions (ueq/L) & NLA & 0.2 & 0.1\tabularnewline
 K & Potassium (ueq/L) & NLA & 245.6 & 40.6\tabularnewline
 MG & Magnesium (ueq/L) & NLA & 2190.4 & 282.2\tabularnewline
+Na & Sodium (ueq/L) & NLA & 3709.7 & 816.3\tabularnewline
 NH4 & Ammonium (mg/L) & NLA & 2.9 & 0.2\tabularnewline
 NH4ION & Calculated Ammonium (ueq/L) & NLA & 2.5 & 0.2\tabularnewline
 NO3 & Nitrate (ueq/L) & NLA & 5.4 & 0.7\tabularnewline
 NO3\_NO2 & Nitrate/Nitrite (mg N/L) & NLA & 0.1 & 0.0\tabularnewline
 NPratio & Nitrogen:Phophorus Ratio & NLA & 34.5 & 1.8\tabularnewline
 NTL & Total Nitrogen (\(\mu\)g/L) & NLA & 1109.9 & 56.4\tabularnewline
-Na & Sodium (ueq/L) & NLA & 3709.7 & 816.3\tabularnewline
 OH & Hydroxide (ueq/L) & NLA & 3.1 & 0.2\tabularnewline
 ORGION & Est. Organic Anions (ueq/L) & NLA & 85.9 & 4.8\tabularnewline
 PH\_FIELD & pH & NLA & 8.1 & 0.0\tabularnewline
@@ -1065,9 +1052,9 @@ PTL & Total Phosphorus (\(\mu\)g/L) & NLA & 103.1 & 7.8\tabularnewline
 SIO2 & Silica (mg/L) & NLA & 8.6 & 0.3\tabularnewline
 SO4 & Sulfate (ueq/L) & NLA & 3853.4 & 935.7\tabularnewline
 SOBC & Sum of Base Cation (ueq/L) & NLA & 7534.1 & 1105.0\tabularnewline
+TmeanW & Mean Profile Water Temp. (C) & NLA & 24.1 & 0.1\tabularnewline
 TOC & Total Organic Carbon (mg/L) & NLA & 9.6 & 0.6\tabularnewline
 TURB & Turbidity (NTU) & NLA & 12.3 & 1.0\tabularnewline
-TmeanW & Mean Profile Water Temp. (C) & NLA & 24.1 & 0.1\tabularnewline
 \bottomrule
 \end{longtable}
 
@@ -1157,10 +1144,6 @@ Ecology 16:301--312.
 
 Jones, Z., and F. Linder. 2015. Exploratory data analysis using random
 forests. \emph{in} The 73rd annual mPSA conference. MPSA.
-
-Kasinak, J.-M. E., B. M. Holt, M. F. Chislock, and A. E. Wilson. 2015.
-Benchtop fluorometry of phycocyanin as a rapid approach for estimating
-cyanobacterial biovolume. Journal of Plankton Research 37:248--257.
 
 Landis, J. R., and G. G. Koch. 1977. The measurement of observer
 agreement for categorical data. biometrics 33:159--174.

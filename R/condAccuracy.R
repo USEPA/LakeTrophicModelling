@@ -42,8 +42,8 @@ condAccuracy<-function(pred_prob1,pred_prob2,xlab="x",...){
   }
   cp1<<-data.frame(cp1,kappa=cp1_k)
   cp2<<-data.frame(cp2,kappa=cp2_k)
-  df<-rbind(cp1,cp2)
-  ggp<-ggplot(df,aes(x=max_vote,y=Raw.Data.Probability,colour=model))+
+  df<-rbind(data.frame(cp1,kappa=cp1_k),data.frame(cp2,kappa=cp2_k))
+  ggp<-ggplot(df,aes(x=max_vote,y=kappa,colour=model))+
     geom_point(size=2)+
     theme(text = element_text(family="sans"),
           panel.background = element_blank(), #panel.grid = element_blank(), 
@@ -55,7 +55,7 @@ condAccuracy<-function(pred_prob1,pred_prob2,xlab="x",...){
           axis.title.y = element_text(family="sans",vjust = 1.5, size = 12),
           axis.text.x = element_text(family="sans",size = 11),
           axis.text.y = element_text(family="sans",size = 11)) + 
-    labs(y="Total Accuracy",x=xlab) +
+    labs(y="Kappa Coefficient",x=xlab) +
     scale_colour_manual(name='',values = viridis(2))
   return(ggp)
 }
