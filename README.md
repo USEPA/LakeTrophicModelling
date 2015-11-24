@@ -9,7 +9,7 @@ To install the package and gain access to the materials do the following:
 ```
 install.packages("devtools")
 library("devtools")
-install_github("LakeTrophicModelling","USEPA")
+install_github(""USEPA/LakeTrophicModelling")
 library("LakeTrophicModelling")
 ```
 

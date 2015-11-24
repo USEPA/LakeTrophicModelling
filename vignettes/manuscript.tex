@@ -258,6 +258,10 @@ Building on these previously identified associations might allow us to
 use only landscape and other universally available data to build models.
 Identifying predictors using this type of ubiquitous data would allow
 for estimating trophic state in both monitored and unmonitored lakes.
+Furthermore, being able to classify a large number of lakes would have
+implications for the management of lakes. A broader discussion of
+ecological classification and resource management is beyond the scope of
+this paper, but see (Carpenter 1999) for more.
 
 Many published models of nutrients and trophic state in freshwater
 systems are based on linear modelling methods such as standard least
@@ -316,9 +320,17 @@ The NLCD is a national land use/land cover dataset that also provides
 estimates of impervious surface. We calculated total proportion of each
 NLCD land use land cover class and total percent impervious surface
 within a 3 kilometer buffer surrounding each lake (Homer et al. 2004,
-Xian et al. 2009). A three kilometer buffer was selected to represent an
-intermediate scale that is greater than immediate parcels but smaller
-than regional and whole-basin measures.
+Xian et al. 2009). We chose this buffer distance for several reasons.
+First, in some preliminary efforts we tried a variety of scales (300 m,
+1.5 km, and 3 km), and they had little impact on prediction accuracy.
+Second, since we also include local lake specific variables (see below)
+as well as the broader scale ecoregions, we chose the 3km buffer as it
+made intuitive sense as representative of land use impacts that would
+not be accounted for these other variables. While many regional
+classifications and scales have been shown to be effective (e.g.,
+Cheruvelil et al. 2013), we chose a three kilometer buffer as it
+represented an intermediate scale that is greater than immediate parcels
+but smaller than regional and whole-basin measures.
 
 Local, lake specific characteristics have been show to be important
 (Read et al. 2015). Thus to account for this, we used measures of lake
@@ -520,16 +532,16 @@ Probabilities}\label{trophic-state-probabilities-1}
 
 The ``All variables'' model provides more certain model predictions with
 a median prediction probability of 0.81 versus 0.72 for the ``GIS only''
-model (Figure \ref{fig:prob_cdf}). Additionally, the Kappa coefficeint
+model (Figure \ref{fig:prob_cdf}). Additionally, the Kappa coefficient
 of the predictions is a function of this uncertainty. Lakes with more
 certain predictions were more accurately classified and had higher Kappa
 coefficients (Figure \ref{fig:cond_prob_fig}). For both models, when
 prediction probabilities are approximately 0.8 or higher, the models had
-a Kappa Coefficeint of \textasciitilde{}1. This represents 55\% of the
+a Kappa coefficient of \textasciitilde{}1. This represents 55\% of the
 lakes for the ``All variables'' model and 22\% of the lakes for the
 ``GIS only'' model. A Kappa coefficient of 0.6 or higher is considered
-``substantial'' aggrement (Landis and Koch 1977). For the ``GIS only''
-model this is seen with 22\% of the lakes FIX ME Lastly, as prediction
+``substantial'' agreement (Landis and Koch 1977). For the ``GIS only''
+model this is seen with 52\% of the lakes. Lastly, as prediction
 probabilities increased, the difference in kappa coefficient between the
 two models decreased (Figure \ref{fig:cond_prob_fig} \& Tables
 \ref{tab:cond_prob_tab_all} \& \ref{tab:cond_prob_tab_gis} ).
@@ -674,11 +686,21 @@ can map the uncertainty of the predictions, thus, we know the spatial
 patterns and location of the lakes for which we are certain, or not, of
 their predicted trophic state. Given this and that these models may be
 applied to any lake in the United States we can recommend using this
-model. Future iterations of this modelling effort may be able to utilize
-modeled predictions of nutrients to improve accuracy and also maintain
-broad applicability (Milstead et al. 2013).
+model.
 
-ADD PARARGRAPH HERE ON SCALING UP AND UNCERTAINTY WITH GIS ONLY MODEL
+Future iterations of this modelling effort may be able to utilize
+modeled predictions of nutrients to improve accuracy and also maintain
+broad applicability (Milstead et al. 2013). Changes such as these have
+several advantages. First, this would allow for estimating changes to
+chlorophyll \emph{a} and trophic state as a function of changing
+nutrient loads, which are expected due to climate change (Adrian et al.
+2009, Jeppesen et al. 2011, Moss et al. 2011, Jones and Brett 2014).
+Second, with the ability to make predictions for most lakes in the
+United States, the ``GIS only'' models could be used as a source of
+information on national scale phenomena. For example, predictions of
+chlorophyll \emph{a}, with measures of uncertainty, could be used in
+efforts to scale up the contributions from lakes to broad scale
+estimates of gross primary production.
 
 For the ``All variables'' model, the \emph{in situ} water quality
 variables drove the predictions. This is not surprising. For the ``GIS
@@ -692,19 +714,20 @@ eutrophication. First, the broad scale patterning, indicated by
 ecoregion as an important variable, suggests regional trends. This is
 noteworthy because it suggests that efforts to monitor, model and manage
 eutrophication and cyanobacteria should be undertaken at both national
-and regional levels. Second, while direct control of water quality in
-lakes would have a large impact, the land use/land cover drivers (i.e.,
-non-point sources) of water quality are also important, and better
-management of the spatial distribution of important classes such as
-forest and agriculture can provide some level of control on trophic
-state and amount of cyanobacteria present. Third, in-lake processes
-(i.e., residence time, nutrient cycling, etc.) are, as expected,
-important and need to be part of any management strategy. Building on
-these efforts through updated models, direct prediction of
-cyanobacteria, and additional information on the regional differences
-will help us get a better handle on the broad scale dynamics of
-productivity in lakes and the potential risk to human health from
-cyanobacteria blooms.
+and regional levels. This corroborates past findings that regional
+drivers are important for water quality (Cheruvelil et al. 2013).
+Second, while direct control of water quality in lakes would have a
+large impact, the land use/land cover drivers (i.e., non-point sources)
+of water quality are also important, and better management of the
+spatial distribution of important classes such as forest and agriculture
+can provide some level of control on trophic state and amount of
+cyanobacteria present. Third, in-lake processes (i.e., residence time,
+nutrient cycling, etc.) are, as expected, important and need to be part
+of any management strategy. Building on these efforts through updated
+models, direct prediction of cyanobacteria, and additional information
+on the regional differences will help us get a better handle on the
+broad scale dynamics of productivity in lakes and the potential risk to
+human health from cyanobacteria blooms.
 
 \section{Acknowledgements}\label{acknowledgements}
 
@@ -806,10 +829,6 @@ models. \label{fig:prob_cdf}}
 \end{figure}
 
 \newpage
-
-\begin{verbatim}
-## Warning: Removed 2 rows containing missing values (geom_point).
-\end{verbatim}
 
 \begin{figure}[htbp]
 \centering
@@ -1063,6 +1082,11 @@ TURB & Turbidity (NTU) & NLA & 12.3 & 1.0\tabularnewline
 \section*{References}\label{references}
 \addcontentsline{toc}{section}{References}
 
+Adrian, R., C. M. O'Reilly, H. Zagarese, S. B. Baines, D. O. Hessen, W.
+Keller, D. M. Livingstone, R. Sommaruga, D. Straile, E. Van Donk, and
+others. 2009. Lakes as sentinels of climate change. Limnology and
+Oceanography 54:2283--2297.
+
 Bilotta, G., and R. Brazier. 2008. Understanding the influence of
 suspended solids on water quality and aquatic biota. Water research
 42:2849--2861.
@@ -1072,10 +1096,19 @@ Breiman, L. 2001. Random forests. Machine learning 45:5--32.
 Carlson, R. E. 1977. A trophic state index for lakes. Limnology and
 oceanography 22:361--369.
 
+Carpenter, W.-D. C., Constance A.; Busch. 1999. The use of ecological
+classification in management. Pages 395--430 \emph{in} R. Szaro, N.
+Johnson, W. Sexton, and A. Malk, editors. Ecological stewardship: A
+common reference for ecosystem management.
+
 Carvalho, L., C. A. Miller, E. M. Scott, G. A. Codd, P. S. Davies, and
 A. N. Tyler. 2011. Cyanobacterial blooms: Statistical models describing
 risk factors for national-scale lake assessment and lake management.
 Science of The Total Environment 409:5353--5358.
+
+Cheruvelil, K., P. Soranno, K. Webster, and M. Bremigan. 2013.
+Multi-scaled drivers of ecosystem state: Quantifying the importance of
+the regional spatial scale. Ecological Applications 23:1603--1618.
 
 Cohen, J. 1960. A coefficient of agreement for nominal scales.
 Educational and Psychological Measurement 20:37--46.
@@ -1132,6 +1165,17 @@ classification 2:193--218.
 Imboden, D., and R. G{ä}chter. 1978. A dynamic lake model for trophic
 state prediction. Ecological modelling 4:77--98.
 
+Jeppesen, E., B. Kronvang, J. E. Olesen, J. Audet, M. S{ø}ndergaard, C.
+C. Hoffmann, H. E. Andersen, T. L. Lauridsen, L. Liboriussen, S. E.
+Larsen, and others. 2011. Climate change effects on nitrogen loading
+from cultivated catchments in europe: Implications for nitrogen
+retention, ecological state of lakes and adaptation. Hydrobiologia
+663:1--21.
+
+Jones, J., and M. T. Brett. 2014. Lake nutrients, eutrophication, and
+climate change. Pages 273--279 \emph{in} Global environmental change.
+Springer.
+
 Jones, J., M. Knowlton, D. Obrecht, and E. Cook. 2004. Importance of
 landscape variables and morphology on nutrients in missouri reservoirs.
 Canadian Journal of Fisheries and Aquatic Sciences 61:1503--1512.
@@ -1155,6 +1199,10 @@ Milstead, W. B., J. W. Hollister, R. B. Moore, and H. A. Walker. 2013.
 Estimating summer nutrient concentrations in northeastern lakes from
 SPARROW load predictions and modeled lake depth and volume. PloS one
 8:e81457.
+
+Moss, B., S. Kosten, M. Meerhof, R. Battarbee, E. Jeppesen, N. Mazzeo,
+K. Havens, G. Lacerot, Z. Liu, L. De Meester, and others. 2011. Allied
+attack: Climate change and eutrophication. Inland waters 1:101--105.
 
 Omernik, J. M. 1987. Ecoregions of the conterminous united states.
 Annals of the Association of American geographers 77:118--125.
