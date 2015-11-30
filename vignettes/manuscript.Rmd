@@ -9,9 +9,9 @@ author:
 - affilnum: 1
   name: Betty J. Kreakie
 affiliation:
-- affil: US Environmental Protection Agency, Office of Research and Development, National Health
-    and Environmental Effects Research Laboratory, Atlantic Ecology Division, 27 Tarzwell
-    Drive  Narragansett, RI, 02882, USA
+- affil: US Environmental Protection Agency, Office of Research and Development, National
+    Health and Environmental Effects Research Laboratory, Atlantic Ecology Division,
+    27 Tarzwell Drive  Narragansett, RI, 02882, USA
   affilnum: 1
 output:
   pdf_document:
@@ -19,9 +19,6 @@ output:
     keep_tex: yes
     number_sections: yes
     template: components/manuscript.latex
-  word_document: 
-    fig_caption: yes
-    reference_docx: 
 capsize: normalsize
 csl: components/ecology.csl
 documentclass: article
@@ -304,7 +301,7 @@ Productivity in lentic systems is often categorized across a range of trophic st
 
 Monitoring trophic state allows for rapid assessment of a lakes biological productivity and identification of lakes with unusually high productivity (e.g., hypereutrophic).  These cases are indicative of lakes under greater anthropogenic nutrient loads, also known as cultural eutrophication, and are more likely to be at risk of fish kills, beach fouling, and harmful algal blooms [@smith1998cultural;@smith1999eutrophication;@smith2006eutrophication].  Given the association between trophic state and many ecosystem services and disservices, being able to accurately model trophic state could provide a first cut at identifying lakes with the potential for harmful algal blooms (i.e., from cyanobacteria) or other problems associated with cultural eutrophication.  This type of information could be used for setting priorities for management and allow for more efficient use of limited resources.
 
-As trophic state and related indices can be best defined by a number of *in situ* water quality parameters (modeled or measured), most models have used this information as predictors [@carvalho_cyanobacterial_2011;@milstead2013estimating;@imboden1978dynamic;@salas1991simplified].  This leads to accurate models, but these data are often sparse and not always available, thus limiting the population of lakes for which we can make predictions.  A possible solution for this issue is to build models that use widely available data that are correlated to many of the *in situ* variables. For instance, landscape metrics of forests, agriculture, wetlands, and urban land in contributing watersheds have all been shown to explain a significant proportion of the variation (ranging from 50-86%, depending on study) in nutrients in receiving waters [@jones2001predicting; @jones2004importance; @seilheimer2013landscape].  Building on these previously identified associations might allow us to use only landscape and other universally available data to build models.  Identifying predictors using this type of ubiquitous data would allow for estimating trophic state in both monitored and unmonitored lakes.  Furthermore, being able to classify a large number of lakes would have implications for the management of lakes.  A broader discussion of ecological classification and resource management is beyond the scope of this paper, but see [@carpenter1999class] for more.  
+As trophic state and related indices can be best defined by a number of *in situ* water quality parameters (modeled or measured), most models have used this information as predictors [@carvalho_cyanobacterial_2011;@milstead2013estimating;@imboden1978dynamic;@salas1991simplified].  This leads to accurate models, but these data are often sparse and not always available, thus limiting the population of lakes for which we can make predictions.  A possible solution for this issue is to build models that use widely available data that are correlated to many of the *in situ* variables. For instance, landscape metrics of forests, agriculture, wetlands, and urban land in contributing watersheds have all been shown to explain a significant proportion of the variation (ranging from 50-86%, depending on study) in nutrients in receiving waters [@jones2001predicting; @jones2004importance; @seilheimer2013landscape].  Building on these previously identified associations might allow us to use only landscape and other universally available data to build models.  Identifying predictors using this type of ubiquitous data would allow for estimating trophic state in both monitored and unmonitored lakes.  Furthermore, being able to classify a large number of lakes would have implications for the management of lakes.  A broader discussion of ecological classification and resource management is beyond the scope of this paper, but see [@carpenter1999class] for more information on this topic.  
 
 Many published models of nutrients and trophic state in freshwater systems are based on linear modelling methods such as standard least squares regression or linear mixed models [@jones2004importance; @jones2001predicting].  While these methods have proven to be reliable, they have limitations (e.g., independence, distribution assumptions, and outlier sensitivity).  Using data mining approaches, such as random forests, avoids many of the limitations, may reduce bias, and often provides better predictions [@cutler2007random; @peters2007random; @breiman2001random; @delgado2014].  For instance, random forests are non-parametric and thus the data do not need to come from a specific distribution (e.g., Gaussian) and can contain collinear variables [@cutler2007random]. Second, random forests work well with very large numbers of predictors [@cutler2007random].  Lastly, random forests can deal with model selection uncertainty as predictions are based upon a consensus of many models and not just a single model selected with some measure of goodness of fit. 
 

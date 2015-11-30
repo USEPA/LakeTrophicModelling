@@ -9,9 +9,9 @@ author:
 - affilnum: 1
   name: Betty J. Kreakie
 affiliation:
-- affil: US Environmental Protection Agency, Office of Research and Development, National Health
-    and Environmental Effects Research Laboratory, Atlantic Ecology Division, 27 Tarzwell
-    Drive  Narragansett, RI, 02882, USA
+- affil: US Environmental Protection Agency, Office of Research and Development, National
+    Health and Environmental Effects Research Laboratory, Atlantic Ecology Division,
+    27 Tarzwell Drive  Narragansett, RI, 02882, USA
   affilnum: 1
 output:
   pdf_document:
@@ -19,9 +19,6 @@ output:
     keep_tex: yes
     number_sections: yes
     template: components/manuscript.latex
-  word_document: 
-    fig_caption: yes
-    reference_docx: 
 capsize: normalsize
 csl: components/ecology.csl
 documentclass: article

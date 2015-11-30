@@ -19,7 +19,7 @@ Las Cruces, NM  88003\newline
 
 Dear Dr. Peters,
 
-Please accept for your review our resubmission, "Modelling Lake Trophic State: A Random Forest Approach."  We have caerfully reviewed the comments from both reviewers and have made changes to our manuscript accordingly.  Included in this cover letter are an itemized list of both reviewers comments as well as details on how we updated the manuscript.   
+Please accept for your review our resubmission, "Modelling Lake Trophic State: A Random Forest Approach."   The manuscript number for the original submission was ES15-00549.  We have caerfully reviewed the comments from that submission and have made changes to our manuscript accordingly.  Included in this cover letter are an itemized list of both reviewers comments as well as details on how we updated the manuscript.   
 
 
 Sincerely,
