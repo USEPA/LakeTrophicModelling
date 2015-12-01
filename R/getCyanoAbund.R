@@ -14,7 +14,7 @@
 
   getCyanoAbund<-function(){
     #read the raw data from the EPA website
-      Raw<-read.csv('http://water.epa.gov/type/lakes/assessmonitor/lakessurvey/upload/NLA2007_Phytoplankton_SoftAlgaeCount_20091023.csv')
+      Raw<-read.csv('http://www2.epa.gov/sites/production/files/2014-10/nla2007_phytoplankton_softalgaecount_20091023.csv')
     #subset data-VISIT_NO==1 and Taxonomic Division=='Cyanophyta'
       Cyano<-subset(Raw[,c('SITE_ID','DIVISION','OTU','ABUND')],Raw$VISIT_NO==1 & Raw$DIVISION=='Cyanophyta')
     #Sum cyano abundance across taxa by NLA SITE_ID

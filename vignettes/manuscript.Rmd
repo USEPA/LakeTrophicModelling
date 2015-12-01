@@ -111,6 +111,21 @@ if(file.exists("prior_cache")){
     lazyLoad(i)
   }
 }
+#multiple caches... silly Jeff
+#
+if(file.exists("manuscript_cache/latex")){
+  for(i in gsub(".rdb","",list.files("manuscript_cache/latex",".rdb",full.names=T))){
+    lazyLoad(i)
+  }
+} else if(file.exists("vignettes/manuscript_cache/latex")){
+  for(i in gsub(".rdb","",list.files("vignettes/manuscript_cache/latex",".rdb",full.names=T))){
+    lazyLoad(i)
+  }
+} else if(file.exists("../manuscript_cache/latex")){
+  for(i in gsub(".rdb","",list.files("../manuscript_cache/latex",".rdb",full.names=T))){
+    lazyLoad(i)
+  }
+}
 
 # Table Captions from @DeanK on 
 #http://stackoverflow.com/questions/15258233/using-table-caption-on-r-markdown-file-using-knitr-to-use-in-pandoc-to-convert-t
@@ -197,10 +212,10 @@ var_importance<-var_importance[order(var_importance$model_id,-var_importance$mea
 ```{r rf_pd, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
 ################################################################################
 #Register parallel backend for partial dependence
-numcores<-parallel::detectCores()
-cl <- makeCluster(numcores)
-registerDoParallel(cl)
-co <- 100
+#numcores<-parallel::detectCores()
+#cl <- makeCluster(numcores)
+#registerDoParallel(cl)
+#co <- 100
 
 ################################################################################
 #All variables partial dependence
@@ -221,7 +236,7 @@ gis_rf_conifer_pd<-partialPlot(gis_rf,gis_dat,"EvergreenPer_3000m",n.pt=co,
                                plot=FALSE)
 gis_rf_mndepth_pd<-partialPlot(gis_rf,gis_dat,"MeanDepthCorrect",n.pt=co,
                                plot=FALSE)
-stopCluster(cl)
+#stopCluster(cl)
 ```
 
 ```{r trophic_class, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
@@ -714,7 +729,7 @@ condprob_t<-data.frame(pred_prob=c("All","0.50","0.60","0.70","0.80","0.90"),
 condprob_t[,2:3]<-round(condprob_t[,2:3],2)
 condprob_t[,2:3]<-100*condprob_t[,2:3]
 names(condprob_t)<-c("Prediction Prob.",
-                     "Total Accuracy",
+                     "Kappa Coefficient",
                      "Percent of Sample",
                      "Number of Samples")
 kable(condprob_t,row.names=F)
