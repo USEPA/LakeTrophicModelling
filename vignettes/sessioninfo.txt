@@ -15,40 +15,35 @@ attached base packages:
  [8] datasets  methods   base     
 
 other attached packages:
- [1] maptools_0.8-36          sfsmisc_1.0-27          
- [3] mapproj_1.2-3            maps_2.3-10             
- [5] rmarkdown_0.8.1          caret_6.0-52            
- [7] lattice_0.20-33          dplyr_0.4.3             
- [9] e1071_1.6-4              rgdal_1.0-7             
-[11] sp_1.2-0                 ggplot2_1.0.1           
-[13] knitr_1.11               LakeTrophicModelling_0.1
-[15] viridis_0.1              doParallel_1.0.8        
-[17] iterators_1.0.7          foreach_1.4.2           
-[19] interpretR_0.2.3         randomForest_4.6-11     
-[21] broom_0.3.7              party_1.0-21            
-[23] strucchange_1.5-1        sandwich_2.3-3          
-[25] zoo_1.7-12               modeltools_0.2-21       
-[27] mvtnorm_1.0-2            tidyr_0.2.0             
-[29] pander_0.5.2             condprob2_2.0           
-[31] edarf_0.1                wesanderson_0.3.2       
+ [1] maptools_0.8-36          mapproj_1.2-3           
+ [3] maps_2.3-10              dplyr_0.4.3             
+ [5] e1071_1.6-4              rgdal_1.0-7             
+ [7] sp_1.2-0                 ggplot2_1.0.1           
+ [9] knitr_1.11               LakeTrophicModelling_0.1
+[11] viridis_0.1              doParallel_1.0.8        
+[13] iterators_1.0.7          foreach_1.4.2           
+[15] interpretR_0.2.3         randomForest_4.6-11     
+[17] broom_0.3.7              party_1.0-21            
+[19] strucchange_1.5-1        sandwich_2.3-3          
+[21] zoo_1.7-12               modeltools_0.2-21       
+[23] mvtnorm_1.0-2            tidyr_0.2.0             
+[25] pander_0.5.2             condprob2_2.0           
+[27] edarf_0.1                wesanderson_0.3.2       
 
 loaded via a namespace (and not attached):
- [1] splines_3.2.2       AUC_0.3.0           gtools_3.5.0       
- [4] assertthat_0.1      highr_0.5           coin_1.0-24        
- [7] yaml_2.1.13         quantreg_5.11       digest_0.6.8       
-[10] minqa_1.2.4         colorspace_1.2-6    htmltools_0.2.6    
-[13] Matrix_1.2-2        plyr_1.8.3          psych_1.5.4        
-[16] varSelRF_0.7-5      devtools_1.8.0      BradleyTerry2_1.0-6
-[19] SparseM_1.6         scales_0.2.5        brglm_0.5-9        
-[22] lme4_1.1-8          git2r_0.10.1        mgcv_1.8-7         
-[25] car_2.0-25          lazyeval_0.1.10     nnet_7.3-10        
-[28] pbkrtest_0.4-2      mnormt_1.5-3        proto_0.3-10       
-[31] survival_2.38-3     magrittr_1.5        memoise_0.2.1      
-[34] evaluate_0.8        nlme_3.1-121        MASS_7.3-43        
-[37] foreign_0.8-65      xml2_0.1.1          class_7.3-13       
-[40] rsconnect_0.4.1.4   tools_3.2.2         formatR_1.2        
-[43] stringr_1.0.0       munsell_0.4.2       rversions_1.0.1    
-[46] snowfall_1.84-6     nloptr_1.0.4        labeling_0.3       
-[49] gtable_0.1.2        codetools_0.2-14    DBI_0.3.1          
-[52] curl_0.9.3          reshape2_1.4.1      R6_2.1.1           
-[55] rgeos_0.3-13        stringi_0.5-5       Rcpp_0.12.1        
+ [1] Rcpp_0.12.1       lattice_0.20-33   class_7.3-13     
+ [4] assertthat_0.1    digest_0.6.8      psych_1.5.4      
+ [7] R6_2.1.1          plyr_1.8.3        evaluate_0.8     
+[10] highr_0.5         lazyeval_0.1.10   curl_0.9.3       
+[13] rmarkdown_0.8.1   proto_0.3-10      labeling_0.3     
+[16] devtools_1.8.0    splines_3.2.2     foreign_0.8-65   
+[19] stringr_1.0.0     munsell_0.4.2     rversions_1.0.1  
+[22] mnormt_1.5-3      rgeos_0.3-13      htmltools_0.2.6  
+[25] varSelRF_0.7-5    coin_1.0-24       codetools_0.2-14 
+[28] MASS_7.3-43       gtable_0.1.2      DBI_0.3.1        
+[31] git2r_0.10.1      magrittr_1.5      formatR_1.2      
+[34] scales_0.2.5      stringi_0.5-5     reshape2_1.4.1   
+[37] AUC_0.3.0         xml2_0.1.1        tools_3.2.2      
+[40] snowfall_1.84-6   sfsmisc_1.0-27    rsconnect_0.4.1.4
+[43] survival_2.38-3   yaml_2.1.13       colorspace_1.2-6 
+[46] memoise_0.2.1    
