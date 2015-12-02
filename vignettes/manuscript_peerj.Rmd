@@ -31,7 +31,7 @@ running: no
 generate: no
 pagenumleft: no
 pagenumright: yes
-authorpage: yes
+authorpage: no
 ---
 
 <!--

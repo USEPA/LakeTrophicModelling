@@ -169,7 +169,12 @@ $endif$
 $if(generate)$
   \rfoot{Generated on: \today}
 $endif$
-\lfoot{\thepage}
+$if(pagenumleft)$
+  \lfoot{\thepage}
+$endif$
+$if(pagenumright)$
+  \rfoot{\thepage}
+$endif$
 %%Changed default abstract width and added lines
 \renewenvironment{abstract}{
   \hfill\begin{minipage}{1\textwidth}
@@ -197,7 +202,6 @@ $author$
 $endif$
 $endfor$
 }
-\date{Generated on: $date$}
 $for(header-includes)$
 $header-includes$
 $endfor$
@@ -205,6 +209,8 @@ $endfor$
 \begin{document}
 %%Edited by @jhollist 09/15/2014
 %%Adds title from YAML
+$if(authorpage)$
+$else$
 \begin{singlespace}
 $if(title)$
 \begin{center}
@@ -274,6 +280,7 @@ $if(toc)$
 \setcounter{tocdepth}{$toc-depth$}
 \tableofcontents
 }
+$endif$
 $endif$
 
 $body$
