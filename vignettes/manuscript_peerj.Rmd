@@ -14,24 +14,25 @@ affiliation:
     27 Tarzwell Drive  Narragansett, RI, 02882, USA
   affilnum: 1
 output:
+  word_document: default
   pdf_document:
     fig_caption: yes
     keep_tex: yes
     number_sections: yes
     template: components/manuscript.latex
+bibliography: components/LakeTrophicModelling.bib
 capsize: normalsize
 csl: components/ecology.csl
 documentclass: article
 fontsize: 12pt
-linenumbers: yes
-bibliography: components/LakeTrophicModelling.bib
-spacing: doublespacing
-abstract: no
-running: no
 generate: no
+linenumbers: yes
+authorpage: no
 pagenumleft: no
 pagenumright: yes
-authorpage: no
+running: no
+spacing: doublespacing
+abstract: no
 ---
 
 <!--

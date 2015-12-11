@@ -14,6 +14,7 @@ affiliation:
     27 Tarzwell Drive  Narragansett, RI, 02882, USA
   affilnum: 1
 output:
+  word_document: default
   pdf_document:
     fig_caption: yes
     keep_tex: yes

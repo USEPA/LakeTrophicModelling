@@ -34,16 +34,14 @@ loaded via a namespace (and not attached):
  [1] Rcpp_0.12.1       lattice_0.20-33   class_7.3-13     
  [4] assertthat_0.1    digest_0.6.8      psych_1.5.4      
  [7] R6_2.1.1          plyr_1.8.3        evaluate_0.8     
-[10] highr_0.5         lazyeval_0.1.10   curl_0.9.3       
-[13] rmarkdown_0.8.1   proto_0.3-10      labeling_0.3     
-[16] devtools_1.8.0    splines_3.2.2     foreign_0.8-65   
-[19] stringr_1.0.0     munsell_0.4.2     rversions_1.0.1  
-[22] mnormt_1.5-3      rgeos_0.3-13      htmltools_0.2.6  
-[25] varSelRF_0.7-5    coin_1.0-24       codetools_0.2-14 
-[28] MASS_7.3-43       gtable_0.1.2      DBI_0.3.1        
-[31] git2r_0.10.1      magrittr_1.5      formatR_1.2      
-[34] scales_0.2.5      stringi_0.5-5     reshape2_1.4.1   
-[37] AUC_0.3.0         xml2_0.1.1        tools_3.2.2      
-[40] snowfall_1.84-6   sfsmisc_1.0-27    rsconnect_0.4.1.4
-[43] survival_2.38-3   yaml_2.1.13       colorspace_1.2-6 
-[46] memoise_0.2.1    
+[10] highr_0.5         lazyeval_0.1.10   rmarkdown_0.8.1  
+[13] proto_0.3-10      labeling_0.3      splines_3.2.2    
+[16] stringr_1.0.0     foreign_0.8-65    munsell_0.4.2    
+[19] mnormt_1.5-3      rgeos_0.3-13      htmltools_0.2.6  
+[22] varSelRF_0.7-5    coin_1.0-24       codetools_0.2-14 
+[25] MASS_7.3-43       gtable_0.1.2      DBI_0.3.1        
+[28] magrittr_1.5      formatR_1.2       scales_0.2.5     
+[31] stringi_0.5-5     reshape2_1.4.1    AUC_0.3.0        
+[34] tools_3.2.2       snowfall_1.84-6   sfsmisc_1.0-27   
+[37] rsconnect_0.4.1.4 survival_2.38-3   yaml_2.1.13      
+[40] colorspace_1.2-6 
