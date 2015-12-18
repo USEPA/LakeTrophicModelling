@@ -94,8 +94,6 @@
 \pagestyle{fancy}
 \fancyhf{}
 \renewcommand{\headrulewidth}{0pt}
-\rfoot{Generated on: \today}
-\lfoot{\thepage}
 %%Changed default abstract width and added lines
 \renewenvironment{abstract}{
   \hfill\begin{minipage}{1\textwidth}
@@ -114,7 +112,6 @@ Jeffrey W. Hollister
 W. Bryan Milstead
 Betty J. Kreakie
 }
-\date{Generated on: }
 
 \begin{document}
 %%Edited by @jhollist 09/15/2014
@@ -184,13 +181,13 @@ chlorophyll \emph{a} with both \emph{in situ} and universally available
 data. The mean squared error and adjusted R\textsuperscript{2} of this
 model was 0.09 and 0.8, respectively. The second model uses universally
 available GIS data only. The mean squared error was 0.22 and the
-adjusted R\textsuperscript{2} was 0.48. The accuracy of the trophic
-state classifications derived from the chlorophyll \emph{a} predictions
-were 69\% for the full model and 49\% for the ``GIS only'' model. Random
-forests extend the usefulness of the class predictions by providing
-prediction probabilities for each lake. This allows us to make trophic
-state predictions and also indicate the level of uncertainty around
-those predictions. For the full model, these predicted class
+adjusted R\textsuperscript{2} was 0.48. The Kappa coefficient of the
+trophic state classifications derived from the chlorophyll \emph{a}
+predictions were 0.57 for the full model and 0.29 for the ``GIS only''
+model. Random forests extend the usefulness of the class predictions by
+providing prediction probabilities for each lake. This allows us to make
+trophic state predictions and also indicate the level of uncertainty
+around those predictions. For the full model, these predicted class
 probabilities ranged from 0.42 to 1. For the GIS only model, they ranged
 from 0.33 to 0.96. It is our conclusion that \emph{in situ} data are
 required for better predictions, yet GIS and universally available data
@@ -440,15 +437,15 @@ confusion matrix (Table \ref{tab:trophicStateTable}). A confusion matrix
 shows agreement and disagreement in a tabular form with predicted values
 forming the columns of the matrix and observed values, the rows. From
 this tabulated information we calculated the total accuracy (i.e.,
-percent correctly predicted) and the kappa coefficient, which takes into
+percent correctly predicted) and the Kappa coefficient, which takes into
 account the error expected by chance alone (i.e., the off diagonal
-values of the matrix) (Cohen 1960, Hubert and Arabie 1985). The kappa
+values of the matrix) (Cohen 1960, Hubert and Arabie 1985). The Kappa
 coefficient can range from -1 to 1 with 0 equaling the agreement
 expected by chance alone. Values greater than 0 represent agreement
-greater than would be expected by chance. A kappa coefficient greater
+greater than would be expected by chance. A Kappa coefficient greater
 than approximately 0.6 is considered ``substantial'' agreement (Landis
 and Koch 1977). Negative values are rare and would indicate no agreement
-between the predicted and observed values. We use kappa as a means of
+between the predicted and observed values. We use Kappa as a means of
 comparison across models as well as within subsets of a given model.
 Additionally, random forest builds each tree on bootstrapped, random
 subsets of the original data, thus, a separate independent validation
@@ -506,7 +503,7 @@ and spatially throughout the United States (Figure \ref{fig:nlaMap}).
 
 The model built with all predictors used 1080 total observations, had a
 mean squared error of 0.09 and and R\textsuperscript{2} of 0.8. The
-accuracy of the four trophic states was 68.7\% and the kappa coefficient
+accuracy of the four trophic states was 68.7\% and the Kappa coefficient
 was 0.57 (Table \ref{tab:Confusion_All_4}). The variable selection
 process identified a reduced model with 20 variables (Figure
 \ref{fig:all_varsel_figure}). The six most important variables were
@@ -519,7 +516,7 @@ each played in predicting chlorophyll \emph{a} varied (Figure
 
 The GIS only model was built using 1138 total observations, had a mean
 squared error of 0.22 and and R\textsuperscript{2} 0.48. Four trophic
-states were predicted with a total accuracy of 49\% and had a kappa
+states were predicted with a total accuracy of 49\% and had a Kappa
 coefficient of 0.29 (Table \ref{tab:Confusion_GIS_4}). The variable
 selection process for this model produced a reduced model with 15
 variables (Figure \ref{fig:gis_varsel_figure}). The six most important
@@ -542,7 +539,7 @@ lakes for the ``All variables'' model and 22\% of the lakes for the
 ``GIS only'' model. A Kappa coefficient of 0.6 or higher is considered
 ``substantial'' agreement (Landis and Koch 1977). For the ``GIS only''
 model this is seen with 52\% of the lakes. Lastly, as prediction
-probabilities increased, the difference in kappa coefficient between the
+probabilities increased, the difference in Kappa coefficient between the
 two models decreased (Figure \ref{fig:cond_prob_fig} \& Tables
 \ref{tab:cond_prob_tab_all} \& \ref{tab:cond_prob_tab_gis} ).
 
