@@ -465,7 +465,10 @@ mycolor<-c("grey25","white","black")
 #cbPalette <- c("#0072B2","#999999","#F0E442","#D55E00")
 cbPalette <- viridis(4)
 names(lakes_dd)<-c("long","lat","data")
-nlaMap(state,lakes_dd,mycolor,cats=TRUE,catColor=cbPalette)
+fig1<-nlaMap(state,lakes_dd,mycolor,cats=TRUE,catColor=cbPalette)
+ggsave(filename ="ecosphere_final/hollisterES15-00703R_fig1.tiff",
+       plot = fig1,dpi = 450,units="in",width=6.1)
+fig1
 ```
 
 \newpage
