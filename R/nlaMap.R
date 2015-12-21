@@ -30,15 +30,16 @@ nlaMap<-function(states,lakes,cats=F,myColor=1:3,catColor=NULL){
                          breaks=c("Oligo", "Meso", "Eu","Hyper"),
                          labels=c("Oligotrophc", "Mesotrophic", "Eutrophic","Hypereutrophic"))+
       coord_map("albers", lat2 = 45.5, lat1 = 29.5) +
-      theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), 
-            panel.border = element_blank(),
-            axis.text = element_blank(),axis.ticks = element_blank(),
-            legend.key.width=unit(2, "line"), 
-            legend.key.height=unit(0.5, "line"),
-            legend.position="bottom", legend.direction="horizontal",
-            plot.margin = unit(c(0,0,0,0),"in")) + 
-      ylab("") + 
-      xlab("")
+      theme(panel.background = element_blank(),
+            panel.grid = elelment_blank(),
+            panel.margin=unit(c(0,0,0,0),"in"),
+            plot.margin=unit(c(0,0,0,0),"in"),
+            plot.background = element_blank(),
+            legend.position = "bottom",
+            legend.direction="horizontal", 
+            axis.text=element_blank(),
+            axis.ticks = element_blank(),
+            axis.title=element_blank())
   } else {
   gmap<-ggplot(states,aes(x=long,y=lat))+
                geom_polygon(aes(group=group),fill=myColor[2],colour=myColor[1])+
@@ -46,8 +47,7 @@ nlaMap<-function(states,lakes,cats=F,myColor=1:3,catColor=NULL){
                coord_map("albers", lat2 = 45.5, lat1 = 29.5)+
                theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), 
                      panel.border = element_blank(), legend.position = "none", 
-                     axis.text = element_blank(),axis.ticks = element_blank(),
-                     plot.margin = unit(c(0,0,0,0),"in")) +
+                     axis.text = element_blank(),axis.ticks = element_blank()) + 
                ylab("") + 
                xlab("")
   }

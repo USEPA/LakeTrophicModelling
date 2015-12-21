@@ -466,8 +466,14 @@ mycolor<-c("grey25","white","black")
 cbPalette <- viridis(4)
 names(lakes_dd)<-c("long","lat","data")
 fig1<-nlaMap(state,lakes_dd,mycolor,cats=TRUE,catColor=cbPalette)
-ggsave(filename ="ecosphere_final/hollisterES15-00703R_fig1.tiff",
-       plot = fig1,dpi = 450,units="in",width=6.1)
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig1.tiff",
+       plot = fig1,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in",
+       compression = "lzw")
 fig1
 ```
 
