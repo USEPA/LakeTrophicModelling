@@ -36,7 +36,9 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-
+if(!require(autocrop)){
+  devtools::install_github("jhollist/autocrop")
+}
 if(!require(wesanderson)){
 devtools::install_github("jhollist/wesanderson")
 }
@@ -74,7 +76,7 @@ if(!require(viridis)){
 if(!require(LakeTrophicModelling)){
   devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE)
 }
-
+library("autocrop")
 library("viridis")
 library("wesanderson")
 library("LakeTrophicModelling")
@@ -472,8 +474,12 @@ ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig1.tiff",
        dpi = 450,
        #width = 6.1,
        height = 6.8,
-       units = "in",
-       compression = "lzw")
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig1.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig1_c.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
 fig1
 ```
 
