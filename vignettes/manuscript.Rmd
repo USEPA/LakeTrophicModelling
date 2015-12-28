@@ -36,7 +36,9 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-
+if(!require(autocrop)){
+devtools::install_github("jhollist/autocrop")
+}
 if(!require(wesanderson)){
 devtools::install_github("jhollist/wesanderson")
 }
@@ -75,6 +77,7 @@ if(!require(LakeTrophicModelling)){
   devtools::install_github("USEPA/LakeTrophicModelling",quick=TRUE)
 }
 
+library("autocrop")
 library("viridis")
 library("wesanderson")
 library("LakeTrophicModelling")
@@ -160,7 +163,7 @@ gis_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
 row.names(gis_dat)<-ltmData$NLA_ID
 gis_dat <- gis_dat[complete.cases(gis_dat),]
 #ecoregion shape
-wsa9<-readOGR("../inst/extdata/","wsa9_low48",verbose=FALSE)
+wsa9<-readOGR("./inst/extdata","wsa9_low48",verbose=FALSE)
 ```
 
 ```{r rand_forest_runs , eval=FALSE, include=FALSE, echo=FALSE, cache=FALSE}
@@ -469,11 +472,14 @@ fig1<-nlaMap(state,lakes_dd,mycolor,cats=TRUE,catColor=cbPalette)
 #Height maximum is 6.8 inches
 ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig1.tiff",
        plot = fig1,
-       dpi = 450,
-       #width = 6.1,
+       width = 6.1,
        height = 6.8,
-       units = "in",
-       compression = "lzw")
+       dpi = 450,
+       compression = "lzw",
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig1.tiff",border = 5,
+            outfile = "ecosphere_final/hollisterES15-00703R_fig1_c.tiff", 
+            width = 6.1, res = 450)
 fig1
 ```
 

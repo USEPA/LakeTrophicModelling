@@ -31,7 +31,7 @@ nlaMap<-function(states,lakes,cats=F,myColor=1:3,catColor=NULL){
                          labels=c("Oligotrophc", "Mesotrophic", "Eutrophic","Hypereutrophic"))+
       coord_map("albers", lat2 = 45.5, lat1 = 29.5) +
       theme(panel.background = element_blank(),
-            panel.grid = elelment_blank(),
+            panel.grid = element_blank(),
             panel.margin=unit(c(0,0,0,0),"in"),
             plot.margin=unit(c(0,0,0,0),"in"),
             plot.background = element_blank(),
