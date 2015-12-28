@@ -498,25 +498,64 @@ wsa9@data$WSA_9<-factor(wsa9@data$WSA_9,levels=c("NAP","CPL","SAP","TPL","UMW","
                            ordered=TRUE)
 #my_col<-data.frame(WSA_9=c(NA,levels(wsa9@data$WSA_9)),color=viridis(10))
 #wsa9@data<-merge(wsa9@data,my_col)
-ecor_map(wsa9)
+fig2<-ecor_map(wsa9)
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig2.tiff",
+       plot = fig2,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig2.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig2.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig2
 ```
 
 \newpage
 
 ```{r all_var_sel_figure, eval=TRUE,results="asis",echo=FALSE, fig.cap="Variable selection plot for all variables.  Shows percent increase in mean squared error as a function of the number of variables.  \\label{fig:all_varsel_figure}",cache=FALSE}
-varsel_plot(all_vs)
+fig3<-varsel_plot(all_vs)
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig3.tiff",
+       plot = fig3,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig3.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig3.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig3
 ```
 
 \newpage
 
 ```{r All_Importance, eval=TRUE,results="asis",echo=FALSE, fig.cap="Importance plot for All Variables., shows percent increase in mean square error.  Higher values of percent increase in mean squared error indicates higher importance.  \\label{fig:All_Importance}",cache=FALSE}
-importancePlot(all_rf, data_def=data_def,type='acc',size=3)#,aes(colour=all_ts4_color))
+fig4<-importancePlot(all_rf, data_def=data_def,type='acc',size=3)#,aes(colour=all_ts4_color))
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig4.tiff",
+       plot = fig4,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig4.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig4.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig4
 ```
 
 \newpage
 
 ```{r all_partial_dependence, eval=TRUE, echo=FALSE, fig.cap="All Variables partial dependence plots for the top 5 most important variables. \\label{fig:all_partial_dependence}",cache=FALSE, warning=FALSE,fig.height=7}
-multiplot(partial_plot(all_rf_turb_pd,
+fig5<-multiplot(partial_plot(all_rf_turb_pd,
                        x="Turbidity (NTU)",
                        y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
           partial_plot(all_rf_ntl_pd,
@@ -535,18 +574,57 @@ multiplot(partial_plot(all_rf_turb_pd,
                        x="N:P Ratio",
                        y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
           layout=matrix(1:6,ncol=2,byrow=TRUE))
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig5.tiff",
+       plot = fig5,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig5.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig5.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig5
 ```
 
 \newpage
 
 ```{r gis_var_sel_figure, eval=TRUE,results="asis",echo=FALSE, fig.cap="Variable selection plot for GIS only variables. Shows percent increase in mean squared error as a function of the number of variables.  \\label{fig:gis_varsel_figure}",cache=FALSE}
-varsel_plot(gis_vs)
+fig6<-varsel_plot(gis_vs)
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig6.tiff",
+       plot = fig6,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig6.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig6.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig6
 ```
 
 \newpage
 
 ```{r GIS_Importance, eval=TRUE,results="asis",echo=FALSE, fig.cap="Importance plot for GIS Only Variables., shows percent increase in mean square error.  Higher values of percent increase in mean squared error indicates higher importance.  \\label{fig:GIS_Importance}",cache=FALSE}
-importancePlot(gis_rf, data_def=data_def,type='acc',size=3)#,aes(colour=all_ts4_color))
+fig7 <- importancePlot(gis_rf, data_def=data_def,type='acc',size=3)#,aes(colour=all_ts4_color))
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig7.tiff",
+       plot = fig7,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig7.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig7.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig7
 ```
 
 \newpage
@@ -558,7 +636,7 @@ gis_rf_ecor_pd$x <- factor(gis_rf_ecor_pd$x,levels=c("NAP","CPL","SAP","TPL","UM
                                                    "NPL","WMT","XER"),
                            ordered=TRUE)
 
-multiplot(partial_plot(gis_rf_ecor_pd,
+fig8<-multiplot(partial_plot(gis_rf_ecor_pd,
                        x="Ecoregion",
                        y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
           partial_plot(gis_rf_crops_pd,
@@ -577,20 +655,59 @@ multiplot(partial_plot(gis_rf_ecor_pd,
                        x="Mean Lake Depth (m)",
                        y=expression(paste('Log10 Chl ', italic("a"),' (',mu,'g/L)'))),
           layout=matrix(1:6,ncol=2,byrow=TRUE))
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig8.tiff",
+       plot = fig8,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig8.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig8.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig8
 ```
 
 \newpage
 
 ```{r prob_cdf, eval=TRUE, results="asis",echo=FALSE, fig.cap="Prediction probabilities for the All Variables and GIS Only models.  \\label{fig:prob_cdf}",cache=FALSE}
 # Generated in hack chunk
-prob_cdf_fig
+fig9<-prob_cdf_fig
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig9.tiff",
+       plot = fig9,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig9.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig9.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig9
 ```
 
 \newpage
 
 ```{r cond_prob_fig,  eval=TRUE, results="asis",echo=FALSE, fig.cap="Accuracy of predictions as a function of lake prediction probability. The x-axis represents lakes with a prediction probability at a given level or higher.  \\label{fig:cond_prob_fig}",cache=FALSE,warning=FALSE}
 #Generated in hack chunk
-cond_acc_fig
+fig10<-cond_acc_fig
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig10.tiff",
+       plot = fig10,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig10.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig10.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig10
 ```
 
 \newpage
@@ -606,20 +723,59 @@ lakes_alb_sp<-SpatialPointsDataFrame(coordinates(lakes_alb[,1:2]),proj4string=CR
 lakes_dd<-spTransform(lakes_alb_sp,CRS=CRS(ll))
 lakes_dd<-data.frame(coordinates(lakes_dd),lakes_dd$nla_id)
 names(lakes_dd)<-c("long","lat","nla_id")
-ts_prob_map(state,lakes_dd,gis_rf_ts_prob)
+fig11<-ts_prob_map(state,lakes_dd,gis_rf_ts_prob)
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig11.tiff",
+       plot = fig11,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig11.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig11.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig11
 ```
 
 \newpage
 
 ```{r predicted_prob_map,eval=FALSE, results="asis",echo=FALSE, fig.cap="Maps of prediction probabilities for the discrete, predicted chlorophyll \\textit{a} trophic state.  Shows spatial patterns of prediction uncertainty.  \\label{fig:predicted_prob_map}",cache=FALSE}
 
-pred_prob_map(state,lakes_dd,gis_rf_ts_prob)
+fig12<-pred_prob_map(state,lakes_dd,gis_rf_ts_prob)
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig12.tiff",
+       plot = fig12,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig12.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig12.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig12
 ```
 
 \newpage
 
 ```{r pred_prob_dist, eval=FALSE, results="asis",echo=FALSE, fig.cap="Distribution of predicted probabilities.  \\label{fig:pred_prob_dist}",cache=FALSE,fig.height=7}
-density_plot(gis_rf_ts_prob,xvar="max",x="Predicted Probability")
+fig13<-density_plot(gis_rf_ts_prob,xvar="max",x="Predicted Probability")
+#Height maximum is 6.8 inches
+ggsave(filename = "ecosphere_final/hollisterES15-00703R_fig13.tiff",
+       plot = fig13,
+       dpi = 450,
+       #width = 6.1,
+       height = 6.8,
+       units = "in")
+x<-autocrop("ecosphere_final/hollisterES15-00703R_fig13.tiff",border = 5, 
+            outfile = "ecosphere_final/hollisterES15-00703R_fig13.tiff",
+            width = 6.1,
+            res = 450,
+            compression = "lzw")
+fig13
 ```
 
 \newpage
