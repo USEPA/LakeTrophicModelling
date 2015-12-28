@@ -39,18 +39,16 @@ importancePlot <- function(rf, sumtbl=NULL, data_def = NULL, type = c("acc", "gi
     if(!is.null(sumtbl)){
       imp_df<-merge(imp_df,sumtbl,by.x="variables",by.y="Variable")
     } 
-    
     if (!is.null(data_def)){
       imp_df$variables<-data_def$description[match(imp_df$variables,data_def$variable_names)]
       o <- order(imp_df$Mean_Decrease, decreasing = FALSE)
       imp_df$variables <- factor(imp_df$variables, 
                                  levels = imp_df$variables[o], ordered = T)
-      imp_df$variables[37] <- expression(paste("Total Nitrogen", mu, "g/L)",
-                                                   sep=""))
-      imp_df$variables[38] <- expression(paste("Total Phosphorus", mu, "g/L)",
-                                                   sep=""))
+      ylabels <- as.character(imp_df$variables[o])
+      ylabels[19] <- expression(paste("Total Phosphorus (", mu, "g/L)",sep=""))
+      ylabels[18] <- expression(paste("Total Nitrogen (", mu, "g/L)",sep=""))
     }
-    browser()
+    
     x <- ggplot(imp_df, aes(Mean_Decrease, variables)) + 
          geom_point(...) +   
          geom_hline(linetype = 3, size = 1, colour = "gray", 
@@ -62,6 +60,8 @@ importancePlot <- function(rf, sumtbl=NULL, data_def = NULL, type = c("acc", "gi
                axis.title.x = element_text(family="sans",face = "bold", vjust = -0.5, size = 12), 
                axis.text.x = element_text(family="sans",size = 11)) + 
          ylab("") + 
-         xlab(label)
+         xlab(label) +
+         scale_y_discrete(labels=ylabels)
+      
     return(x)
 } 
