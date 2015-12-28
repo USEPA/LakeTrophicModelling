@@ -163,7 +163,7 @@ gis_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
 row.names(gis_dat)<-ltmData$NLA_ID
 gis_dat <- gis_dat[complete.cases(gis_dat),]
 #ecoregion shape
-wsa9<-readOGR("./inst/extdata","wsa9_low48",verbose=FALSE)
+wsa9<-readOGR("../inst/extdata","wsa9_low48",verbose=FALSE)
 ```
 
 ```{r rand_forest_runs , eval=FALSE, include=FALSE, echo=FALSE, cache=FALSE}
