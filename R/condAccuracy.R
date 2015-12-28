@@ -28,7 +28,6 @@ condAccuracy<-function(pred_prob1,pred_prob2,xlab="x",...){
   cp2<-data.frame(max_vote=cp2$max_vote,Raw.Data.Probability=cp2$Raw.Data.Probability,
                   model=rep(pred_prob2$model[1],length(cp2[[1]])))
   
-  #browser()
   cp1_k <- vector("numeric",nrow(cp1))
   for(i in 1:nrow(cp1)){
     x<-dplyr::filter(pred_prob1,max>=cp1$max_vote[i])
@@ -54,7 +53,9 @@ condAccuracy<-function(pred_prob1,pred_prob2,xlab="x",...){
           axis.title.x = element_text(family="sans",vjust = -0.5, size = 12),
           axis.title.y = element_text(family="sans",vjust = 1.5, size = 12),
           axis.text.x = element_text(family="sans",size = 11),
-          axis.text.y = element_text(family="sans",size = 11)) + 
+          axis.text.y = element_text(family="sans",size = 11),
+          legend.position = c(0, 0.975), 
+          legend.justification = c(0, 1)) + 
     labs(y="Kappa Coefficient",x=xlab) +
     scale_colour_manual(name='',values = viridis(2))
   return(ggp)

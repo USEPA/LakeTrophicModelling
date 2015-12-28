@@ -27,12 +27,17 @@ ts_prob_map<-function(states,lakes,probs,save_sep=FALSE){
   gmap_m<-make_ts_map(states,lakes,"Mesotrophic",high=viridis(4)[2])#"#756bb1")
   gmap_e<-make_ts_map(states,lakes,"Eutrophic", high=viridis(4)[3])#"#e6550d")
   gmap_h<-make_ts_map(states,lakes,"Hypereutrophic", high=viridis(4)[4])#"#de2d26")
+  gmap_m$theme$plot.margin <- grid::unit(c(0,0,0,-2),"line")
+  gmap_h$theme$plot.margin <- grid::unit(c(0,0,0,-2),"line")
+  gmap_o$theme$plot.margin <- grid::unit(c(0,-2,0,0),"line")
+  gmap_e$theme$plot.margin <- grid::unit(c(0,-2,0,0),"line")
   if(save_sep){
     ggsave("oligo_prob.jpg",gmap_o,width=8.5)
     ggsave("meso_prob.jpg",gmap_m,width=8.5)
     ggsave("eu_prob.jpg",gmap_e,width=8.5)
     ggsave("hyper_prob.jpg",gmap_h,width=8.5)
   }
+  
   return(multiplot(gmap_o,gmap_e,gmap_m,gmap_h,cols=2))
 }
 
@@ -55,15 +60,16 @@ make_ts_map <- function(states,lake_prob,title,low,high){
     geom_polygon(aes(group=group),alpha=0,colour="grey")+
     coord_map("albers", lat2 = 45.5, lat1 = 29.5)+
     theme(panel.background = element_rect(fill="white"), panel.grid = element_blank(), 
-          panel.border = element_blank(), 
+          panel.border = element_blank(),
           axis.text = element_blank(),axis.ticks = element_blank(),
-          plot.margin = grid::unit(c(0,0,0,0),"inches"),
+          plot.margin = grid::unit(c(0,0,0,0),"line"),
           legend.key.width=unit(2, "line"), 
           legend.key.height=unit(0.5, "line"),
-          legend.position="bottom", legend.direction="horizontal") + 
+          legend.position = c(0.5,-0.1), legend.direction="horizontal") + 
     ggtitle(title)+
     ylab("") + 
     xlab("") +
-    scale_colour_gradient("Probability",low="white",high=high)
+    scale_colour_gradient("Probability",low="white",high=high,
+                          breaks=c(0.2,0.4,0.6,0.8))
   return(gmap)
 }

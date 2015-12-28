@@ -31,3 +31,5 @@ doParallel
 pander
 maptools
 viridis
+autocrop
+gridExtra

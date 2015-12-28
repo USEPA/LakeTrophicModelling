@@ -17,12 +17,13 @@
 #' @import ggplot2
 
 prob_cdf <- function(probs1, probs2, ...) {
+  
   df<-rbind(probs1,probs2)
   df <- na.omit(data.frame(df))
   options(scipen = 5)  #tell r not to use scientific notation on axis labels
   x <- ggplot(df,aes(x=max,colour=model)) +
     stat_ecdf(size=2) +
-    geom_ribbon(aes(ymin = lower,ymax = upper,fill=model),alpha = 0.4) +
+    geom_ribbon(aes(ymin = lower,ymax = upper,fill=model,show_guide=FALSE),alpha = 0.4) +
     theme(text = element_text(family="sans"),
           panel.background = element_blank(), #panel.grid = element_blank(), 
           panel.border = element_rect(fill = NA), 
@@ -32,7 +33,9 @@ prob_cdf <- function(probs1, probs2, ...) {
           axis.title.x = element_text(family="sans",vjust = -0.5, size = 12),
           axis.title.y = element_text(family="sans",vjust = 1.5, size = 12),
           axis.text.x = element_text(family="sans",size = 11),
-          axis.text.y = element_text(family="sans",size = 11)) + 
+          axis.text.y = element_text(family="sans",size = 11),
+          legend.position = c(0, 0.975), 
+          legend.justification = c(0, 1)) + 
     geom_hline(linetype = 3, size = 1, colour = "gray", 
                yintercept = c(0,0.5,1)) +
     labs(...) + 

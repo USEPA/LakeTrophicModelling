@@ -35,7 +35,7 @@ nlaMap<-function(states,lakes,cats=F,myColor=1:3,catColor=NULL){
             panel.margin=unit(c(0,0,0,0),"in"),
             plot.margin=unit(c(0,0,0,0),"in"),
             plot.background = element_blank(),
-            legend.position = "bottom",
+            legend.position = c(0.5,0),
             legend.direction="horizontal", 
             axis.text=element_blank(),
             axis.ticks = element_blank(),
