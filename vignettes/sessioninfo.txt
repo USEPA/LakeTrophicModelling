@@ -1,0 +1,53 @@
+R version 3.2.3 (2015-12-10)
+Platform: i686-pc-linux-gnu (32-bit)
+Running under: Ubuntu 14.04.3 LTS
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+ [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+ [1] parallel  stats4    grid      stats     graphics  grDevices utils    
+ [8] datasets  methods   base     
+
+other attached packages:
+ [1] maptools_0.8-36          sfsmisc_1.0-27          
+ [3] mapproj_1.2-3            maps_2.3-10             
+ [5] rmarkdown_0.8            caret_6.0-47            
+ [7] lattice_0.20-33          dplyr_0.4.2             
+ [9] e1071_1.6-4              rgdal_1.0-4             
+[11] sp_1.2-0                 ggplot2_2.0.0           
+[13] knitr_1.11               LakeTrophicModelling_0.1
+[15] viridis_0.3.1            doParallel_1.0.10       
+[17] iterators_1.0.7          foreach_1.4.2           
+[19] interpretR_0.2.3         randomForest_4.6-10     
+[21] broom_0.3.7              party_1.0-21            
+[23] strucchange_1.5-1        sandwich_2.3-3          
+[25] zoo_1.7-12               modeltools_0.2-21       
+[27] mvtnorm_1.0-2            tidyr_0.2.0             
+[29] pander_0.5.2             condprob2_2.0           
+[31] edarf_0.1                wesanderson_0.3.2       
+[33] autocrop_0.0.1.9000      gridExtra_2.0.0         
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.2         raster_2.3-40       magrittr_1.5       
+ [4] MASS_7.3-44         splines_3.2.3       mnormt_1.5-3       
+ [7] colorspace_1.2-6    R6_2.1.1            snowfall_1.84-6    
+[10] rgeos_0.3-11        gtools_3.5.0        htmltools_0.2.6    
+[13] class_7.3-14        lme4_1.1-7          assertthat_0.1     
+[16] digest_0.6.8        Matrix_1.2-3        coin_1.0-24        
+[19] BradleyTerry2_1.0-6 scales_0.3.0        varSelRF_0.7-5     
+[22] munsell_0.4.2       minqa_1.2.4         highr_0.5.1        
+[25] car_2.0-25          plyr_1.8.3          stringr_1.0.0      
+[28] tools_3.2.3         pbkrtest_0.4-2      nnet_7.3-11        
+[31] nlme_3.1-122        gtable_0.1.2        mgcv_1.8-7         
+[34] quantreg_5.11       psych_1.5.4         DBI_0.3.1          
+[37] lazyeval_0.1.10     yaml_2.1.13         survival_2.38-3    
+[40] formatR_1.2.1       nloptr_1.0.4        reshape2_1.4.1     
+[43] AUC_0.3.0           codetools_0.2-14    evaluate_0.8       
+[46] labeling_0.3        stringi_1.0-1       SparseM_1.6        
+[49] brglm_0.5-9         foreign_0.8-66     

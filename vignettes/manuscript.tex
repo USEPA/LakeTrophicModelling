@@ -503,26 +503,27 @@ and spatially throughout the United States (Figure \ref{fig:nlaMap}).
 
 The model built with all predictors used 1080 total observations, had a
 mean squared error of 0.09 and and R\textsuperscript{2} of 0.8. The
-accuracy of the four trophic states was 68.7\% and the Kappa coefficient
-was 0.57 (Table \ref{tab:Confusion_All_4}). The variable selection
-process identified a reduced model with 20 variables (Figure
-\ref{fig:all_varsel_figure}). The six most important variables were
-turbidity, total phosphorus, total nitrogen, elevation, total organic
-carbon, and N:P ratio (Figures \ref{fig:All_Importance}). The role that
-each played in predicting chlorophyll \emph{a} varied (Figure
-\ref{fig:all_partial_dependence}).
+accuracy of the four trophic states was 68.7\%, the Kappa coefficient
+was 0.57 and class accuracy ranged from 60 to 82\% (Table
+\ref{tab:Confusion_All_4}). The variable selection process identified a
+reduced model with 20 variables (Figure \ref{fig:all_varsel_figure}).
+The six most important variables were turbidity, total phosphorus, total
+nitrogen, elevation, total organic carbon, and N:P ratio (Figures
+\ref{fig:All_Importance}). The role that each played in predicting
+chlorophyll \emph{a} varied (Figure \ref{fig:all_partial_dependence}).
 
 \subsection{Models: GIS Only Variables}\label{models-gis-only-variables}
 
 The GIS only model was built using 1138 total observations, had a mean
 squared error of 0.22 and and R\textsuperscript{2} 0.48. Four trophic
-states were predicted with a total accuracy of 49\% and had a Kappa
-coefficient of 0.29 (Table \ref{tab:Confusion_GIS_4}). The variable
-selection process for this model produced a reduced model with 15
-variables (Figure \ref{fig:gis_varsel_figure}). The six most important
-variables were ecoregion, percent cropland, elevation, latitude, percent
-evergreen forest, and mean lake depth (Figures \ref{fig:GIS_Importance}
-\& \ref{fig:all_partial_dependence}).
+states were predicted with a total accuracy of 49\%, had a Kappa
+coefficient of 0.29 and class accuracy ranged from 39 to 76\% (Table
+\ref{tab:Confusion_GIS_4}). The variable selection process for this
+model produced a reduced model with 15 variables (Figure
+\ref{fig:gis_varsel_figure}). The six most important variables were
+ecoregion, percent cropland, elevation, latitude, percent evergreen
+forest, and mean lake depth (Figures \ref{fig:GIS_Importance} \&
+\ref{fig:all_partial_dependence}).
 
 \subsection{Trophic State
 Probabilities}\label{trophic-state-probabilities-1}
@@ -538,7 +539,7 @@ a Kappa coefficient of \textasciitilde{}1. This represents 55\% of the
 lakes for the ``All variables'' model and 22\% of the lakes for the
 ``GIS only'' model. A Kappa coefficient of 0.6 or higher is considered
 ``substantial'' agreement (Landis and Koch 1977). For the ``GIS only''
-model this is seen with 52\% of the lakes. Lastly, as prediction
+model this is seen with 100\% of the lakes. Lastly, as prediction
 probabilities increased, the difference in Kappa coefficient between the
 two models decreased (Figure \ref{fig:cond_prob_fig} \& Tables
 \ref{tab:cond_prob_tab_all} \& \ref{tab:cond_prob_tab_gis} ).
@@ -746,8 +747,12 @@ Effects Research Laboratory, US Environmental Protection Agency.
 ## Saving 7.5 x 6.8 in image
 \end{verbatim}
 
+\begin{figure}[htbp]
+\centering
 \includegraphics{manuscript_files/figure-latex/fig1_nlaMap-1.jpeg}
-\includegraphics{manuscript_files/figure-latex/fig1_nlaMap-2.jpeg}
+\caption{Map of the distribution of National Lakes Assesment Sampling
+locations \label{fig:nlaMap}}
+\end{figure}
 
 \newpage
 
@@ -934,11 +939,11 @@ Prediction Prob. & Kappa Coefficient & Percent of Sample & Number of
 Samples\tabularnewline
 \midrule
 \endhead
-All & 57 & 100 & 1080\tabularnewline
-0.50 & 59 & 98 & 1063\tabularnewline
-0.60 & 63 & 92 & 999\tabularnewline
-0.70 & 73 & 81 & 870\tabularnewline
-0.80 & 95 & 55 & 596\tabularnewline
+All & 86 & 100 & 1080\tabularnewline
+0.50 & 88 & 98 & 1063\tabularnewline
+0.60 & 95 & 92 & 999\tabularnewline
+0.70 & 100 & 81 & 870\tabularnewline
+0.80 & 100 & 55 & 596\tabularnewline
 0.90 & 100 & 21 & 227\tabularnewline
 \bottomrule
 \end{longtable}
@@ -959,11 +964,11 @@ Prediction Prob. & Kappa Coefficient & Percent of Sample & Number of
 Samples\tabularnewline
 \midrule
 \endhead
-All & 29 & 100 & 1138\tabularnewline
-0.50 & 31 & 96 & 1091\tabularnewline
-0.60 & 38 & 83 & 949\tabularnewline
-0.70 & 56 & 57 & 651\tabularnewline
-0.80 & 88 & 22 & 247\tabularnewline
+All & 70 & 100 & 1138\tabularnewline
+0.50 & 75 & 96 & 1091\tabularnewline
+0.60 & 86 & 83 & 949\tabularnewline
+0.70 & 100 & 57 & 651\tabularnewline
+0.80 & 100 & 22 & 247\tabularnewline
 0.90 & 100 & 4 & 43\tabularnewline
 \bottomrule
 \end{longtable}
@@ -982,9 +987,9 @@ AlbersX & Longitude (Albers meters) & GIS & 126757.1 &
 34305.5\tabularnewline
 AlbersY & Latitude (Albers meters) & GIS & 436908.1 &
 17367.2\tabularnewline
-BarrenPer\_3000m & \% Barren & GIS & 0.7 & 0.1\tabularnewline
 BASINAREA & Watershed Area (sq. meters) & GIS & 3208.5 &
 788.1\tabularnewline
+BarrenPer\_3000m & \% Barren & GIS & 0.7 & 0.1\tabularnewline
 CropsPer\_3000m & \% Cropland & GIS & 13.3 & 0.6\tabularnewline
 DDs45 & Growing Degree Days (Days) & GIS & 2750.0 & 41.0\tabularnewline
 DeciduousPer\_3000m & \% Decidous Forest & GIS & 17.1 &
@@ -1027,9 +1032,9 @@ ShoreDevel & Shoreline Development Index & GIS & 2.7 &
 ShrubPer\_3000m & \% Shrub/Scrub & GIS & 10.4 & 0.6\tabularnewline
 VolumeCorrect & Est. Lake Volume (cubic meters) & GIS & 101211909.9 &
 27438696.4\tabularnewline
+WSA\_ECO9 & Ecoregion & GIS & NA & NA\tabularnewline
 WaterPer\_3000m & \% Water & GIS & 4.1 & 0.2\tabularnewline
 WoodyWetPer\_3000m & \% Woody Wetland & GIS & 5.2 & 0.3\tabularnewline
-WSA\_ECO9 & Ecoregion & GIS & NA & NA\tabularnewline
 ANC & Acid Neutralizing Capacity (ueq/L) & NLA & 2584.2 &
 171.7\tabularnewline
 ANDEF2 & Anion Deficit (ueq/L) & NLA & -506.4 & 143.2\tabularnewline
@@ -1052,13 +1057,13 @@ DOC & Dissolved Organic Carbon (mg/L) & NLA & 8.6 & 0.5\tabularnewline
 H & Hydrogen Ions (ueq/L) & NLA & 0.2 & 0.1\tabularnewline
 K & Potassium (ueq/L) & NLA & 245.6 & 40.6\tabularnewline
 MG & Magnesium (ueq/L) & NLA & 2190.4 & 282.2\tabularnewline
-Na & Sodium (ueq/L) & NLA & 3709.7 & 816.3\tabularnewline
 NH4 & Ammonium (mg/L) & NLA & 2.9 & 0.2\tabularnewline
 NH4ION & Calculated Ammonium (ueq/L) & NLA & 2.5 & 0.2\tabularnewline
 NO3 & Nitrate (ueq/L) & NLA & 5.4 & 0.7\tabularnewline
 NO3\_NO2 & Nitrate/Nitrite (mg N/L) & NLA & 0.1 & 0.0\tabularnewline
 NPratio & Nitrogen:Phophorus Ratio & NLA & 34.5 & 1.8\tabularnewline
 NTL & Total Nitrogen (\(\mu\)g/L) & NLA & 1109.9 & 56.4\tabularnewline
+Na & Sodium (ueq/L) & NLA & 3709.7 & 816.3\tabularnewline
 OH & Hydroxide (ueq/L) & NLA & 3.1 & 0.2\tabularnewline
 ORGION & Est. Organic Anions (ueq/L) & NLA & 85.9 & 4.8\tabularnewline
 PH\_FIELD & pH & NLA & 8.1 & 0.0\tabularnewline
@@ -1066,9 +1071,9 @@ PTL & Total Phosphorus (\(\mu\)g/L) & NLA & 103.1 & 7.8\tabularnewline
 SIO2 & Silica (mg/L) & NLA & 8.6 & 0.3\tabularnewline
 SO4 & Sulfate (ueq/L) & NLA & 3853.4 & 935.7\tabularnewline
 SOBC & Sum of Base Cation (ueq/L) & NLA & 7534.1 & 1105.0\tabularnewline
-TmeanW & Mean Profile Water Temp. (C) & NLA & 24.1 & 0.1\tabularnewline
 TOC & Total Organic Carbon (mg/L) & NLA & 9.6 & 0.6\tabularnewline
 TURB & Turbidity (NTU) & NLA & 12.3 & 1.0\tabularnewline
+TmeanW & Mean Profile Water Temp. (C) & NLA & 24.1 & 0.1\tabularnewline
 \bottomrule
 \end{longtable}
 

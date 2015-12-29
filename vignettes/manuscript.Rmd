@@ -597,7 +597,7 @@ tiff(filename = "ecosphere_final/hollisterES15-00703R_fig5.tiff",
        width = 6.1,
        height = 6.8,
        units = "in")
-fig5<-grid.arrange(fig5_1,fig5_3,fig5_3,fig5_4,fig5_5,fig5_6)
+fig5<-grid.arrange(fig5_1,fig5_2,fig5_3,fig5_4,fig5_5,fig5_6)
 dev.off()
 x<-autocrop("ecosphere_final/hollisterES15-00703R_fig5.tiff",border = 5, 
             outfile = "ecosphere_final/hollisterES15-00703R_fig5.tiff",
