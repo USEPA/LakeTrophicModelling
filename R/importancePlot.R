@@ -58,7 +58,7 @@ importancePlot <- function(rf, sumtbl=NULL, data_def = NULL, type = c("acc", "gi
                panel.background = element_blank(), panel.grid = element_blank(), 
                panel.border = element_rect(fill = NA), legend.position = "none", 
                axis.title.x = element_text(family="sans",face = "bold", vjust = -0.5, size = 12), 
-               axis.text.x = element_text(family="sans",size = 11)) + 
+               axis.text = element_text(family="sans",size = 11,color = "black")) + 
          ylab("") + 
          xlab(label) +
          scale_y_discrete(labels=ylabels)
