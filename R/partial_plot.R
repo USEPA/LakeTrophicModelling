@@ -20,8 +20,9 @@ partial_plot <- function(pd,xl,yl,...){
                         legend.title = element_text(size=11),
                         axis.title.x = element_text(family="sans",vjust = -0.5, size = 12),
                         axis.title.y = element_text(family="sans",vjust = 1.5, size = 12),
-                        axis.text.x = element_text(family="sans",size = 11),
-                        axis.text.y = element_text(family="sans",size = 11),
+                        axis.text.x = element_text(family="sans",size = 10),
+                        axis.text.y = element_text(family="sans",size = 10),
+                        plot.margin = unit(c(1,1,1,1), "lines"),
                         ...) + 
       labs(x=xl,y=yl)+
       scale_y_continuous(breaks=y_scale,
@@ -41,6 +42,7 @@ partial_plot <- function(pd,xl,yl,...){
             axis.title.y = element_text(family="sans",vjust = 1.5, size = 12),
             axis.text.x = element_text(angle=50, vjust=0.5,family="sans",size = 11),
             axis.text.y = element_text(family="sans",size = 11),
+            plot.margin = unit(c(1,1,1,1), "lines"),
             ...) + 
       labs(x=xl,y=yl)
     
