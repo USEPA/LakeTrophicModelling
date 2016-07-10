@@ -1,6 +1,9 @@
 LakeTrophicModelling
 ====================
 
+
+[![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.40271.svg)](http://dx.doi.org/10.5281/zenodo.40271)
+
 This repository contains all the materials needed to reproduce Hollister *et al.* (2015) Modeling Lake Trophic State: A Random Forest Approach.  These materials are presented as an R Package which contains code used for analyses, code used to develop figures, raw data used for all analysese, and a package vignette that contains the accepted, unformatted version of the manuscript.
 
 #Install the Package
