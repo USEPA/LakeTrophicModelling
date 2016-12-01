@@ -6,7 +6,7 @@ LakeTrophicModelling
 
 Citation for published paper:
 
-Hollister, J. W., W. B . Milstead, B. J. Kreakie. (2016). Modeling Lake Trophic State: A Random Forest Approach. Ecosphere 7:3 10.1002/ecs2.1321.
+Hollister, J. W., W. B . Milstead, B. J. Kreakie. (2016). Modeling Lake Trophic State: A Random Forest Approach. Ecosphere 7:3 [10.1002/ecs2.1321](http://dx.doi.org/10.1002/ecs2.1321).
 
 
 This repository contains all the materials needed to reproduce Hollister *et al.* (2015) Modeling Lake Trophic State: A Random Forest Approach.  These materials are presented as an R Package which contains code used for analyses, code used to develop figures, raw data used for all analysese, and a package vignette that contains the accepted, unformatted version of the manuscript.
