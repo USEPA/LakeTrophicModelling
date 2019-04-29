@@ -1,8 +1,10 @@
 #' Variable Selection with Regression RF
 #' 
 #' Similar approach to varSelRF, but for regresssion.  Use full model to rank
-#' variables based on %IncMSE.  Step through that list with most important first
-#' run RF, store variables and %MSE of model.
+#' variables based on either %IncMSE or Gini.  To use %IncMSE set 
+#' imporatance = TRUE.  It then steps through that sorted variable list with 
+#' most important first and runs RF, store variables and %MSE of model.
+#' Note: this sorts on Gini, by default.  importance = TRUE ensures %IncMSE.
 #' @param y response a vector 
 #' @param x predictors a data.frame
 #' @param ... options to pass to randomForest
@@ -14,7 +16,7 @@
 #' all_dat <- data.frame(ltmData[predictors_all],LogCHLA=log10(ltmData$CHLA))
 #' all_dat <- all_dat[complete.cases(all_dat),]
 #' x<-varsel_regression_rf(all_dat$LogCHLA,all_dat[,names(all_dat)!="LogCHLA"],
-#'                         ntree=100,prog=T)
+#'                         ntree=100,prog=T, importance = TRUE)
 varsel_regression_rf <- function(y,x,prog=F,...){
   out <- list(mse=NULL,rsq=NULL,num_var=NULL,vars=NULL)
   dat <- data.frame(y=y,x)
