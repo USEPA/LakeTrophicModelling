@@ -28,7 +28,9 @@ Imports:
     e1071,
     maps,
     mapproj,
-    sfsmisc
+    sfsmisc,
+    party
 License: CC0
 LazyData: true
 VignetteBuilder: knitr
+RoxygenNote: 7.1.1

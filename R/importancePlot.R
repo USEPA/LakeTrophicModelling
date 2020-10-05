@@ -18,6 +18,7 @@
 importancePlot <- function(rf, sumtbl=NULL, data_def = NULL, type = c("acc", "gini"), ...) {
     
     idf<-importance(rf)
+    browser()
     # set up data.frame for ggplot
     if (type == "gini") {
         imp_df <- data.frame(variables = names(idf[,dim(idf)[2]]), 

@@ -41,12 +41,12 @@ abstract: no
 -->
 
 ```{r setup, include=FALSE, echo=FALSE}
-
+options(repos="https://cran.rstudio.com")
 if(!require(wesanderson)){
 devtools::install_github("jhollist/wesanderson")
 }
 if(!require(edarf)){
-devtools::install_github("zmjones/edarf")
+devtools::install_github("zmjones/edarf/pkg")
 }
 if(!require(condprob2)){
 devtools::install_github("jhollist/condprob2")
@@ -165,10 +165,11 @@ gis_dat <- data.frame(ltmData[predictors_gis],LogCHLA=log10(ltmData$CHLA))
 row.names(gis_dat)<-ltmData$NLA_ID
 gis_dat <- gis_dat[complete.cases(gis_dat),]
 #ecoregion shape
-wsa9<-readOGR("../inst/extdata/","wsa9_low48",verbose=FALSE)
+ecor_path <- system.file("extdata/", package = "LakeTrophicModelling")
+wsa9<-readOGR(ecor_path,"wsa9_low48",verbose=FALSE)
 ```
 
-```{r rand_forest_runs , eval=FALSE, include=FALSE, echo=FALSE, cache=FALSE}
+```{r rand_forest_runs , eval=TRUE, include=FALSE, echo=FALSE, cache=FALSE}
 ################################################################################
 #This chunk sets up the 'all' and 'gis' data, does variable selection (takes few
 # hours to run) then run the randomForest.
@@ -178,10 +179,10 @@ wsa9<-readOGR("../inst/extdata/","wsa9_low48",verbose=FALSE)
 
 #Variable Selection
 all_vs <- varsel_regression_rf(all_dat$LogCHLA,all_dat[,names(all_dat)!="LogCHLA"],
-                     ntree=5000,prog=T)  
+                     ntree=5000,prog=T, importance = TRUE)  
 all_vs_plot <- varsel_plot(all_vs) #Used plot to identify approxiamte minimum
 all_vars_select <- unlist(all_vs$vars[19]) #top 20 variables
-
+#all_vars_select <- c("TURB", "PTL", "NTL", "ELEV_PT", "TOC", "NPratio", "WSA_ECO9", #"AlbersX", "AlbersY", "NO3_NO2","ORGION", "DOC", "DEPTHMAX", "K", "TmeanW", "PH_FIELD", #"DDs45", "DevOpenPer_3000m", "CL", "DO2_2M")
 #Final Model - all variables
 all_rf<-randomForest(y=all_dat$LogCHLA,x=all_dat[,all_vars_select], 
                          ntree=5000,importance=TRUE,proximity=TRUE,
@@ -192,10 +193,10 @@ all_rf<-randomForest(y=all_dat$LogCHLA,x=all_dat[,all_vars_select],
 
 #Variable Selection
 gis_vs <- varsel_regression_rf(gis_dat$LogCHLA,gis_dat[,names(gis_dat)!="LogCHLA"],
-                     ntree=5000,prog=T)  
+                     ntree=5000,prog=T, importance = TRUE)  
 gis_vs_plot <- varsel_plot(gis_vs) #Used plot to identify approxiamte minimum
 gis_vars_select <- unlist(gis_vs$vars[14]) #top 15 variables
-
+#gis_vars_select <- c("WSA_ECO9","CropsPer_3000m", "ELEV_PT", "AlbersY", "EvergreenPer_3000m","MeanDepthCorrect", "AlbersX", "WoodyWetPer_3000m", "HerbWetPer_3000m", "DDs45", "MaxDepthCorrect", "DeciduousPer_3000m", "DevOpenPer_3000m", "GrassPer_3000m", "BASINAREA")
 #Final Model - gis variables
 gis_rf<-randomForest(y=gis_dat$LogCHLA,x=gis_dat[,gis_vars_select], 
                        ntree=5000,importance=TRUE,proximity=TRUE,
@@ -301,6 +302,25 @@ gis_rf_ts_prob <- data.frame(gis_rf_ts_prob,gis_ci[,2:3])
 prob_cdf_fig <- prob_cdf(all_rf_ts_prob, gis_rf_ts_prob,x="Predicition Probability",y="Proportion of Samples")
 #This also writes out cp1 and cp2 to global env.
 cond_acc_fig <- condAccuracy(all_rf_ts_prob,gis_rf_ts_prob,xImpair=0,R=1,xlab="Xc >= Prediction Probability")
+```
+```{r write_out, echo=FALSE}
+all_rf_chla <- data.frame(nla_id = names(all_rf$predicted), chla_pred = 10^all_rf$predicted)
+all_rf_chla <- left_join(all_rf_chla, ltmData, by = c("nla_id" = "NLA_ID"))
+all_rf_chla <- left_join(all_rf_chla, all_rf_ts_prob)
+all_rf_out <- select(all_rf_chla, nla_id, chla_pred, chla_obs = CHLA, 
+                     ts_pred_train = pred_class, ts_pred_oob = pred_class_oob, 
+                     ts_obs = obs_class, oligo_prob = oligo, meso_prob = meso, 
+                     eu_prob = eu, hyper_prob = hyper)
+write.csv(all_rf_out, "../inst/extdata/all_rf_out.csv", row.names = FALSE)
+
+gis_rf_chla <- data.frame(nla_id = names(gis_rf$predicted), chla_pred = 10^gis_rf$predicted)
+gis_rf_chla <- left_join(gis_rf_chla, ltmData, by = c("nla_id" = "NLA_ID"))
+gis_rf_chla <- left_join(gis_rf_chla, gis_rf_ts_prob)
+gis_rf_out <- select(gis_rf_chla, nla_id, chla_pred, chla_obs = CHLA, 
+                     ts_pred_train = pred_class, ts_pred_oob = pred_class_oob, 
+                     ts_obs = obs_class, oligo_prob = oligo, meso_prob = meso, 
+                     eu_prob = eu, hyper_prob = hyper)
+write.csv(gis_rf_out, "../inst/extdata/gis_rf_out.csv", row.names = FALSE)
 ```
 
 \singlespace
