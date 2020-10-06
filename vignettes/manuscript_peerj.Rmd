@@ -322,6 +322,7 @@ all_rf_out <- select(all_rf_chla, nla_id, chla_pred, chla_obs = CHLA,
                      eu_prob = eu, hyper_prob = hyper, 
                      oligo_prob_oob = oligo_oob, meso_prob_oob = meso_oob, 
                      eu_prob_oob = eu_oob, hyper_prob_oob = hyper_oob)
+all_rf_out <- mutate(all_rf_out, across(where(is.numeric), round, 3))
 write.csv(all_rf_out, "../inst/extdata/all_rf_out.csv", row.names = FALSE)
 
 gis_rf_chla <- data.frame(nla_id = names(gis_rf$predicted), chla_pred = 10^gis_rf$predicted)
@@ -333,6 +334,7 @@ gis_rf_out <- select(gis_rf_chla, nla_id, chla_pred, chla_obs = CHLA,
                      eu_prob = eu, hyper_prob = hyper, 
                      oligo_prob_oob = oligo_oob, meso_prob_oob = meso_oob, 
                      eu_prob_oob = eu_oob, hyper_prob_oob = hyper_oob)
+gis_rf_out <- mutate(gis_rf_out, across(where(is.numeric), round, 3))
 write.csv(gis_rf_out, "../inst/extdata/gis_rf_out.csv", row.names = FALSE)
 ```
 
