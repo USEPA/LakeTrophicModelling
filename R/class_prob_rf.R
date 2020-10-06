@@ -22,6 +22,14 @@ class_prob_rf <- function(rf_obj,newdata,breaks,labels,ordered=FALSE,
   if(rf_obj$type!="regression"){
     stop("rf_obj is not a regression randomForest object.")
   }
+  
+  get_oob_predictions <- function(rf_obj, newdata){
+    if(!"inbag" %in% names(rf_obj)){stop("The in bag matrix is not present.  Try re-running random forest with keep.inbag = T.")}
+    rf_pred <- predict(rf_obj, newdata = newdata, predict.all = TRUE)
+    rf_inbag <- rf_obj$inbag
+    rf_inbag[rf_inbag != 0] <- NA
+    rf_pred$individual + rf_inbag
+  } 
   type <- match.arg(type)
   preds <- predict(rf_obj,newdata=newdata,predict.all=TRUE)
   preds_df <- data.frame(preds$individual)
@@ -41,5 +49,20 @@ class_prob_rf <- function(rf_obj,newdata,breaks,labels,ordered=FALSE,
   class_prob$pred_class <- cut(predict(rf_obj,newdata=newdata), breaks, labels)
   class_prob$obs_class <- cut(rf_obj$y,breaks,labels)
   row.names(class_prob)<-as.character(1:nrow(class_prob))
+  oob_pred <- data.frame(get_oob_predictions(rf_obj,newdata))
+  oob_class_prob <- apply(oob_pred,2, function(x) cut(x,breaks,labels))
+  row.names(oob_class_prob)<-row.names(oob_pred)
+  if(type=="probs"){
+    oob_class_prob <- apply(oob_class_prob,1, function(x)
+      table(factor(x,levels=labels, ordered=ordered))/length(na.omit(oob_class_prob[1,])))
+  } else {
+    oob_class_prob <- apply(oob_class_prob,1, function(x)
+      table(factor(x,levels=labels, ordered=ordered)))
+  }
+  oob_class_prob<-data.frame(t(oob_class_prob))
+  oob_class_prob$nla_id<-row.names(oob_class_prob)
+  names(oob_class_prob)[1:4] <- c("oligo_oob", "meso_oob", "eu_oob", 
+                                  "hyper_oob")
+  class_prob <- left_join(class_prob, oob_class_prob)
   return(class_prob)  
 }  

@@ -182,7 +182,10 @@ all_vs <- varsel_regression_rf(all_dat$LogCHLA,all_dat[,names(all_dat)!="LogCHLA
                      ntree=5000,prog=T, importance = TRUE)  
 all_vs_plot <- varsel_plot(all_vs) #Used plot to identify approxiamte minimum
 all_vars_select <- unlist(all_vs$vars[19]) #top 20 variables
-#all_vars_select <- c("TURB", "PTL", "NTL", "ELEV_PT", "TOC", "NPratio", "WSA_ECO9", #"AlbersX", "AlbersY", "NO3_NO2","ORGION", "DOC", "DEPTHMAX", "K", "TmeanW", "PH_FIELD", #"DDs45", "DevOpenPer_3000m", "CL", "DO2_2M")
+#all_vars_select <- c("TURB", "PTL", "NTL", "ELEV_PT", "TOC", "NPratio", 
+#                     "WSA_ECO9", "AlbersX", "AlbersY", "NO3_NO2","ORGION", 
+#                     "DOC", "DEPTHMAX", "K", "TmeanW", "PH_FIELD", "DDs45", 
+#                     "DevOpenPer_3000m", "CL", "DO2_2M")
 #Final Model - all variables
 all_rf<-randomForest(y=all_dat$LogCHLA,x=all_dat[,all_vars_select], 
                          ntree=5000,importance=TRUE,proximity=TRUE,
@@ -196,7 +199,11 @@ gis_vs <- varsel_regression_rf(gis_dat$LogCHLA,gis_dat[,names(gis_dat)!="LogCHLA
                      ntree=5000,prog=T, importance = TRUE)  
 gis_vs_plot <- varsel_plot(gis_vs) #Used plot to identify approxiamte minimum
 gis_vars_select <- unlist(gis_vs$vars[14]) #top 15 variables
-#gis_vars_select <- c("WSA_ECO9","CropsPer_3000m", "ELEV_PT", "AlbersY", "EvergreenPer_3000m","MeanDepthCorrect", "AlbersX", "WoodyWetPer_3000m", "HerbWetPer_3000m", "DDs45", "MaxDepthCorrect", "DeciduousPer_3000m", "DevOpenPer_3000m", "GrassPer_3000m", "BASINAREA")
+#gis_vars_select <- c("WSA_ECO9","CropsPer_3000m", "ELEV_PT", "AlbersY", 
+#                     "EvergreenPer_3000m","MeanDepthCorrect", "AlbersX", 
+#                     "WoodyWetPer_3000m", "HerbWetPer_3000m", "DDs45", 
+#                     "MaxDepthCorrect", "DeciduousPer_3000m", 
+#                     "DevOpenPer_3000m", "GrassPer_3000m", "BASINAREA")
 #Final Model - gis variables
 gis_rf<-randomForest(y=gis_dat$LogCHLA,x=gis_dat[,gis_vars_select], 
                        ntree=5000,importance=TRUE,proximity=TRUE,
@@ -246,6 +253,8 @@ gis_rf_mndepth_pd<-partialPlot(gis_rf,gis_dat,"MeanDepthCorrect",n.pt=co,
 ```
 
 ```{r trophic_class, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
+
+
 #Predict and Original Chl a
 all_pred <- predict(all_rf)
 all_orig <- all_rf$y
@@ -285,7 +294,7 @@ gis_ts2_total_acc <- classAgreement(gis_ts2_conmat)$diag
 gis_ts2_kappa <- classAgreement(gis_ts2_conmat)$kappa
 ```
 
-```{r class_predict_probability, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE}
+```{r class_predict_probability, eval=TRUE, echo=FALSE, cache=TRUE, warning=FALSE, message = FALSE}
 #Per tree chl a predictions - All Variables
 all_rf_ts_prob <- class_prob_rf(all_rf,all_dat,ts_4_brks,ts_4_cats,T)
 gis_rf_ts_prob <- class_prob_rf(gis_rf,gis_dat,ts_4_brks,ts_4_cats,T)
@@ -310,7 +319,9 @@ all_rf_chla <- left_join(all_rf_chla, all_rf_ts_prob)
 all_rf_out <- select(all_rf_chla, nla_id, chla_pred, chla_obs = CHLA, 
                      ts_pred_train = pred_class, ts_pred_oob = pred_class_oob, 
                      ts_obs = obs_class, oligo_prob = oligo, meso_prob = meso, 
-                     eu_prob = eu, hyper_prob = hyper)
+                     eu_prob = eu, hyper_prob = hyper, 
+                     oligo_prob_oob = oligo_oob, meso_prob_oob = meso_oob, 
+                     eu_prob_oob = eu_oob, hyper_prob_oob = hyper_oob)
 write.csv(all_rf_out, "../inst/extdata/all_rf_out.csv", row.names = FALSE)
 
 gis_rf_chla <- data.frame(nla_id = names(gis_rf$predicted), chla_pred = 10^gis_rf$predicted)
@@ -319,7 +330,9 @@ gis_rf_chla <- left_join(gis_rf_chla, gis_rf_ts_prob)
 gis_rf_out <- select(gis_rf_chla, nla_id, chla_pred, chla_obs = CHLA, 
                      ts_pred_train = pred_class, ts_pred_oob = pred_class_oob, 
                      ts_obs = obs_class, oligo_prob = oligo, meso_prob = meso, 
-                     eu_prob = eu, hyper_prob = hyper)
+                     eu_prob = eu, hyper_prob = hyper, 
+                     oligo_prob_oob = oligo_oob, meso_prob_oob = meso_oob, 
+                     eu_prob_oob = eu_oob, hyper_prob_oob = hyper_oob)
 write.csv(gis_rf_out, "../inst/extdata/gis_rf_out.csv", row.names = FALSE)
 ```
 
