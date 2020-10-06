@@ -21,12 +21,12 @@
 #' ts_prob_map(state,lakes_dd,gis_rf_ts_prob)
 #' @export
 #' @import ggplot2
-ts_prob_map<-function(states,lakes,probs,save_sep=FALSE){
+ts_prob_map<-function(states,lakes,probs,save_sep=FALSE, original = TRUE){
   lakes<-merge(lakes,probs,by="nla_id")
-  gmap_o<-make_ts_map(states,lakes,"Oligotrophic",high=viridis(4)[1])#"#08519c")
-  gmap_m<-make_ts_map(states,lakes,"Mesotrophic",high=viridis(4)[2])#"#756bb1")
-  gmap_e<-make_ts_map(states,lakes,"Eutrophic", high=viridis(4)[3])#"#e6550d")
-  gmap_h<-make_ts_map(states,lakes,"Hypereutrophic", high=viridis(4)[4])#"#de2d26")
+  gmap_o<-make_ts_map(states,lakes,"Oligotrophic",high=viridis(4)[1], original)#"#08519c")
+  gmap_m<-make_ts_map(states,lakes,"Mesotrophic",high=viridis(4)[2], original)#"#756bb1")
+  gmap_e<-make_ts_map(states,lakes,"Eutrophic", high=viridis(4)[3], original)#"#e6550d")
+  gmap_h<-make_ts_map(states,lakes,"Hypereutrophic", high=viridis(4)[4], original)#"#de2d26")
   gmap_m$theme$plot.margin <- grid::unit(c(0,0,0,-2),"line")
   gmap_h$theme$plot.margin <- grid::unit(c(0,0,0,-2),"line")
   gmap_o$theme$plot.margin <- grid::unit(c(0,-2,0,0),"line")
@@ -49,12 +49,20 @@ ts_prob_map<-function(states,lakes,probs,save_sep=FALSE){
 #' @param low lower color
 #' @param high higher color
 #' @export
-make_ts_map <- function(states,lake_prob,title,low,high){
-
-  if(title=="Oligotrophic"){value<<-"oligo"}
-  if(title=="Mesotrophic"){value<<-"meso"}
-  if(title=="Eutrophic"){value<<-"eu"}
-  if(title=="Hypereutrophic"){value<<-"hyper"}
+make_ts_map <- function(states,lake_prob,title,low,high, original = TRUE){
+  browser()
+  if(original){
+    if(title=="Oligotrophic"){value<<-"oligo"}
+    if(title=="Mesotrophic"){value<<-"meso"}
+    if(title=="Eutrophic"){value<<-"eu"}
+    if(title=="Hypereutrophic"){value<<-"hyper"}
+  } else{
+    if(title=="Oligotrophic"){value<<-"oligo_oob"}
+    if(title=="Mesotrophic"){value<<-"meso_oob"}
+    if(title=="Eutrophic"){value<<-"eu_oob"}
+    if(title=="Hypereutrophic"){value<<-"hyper_oob"}
+  }
+  
   gmap<-ggplot(states,aes(x=long,y=lat))+
     geom_point(data=lake_prob,aes_string(x="long",y="lat",colour=value),size=2.5)+
     geom_polygon(aes(group=group),alpha=0,colour="grey")+

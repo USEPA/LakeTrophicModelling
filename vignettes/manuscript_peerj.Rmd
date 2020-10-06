@@ -33,6 +33,8 @@ pagenumright: yes
 running: no
 spacing: doublespacing
 abstract: no
+editor_options: 
+  chunk_output_type: console
 ---
 
 <!--
@@ -631,7 +633,7 @@ lakes_alb_sp<-SpatialPointsDataFrame(coordinates(lakes_alb[,1:2]),proj4string=CR
 lakes_dd<-spTransform(lakes_alb_sp,CRS=CRS(ll))
 lakes_dd<-data.frame(coordinates(lakes_dd),lakes_dd$nla_id)
 names(lakes_dd)<-c("long","lat","nla_id")
-ts_prob_map(state,lakes_dd,gis_rf_ts_prob)
+ts_prob_map(state,lakes_dd,gis_rf_ts_prob, original = TRUE)
 ```
 
 \newpage
