@@ -9,10 +9,10 @@
 #' 
 #' @examples
 #' state<-map_data('state')
-#' lakes_alb<-data.frame(ltmData[["AlbersX"]],ltmData[["AlbersY"]])
+#' lakes_alb<-data.frame(nla_id = ltmData[["NLA_ID"]],ltmData[["AlbersX"]],ltmData[["AlbersY"]])
 #' p4s<-"+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs" 
 #' ll<-"+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs" 
-#' lakes_alb_sp<-SpatialPoints(coordinates(lakes_alb),proj4string=CRS(p4s))
+#' lakes_alb_sp<-SpatialPointsDataFrame(coordinates(lakes_alb[,2:3]),proj4string=CRS(p4s),data = lakes_alb["nla_id"])
 #' lakes_dd<-spTransform(lakes_alb_sp,CRS=CRS(ll))
 #' lakes_dd<-data.frame(coordinates(lakes_dd))
 #' names(lakes_dd)<-c("long","lat")
